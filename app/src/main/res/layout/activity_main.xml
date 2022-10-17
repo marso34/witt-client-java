@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:id="@+id/stopWatch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="68dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/stopWatchView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="00:00:00"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="184dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/startBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="운동시작" />
+
+            <Button
+                android:id="@+id/pauseBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="일시정지"
+                tools:layout_editor_absoluteX="42dp"
+                tools:layout_editor_absoluteY="273dp" />
+
+            <Button
+                android:id="@+id/stopBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="운동종료"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.536"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:layout_editor_absoluteY="273dp" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/timer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.226">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="타이머" />
+
+        <TextView
+            android:id="@+id/timerView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="00:00" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/minuteBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+1분 "
+                tools:layout_editor_absoluteX="42dp"
+                tools:layout_editor_absoluteY="273dp" />
+
+            <Button
+                android:id="@+id/minuteHarfBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+30초"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.536"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:layout_editor_absoluteY="273dp" />
+
+            <Button
+                android:id="@+id/secBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+10초" />
+
+            <Button
+                android:id="@+id/secBtn2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+5초" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/timerStBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="시작" />
+
+            <Button
+                android:id="@+id/timerReBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="초기화" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
