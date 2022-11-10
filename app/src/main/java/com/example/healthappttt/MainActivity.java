@@ -12,7 +12,14 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class MainActivity extends AppCompatActivity {
+
+    private Timer TimerCall;
+    private int nCnt;
+    TimerTask timerTask;
 
     private Button StartBtn, StopBtn, PauseBtn;
     private Button TimerStBtn, TimerReBtn, MinuteBtn, MinuteHarfBtn, SecBtn, SecBtn2;
@@ -25,10 +32,16 @@ public class MainActivity extends AppCompatActivity {
 
     private int timer;
 
+    private long startTime;
+    private long stopTime;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        nCnt = 0;
+        TimerCall = new Timer();
 
         StartBtn = (Button) findViewById(R.id.startBtn); // 스톱워치
         StopBtn = (Button) findViewById(R.id.stopBtn);
@@ -54,10 +67,21 @@ public class MainActivity extends AppCompatActivity {
                 PauseBtn.setVisibility(View.VISIBLE);
                 StopBtn.setVisibility(View.VISIBLE);
 
-                timeThread = new Thread(new timeThread());
-                timeThread.start();
+//                timeThread = new Thread(new timeThread());
+//                timeThread.start();
+
+                startTime = System.currentTimeMillis();
+
+                timerTask = new TimerTask() {
+                    @Override
+                    public void run() {
+                        someWork();
+                    }
+                };
+                TimerCall.schedule(timerTask,0,10); // 0.5초
             }
         });
+
 
         PauseBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
                     PauseBtn.setText("일시정지");
                 } else {
                     PauseBtn.setText("재시작");
+                    stopTime = System.currentTimeMillis();
                 }
             }
         });
@@ -124,20 +149,35 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void someWork() {
+        Message msg = new Message();
+
+//        if (!isRunning)
+//            msg.arg2 = (int)(System.currentTimeMillis() - stopTime);
+//        else
+//            stopTime = msg.arg2;
+        if (isRunning)
+            msg.arg1 = (int)(System.currentTimeMillis() - startTime);
+
+
+        handler.sendMessage(msg);
+    }
+
     @SuppressLint("HandlerLeak")
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            int mSec = msg.arg1 % 100;
-            int sec = (msg.arg1 / 100) % 60;
-            int min = (msg.arg1 / 100) / 60 % 60;
-            int hour = (msg.arg1 / 100) / (60 * 60);
+            int mSec = msg.arg1 % 1000;
+            int sec = (msg.arg1 / 1000) % 60;
+            int min = (msg.arg1 / 1000) / 60 % 60;
+            int hour = (msg.arg1 / 1000) / (60 * 60);
 
-            if (TimerRunning && timer > 0 && msg.arg1 % 100 == 0)
-                timer--; // 1초에 1씩 줄어들게, 스톱워치 동작 중에만 동작
+            if (TimerRunning && timer > 0 && (msg.arg1 % 1000) == 0) // msg.arg1 % 100 == 0
+                timer--; // 1초에 1씩 줄어들게
 
             int sec2 = timer % 60;
-            int min2 = timer / 60;
+            int min2 = timer / 60 % 60;
+            int hour2 = timer / (60 * 60);
 
             //1000이 1초 1000*60 은 1분 1000*60*10은 10분 1000*60*60은 한시간
 
@@ -147,37 +187,9 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @SuppressLint("DefaultLocale") String result = String.format("%02d:%02d:%02d", hour, min, sec);
-            @SuppressLint("DefaultLocale") String result2 = String.format("%02d:%02d", min2, sec2);
+            @SuppressLint("DefaultLocale") String result2 = String.format("%02d:%02d:%02d", hour2, min2, sec2);
             StopWatchTextView.setText(result);
             TimerTextView.setText(result2);
         }
     };
-
-    public class timeThread implements Runnable {
-        @Override
-        public void run() {
-            int i = 0;
-
-            while (true) {
-                while (isRunning) { //일시정지를 누르면 멈춤
-                    Message msg = new Message();
-                    msg.arg1 = i++;
-                    handler.sendMessage(msg);
-
-                    try {
-                        Thread.sleep(10); // 이 방식은 연산속도에 따라 딜레이 생기므로 
-                    } catch (InterruptedException e) { // 다른 방식 고려할 것
-                        e.printStackTrace();        // System.currentTimeMillis 이용해도 좋을듯
-                            @Override               // 타임 관련 메서드 찾을 것
-                            public void run() {
-                                StopWatchTextView.setText("");
-                                StopWatchTextView.setText("00:00:00");
-                            }
-                        });
-                        return; // 인터럽트 받을 경우 return
-                    }
-                }
-            }
-        }
-    }
 }
