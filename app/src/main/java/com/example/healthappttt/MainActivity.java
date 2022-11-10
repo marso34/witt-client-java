@@ -18,7 +18,6 @@ import java.util.TimerTask;
 public class MainActivity extends AppCompatActivity {
 
     private Timer TimerCall;
-    private int nCnt;
     TimerTask timerTask;
 
     private Button StartBtn, StopBtn, PauseBtn;
@@ -26,7 +25,6 @@ public class MainActivity extends AppCompatActivity {
     private TextView StopWatchTextView;
     private TextView TimerTextView;
 
-    private Thread timeThread = null;
     private Boolean isRunning = true;
     private Boolean TimerRunning = false;
 
@@ -40,7 +38,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        nCnt = 0;
         TimerCall = new Timer();
 
         StartBtn = (Button) findViewById(R.id.startBtn); // 스톱워치
@@ -66,9 +63,6 @@ public class MainActivity extends AppCompatActivity {
                 v.setVisibility(View.GONE);
                 PauseBtn.setVisibility(View.VISIBLE);
                 StopBtn.setVisibility(View.VISIBLE);
-
-//                timeThread = new Thread(new timeThread());
-//                timeThread.start();
 
                 startTime = System.currentTimeMillis();
 
@@ -152,10 +146,6 @@ public class MainActivity extends AppCompatActivity {
     private void someWork() {
         Message msg = new Message();
 
-//        if (!isRunning)
-//            msg.arg2 = (int)(System.currentTimeMillis() - stopTime);
-//        else
-//            stopTime = msg.arg2;
         if (isRunning)
             msg.arg1 = (int)(System.currentTimeMillis() - startTime);
 
