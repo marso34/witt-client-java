@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private long pauseTime; // 일시정지 버튼 누른 시간
 
     private int runTime; // 운동 시간
-    private int xrunTime; // 운동 시간
+    private int xrunTime; // 운동 시간 // 타이머 위한
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +67,13 @@ public class MainActivity extends AppCompatActivity {
         StopBtn.setVisibility(View.GONE);
         timerLayout.setVisibility(View.GONE);
 
+        for (int i = 0; i < 3; i++) {
+            Sub_rutin n_layout = new Sub_rutin(getApplicationContext());
+            LinearLayout con = (LinearLayout)findViewById(R.id.healthRutin);
+            con.addView(n_layout);
+        }
+
+
         // 스톱워치
         StartBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
                 StopBtn.setVisibility(View.VISIBLE);
                 timerLayout.setVisibility(View.VISIBLE);
 
-                startTime = System.currentTimeMillis();
+                startTime = System.currentTimeMillis(); // 시작 버튼 누를 시 현재 시간 저장
                 isRunning = true;
 
                 timerTask = new TimerTask() {
@@ -96,11 +103,11 @@ public class MainActivity extends AppCompatActivity {
 
                 if (isRunning) {
                     PauseBtn.setText("일시정지");
-                    startTime += (System.currentTimeMillis() - pauseTime);
-                    timerLayout.setVisibility(View.VISIBLE);
+                    startTime += (System.currentTimeMillis() - pauseTime); // 다시 시작할 때 정지한 시간 만큼 
+                    timerLayout.setVisibility(View.VISIBLE);               // 운동 시간에서 제외
                 } else {
                     PauseBtn.setText("재시작");
-                    pauseTime = System.currentTimeMillis();
+                    pauseTime = System.currentTimeMillis(); // 정지 버튼 누른 시간 -> 정지한 시간 기록용
                     timerLayout.setVisibility(View.GONE);
                 }
             }
@@ -113,12 +120,12 @@ public class MainActivity extends AppCompatActivity {
                 TimerRunning = false;
                 startTime = 0;
                 pauseTime = 0;
-                timer = 0;
+                timer = 0;  // 스톱버튼 누를 시 전부 초기화
+                            // runTime -> 운동시간은 기록해야 하니 제외
 
                 StartBtn.setVisibility(View.VISIBLE);
                 PauseBtn.setVisibility(View.GONE);
                 StopBtn.setVisibility(View.GONE);
-//                StopWatchTextView.setText("00:00:00");
             }
         });
 
@@ -179,7 +186,7 @@ public class MainActivity extends AppCompatActivity {
         Message msg = new Message();
 
         if (isRunning)
-            runTime = (int)(System.currentTimeMillis() - startTime);
+            runTime = (int)(System.currentTimeMillis() - startTime); // 현재 시간 - 시작 버튼 누른 시간 = 동작 시간
 
         handler.sendMessage(msg);
     }
@@ -188,28 +195,28 @@ public class MainActivity extends AppCompatActivity {
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            int mSec = runTime % 1000;
+            int mSec = runTime % 1000 / 10;
             int sec = (runTime / 1000) % 60;
             int min = (runTime / 1000) / 60 % 60;
             int hour = (runTime / 1000) / (60 * 60);
+
+            // 1000이 1초 1000*60 은 1분 1000*60*10은 10분 1000*60*60은 한시간
 
             if (TimerRunning && timer > 0 && xrunTime/1000 < runTime/1000)
                 timer--; // 1초에 1씩 줄어들게
 
             int sec2 = timer % 60;
             int min2 = timer / 60 % 60;
-            int hour2 = timer / (60 * 60);
-
-            //1000이 1초 1000*60 은 1분 1000*60*10은 10분 1000*60*60은 한시간
+            int hour2 = timer / (60 * 60); // 타이머는 1이 1초
 
             if (timer == 0) {
                 TimerRunning = false;
                 TimerStBtn.setText("시작");
             }
 
-            xrunTime = runTime;
+            xrunTime = runTime; // 이전 운동 시간을 기록
 
-            @SuppressLint("DefaultLocale") String result = String.format("%02d:%02d:%02d", hour, min, sec, mSec);
+            @SuppressLint("DefaultLocale") String result = String.format("%02d:%02d:%02d", hour, min, sec);
             @SuppressLint("DefaultLocale") String result2 = String.format("%02d:%02d:%02d", hour2, min2, sec2);
             StopWatchTextView.setText(result);
             TimerTextView.setText(result2);
