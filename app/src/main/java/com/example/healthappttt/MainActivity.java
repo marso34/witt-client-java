@@ -1,6 +1,8 @@
 package com.example.healthappttt;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.net.wifi.aware.DiscoverySession;
@@ -12,6 +14,9 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -38,6 +43,12 @@ public class MainActivity extends AppCompatActivity {
 
     private int runTime; // 운동 시간
     private int xrunTime; // 운동 시간 // 타이머 위한
+
+
+    RecyclerView recyclerView;
+    RecyclerView.Adapter adapter;
+    RecyclerView.LayoutManager layoutManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,14 +78,8 @@ public class MainActivity extends AppCompatActivity {
         StopBtn.setVisibility(View.GONE);
         timerLayout.setVisibility(View.GONE);
 
-        for (int i = 0; i < 3; i++) {
-            Sub_rutin n_layout = new Sub_rutin(getApplicationContext());
-            LinearLayout con = (LinearLayout)findViewById(R.id.healthRutin);
-            con.addView(n_layout);
-        }
 
-
-        // 스톱워치
+//
         StartBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -180,6 +185,23 @@ public class MainActivity extends AppCompatActivity {
                 timer += 5; // 5초 추가
             }
         });
+
+
+        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setHasFixedSize(true);
+
+        layoutManager = new LinearLayoutManager(this); // 이건 나중에
+        recyclerView.setLayoutManager(layoutManager);
+
+        String[] Name =  {"팔굽혀펴기","스쿼트","테스트"};
+        int[] SetNum =  {5, 10, 8};
+        int[] Num =  {15, 10, 8};
+        int[] Weight = {0, 30, 50};
+        int[] setCnt = {0,0,0};
+
+        adapter = new ExercizeAdapter(Name, SetNum, Num, Weight, setCnt);
+        recyclerView.setAdapter(adapter);
+
     }
 
     private void someWork() {
