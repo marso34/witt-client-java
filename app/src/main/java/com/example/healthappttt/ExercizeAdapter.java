@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class ExercizeAdapter extends RecyclerView.Adapter<ExercizeAdapter.MainViewHolder>  {
+    private Activity activity;
     private ArrayList<Exercize> exercizes;
     private ArrayList<Exercize> recordExercizes;
 
@@ -26,7 +28,8 @@ public class ExercizeAdapter extends RecyclerView.Adapter<ExercizeAdapter.MainVi
     private String notes;
     private int exercizeCnt;
 
-    public ExercizeAdapter(Rutin rutin) { // 일단 테스트
+    public ExercizeAdapter(Activity activity, Rutin rutin) { // 일단 테스트
+        this.activity = activity;
         this.title = rutin.getTitle();
         this.exercizeArea = rutin.getExerciseArea();
         this.exercizes = new ArrayList<Exercize>(rutin.getExercizes());
@@ -87,7 +90,13 @@ public class ExercizeAdapter extends RecyclerView.Adapter<ExercizeAdapter.MainVi
                 if (setPosition < exercizes.get(position).getExercizeSetCount()) {
                     mainViewHolder.exercizeSet.add(exercizes.get(position).getExercizeSet().get(setPosition));
                     recordExercizes.get(position).setExercizeSet(mainViewHolder.exercizeSet);
+
+                    if (setPosition == 0)
+                        recordExercizes.get(position).setStartTime(Long.toString(System.currentTimeMillis()));
+                    else if (setPosition == exercizes.get(position).getExercizeSetCount()-1)
+                        recordExercizes.get(position).setEndTime(Long.toString(System.currentTimeMillis()));
                 }
+
                 setString(mainViewHolder);
 
                 mainViewHolder.SetBar.setProgress(mainViewHolder.exercizeSet.size());   // 현재 세트 수 (프로그레스바)

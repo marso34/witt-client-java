@@ -3,10 +3,13 @@ package com.example.healthappttt;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.NotificationCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.wifi.aware.DiscoverySession;
@@ -42,6 +45,7 @@ public class ExercizeRecordActivity extends AppCompatActivity {
     private Boolean TimerRunning = false;
 
     private int timer;
+    private int _timer;
 
     private long _startTime; // 진짜 시작 시간
     private long startTime;  // 운동시작 계산 위한 시작 시간
@@ -54,7 +58,6 @@ public class ExercizeRecordActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     RecyclerView.Adapter adapter;
     RecyclerView.LayoutManager layoutManager;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,7 +108,7 @@ public class ExercizeRecordActivity extends AppCompatActivity {
 
         Rutin rutin = new Rutin("기본 루틴", "전신", exercizes); // 여기까지 클래스 테스트
 
-        adapter = new ExercizeAdapter(rutin);
+        adapter = new ExercizeAdapter(this, rutin);
         recyclerView.setAdapter(adapter);
 
         StartBtn.setOnClickListener(new View.OnClickListener() {
@@ -158,12 +161,14 @@ public class ExercizeRecordActivity extends AppCompatActivity {
                         TimerRunning = false;
                         startTime = 0;
                         pauseTime = 0;
-                        timer = 0;  // 스톱버튼 누를 시 전부 초기화
+                        timer = 0;
+                        _timer = 0;// 스톱버튼 누를 시 전부 초기화
                         // runTime -> 운동시간은 기록해야 하니 제외
 
                         timerTask.cancel();
 
                         Intent intent = new Intent(getApplicationContext(), ExercizeResultActivity.class);
+                        intent.putExtra("record", new Rutin("sss", "ss"));
                         startActivity(intent);
                         finish();
                     }
@@ -184,6 +189,9 @@ public class ExercizeRecordActivity extends AppCompatActivity {
         TimerStBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (_timer == 0)
+                    _timer = timer;
+
                 if (timer != 0)
                     TimerRunning = !TimerRunning;
 
@@ -201,6 +209,7 @@ public class ExercizeRecordActivity extends AppCompatActivity {
                 TimerRunning = false;
                 TimerStBtn.setText("시작");
                 timer = 0;
+                _timer = 0;
             }
         });
 
@@ -270,6 +279,8 @@ public class ExercizeRecordActivity extends AppCompatActivity {
             if (timer == 0) {
                 TimerRunning = false;
                 TimerStBtn.setText("시작");
+                timer = _timer;
+                _timer = 0;
             }
 
             xrunTime = runTime; // 이전 운동 시간을 기록
