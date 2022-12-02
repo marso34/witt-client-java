@@ -1,4 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+
+    tools:context=".MainActivity">
+
+
+
+    <TextView
+
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:text="운동시작"
+        android:textSize="30sp"
+        android:textColor="#1d3"
+
+        />
+    <Button
+        android:id="@+id/AddEx"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:paddingLeft="6dp"
+        android:paddingRight="6dp"
+        android:textSize="15dp"
+
+        android:textColor="@color/black"
+        android:text="+오늘의 운동 추가하기"
+        >
+    </Button>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:text="루틴 빠른 시작"
+        android:layout_marginLeft="20dp"
+        android:textColor="@color/black"
+        android:textSize="15dp"/>
+
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -16,9 +58,4 @@
         android:layout_height="wrap_content"
         android:text="00:00:00" />
 
-    <Button
-        android:id="@+id/startBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="운동시작" />
 </LinearLayout>
