@@ -5,10 +5,7 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-
     tools:context=".MainActivity">
-
-
 
     <TextView
 
@@ -41,21 +38,16 @@
         android:textColor="@color/black"
         android:textSize="15dp"/>
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    app:layout_constraintTop_toTopOf="parent"
-    android:gravity="center"
-    tools:context=".MainActivity" >
-
-    <TextView
-        android:id="@+id/stopWatchView"
+    <Button
+        android:id="@+id/startBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="33dp"
+        android:text="운동시작" />
+    <Button
+        android:id="@+id/routine"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="00:00:00" />
+        android:text="루틴관련" />
+
 
 </LinearLayout>
