@@ -35,7 +35,20 @@ public class MainActivity extends AppCompatActivity {
                 AddExercise();
             }
         });
+
+        //화면전환 버튼
+        Button btn_main;
+        btn_main = findViewById(R.id.calender);
+
+        btn_main.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myStartActivity(CalenderActivity.class);
+            }
+        });
+    //화면전환 함수
     }
+    
 
     private void AddExercise() {
         myStartActivity(CreateRoutineActivity.class);
@@ -43,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void myStartActivity(Class c) {// loginactivity페이지에서 mainactivity페이지로 넘기는 코드
         Intent intent = new Intent(this, c);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
 }
