@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    tools:context=".CreateExercizeActivity"
+    >
+
+    <LinearLayout
+        android:layout_gravity="right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="horizontal"
+        >
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#00ff0000"
+            android:text="루틴 불러오기"
+            android:textColor="#50BCDF"
+            />
+        <Button
+            android:background="#00ff0000"
+            android:textColor="#50BCDF"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="루틴 결합하기"
+            />
+    </LinearLayout>
+    <TextView
+        android:layout_marginTop="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="어떤 운동을 하실거에요?"
+        android:textColor="@color/black"
+        android:textSize="23dp"
+        />
+    <EditText
+        android:layout_marginTop="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="운동 이름 ex)벤치프레스"
+        android:textSize="20dp"
+        />
+    <TextView
+        android:layout_marginTop="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="세트 수와 개수, 무개를 알려주세요"
+        android:textSize="23dp"
+        android:textColor="@color/black"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp"
+        android:gravity="center"
+        >
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp"
+        android:gravity="center"
+        >
+
+        <Button
+            android:background="@drawable/bg_gis_result_items_count"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:text="무게, 개수"
+            android:id="@+id/exercisePart0"
+            android:layout_marginRight="10dp"
+            android:textColor="#808080"
+
+            />
+        <Button
+            android:background="@drawable/bg_gis_result_items_count"
+            android:id="@+id/exercisePart1"
+            android:layout_marginRight="5dp"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:text="개수만"
+            android:textColor="#808080"
+            />
+        <Button
+            android:background="@drawable/bg_gis_result_items_count"
+            android:id="@+id/exercisePart2"
+            android:layout_marginLeft="5dp"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:text="시간"
+            android:textColor="#808080"
+            />
+
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

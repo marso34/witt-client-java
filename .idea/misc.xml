@@ -3,6 +3,15 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/drawable/bg_gis_result_items_count.xml" value="0.1" />
+        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/drawable/border_layout.xml" value="0.2335" />
+        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_create_exercize.xml" value="0.24947916666666667" />
+        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_create_routine.xml" value="0.24728260869565216" />
+        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_exercize_record.xml" value="0.24947916666666667" />
+        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_exercize_result.xml" value="0.24947916666666667" />
+        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/adapter_exercize.xml" value="0.264" />
+        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/menu/menu.xml" value="0.1" />
         <entry key="..\:/Users/Thought/{mine}/code/Android Studio/HealthAppTTT/app/src/main/res/drawable/blue_border_laout.xml" value="0.139" />
         <entry key="..\:/Users/Thought/{mine}/code/Android Studio/HealthAppTTT/app/src/main/res/drawable/blue_border_layout.xml" value="0.1" />
         <entry key="..\:/Users/Thought/{mine}/code/Android Studio/HealthAppTTT/app/src/main/res/drawable/border_layout.xml" value="0.1125" />
