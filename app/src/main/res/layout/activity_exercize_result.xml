@@ -1,46 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ExercizeResultActivity">
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:context=".ExercizeResultActivity" >
 
-  <LinearLayout
-      android:layout_width="match_parent"
+  <TextView
+      android:id="@+id/View"
+      android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:orientation="vertical"
-      app:layout_constraintTop_toTopOf="parent" >
+      android:text="운동 종료" />
 
-    <TextView
-        android:id="@+id/View"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="운동 종료" />
+  <TextView
+      android:id="@+id/name"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="운동 이름" />
 
-    <TextView
-        android:id="@+id/name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="운동 이름" />
+  <TextView
+      android:id="@+id/area"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="운동 부위" />
 
-    <TextView
-        android:id="@+id/area"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="운동 부위" />
-
-    <TextView
-        android:id="@+id/text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="메모한 결과" />
-
-
-
-  </LinearLayout>
-
-
-
-  </androidx.constraintlayout.widget.ConstraintLayout>
+  <TextView
+      android:id="@+id/text"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="메모한 결과" />
+</LinearLayout>

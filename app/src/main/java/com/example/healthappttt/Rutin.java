@@ -6,12 +6,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Rutin implements Serializable {
+public class Rutin implements Serializable { // routine 으로 수정
     private String title;
     private String startTime;
     private String endTime;
     private String runTime;
-    private String exerciseArea;
+    private String exerciseArea; // exercizeCategories 수정
     private String notes;
 
     private ArrayList<Exercize> exercizes;

@@ -18,14 +18,14 @@ public class Exercize implements Serializable {
         this.title = title;
         this.state = state;
         this.color = "기본색"; // 기본색
-        this.exercizeSet = new ArrayList<Set>(exercizeSet);
+        this.exercizeSet = new ArrayList<>(exercizeSet);
     }
 
     public Exercize(String title, String state, String color, ArrayList<Set> exercizeSet) {
         this.title = title;
         this.state = state;
         this.color = color;
-        this.exercizeSet = new ArrayList<Set>(exercizeSet);
+        this.exercizeSet = new ArrayList<>(exercizeSet);
     }
 
     public Exercize(Exercize e) {
@@ -35,7 +35,7 @@ public class Exercize implements Serializable {
         this.startTime = e.startTime;
         this.endTime = e.endTime;
 
-        this.exercizeSet = new ArrayList<Set>(e.exercizeSet);
+        this.exercizeSet = new ArrayList<>(e.exercizeSet);
     }
 
     public Map<String, Object> getExercize() {
@@ -65,6 +65,6 @@ public class Exercize implements Serializable {
     public String getEndTime() { return this.endTime; }
     public void setEndTime(String endTime) { this.endTime = endTime; }
     public ArrayList<Set> getExercizeSet() { return this.exercizeSet; }
-    public void setExercizeSet(ArrayList<Set> exercizeSet) { this.exercizeSet = new ArrayList<Set>(exercizeSet); }
+    public void setExercizeSet(ArrayList<Set> exercizeSet) { this.exercizeSet = new ArrayList<>(exercizeSet); }
     public int getExercizeSetCount() { return exercizeSet.size(); }
 }

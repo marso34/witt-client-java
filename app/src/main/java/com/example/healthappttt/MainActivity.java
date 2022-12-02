@@ -1,45 +1,38 @@
 package com.example.healthappttt;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.net.wifi.aware.DiscoverySession;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-import java.util.Timer;
-import java.util.TimerTask;
+import androidx.appcompat.app.ActionBar;
 
 public class MainActivity extends AppCompatActivity {
 
     private Button StartBtn;
+    private Button Routine;
 
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+//        ActionBar bar = getSupportActionBar();
+//        bar.hide();
 
         StartBtn = (Button) findViewById(R.id.startBtn); // 시작 버튼
 
         StartBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Intent intent = new Intent(getApplicationContext(), ExercizeRecordActivity.class);
-                //startActivity(intent);
                 myStartActivity(ExercizeRecordActivity.class);
+            }
+        });
+
+        Routine = (Button) findViewById(R.id.AddEx);
+
+        Routine.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                AddExercise();
             }
         });
 
@@ -54,11 +47,18 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     //화면전환 함수
-
     }
-    private void myStartActivity(Class c) {
+    
+
+    private void AddExercise() {
+        myStartActivity(CreateRoutineActivity.class);
+    }
+
+    private void myStartActivity(Class c) {// loginactivity페이지에서 mainactivity페이지로 넘기는 코드
         Intent intent = new Intent(this, c);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
 }
+
+

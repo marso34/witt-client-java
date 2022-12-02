@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 public class ExercizeResultActivity extends AppCompatActivity {
-
     private TextView name;
     private TextView area;
     private TextView text;
