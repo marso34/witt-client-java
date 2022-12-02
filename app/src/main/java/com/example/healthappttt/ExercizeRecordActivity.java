@@ -18,19 +18,13 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class ExercizeRecordActivity extends AppCompatActivity {
-
     private Timer TimerCall;
     TimerTask timerTask;
 
@@ -93,13 +87,13 @@ public class ExercizeRecordActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        ArrayList<Set> set1 = new ArrayList<Set>(); // 여기부터
+        ArrayList<Set> set1 = new ArrayList<>(); // 여기부터
         set1.add(new Set("10", "10", ""));
         set1.add(new Set("20", "7", ""));
         set1.add(new Set("30", "3", ""));
         set1.add(new Set("50", "20", ""));
 
-        ArrayList<Exercize> exercizes = new ArrayList<Exercize>();
+        ArrayList<Exercize> exercizes = new ArrayList<>();
         exercizes.add(new Exercize("팔굽혀펴기", "기본", set1));
         exercizes.add(new Exercize("스쿼트", "기본", set1));
         exercizes.add(new Exercize("턱걸이", "기본", set1));

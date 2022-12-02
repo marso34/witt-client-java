@@ -32,13 +32,13 @@ public class ExercizeAdapter extends RecyclerView.Adapter<ExercizeAdapter.MainVi
         this.activity = activity;
         this.title = rutin.getTitle();
         this.exercizeArea = rutin.getExerciseArea();
-        this.exercizes = new ArrayList<Exercize>(rutin.getExercizes());
+        this.exercizes = new ArrayList<>(rutin.getExercizes());
         this.exercizeCnt = rutin.getExerciezeCount();
 
-        this.recordExercizes = new ArrayList<Exercize>();
+        this.recordExercizes = new ArrayList<>();
 
         for (int i = 0; i < exercizeCnt; i++) {
-            recordExercizes.add(new Exercize(exercizes.get(i).getTitle(), exercizes.get(i).getState(), new ArrayList<Set>()));
+            recordExercizes.add(new Exercize(exercizes.get(i).getTitle(), exercizes.get(i).getState(), new ArrayList<>()));
         }
     }
 
@@ -71,7 +71,7 @@ public class ExercizeAdapter extends RecyclerView.Adapter<ExercizeAdapter.MainVi
 
             this.Notes = (EditText) view.findViewById(R.id.exerciseNote);
 
-            this.exercizeSet = new ArrayList<Set>();
+            this.exercizeSet = new ArrayList<>();
         }
     }
 

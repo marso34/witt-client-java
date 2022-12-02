@@ -71,6 +71,7 @@
         android:id="@+id/notesLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:visibility="gone"
         android:background="#ffffff" >
 
         <EditText
@@ -79,7 +80,6 @@
             android:layout_height="100dp"
             android:layout_margin="5dp"
             android:hint="운동 기록을 메모하세요." />
-
     </LinearLayout>
     
 </androidx.cardview.widget.CardView>
