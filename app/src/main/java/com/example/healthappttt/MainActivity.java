@@ -37,9 +37,28 @@ public class MainActivity extends AppCompatActivity {
         StartBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), ExercizeRecordActivity.class);
-                startActivity(intent);
+                //Intent intent = new Intent(getApplicationContext(), ExercizeRecordActivity.class);
+                //startActivity(intent);
+                myStartActivity(ExercizeRecordActivity.class);
             }
         });
+
+        //화면전환 버튼
+        Button btn_main;
+        btn_main = findViewById(R.id.calender);
+
+        btn_main.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myStartActivity(CalenderActivity.class);
+            }
+        });
+    //화면전환 함수
+
+    }
+    private void myStartActivity(Class c) {
+        Intent intent = new Intent(this, c);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
     }
 }
