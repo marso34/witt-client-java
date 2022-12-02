@@ -26,7 +26,9 @@ public class MainActivity extends AppCompatActivity {
                 myStartActivity(ExercizeRecordActivity.class);
             }
         });
+
         Routine = (Button) findViewById(R.id.AddEx);
+
         Routine.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
