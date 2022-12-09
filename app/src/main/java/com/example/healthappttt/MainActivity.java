@@ -8,9 +8,8 @@ import android.widget.Button;
 import androidx.appcompat.app.ActionBar;
 
 public class MainActivity extends AppCompatActivity {
-
     private Button StartBtn;
-    private Button Routine;
+    private Button RoutineBtn;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,9 +26,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Routine = (Button) findViewById(R.id.AddEx);
+        RoutineBtn = (Button) findViewById(R.id.AddEx);
 
-        Routine.setOnClickListener(new View.OnClickListener() {
+        RoutineBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
                 AddExercise();
@@ -48,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
         });
     //화면전환 함수
     }
-    
 
     private void AddExercise() {
         myStartActivity(CreateRoutineActivity.class);
