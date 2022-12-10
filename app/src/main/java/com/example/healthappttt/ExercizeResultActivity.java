@@ -7,11 +7,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class ExercizeResultActivity extends AppCompatActivity {
+    private TextView title;
+    private TextView runtime;
+    private TextView totalWeight;
     private TextView name;
     private TextView categories;
-    private TextView ttttt;
 
+    private TextView ttttt;
     private TextView text;
     private Routine record;
 
@@ -23,30 +29,43 @@ public class ExercizeResultActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         record = (Routine) intent.getSerializableExtra("record");
+        title = (TextView) findViewById(R.id.title);
+        runtime = (TextView) findViewById(R.id.runTime);
+        totalWeight = (TextView) findViewById(R.id.totalWeight);
         name = (TextView) findViewById(R.id.name);
         categories = (TextView) findViewById(R.id.exercizeCategories);
+
         text = (TextView) findViewById(R.id.text);
         ttttt = (TextView) findViewById(R.id.ttttt);
 
+
+        title.setText(DateConversion(record.getStartTime(), 1));
+        runtime.setText(DateConversion(record.getStartTime(), 0) + " ~ " + DateConversion(record.getEndTime(), 0));
         name.setText(record.getTitle());
         categories.setText(record.getExercizeCategories());
         text.setText("\n운동 메모 :\n" + record.getNotes() + "\n");
 
-
+        int sum = 0;
 
         String result = "";
         
         for (Exercize i : record.getExercizes()) { // 데이터 전달 여부 확인
             result += i.getTitle() + "\n";
 
-            for (Set s : i.getExercizeSet())
+            int cnt = 0;
+            for (Set s : i.getExercizeSet()) {
                 result += s.getWeight() + "Kg X " + s.getCount() + "개" + "\n";
+                sum += Integer.parseInt(s.getWeight());
+                cnt++;
+            }
 
-            result += "시작시간 = " + i.getStartTime() + ", 종료시간 = " + i.getEndTime() + "\n";
+            if (cnt != 0)
+                result += "시작시간 = " + DateConversion(i.getStartTime(), 0) + ", 종료시간 = " + DateConversion(i.getEndTime(), 0) + "\n";
         }
 
-        result += "\n루틴 시작 시간 : "  + record.getStartTime() + " 루틴 종료 시간 : " + record.getEndTime() + " runtime: " + time(record.getRunTime());
+        result += "\n runtime: " + time(record.getRunTime());
 
+        totalWeight.setText(Integer.toString(sum) + "Kg");
         ttttt.setText(result);
     }
 
@@ -60,5 +79,18 @@ public class ExercizeResultActivity extends AppCompatActivity {
         @SuppressLint("DefaultLocale") String result = String.format("%02d:%02d:%02d", hour, min, sec);
 
         return result;
+    }
+
+    private String DateConversion(String t, int i) {
+        Date date = new Date(Long.parseLong(t));
+        SimpleDateFormat dateFormat;
+        dateFormat = new SimpleDateFormat("aa h:mm:ss");
+
+        if (i != 0)
+            dateFormat = new SimpleDateFormat("M월 d일 운동");
+
+        String d = dateFormat.format(date);
+
+        return d;
     }
 }
