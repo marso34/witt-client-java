@@ -1,4 +1,4 @@
-package com.example.healthappttt;
+package com.example.healthappttt.Activity;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,6 +15,12 @@ import android.os.Message;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.example.healthappttt.Data.Exercize;
+import com.example.healthappttt.adapter.ExercizeAdapter;
+import com.example.healthappttt.R;
+import com.example.healthappttt.Data.Rutin;
+import com.example.healthappttt.Data.Set;
 
 import java.util.ArrayList;
 import java.util.Timer;

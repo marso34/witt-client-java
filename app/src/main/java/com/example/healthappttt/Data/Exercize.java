@@ -1,4 +1,4 @@
-package com.example.healthappttt;
+package com.example.healthappttt.Data;
 
 import java.io.Serializable;
 import java.util.ArrayList;

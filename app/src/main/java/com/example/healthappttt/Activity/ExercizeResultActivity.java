@@ -1,4 +1,4 @@
-package com.example.healthappttt;
+package com.example.healthappttt.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import com.example.healthappttt.R;
+// import com.example.healthappttt.Data.Rutin;
 
 public class ExercizeResultActivity extends AppCompatActivity {
     private TextView title;

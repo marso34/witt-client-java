@@ -4,13 +4,13 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    tools:context=".CreateRoutineActivity"
+    tools:context=".Activity.CreateRoutineActivity"
     >
 
     <LinearLayout
         android:layout_gravity="right"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="45dp"
         xmlns:tools="http://schemas.android.com/tools"
         android:orientation="horizontal"
         >
@@ -38,6 +38,7 @@
         android:textSize="30dp"
         />
     <EditText
+        android:background="@drawable/round_button_white"
         android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -47,14 +48,13 @@
     <TextView
         android:layout_marginTop="20dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:text="운동 부위"
         android:textSize="30dp"
         />
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_height="45dp"
         android:orientation="horizontal"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="10dp"
@@ -62,39 +62,42 @@
         >
 
         <Button
-            android:background="@drawable/bg_gis_result_items_count"
-            android:layout_width="75dp"
-            android:layout_height="wrap_content"
-            android:text="가슴"
             android:id="@+id/exercisePart0"
+            android:layout_width="75dp"
+            android:layout_height="40dp"
+
             android:layout_marginRight="10dp"
+            android:background="@drawable/round_button_white"
+
+            android:text="가슴"
             android:textColor="#808080"
 
             />
+
         <Button
-            android:background="@drawable/bg_gis_result_items_count"
+            android:background="@drawable/round_button_white"
             android:id="@+id/exercisePart1"
             android:layout_marginRight="5dp"
             android:layout_width="75dp"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:text="어깨"
             android:textColor="#808080"
             />
         <Button
-            android:background="@drawable/bg_gis_result_items_count"
+            android:background="@drawable/round_button_white"
             android:id="@+id/exercisePart2"
             android:layout_marginLeft="5dp"
             android:layout_width="75dp"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:text="등"
             android:textColor="#808080"
             />
         <Button
-            android:background="@drawable/bg_gis_result_items_count"
+            android:background="@drawable/round_button_white"
             android:id="@+id/exercisePart3"
             android:layout_marginLeft="10dp"
             android:layout_width="75dp"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:text="복근"
             android:textColor="#808080"
             />
@@ -102,65 +105,66 @@
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="45dp"
         android:orientation="horizontal"
         android:layout_marginBottom="10dp"
         android:gravity="center"
         >
 
         <Button
+            android:background="@drawable/round_button_white"
             android:id="@+id/exercisePart4"
             android:layout_width="75dp"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_marginRight="10dp"
-            android:background="@drawable/bg_gis_result_items_count"
             android:text="팔"
             android:textColor="#808080" />
 
         <Button
-            android:background="@drawable/bg_gis_result_items_count"
+            android:background="@drawable/round_button_white"
             android:id="@+id/exercisePart5"
             android:layout_marginRight="5dp"
             android:layout_width="75dp"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:text="하체"
             android:textColor="#808080"
             />
         <Button
-            android:background="@drawable/bg_gis_result_items_count"
+            android:background="@drawable/round_button_white"
             android:id="@+id/exercisePart6"
             android:layout_marginLeft="5dp"
             android:layout_width="75dp"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:text="엉덩이"
             android:textColor="#808080"
             />
         <Button
-            android:background="@drawable/bg_gis_result_items_count"
+            android:background="@drawable/round_button_white"
             android:id="@+id/exercisePart7"
             android:layout_marginLeft="10dp"
             android:layout_width="75dp"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:text="팔"
             android:textColor="#808080"
             />
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="45dp"
         xmlns:tools="http://schemas.android.com/tools"
         android:orientation="horizontal"
         android:gravity="center"
         >
 
         <Button
-            android:background="@drawable/bg_gis_result_items_count"
+            android:background="@drawable/round_button_white"
             android:id="@+id/exercisePart8"
             android:layout_width="75dp"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:text="유산소"
             android:layout_marginRight="255dp"
             android:textColor="#808080"
+
 
             />
 

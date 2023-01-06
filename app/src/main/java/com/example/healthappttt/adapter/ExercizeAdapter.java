@@ -1,4 +1,4 @@
-package com.example.healthappttt;
+package com.example.healthappttt.adapter;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -15,8 +15,12 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.healthappttt.Data.Exercize;
+import com.example.healthappttt.R;
+import com.example.healthappttt.Data.Rutin;
+import com.example.healthappttt.Data.Set;
+
 import java.util.ArrayList;
-import java.util.Map;
 
 public class ExercizeAdapter extends RecyclerView.Adapter<ExercizeAdapter.MainViewHolder>  {
     private Activity activity;

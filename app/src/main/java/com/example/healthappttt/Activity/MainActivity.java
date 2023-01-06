@@ -1,11 +1,15 @@
-package com.example.healthappttt;
+package com.example.healthappttt.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import androidx.appcompat.app.ActionBar;
+
+import com.example.healthappttt.Activity.CalenderActivity;
+import com.example.healthappttt.Activity.CreateRoutineActivity;
+import com.example.healthappttt.Activity.ExercizeRecordActivity;
+import com.example.healthappttt.R;
 
 public class MainActivity extends AppCompatActivity {
     private Button StartBtn;
