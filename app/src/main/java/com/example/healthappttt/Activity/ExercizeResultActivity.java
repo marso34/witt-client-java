@@ -1,10 +1,13 @@
-package com.example.healthappttt;
+package com.example.healthappttt.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
+
+import com.example.healthappttt.R;
+import com.example.healthappttt.Data.Rutin;
 
 public class ExercizeResultActivity extends AppCompatActivity {
     private TextView name;

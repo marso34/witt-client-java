@@ -1,4 +1,4 @@
-package com.example.healthappttt;
+package com.example.healthappttt.Activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.healthappttt.R;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
