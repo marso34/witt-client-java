@@ -14,6 +14,7 @@ import com.example.healthappttt.R;
 public class MainActivity extends AppCompatActivity {
     private Button StartBtn;
     private Button RoutineBtn;
+    private Button btn_main;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //화면전환 버튼
-        Button btn_main;
         btn_main = findViewById(R.id.calender);
 
         btn_main.setOnClickListener(new View.OnClickListener() {

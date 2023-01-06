@@ -46,11 +46,19 @@
             android:name=".Activity.CreateRoutineActivity"
             android:exported="false" />
         <activity
+            android:name=".Activity.ExercizeRecordActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activity.ExercizeResultActivity"
             android:exported="false" />
         <activity
             android:name=".Activity.MainActivity"
-            android:exported="false"/>
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
     </application>
 
 
