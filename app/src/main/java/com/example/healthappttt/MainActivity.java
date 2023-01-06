@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void myStartActivity(Class c) {// loginactivity페이지에서 mainactivity페이지로 넘기는 코드
         Intent intent = new Intent(this, c);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
 }
