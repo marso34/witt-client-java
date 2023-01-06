@@ -28,12 +28,14 @@ public class ExercizeAdapter extends RecyclerView.Adapter<ExercizeAdapter.MainVi
     private String notes;
     private int exercizeCnt;
 
-    public ExercizeAdapter(Activity activity, Rutin rutin) { // 일단 테스트
+    private OnExercizeClick onExercizeClick;
+
+    public ExercizeAdapter(Activity activity, Routine routine) { // 일단 테스트
         this.activity = activity;
-        this.title = rutin.getTitle();
-        this.exercizeArea = rutin.getExerciseArea();
-        this.exercizes = new ArrayList<>(rutin.getExercizes());
-        this.exercizeCnt = rutin.getExerciezeCount();
+        this.title = routine.getTitle();
+        this.exercizeArea = routine.getExercizeCategories();
+        this.exercizes = new ArrayList<>(routine.getExercizes());
+        this.exercizeCnt = routine.getExerciezeCount();
 
         this.recordExercizes = new ArrayList<>();
 
@@ -91,10 +93,11 @@ public class ExercizeAdapter extends RecyclerView.Adapter<ExercizeAdapter.MainVi
                     mainViewHolder.exercizeSet.add(exercizes.get(position).getExercizeSet().get(setPosition));
                     recordExercizes.get(position).setExercizeSet(mainViewHolder.exercizeSet);
 
-                    if (setPosition == 0)
+                    if (setPosition == 0) // 처음 눌렀을 때는 1세트가 완료됐을 때라 첫 세트의 운동 시간을 알 수 없음. 1세트만 운동했을 때도 문제. 나중에 고민할 것
                         recordExercizes.get(position).setStartTime(Long.toString(System.currentTimeMillis()));
-                    else if (setPosition == exercizes.get(position).getExercizeSetCount()-1)
-                        recordExercizes.get(position).setEndTime(Long.toString(System.currentTimeMillis()));
+
+                    recordExercizes.get(position).setEndTime(Long.toString(System.currentTimeMillis()));
+                    onExercizeClick.onExercizeClick(recordExercizes, notes);
                 }
 
                 setString(mainViewHolder);
@@ -113,12 +116,13 @@ public class ExercizeAdapter extends RecyclerView.Adapter<ExercizeAdapter.MainVi
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 //                mainViewHolder.NotesLayout.setBackgroundResource(R.drawable.blue_border_layout);
+                notes = mainViewHolder.Notes.getText().toString();
+                onExercizeClick.onExercizeClick(recordExercizes, notes);
             }
 
             @Override
             public void afterTextChanged(Editable arg0) {
 //                mainViewHolder.NotesLayout.setBackgroundResource(R.drawable.border_layout);
-                notes = mainViewHolder.Notes.getText().toString();
             }
         } );
 
@@ -151,7 +155,7 @@ public class ExercizeAdapter extends RecyclerView.Adapter<ExercizeAdapter.MainVi
 
     @Override
     public int getItemCount() {
-        return (exercizeCnt+2); // 나중에 +2로
+        return (exercizeCnt+2);
     }
 
     private void setString(@NonNull MainViewHolder holder) {
@@ -171,10 +175,11 @@ public class ExercizeAdapter extends RecyclerView.Adapter<ExercizeAdapter.MainVi
         }
     }
 
-    public Rutin getRecord() {
-        Rutin record = new Rutin(title, exercizeArea, recordExercizes);
-        record.setNotes(notes);
+    public void setOnExercizeClickListener(OnExercizeClick onExercizeClickListener) {
+        this.onExercizeClick = onExercizeClickListener;
+    }
 
-        return record;
+    public interface OnExercizeClick { // 운동 클릭했을 때, 엑티비티에 값 전달을 위한 인터페이스
+        void onExercizeClick(ArrayList<Exercize> exercizes, String notes);
     }
 }

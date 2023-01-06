@@ -17,4 +17,10 @@
 <!--        <item name="android:windowFullscreen">true</item>-->
 
     </style>
+    <style name="Theme.HealthAppTTT.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="Theme.HealthAppTTT.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="Theme.HealthAppTTT.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

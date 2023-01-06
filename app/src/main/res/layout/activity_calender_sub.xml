@@ -58,7 +58,7 @@
         android:layout_marginStart="30dp"
         android:layout_marginTop="60dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"></ImageView>
+        app:layout_constraintTop_toTopOf="parent"> </ImageView>
 
     <TextView
         android:layout_width="0dp"
