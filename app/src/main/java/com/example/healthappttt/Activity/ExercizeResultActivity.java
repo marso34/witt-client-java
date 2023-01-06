@@ -10,7 +10,9 @@ import android.widget.TextView;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import com.example.healthappttt.R;
-// import com.example.healthappttt.Data.Rutin;
+import com.example.healthappttt.Data.Routine;
+import com.example.healthappttt.Data.Exercize;
+import com.example.healthappttt.Data.Set;
 
 public class ExercizeResultActivity extends AppCompatActivity {
     private TextView title;

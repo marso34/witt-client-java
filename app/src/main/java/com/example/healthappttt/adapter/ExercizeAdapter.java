@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 import com.example.healthappttt.Data.Exercize;
 import com.example.healthappttt.R;
-import com.example.healthappttt.Data.Rutin;
+import com.example.healthappttt.Data.Routine;
 import com.example.healthappttt.Data.Set;
 
 import java.util.ArrayList;
