@@ -1,4 +1,6 @@
-# Health matching app
+# Witt - With Training
+
+Health matching app
 
 헬스인들을 위한 운동 파트너 매칭 앱
 
