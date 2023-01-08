@@ -22,6 +22,9 @@ public class MainActivity extends AppCompatActivity {
 //        bar.hide();
 
         StartBtn = (Button) findViewById(R.id.startBtn); // 시작 버튼
+        RoutineBtn = (Button) findViewById(R.id.AddEx);
+        btn_main = findViewById(R.id.calender);
+        signupBtn = findViewById(R.id.signup);
 
         StartBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -30,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        RoutineBtn = (Button) findViewById(R.id.AddEx);
+
 
         RoutineBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -40,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //화면전환 버튼
-        btn_main = findViewById(R.id.calender);
+
 
         btn_main.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        signupBtn = findViewById(R.id.signup);
+
 
         signupBtn.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -1,5 +1,5 @@
-
 package com.example.healthappttt.Activity;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -36,10 +36,9 @@ public class signupActivity extends AppCompatActivity
     private PreferenceHelper preferenceHelper;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_signup);
 
         preferenceHelper = new PreferenceHelper(this);
 
@@ -96,6 +95,7 @@ public class signupActivity extends AppCompatActivity
                     Log.e("onSuccess", response.body());
 
                     String jsonResponse = response.body();
+
                     try
                     {
                         parseRegData(jsonResponse);
