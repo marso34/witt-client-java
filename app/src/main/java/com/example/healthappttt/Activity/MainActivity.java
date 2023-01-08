@@ -1,20 +1,19 @@
 package com.example.healthappttt.Activity;
 
-import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import com.example.healthappttt.Activity.CalenderActivity;
-import com.example.healthappttt.Activity.CreateRoutineActivity;
-import com.example.healthappttt.Activity.ExercizeRecordActivity;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.healthappttt.R;
 
 public class MainActivity extends AppCompatActivity {
     private Button StartBtn;
     private Button RoutineBtn;
     private Button btn_main;
+    private Button signupBtn;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +48,15 @@ public class MainActivity extends AppCompatActivity {
                 myStartActivity(CalenderActivity.class);
             }
         });
+
+        signupBtn = findViewById(R.id.signup);
+
+        signupBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myStartActivity(signupActivity.class);
+            }
+        });
     //화면전환 함수
     }
 
@@ -62,5 +70,3 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 }
-
-
