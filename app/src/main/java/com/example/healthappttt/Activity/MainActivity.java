@@ -13,7 +13,7 @@ public class MainActivity extends AppCompatActivity {
     private Button StartBtn;
     private Button RoutineBtn;
     private Button btn_main;
-    private Button signupBtn;
+    private Button loginBtn;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,10 +21,10 @@ public class MainActivity extends AppCompatActivity {
 //        ActionBar bar = getSupportActionBar();
 //        bar.hide();
 
-        StartBtn = (Button) findViewById(R.id.startBtn); // 시작 버튼
+        StartBtn = (Button) findViewById(R.id.startBtn); // 운동 시작 버튼
         RoutineBtn = (Button) findViewById(R.id.AddEx);
         btn_main = findViewById(R.id.calender);
-        signupBtn = findViewById(R.id.signup);
+        loginBtn = findViewById(R.id.login);
 
         StartBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -32,8 +32,6 @@ public class MainActivity extends AppCompatActivity {
                 myStartActivity(ExercizeRecordActivity.class);
             }
         });
-
-
 
         RoutineBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,8 +41,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //화면전환 버튼
-
-
         btn_main.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -52,12 +48,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-
-        signupBtn.setOnClickListener(new View.OnClickListener() {
+        loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                myStartActivity(signupActivity.class);
+                myStartActivity(LoginActivity.class);
             }
         });
     //화면전환 함수

@@ -62,6 +62,9 @@ public class ExercizeRecordActivity extends AppCompatActivity {
 
         init();
 
+        // 현재 ui 일부 변경으로 주석과 차이가 있음..
+        
+        _startTime = 0;
         startTime = 0;
         pauseTime = 0;
         runTime = 0;
@@ -80,16 +83,22 @@ public class ExercizeRecordActivity extends AppCompatActivity {
         exercizes.add(new Exercize("턱걸이", "기본", set1));
         exercizes.add(new Exercize("딥스", "기본", set1));
         exercizes.add(new Exercize("런치", "기본", set1));
+        exercizes.add(new Exercize("런치", "기본", set1));
+        exercizes.add(new Exercize("런치", "기본", set1));
+        exercizes.add(new Exercize("런치", "기본", set1));
 
         Routine routine = new Routine("기본 루틴", "전신", exercizes); // 여기까지 클래스 테스트
 
-        setExercizeRecyclerView(routine);   // 운동 리사이클러 뷰 생성
+        setExercizeRecyclerView(routine);   // 운동 리사이클러 뷰 생성.
+
+        StartBtn.setVisibility(View.GONE);
         PauseBtn.setVisibility(View.GONE);  // 초기에 시작 버튼을 제외한
-        StopBtn.setVisibility(View.GONE);   // 일시정지, 종료 버튼 표시 안 함
+//        StopBtn.setVisibility(View.GONE);   // 일시정지, 종료 버튼 표시 안 함
         timerView.setVisibility(View.GONE); // 타이머는 운동중일 때만 표시
 
-        StartBtn.setOnClickListener(v -> _start(v));
-        PauseBtn.setOnClickListener(v -> _pause());
+        StopWatchTextView.setOnClickListener(v -> _start(v));
+//        StartBtn.setOnClickListener(v -> _start(v));
+//        PauseBtn.setOnClickListener(v -> _pause());
         StopBtn.setOnClickListener(v -> _stop());
 
         TimerStBtn.setOnClickListener(v -> _timerStart()); // 여기서부터는 타이머
@@ -128,7 +137,7 @@ public class ExercizeRecordActivity extends AppCompatActivity {
             adapter.setOnExercizeClickListener(new ExercizeAdapter.OnExercizeClick() { // 어댑터 데이터를 전송 받기 위한 인터페이스 콜백
                 @Override
                 public void onExercizeClick(ArrayList<Exercize> exercizes, String notes) { // 운동 기록과 운동 메모를 전달 받아
-                    recordExercizes = new ArrayList<>(); // 액티비티에 저장
+                    recordExercizes = new ArrayList<>(); // 액티비티(recordExercizes)에 저장
                     exercizeNotes = notes;
 
                     for (Exercize i : exercizes) {
@@ -150,35 +159,49 @@ public class ExercizeRecordActivity extends AppCompatActivity {
     } // 운동 기록을 토대로 루틴 객체를 만드는 함수
 
     private void _start(View v) {
-        v.setVisibility(View.GONE);
-        PauseBtn.setVisibility(View.VISIBLE);
-        StopBtn.setVisibility(View.VISIBLE);
-        timerView.setVisibility(View.VISIBLE);
+//        v.setVisibility(View.GONE);
+//        PauseBtn.setVisibility(View.VISIBLE);
+//        StopBtn.setVisibility(View.VISIBLE);
+//        timerView.setVisibility(View.VISIBLE);
 
-        _startTime = startTime = System.currentTimeMillis(); // 시작 버튼 누를 시 현재 시간 저장
-        isRunning = true;
+        if (_startTime == 0) {
+            _startTime = startTime = System.currentTimeMillis(); // 시작 버튼 누를 시 현재 시간 저장
+            isRunning = true;
 
-        TimerCall = new Timer();
-        timerTask = new TimerTask() {
-            @Override
-            public void run() {
-                someWork();
+            TimerCall = new Timer();
+            timerTask = new TimerTask() {
+                @Override
+                public void run() {
+                    someWork();
+                }
+            };
+            TimerCall.schedule(timerTask,0,10); // 0.01초
+        } else {
+            isRunning = !isRunning;
+
+            if (isRunning) {
+//            PauseBtn.setText("일시정지");
+                startTime += (System.currentTimeMillis() - pauseTime); // 다시 시작할 때 정지한 시간 만큼
+//            timerView.setVisibility(View.VISIBLE);                 // 운동 시간에서 제외
+            } else {
+//            PauseBtn.setText("재시작");
+                pauseTime = System.currentTimeMillis(); // 정지 버튼 누른 시간 -> 정지한 시간 기록용
+//            timerView.setVisibility(View.GONE);
             }
-        };
-        TimerCall.schedule(timerTask,0,10); // 0.01초
+        }
     } // 시작 버튼 눌렀을 때 동작
 
     private void _pause() {
         isRunning = !isRunning;
 
         if (isRunning) {
-            PauseBtn.setText("일시정지");
+//            PauseBtn.setText("일시정지");
             startTime += (System.currentTimeMillis() - pauseTime); // 다시 시작할 때 정지한 시간 만큼
-            timerView.setVisibility(View.VISIBLE);                 // 운동 시간에서 제외
+//            timerView.setVisibility(View.VISIBLE);                 // 운동 시간에서 제외
         } else {
-            PauseBtn.setText("재시작");
+//            PauseBtn.setText("재시작");
             pauseTime = System.currentTimeMillis(); // 정지 버튼 누른 시간 -> 정지한 시간 기록용
-            timerView.setVisibility(View.GONE);
+//            timerView.setVisibility(View.GONE);
         }
     } // 일시정지 버튼 눌렀을 때 동작
 

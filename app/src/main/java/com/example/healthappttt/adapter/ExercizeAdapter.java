@@ -51,6 +51,7 @@ public class ExercizeAdapter extends RecyclerView.Adapter<ExercizeAdapter.MainVi
     public static class MainViewHolder extends RecyclerView.ViewHolder {
         public LinearLayout ExercizeLayout;
         public LinearLayout NotesLayout;
+        public LinearLayout EndLayout;
 
         public TextView NameView;
         public TextView SetView;
@@ -69,6 +70,7 @@ public class ExercizeAdapter extends RecyclerView.Adapter<ExercizeAdapter.MainVi
 
             this.ExercizeLayout = (LinearLayout) view.findViewById(R.id.exerciseLayout);
             this.NotesLayout = (LinearLayout) view.findViewById(R.id.notesLayout);
+            this.EndLayout = (LinearLayout) view.findViewById(R.id.end);
 
             this.NameView = (TextView) view.findViewById(R.id.exerciseName);
             this.SetView = (TextView) view.findViewById(R.id.setCountNum);
@@ -151,7 +153,7 @@ public class ExercizeAdapter extends RecyclerView.Adapter<ExercizeAdapter.MainVi
             holder.NotesLayout.setVisibility(View.VISIBLE);
             holder.ExercizeLayout.setVisibility(View.GONE);
         }
-        else { // 여기는 나중에 광고
+        else { // 여기는 나중에 광고. 지금은 그냥 비운 상태
             holder.NotesLayout.setVisibility(View.GONE);
             holder.ExercizeLayout.setVisibility(View.GONE);
         }
@@ -174,12 +176,13 @@ public class ExercizeAdapter extends RecyclerView.Adapter<ExercizeAdapter.MainVi
             holder.SetViewTxt = String.format("Set %d", setPosition + 1);
             holder.DetailViewTxt = weight + "Kg X " + count + "개";
         } else {
+            holder.EndLayout.setVisibility(View.VISIBLE);
             holder.SetViewTxt = "완료";
             holder.DetailViewTxt = "";
         }
     }
 
-    public void setOnExercizeClickListener(OnExercizeClick onExercizeClickListener) {
+    public void setOnExercizeClickListener(OnExercizeClick onExercizeClickListener) { // 액티비티에서 콜백 메서드를 set
         this.onExercizeClick = onExercizeClickListener;
     }
 
