@@ -13,6 +13,7 @@ public class Routine implements Serializable { // routine 으로 수정
     private String exercizeCategories; // exercizeCategories 수정
     private String notes;
 
+
     private ArrayList<Exercize> exercizes;
 
     public Routine(String title, String exerciseArea) {

@@ -76,8 +76,14 @@
         android:layout_height="40dp"
         android:layout_marginTop="10dp"
         android:gravity="center"
-        android:text="이미 아이디가 있으시다면 여길 눌러 로그인하세요"
+        android:text="이미 아이디가 있다면 여길 눌러 로그인하세요"
         android:textColor="#fff"
         android:textSize="20sp" />
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone" />
 
 </LinearLayout>

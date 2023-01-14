@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +35,7 @@ public class LoginActivity extends AppCompatActivity
     private EditText etUname, etPass;
     private Button btnlogin;
     private TextView tvreg;
+    private ProgressBar mProgressView;
     private PreferenceHelper preferenceHelper;
 
     @Override
@@ -49,6 +51,8 @@ public class LoginActivity extends AppCompatActivity
 
         btnlogin = (Button) findViewById(R.id.btn);
         tvreg = (TextView) findViewById(R.id.tvreg);
+
+        mProgressView = (ProgressBar) findViewById(R.id.progress);
 
         tvreg.setOnClickListener(new View.OnClickListener()
         {
@@ -73,10 +77,34 @@ public class LoginActivity extends AppCompatActivity
 
     private void loginUser()
     {
-
         final String username = etUname.getText().toString().trim();
         final String password = etPass.getText().toString().trim();
 
+        boolean cancel = false;
+        View focusView = null;
+
+        if (password.isEmpty()) {
+            etPass.setError("비밀번호를 입력해주세요.");
+            focusView = etPass;
+            cancel = true;
+        }
+
+        if (username.isEmpty()) {
+            etUname.setError("이름을 입력해주세요.");
+            focusView = etUname;
+            cancel = true;
+        }
+
+        if (cancel) {
+            focusView.requestFocus();
+        } else {
+            Log.e(TAG, username + " " + password);
+//            showProgress(true);
+            startLogIn(username, password);
+        }
+    }
+
+    private void startLogIn(String username, String password) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(LoginInterface.LOGIN_URL)
                 .addConverterFactory(ScalarsConverterFactory.create())
@@ -92,9 +120,13 @@ public class LoginActivity extends AppCompatActivity
                 if (response.isSuccessful() && response.body() != null)
                 {
                     Log.e("onSuccess", response.body());
-
                     String jsonResponse = response.body();
-                    parseLoginData(jsonResponse);
+
+                    try {
+                        parseLoginData(jsonResponse);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
 
@@ -104,26 +136,21 @@ public class LoginActivity extends AppCompatActivity
                 Log.e(TAG, "에러 = " + t.getMessage());
             }
         });
-
     }
 
-    private void parseLoginData(String response)
-    {
-        try
-        {
-            JSONObject jsonObject = new JSONObject(response);
-            if (jsonObject.getString("status").equals("true"))
-            {
-                saveInfo(response);
+    private void parseLoginData(String response) throws JSONException {
+        JSONObject jsonObject = new JSONObject(response);
 
-                Toast.makeText(LoginActivity.this, "Login Successfully!", Toast.LENGTH_SHORT).show();
-            }
-        }
-        catch (JSONException e)
+        if (jsonObject.getString("status").equals("true"))
         {
-            e.printStackTrace();
+            saveInfo(response);
+            Toast.makeText(LoginActivity.this, "로그인 성공!", Toast.LENGTH_SHORT).show();
         }
-
+        else {
+            Toast.makeText(LoginActivity.this, jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
+        }
+//        showProgress(false);
+        finish();
     }
 
     private void saveInfo(String response)
@@ -147,6 +174,9 @@ public class LoginActivity extends AppCompatActivity
         {
             e.printStackTrace();
         }
+    }
+    private void showProgress(boolean show) {
+        mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
 }

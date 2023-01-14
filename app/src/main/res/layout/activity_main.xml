@@ -13,7 +13,7 @@
         android:layout_height="100dp"
         android:text="운동시작"
         android:textSize="30sp"
-        android:textColor="#1d3" />
+        android:textColor="#000" />
     <Button
         android:id="@+id/AddEx"
         android:layout_width="match_parent"
@@ -51,8 +51,8 @@
         android:layout_height="wrap_content"
         android:text="캘린더" />
     <Button
-        android:id="@+id/signup"
+        android:id="@+id/login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="회원가입" />
+        android:text="로그인" />
 </LinearLayout>

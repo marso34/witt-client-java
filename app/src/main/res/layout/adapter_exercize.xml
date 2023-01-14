@@ -81,5 +81,23 @@
             android:layout_margin="5dp"
             android:hint="운동 기록을 메모하세요." />
     </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/end"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="#802b2b2b"
+        android:visibility="gone" >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textColor="#ffffff"
+            android:text="완료!"
+            android:textSize="25sp"
+            android:gravity="center" />
+    </LinearLayout>
     
 </androidx.cardview.widget.CardView>
