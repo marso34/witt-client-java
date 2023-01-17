@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.healthappttt.Data.Exercize;
@@ -49,7 +50,7 @@ public class ExercizeAdapter extends RecyclerView.Adapter<ExercizeAdapter.MainVi
     }
 
     public static class MainViewHolder extends RecyclerView.ViewHolder {
-        public LinearLayout ExercizeLayout;
+        public RelativeLayout ExercizeLayout;
         public LinearLayout NotesLayout;
         public LinearLayout EndLayout;
 
@@ -68,12 +69,12 @@ public class ExercizeAdapter extends RecyclerView.Adapter<ExercizeAdapter.MainVi
         public MainViewHolder(View view) {
             super(view);
 
-            this.ExercizeLayout = (LinearLayout) view.findViewById(R.id.exerciseLayout);
+            this.ExercizeLayout = (RelativeLayout) view.findViewById(R.id.exerciseLayout);
             this.NotesLayout = (LinearLayout) view.findViewById(R.id.notesLayout);
             this.EndLayout = (LinearLayout) view.findViewById(R.id.end);
 
             this.NameView = (TextView) view.findViewById(R.id.exerciseName);
-            this.SetView = (TextView) view.findViewById(R.id.setCountNum);
+            this.SetView = (TextView) view.findViewById(R.id.setCount);
             this.SetBar = (ProgressBar) view.findViewById(R.id.setBar);
             this.DetailView = (TextView) view.findViewById(R.id.exerciseDetail);
 
@@ -161,7 +162,7 @@ public class ExercizeAdapter extends RecyclerView.Adapter<ExercizeAdapter.MainVi
 
     @Override
     public int getItemCount() {
-        return (exercizeCnt+2);
+        return (exercizeCnt);
     }
 
     private void setString(@NonNull MainViewHolder holder) {

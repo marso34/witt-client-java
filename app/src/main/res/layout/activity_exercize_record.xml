@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical" >
+
         <LinearLayout
             android:id="@+id/stopWatch"
             android:layout_width="match_parent"
@@ -31,149 +32,15 @@
                 style="?android:attr/borderlessButtonStyle"
                 android:text="00:00:00"
                 android:textSize="50sp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/timerView"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center"
-                >
-
-                <Button
-                    android:id="@+id/startBtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="운동시작" />
-
-                <Button
-                    android:id="@+id/pauseBtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="일시정지" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center"
-                android:visibility="gone" >
-
-                <Button
-                    android:id="@+id/test"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="루틴 수정하기" />
-
-                <Button
-                    android:id="@+id/test2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="운동 추가하기" />
-
-            </LinearLayout>
+                style="?android:attr/borderlessButtonStyle"
+                android:text="00:00"
+                android:textSize="30sp"
+                android:textColor="#3facfa" />
         </LinearLayout>
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/timer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="10dp"
-            android:layout_marginVertical="5dp"
-            app:cardCornerRadius="10dp"
-            android:orientation="vertical"
-            android:visibility="gone" >
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:background="#ffc711" >
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" >
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:textColor="#ffffff"
-                        android:text="타이머" />
-
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/timerView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="#ffffff"
-                    android:text="00:00" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center" >
-
-                    <Button
-                        android:id="@+id/minuteBtn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:backgroundTint="#00000000"
-                        style="?android:attr/borderlessButtonStyle"
-                        android:text="+1분" />
-
-                    <Button
-                        android:id="@+id/minuteHarfBtn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:backgroundTint="#00000000"
-                        style="?android:attr/borderlessButtonStyle"
-                        android:text="+30초" />
-
-                    <Button
-                        android:id="@+id/secBtn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:backgroundTint="#00000000"
-                        style="?android:attr/borderlessButtonStyle"
-                        android:text="+10초" />
-
-                    <Button
-                        android:id="@+id/secBtn2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:backgroundTint="#00000000"
-                        style="?android:attr/borderlessButtonStyle"
-                        android:text="+5초" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center" >
-
-                    <Button
-                        android:id="@+id/timerStBtn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:backgroundTint="#00000000"
-                        style="?android:attr/borderlessButtonStyle"
-                        android:text="시작" />
-
-                    <Button
-                        android:id="@+id/timerReBtn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:backgroundTint="#00000000"
-                        style="?android:attr/borderlessButtonStyle"
-                        android:text="초기화" />
-                </LinearLayout>
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
@@ -185,17 +52,17 @@
         </androidx.recyclerview.widget.RecyclerView>
     </LinearLayout>
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true" >
-
+        android:layout_alignParentBottom="true"
+        android:background="#ffffff" >
         <Button
             android:id="@+id/stopBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
             android:text="운동종료" />
-
-    </com.google.android.material.bottomnavigation.BottomNavigationView>
+    </LinearLayout>
 
 </RelativeLayout>
