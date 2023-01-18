@@ -47,7 +47,7 @@ public class ExercizeResultActivity extends AppCompatActivity {
         runtime.setText(DateConversion(record.getStartTime(), 0) + " ~ " + DateConversion(record.getEndTime(), 0));
         name.setText(record.getTitle());
         categories.setText(record.getExercizeCategories());
-        text.setText("\n운동 메모 :\n" + record.getNotes() + "\n");
+        text.setText("\n운동 메모 : 없음\n" + "\n");
 
         int sum = 0;
 
@@ -57,11 +57,13 @@ public class ExercizeResultActivity extends AppCompatActivity {
             result += i.getTitle() + "\n";
 
             int cnt = 0;
-            for (Set s : i.getExercizeSet()) {
-                result += s.getWeight() + "Kg X " + s.getCount() + "개" + "\n";
-                sum += Integer.parseInt(s.getWeight());
-                cnt++;
-            }
+
+            String weight, Set;
+
+            weight = i.getCount().substring(0, i.getCount().lastIndexOf(":"));
+            Set = i.getCount().substring(i.getCount().lastIndexOf(":")+1);
+
+            result += weight + "Kg " + Set + "세트" + "\n";
 
             if (cnt != 0)
                 result += "시작시간 = " + DateConversion(i.getStartTime(), 0) + ", 종료시간 = " + DateConversion(i.getEndTime(), 0) + "\n";

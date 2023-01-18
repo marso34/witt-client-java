@@ -18,6 +18,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            style="?android:attr/borderlessButtonStyle"
+
             android:gravity="center" >
 
             <TextView
@@ -29,14 +31,13 @@
                 android:id="@+id/stopWatchView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="?android:attr/borderlessButtonStyle"
                 android:text="00:00:00"
-                android:textSize="50sp" />
+                android:textSize="50sp"
+                android:textColor="#000000" />
             <TextView
                 android:id="@+id/timerView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="?android:attr/borderlessButtonStyle"
                 android:text="00:00"
                 android:textSize="30sp"
                 android:textColor="#3facfa" />
@@ -56,7 +57,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="#ffffff" >
+        android:background="#fafafa" >
         <Button
             android:id="@+id/stopBtn"
             android:layout_width="match_parent"
