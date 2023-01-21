@@ -96,7 +96,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 //        if(mDataset.get(position).getPhotoUrl() != null){
 //            Glide.with(activity).load(mDataset.get(position).getPhotoUrl()).centerCrop().override(500).into(photoImageVIew);
 //        }db에서 정보가져오는부분 포지션활용해야함
-
         holder.onBind(UserList.get(position));
     }
 

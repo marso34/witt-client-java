@@ -75,6 +75,7 @@ public class HomeFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        firebaseFirestore = FirebaseFirestore.getInstance();
     }
 
     @Override
@@ -83,7 +84,7 @@ public class HomeFragment extends Fragment {
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_home, container, false);
 
 
-//        firebaseFirestore = FirebaseFirestore.getInstance();
+
 //        userList = new ArrayList<>();
 //        userAdapter = new UserAdapter(getActivity(), userList);
 //
