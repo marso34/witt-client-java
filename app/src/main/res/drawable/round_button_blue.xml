@@ -5,11 +5,10 @@
 
     <corners
         android:elevation="40dp"
-        android:bottomRightRadius="10dp"
-        android:bottomLeftRadius="10dp"
-        android:topLeftRadius="10dp"
-        android:topRightRadius="10dp"
-
+        android:bottomRightRadius="200dp"
+        android:bottomLeftRadius="200dp"
+        android:topLeftRadius="200dp"
+        android:topRightRadius="200dp"
         />
 
 </shape>

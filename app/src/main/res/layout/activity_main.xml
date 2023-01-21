@@ -8,7 +8,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".Activity.MainActivity">
 
-    <include layout="@layout/toolbar"/>
+
 
     <FrameLayout
         android:id="@+id/frame_layout"

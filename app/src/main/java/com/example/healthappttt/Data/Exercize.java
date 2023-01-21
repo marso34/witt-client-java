@@ -11,7 +11,6 @@ public class Exercize implements Serializable {
     private String color;
     private String startTime;
     private String endTime;
-
     private ArrayList<Set> exercizeSet; // 나중에 ArrayList로 변경
 
     public Exercize(String title, String state, ArrayList<Set> exercizeSet) {

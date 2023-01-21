@@ -20,7 +20,6 @@ public class ExercizeResultActivity extends AppCompatActivity {
     private TextView totalWeight;
     private TextView name;
     private TextView categories;
-
     private TextView ttttt;
     private TextView text;
     private Routine record;

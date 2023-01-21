@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "882480073865",
+    "project_id": "witt-7dcb4",
+    "storage_bucket": "witt-7dcb4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:882480073865:android:bfcf6c628f04a9ece7ca58",
+        "android_client_info": {
+          "package_name": "com.example.healthappttt"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "882480073865-fs71ck034cls5ee9lrco8n90o973eh2q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjeqNa7DrQ1m1-H9pwxgMN0SrM2kNuLXw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "882480073865-fs71ck034cls5ee9lrco8n90o973eh2q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

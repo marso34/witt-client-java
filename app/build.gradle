@@ -11,7 +11,6 @@ android {
         targetSdk 32
         versionCode 1
         versionName "1.0"
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -32,6 +31,13 @@ android {
 }
 
 dependencies {
+    implementation 'com.google.firebase:firebase-storage:20.1.0'
+    implementation 'com.google.firebase:firebase-database:20.1.0'
+    implementation platform('com.google.firebase:firebase-bom:31.2.0')
+    implementation 'com.google.firebase:firebase-appindexing:18.0.0'
+    implementation 'com.google.firebase:firebase-auth'
+    implementation 'com.google.firebase:firebase-firestore'
+    implementation 'com.google.gms:google-services:4.3.15'
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.google.code.gson:gson:2.8.9'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
@@ -47,5 +53,5 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     implementation 'de.hdodenhof:circleimageview:3.1.0'
     implementation 'com.squareup.retrofit2:converter-scalars:2.9.0'
-
+    implementation 'com.google.firebase:firebase-firestore:24.4.2'
 }
