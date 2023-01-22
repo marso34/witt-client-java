@@ -7,8 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
     public class User implements Serializable {
-        private String UserId;
-        private String UserPwd;
+
         private String UserName;
         private Double UserTemperature;
         private String ProfileImg;
@@ -21,9 +20,8 @@ import java.util.Map;
         private Double Lat;
         private Double Lon;
 
-        public User(String UID, String UPD,String UN, String PRI, String Bench, String Deadlift, String Squat,String LCN) {
-            this.UserId = UID;
-            this.UserPwd = UPD;
+        public User(String UID,String UN, String PRI, String Bench, String Deadlift, String Squat,String LCN) {
+
             this.UserName = UN;
             this.UserTemperature = 36.5;
             this.ProfileImg = PRI;
@@ -31,7 +29,7 @@ import java.util.Map;
             this.Deadlift = Deadlift;
             this.Squat = Squat;
             this.LocationName = LCN;
-            this.ReviewTableKey =  UID + UPD + Calendar.getInstance().getTime();// 유저생성할 때 이키로 유저만들것.
+            this.ReviewTableKey =  UID+ Calendar.getInstance().getTime();// 유저생성할 때 이키로 유저만들것.
             this.Lat = 0.0;
             this.Lon = 0.0;
             GoodTime = "0";
@@ -46,9 +44,7 @@ import java.util.Map;
         public String getSquat(){
             return this.Squat;
         }
-        public String getGoodTime(){
-            return this.GoodTime;
-        }
+
         public String getProfileImg(){
             return this.ProfileImg;
         }

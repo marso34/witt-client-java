@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
+
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -18,7 +19,7 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".Activity.signupActivity"
+            android:name=".Activity.MainActivity"
             android:exported="false" />
         <activity
             android:name=".Activity.LoginActivity"
@@ -58,8 +59,9 @@
             android:name=".Activity.ExercizeResultActivity"
             android:exported="false" />
         <activity
-            android:name=".Activity.MainActivity"
+            android:name=".Activity.signupActivity"
             android:exported="true"
+            android:usesCleartextTraffic="true"
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

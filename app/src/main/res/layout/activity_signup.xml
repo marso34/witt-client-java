@@ -1,89 +1,149 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!--회원가입 창-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000"
-    android:gravity="center"
-    android:orientation="vertical">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
+    tools:context=".Activity.signupActivity">
+    <!--로고-->
+    <EditText
+        android:id="@+id/sex"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:gravity="center"
-        android:text="레트로핏 회원가입"
-        android:textColor="#fff"
-        android:textSize="29sp" />
+        android:hint="sex" />
 
-    <EditText
-        android:id="@+id/etname"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:background="#fff"
-        android:hint="아이디"
-        android:paddingLeft="5dp" />
+    <ImageView
+        android:id="@+id/ProfileImg"
+        android:layout_width="300dp"
+        android:layout_height="150dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="70dp"
+        android:src="@drawable/profile" />
 
-    <EditText
-        android:id="@+id/ethobby"
+    <ScrollView
+        android:id="@+id/scroll"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginLeft="20dp"
+        android:layout_height="250dp"
+        android:layout_below="@+id/ProfileImg"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
-        android:layout_marginRight="20dp"
-        android:background="#fff"
-        android:hint="Enter Hobby"
-        android:paddingLeft="5dp" />
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/etusername"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="20dp"
-        android:background="#fff"
-        android:hint="유저 이름"
-        android:paddingLeft="5dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <EditText
+                android:id="@+id/emailEditText"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
+                android:gravity="center"
+                android:hint="email"
+                android:paddingLeft="13dp" />
 
-    <EditText
-        android:id="@+id/etpassword"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="20dp"
-        android:background="#fff"
-        android:hint="비밀번호"
-        android:inputType="textPassword"
-        android:paddingLeft="5dp" />
+            <EditText
+                android:id="@+id/passwordEditText"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
+                android:gravity="center"
+                android:hint="pwd"
+                android:paddingLeft="13dp" />
 
+            <EditText
+                android:id="@+id/passwordCheckEditText"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
+                android:gravity="center"
+                android:hint="pwdcheck"
+                android:paddingLeft="13dp" />
+
+            <EditText
+                android:id="@+id/edt_name"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
+                 android:gravity="center"
+                android:hint="Name"
+                android:paddingLeft="13dp" />
+
+            <EditText
+                android:id="@+id/edt_BenchPower"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
+               android:hint="벤치 프레스 최대무게"
+                android:paddingLeft="13dp" />
+
+            <EditText
+                android:id="@+id/edt_SquatPower"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
+                android:hint="스쿼트 최대 무게"
+                android:paddingLeft="13dp" />
+
+            <EditText
+                android:id="@+id/edt_DeadPower"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
+                 android:hint="데드 최대 무게"
+                android:paddingLeft="13dp" />
+            <!--비밀번호 입력 칸-->
+
+            <EditText
+                android:id="@+id/LN"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
+                android:hint="LocationName"
+                android:paddingLeft="13dp" />
+
+        </LinearLayout>
+        <!--이름 입력 칸-->
+
+
+        <!--이메일 입력 칸-->
+
+    </ScrollView>
+    <!--회원가입 버튼, 회원가입 완료시 메인 엑티비티 이동-->
     <Button
-        android:id="@+id/btn"
-        android:layout_width="match_parent"
+        android:id="@+id/btnSignUp"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
+        android:layout_below="@+id/scroll"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
-        android:layout_marginRight="20dp"
 
-        android:text="회원가입"
-        android:textColor="#fff" />
+        android:text="Set up"
+        android:textColor="@color/black"
+        android:textSize="20dp" />
 
-    <TextView
-        android:id="@+id/tvlogin"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginTop="10dp"
-        android:gravity="center"
-        android:text="이미 아이디가 있다면 여길 눌러 로그인하세요"
-        android:textColor="#fff"
-        android:textSize="20sp" />
-    <ProgressBar
-        android:id="@+id/progress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:visibility="gone" />
 
-</LinearLayout>
+</RelativeLayout>

@@ -75,91 +75,90 @@ public class HomeFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-        firebaseFirestore = FirebaseFirestore.getInstance();
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //fragment_main에 인플레이션을 함
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_home, container, false);
+        firebaseFirestore = FirebaseFirestore.getInstance();
 
+        userList = new ArrayList<>();
+        userAdapter = new UserAdapter(getActivity(), userList);
 
+        final RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
 
-//        userList = new ArrayList<>();
-//        userAdapter = new UserAdapter(getActivity(), userList);
-//
-//        final RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
-//
-//        recyclerView.setHasFixedSize(true);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-//        recyclerView.setAdapter(userAdapter);
-//        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//            @Override
-//            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-//                super.onScrollStateChanged(recyclerView, newState);
-//
-//                RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
-//                int firstVisibleItemPosition = ((LinearLayoutManager)layoutManager).findFirstVisibleItemPosition();
-//
-//                if(newState == 1 && firstVisibleItemPosition == 0){
-//                    topScrolled = true;
-//                }
-//                if(newState == 0 && topScrolled){
-//                    //postsUpdate(true);
-//                    topScrolled = false;
-//                }
-//            }
-//
-//            @Override
-//            public void onScrolled(RecyclerView recyclerView, int dx, int dy){
-//                super.onScrolled(recyclerView, dx, dy);
-//
-//                RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
-//                int visibleItemCount = layoutManager.getChildCount();
-//                int totalItemCount = layoutManager.getItemCount();
-//                int firstVisibleItemPosition = ((LinearLayoutManager)layoutManager).findFirstVisibleItemPosition();
-//                int lastVisibleItemPosition = ((LinearLayoutManager)layoutManager).findLastVisibleItemPosition();
-//
-//                if(totalItemCount - 3 <= lastVisibleItemPosition && !updating){
-//                    //postsUpdate(false);
-//                }
-//
-//                if(0 < firstVisibleItemPosition){
-//                    topScrolled = false;
-//                }
-//            }
-//        });
-//
-//        //postsUpdate(false);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setAdapter(userAdapter);
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+                RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
+                int firstVisibleItemPosition = ((LinearLayoutManager)layoutManager).findFirstVisibleItemPosition();
+
+                if(newState == 1 && firstVisibleItemPosition == 0){
+                    topScrolled = true;
+                }
+                if(newState == 0 && topScrolled){
+                    //postsUpdate(true);
+                    topScrolled = false;
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy){
+                super.onScrolled(recyclerView, dx, dy);
+
+                RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
+                int visibleItemCount = layoutManager.getChildCount();
+                int totalItemCount = layoutManager.getItemCount();
+                int firstVisibleItemPosition = ((LinearLayoutManager)layoutManager).findFirstVisibleItemPosition();
+                int lastVisibleItemPosition = ((LinearLayoutManager)layoutManager).findLastVisibleItemPosition();
+
+                if(totalItemCount - 3 <= lastVisibleItemPosition && !updating){
+                    postsUpdate(false);
+                }
+
+                if(0 < firstVisibleItemPosition){
+                    topScrolled = false;
+                }
+            }
+        });
+
+        postsUpdate(false);
 
         return view;
 
     }
 
-//    private void postsUpdate(final boolean clear) {
-//        updating = true;
-//        //Date date = userList.size() == 0 || clear ? new Date() : userList.get(userList.size() - 1).getCreatedAt();
-//        CollectionReference collectionReference = firebaseFirestore.collection("users");
-//        collectionReference.get()
-//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                        if (task.isSuccessful()) {
-//                            if(clear){
-//                                userList.clear();
-//                            }
-//                            for (QueryDocumentSnapshot document : task.getResult()) {
-//                                Log.d(TAG, document.getId() + " => " + document.getData());
-////                               ***** userList.add(new User()); DB에서 각 값들긇어와서 넣어주기.
-//                            }
-//                            userAdapter.notifyDataSetChanged();
-//                        } else {
-//                            Log.d(TAG, "Error getting documents: ", task.getException());
-//                        }
-//                        updating = false;
-//                    }
-//                });
-//    }
+    private void postsUpdate(final boolean clear) {
+        updating = true;
+        //Date date = userList.size() == 0 || clear ? new Date() : userList.get(userList.size() - 1).getCreatedAt();
+        CollectionReference collectionReference = firebaseFirestore.collection("user");
+        collectionReference.get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            if(clear){
+                                userList.clear();
+                            }
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG, document.getId() + " => " + document.getData());
+//                               ***** userList.add(new User()); DB에서 각 값들긇어와서 넣어주기.
+                            }
+                            userAdapter.notifyDataSetChanged();
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                        updating = false;
+                    }
+                });
+    }
 
     public static String getCurrentWeek() {
         Date currentDate = new Date();
