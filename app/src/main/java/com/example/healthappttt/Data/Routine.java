@@ -7,12 +7,10 @@ import java.util.Map;
 
 public class Routine implements Serializable { // routine 으로 수정
     private String title;
+    private String exercizeCategories; // exercizeCategories 수정
     private String startTime;
     private String endTime;
     private String runTime;
-    private String exercizeCategories; // exercizeCategories 수정
-    private String notes;
-
 
     private ArrayList<Exercize> exercizes;
 
@@ -36,7 +34,6 @@ public class Routine implements Serializable { // routine 으로 수정
         this.exercizeCategories = r.exercizeCategories;
         this.exercizes = new ArrayList<Exercize>(r.exercizes);
     }
-
 
     public Map<String, Object> getRoutine() {
         Map<String, Object> docData = new HashMap<>();
@@ -64,8 +61,6 @@ public class Routine implements Serializable { // routine 으로 수정
     public void setRunTime(String runTime) { this.runTime = runTime; }
     public String getExercizeCategories() { return this.exercizeCategories; }
     public void setExercizeCategories(String exercizeCategories) { this.exercizeCategories = exercizeCategories; }
-    public String getNotes() { return this.notes; }
-    public void setNotes(String notes) { this.notes = notes; }
     public ArrayList<Exercize> getExercizes() { return this.exercizes; }
     public void setExercizes(ArrayList<Exercize> exercizes) { this.exercizes = new ArrayList<Exercize>(exercizes); }
     public int getExerciezeCount() { return this.exercizes.size(); }

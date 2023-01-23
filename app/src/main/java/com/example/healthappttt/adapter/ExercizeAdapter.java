@@ -4,13 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Activity;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -18,175 +16,144 @@ import android.widget.TextView;
 import com.example.healthappttt.Data.Exercize;
 import com.example.healthappttt.R;
 import com.example.healthappttt.Data.Routine;
-import com.example.healthappttt.Data.Set;
 
 import java.util.ArrayList;
 
 public class ExercizeAdapter extends RecyclerView.Adapter<ExercizeAdapter.MainViewHolder>  {
-    private Activity activity;
     private ArrayList<Exercize> exercizes;
-    private ArrayList<Exercize> recordExercizes;
 
     private String title;
-    private String exercizeArea;
-    private String notes;
     private int exercizeCnt;
 
     private OnExercizeClick onExercizeClick;
 
-    public ExercizeAdapter(Activity activity, Routine routine) { // 일단 테스트
-        this.activity = activity;
+    public ExercizeAdapter(Routine routine) { // 일단 테스트
         this.title = routine.getTitle();
-        this.exercizeArea = routine.getExercizeCategories();
         this.exercizes = new ArrayList<>(routine.getExercizes());
         this.exercizeCnt = routine.getExerciezeCount();
-
-        this.recordExercizes = new ArrayList<>();
-
-        for (int i = 0; i < exercizeCnt; i++) {
-            recordExercizes.add(new Exercize(exercizes.get(i).getTitle(), exercizes.get(i).getState(), new ArrayList<>()));
-        }
     }
 
     public static class MainViewHolder extends RecyclerView.ViewHolder {
-        public LinearLayout ExercizeLayout;
-        public LinearLayout NotesLayout;
-        public LinearLayout EndLayout;
+        public CardView ExercizeCard;
+        public LinearLayout ExercizeLayout; // 운동 기록에 광고 안 들어가면 삭제
+        public LinearLayout EndLayout; // 운동 완료 표시
+        public LinearLayout AerobicLayout; // 유산소 운동일 때만 표시
 
+        public TextView CatView;
         public TextView NameView;
-        public TextView SetView;
-        public ProgressBar SetBar;
         public TextView DetailView;
+        public TextView CountView;
+        public TextView AerobicMView;
+        public TextView AerobicTxtView;
+        public ProgressBar AerobicBar;
 
-        public EditText Notes;
-
-        public String SetViewTxt;
         public String DetailViewTxt;
-
-        public ArrayList<Set> exercizeSet;
+        public String CountTxt;
 
         public MainViewHolder(View view) {
             super(view);
 
+            this.ExercizeCard = (CardView) view.findViewById(R.id.exerciseCard);
             this.ExercizeLayout = (LinearLayout) view.findViewById(R.id.exerciseLayout);
-            this.NotesLayout = (LinearLayout) view.findViewById(R.id.notesLayout);
             this.EndLayout = (LinearLayout) view.findViewById(R.id.end);
+            this.AerobicLayout = (LinearLayout) view.findViewById(R.id.AerobicLayout);
 
+            this.CatView = (TextView) view.findViewById(R.id.exerciseCat);
             this.NameView = (TextView) view.findViewById(R.id.exerciseName);
-            this.SetView = (TextView) view.findViewById(R.id.setCountNum);
-            this.SetBar = (ProgressBar) view.findViewById(R.id.setBar);
             this.DetailView = (TextView) view.findViewById(R.id.exerciseDetail);
-
-            this.Notes = (EditText) view.findViewById(R.id.exerciseNote);
-
-            this.exercizeSet = new ArrayList<>();
+            this.CountView = (TextView) view.findViewById(R.id.setCount);
+            this.AerobicMView = (TextView) view.findViewById(R.id.AerobicM);
+            this.AerobicTxtView = (TextView) view.findViewById(R.id.AerobicTxt);
+            this.AerobicBar = (ProgressBar) view.findViewById(R.id.AerobicBar);
         }
     }
 
     @NonNull
     @Override
     public MainViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        CardView cardView = (CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_exercize, parent, false);
-        final MainViewHolder mainViewHolder = new MainViewHolder(cardView);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_exercize, parent, false);
+        final MainViewHolder mainViewHolder = new MainViewHolder(view);
 
-        cardView.findViewById(R.id.exerciseLayout).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.exerciseLayout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int position = mainViewHolder.getAdapterPosition();
-                int setPosition = mainViewHolder.exercizeSet.size();
 
-                if (setPosition < exercizes.get(position).getExercizeSetCount()) {
-                    mainViewHolder.exercizeSet.add(exercizes.get(position).getExercizeSet().get(setPosition));
-                    recordExercizes.get(position).setExercizeSet(mainViewHolder.exercizeSet);
+                onExercizeClick.onExercizeClick(position, mainViewHolder.CountView, mainViewHolder.AerobicTxtView, mainViewHolder.AerobicBar);
 
-                    if (setPosition == 0) // 처음 눌렀을 때는 1세트가 완료됐을 때라 첫 세트의 운동 시간을 알 수 없음. 1세트만 운동했을 때도 문제. 나중에 고민할 것
-                        recordExercizes.get(position).setStartTime(Long.toString(System.currentTimeMillis()));
+                if (exercizes.get(position).getState().equals("유산소")) {
+                    if (mainViewHolder.AerobicBar.getProgress() == mainViewHolder.AerobicBar.getMax())
+                        mainViewHolder.EndLayout.setVisibility(View.VISIBLE);
+                } else {
+                    String str = (String) mainViewHolder.CountView.getText();
+                    String str1 = str.substring(0, str.lastIndexOf("/"));
+                    String str2 = str.substring(str.lastIndexOf("/")+1);
 
-                    recordExercizes.get(position).setEndTime(Long.toString(System.currentTimeMillis()));
-                    onExercizeClick.onExercizeClick(recordExercizes, notes);
+                    if (str1.equals(str2))
+                        mainViewHolder.EndLayout.setVisibility(View.VISIBLE);
                 }
-
-                setString(mainViewHolder);
-
-                mainViewHolder.SetBar.setProgress(mainViewHolder.exercizeSet.size());   // 현재 세트 수 (프로그레스바)
-                mainViewHolder.SetView.setText(mainViewHolder.SetViewTxt);          // 현재 세트 -> Set n 에 해당
-                mainViewHolder.DetailView.setText(mainViewHolder.DetailViewTxt);    // 무게 및 세트당 횟수
             }
         });
-
-        mainViewHolder.Notes.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                mainViewHolder.NotesLayout.setBackgroundResource(R.drawable.blue_border_layout);
-                notes = mainViewHolder.Notes.getText().toString();
-                onExercizeClick.onExercizeClick(recordExercizes, notes);
-            }
-
-            @Override
-            public void afterTextChanged(Editable arg0) {
-//                mainViewHolder.NotesLayout.setBackgroundResource(R.drawable.border_layout);
-            }
-        } );
 
         return mainViewHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull MainViewHolder holder, int position) {
-        if (exercizeCnt > position) {
-            holder.NotesLayout.setVisibility(View.GONE);
+        if (exercizeCnt > position) { // 운동 기록에서 광고 없으면 없어도 됨
+            setTxt(holder); // DetailViewTxt, CountTxt 초기값 설정
 
-            setString(holder);
-
+            holder.CatView.setText(this.exercizes.get(position).getState()); // 운동 부위
+            holder.CatView.setBackgroundColor(Color.parseColor(this.exercizes.get(position).getColor()));
             holder.NameView.setText(this.exercizes.get(position).getTitle()); // 운동 이름
-            holder.SetBar.setMax(this.exercizes.get(position).getExercizeSetCount()); // 전체 세트 수 (프로그레스바)
+            holder.DetailView.setText(holder.DetailViewTxt);    // 무게 및 세트수
+            holder.CountView.setText(holder.CountTxt);          // 1/5 or 남은 시간
 
-            holder.SetBar.setProgress(holder.exercizeSet.size());   // 현재 세트 수 (프로그레스바)
-            holder.SetView.setText(holder.SetViewTxt);          // 현재 세트 -> Set n 에 해당
-            holder.DetailView.setText(holder.DetailViewTxt);    // 무게 및 세트당 횟수
+            if (this.exercizes.get(position).getState().equals("유산소")) {
+                holder.AerobicLayout.setVisibility(View.VISIBLE);
+                holder.AerobicMView.setVisibility(View.VISIBLE);
+                holder.AerobicBar.setMax(this.exercizes.get(position).getCount() * 60); // 시간 (프로그레스 바)
+            } else {
+                holder.AerobicLayout.setVisibility(View.GONE);
+                holder.AerobicMView.setVisibility(View.GONE);
+            }
         }
-        else if (exercizeCnt+1 == position){ // -> length+1
-            holder.NotesLayout.setVisibility(View.VISIBLE);
-            holder.ExercizeLayout.setVisibility(View.GONE);
-        }
-        else { // 여기는 나중에 광고. 지금은 그냥 비운 상태
-            holder.NotesLayout.setVisibility(View.GONE);
-            holder.ExercizeLayout.setVisibility(View.GONE);
+        else { // -> exercizeCnt+1
+            holder.ExercizeLayout.setVisibility(View.GONE); // 만약 광고 넣으면 광고 자리
         }
     }
 
     @Override
     public int getItemCount() {
-        return (exercizeCnt+2);
-    }
+        return (exercizeCnt);
+    } // exercizeCnt+1 -> 광고 자리를 위한 +1
 
-    private void setString(@NonNull MainViewHolder holder) {
+    private void setTxt(@NonNull MainViewHolder holder) { // 초기값 설정
         int position = holder.getAdapterPosition();
-        int setPosition = holder.exercizeSet.size();
+        int count = this.exercizes.get(position).getCount();
+        int volume = this.exercizes.get(position).getVolume();
 
-        if (setPosition < this.exercizes.get(position).getExercizeSetCount())
-        {
-            String weight = this.exercizes.get(position).getExercizeSet().get(setPosition).getWeight();
-            String count =  this.exercizes.get(position).getExercizeSet().get(setPosition).getCount();
+        if (holder.DetailViewTxt == null) {
+            if (this.exercizes.get(position).getState().equals("유산소")) {
+                holder.DetailViewTxt = "속도 " + volume;
+            } else {
+                holder.DetailViewTxt = volume + " Kg · " + count + " 세트";
+            }
+        }
 
-            holder.SetViewTxt = String.format("Set %d", setPosition + 1);
-            holder.DetailViewTxt = weight + "Kg X " + count + "개";
-        } else {
-            holder.EndLayout.setVisibility(View.VISIBLE);
-            holder.SetViewTxt = "완료";
-            holder.DetailViewTxt = "";
+        if (holder.CountTxt == null) {
+            if (this.exercizes.get(position).getState() == "유산소")
+                holder.CountTxt = Integer.toString(count);
+            else
+                holder.CountTxt = "0/" + count;
         }
     }
 
-    public void setOnExercizeClickListener(OnExercizeClick onExercizeClickListener) { // 액티비티에서 콜백 메서드를 set
+    public void setOnExercizeClickListener(OnExercizeClick onExercizeClickListener) {
         this.onExercizeClick = onExercizeClickListener;
-    }
+    } // 액티비티에서 콜백 메서드를 set
 
-    public interface OnExercizeClick { // 운동 클릭했을 때, 엑티비티에 값 전달을 위한 인터페이스
-        void onExercizeClick(ArrayList<Exercize> exercizes, String notes);
-    }
+    public interface OnExercizeClick {
+        void onExercizeClick(int position, TextView CountView, TextView AerobicTxtView, ProgressBar AerobicBar);
+    } // 운동 클릭했을 때, 엑티비티에 값 전달을 위한 인터페이스
 }

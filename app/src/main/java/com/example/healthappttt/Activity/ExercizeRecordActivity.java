@@ -1,8 +1,8 @@
 package com.example.healthappttt.Activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -12,8 +12,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.healthappttt.Data.Exercize;
@@ -28,144 +31,71 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class ExercizeRecordActivity extends AppCompatActivity {
-    private CardView timerView;
+    private LinearLayout StopWatch;     // 스톱워치, 타이머 레이아웃
+    private TextView StopWatchTextView; // 운동 시간 보여주는 뷰
+    private TextView TimerTextView;     // 휴식시간 보여주는 뷰
     private RecyclerView recyclerView;
     private ExercizeAdapter adapter;
+    private Button StopBtn;  // 종료 버튼
+    private TextView StopBtn2; // 오늘은 여기까지 버튼
 
-    private Button StartBtn, StopBtn, PauseBtn;
-    private Button TimerStBtn, TimerReBtn, MinuteBtn, MinuteHarfBtn, SecBtn, SecBtn2;
-    private TextView StopWatchTextView;
-    private TextView TimerTextView;
+    private TextView AdapterAerobicTxtView; // 어댑터 안에 있는 텍스트 뷰, 일단 임시
+    private ProgressBar AdapterAerobicBar;
 
     private Timer TimerCall;
     private TimerTask timerTask;
 
+    private Routine routine;
     private ArrayList<Exercize> recordExercizes; // 실제 운동을 기록, 어댑터에서 한 기록을 받아옴
 
-    private Boolean isRunning = true;
-    private Boolean TimerRunning = false;
-
-    private long _startTime; // 진짜 시작 시간
-    private long startTime;  // 운동시작 계산 위한 시작 시간
-    private long pauseTime; // 일시정지 버튼 누른 시간
-    private int runTime; // 운동 시간
-    private int xrunTime; // 운동 시간 // 타이머 위한
-    private int timer;
-    private int _timer;
-
-    String exercizeNotes;
+    private Boolean isRunning;
+    private long startTime; // 운동 시작 시간
+    private long reStTime;  // 총 운동 시간과 휴식 시간을
+    private long pauseTime; // 계산하기 위한 시간 -> 스톱워치 눌렀을 때 현재 시간을 저장
+    private int runTime;    // 총 운동 시간
+    private int xRunTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercize_record);
 
-        init();
-
-        // 현재 ui 일부 변경으로 주석과 차이가 있음..
-        
-        _startTime = 0;
-        startTime = 0;
-        pauseTime = 0;
-        runTime = 0;
-
-        recordExercizes = new ArrayList<>();
-
-        ArrayList<Set> set1 = new ArrayList<>(); // 여기부터
-        set1.add(new Set("10", "10", ""));
-        set1.add(new Set("20", "7", ""));
-        set1.add(new Set("30", "3", ""));
-        set1.add(new Set("50", "20", ""));
-
-        ArrayList<Exercize> exercizes = new ArrayList<>();
-        exercizes.add(new Exercize("팔굽혀펴기", "기본", set1));
-        exercizes.add(new Exercize("스쿼트", "기본", set1));
-        exercizes.add(new Exercize("턱걸이", "기본", set1));
-        exercizes.add(new Exercize("딥스", "기본", set1));
-        exercizes.add(new Exercize("런치", "기본", set1));
-        exercizes.add(new Exercize("런치", "기본", set1));
-        exercizes.add(new Exercize("런치", "기본", set1));
-        exercizes.add(new Exercize("런치", "기본", set1));
-
-        Routine routine = new Routine("기본 루틴", "전신", exercizes); // 여기까지 클래스 테스트
-
-        setExercizeRecyclerView(routine);   // 운동 리사이클러 뷰 생성.
-
-        StartBtn.setVisibility(View.GONE);
-        PauseBtn.setVisibility(View.GONE);  // 초기에 시작 버튼을 제외한
-//        StopBtn.setVisibility(View.GONE);   // 일시정지, 종료 버튼 표시 안 함
-        timerView.setVisibility(View.GONE); // 타이머는 운동중일 때만 표시
-
-        StopWatchTextView.setOnClickListener(v -> _start(v));
-//        StartBtn.setOnClickListener(v -> _start(v));
-//        PauseBtn.setOnClickListener(v -> _pause());
-        StopBtn.setOnClickListener(v -> _stop());
-
-        TimerStBtn.setOnClickListener(v -> _timerStart()); // 여기서부터는 타이머
-        TimerReBtn.setOnClickListener(v -> _timerReset());
-        MinuteBtn.setOnClickListener(v -> timerPlus(60)); // sec만큼 시간 추가
-        MinuteHarfBtn.setOnClickListener(v -> timerPlus(30));
-        SecBtn.setOnClickListener(v -> timerPlus(10));
-        SecBtn2.setOnClickListener(v -> timerPlus(5));
-    }
-
-    private void init() {
-        timerView = (CardView) findViewById(R.id.timer);
-        recyclerView = findViewById(R.id.recyclerView);
-
-        StartBtn = (Button) findViewById(R.id.startBtn); // 스톱워치
-        StopBtn = (Button) findViewById(R.id.stopBtn);
-        PauseBtn = (Button) findViewById(R.id.pauseBtn);
+        StopWatch = (LinearLayout) findViewById(R.id.stopWatch);
         StopWatchTextView = (TextView) findViewById(R.id.stopWatchView);
-
-        TimerStBtn = (Button) findViewById(R.id.timerStBtn); // 타이머
-        TimerReBtn = (Button) findViewById(R.id.timerReBtn);
-        MinuteBtn = (Button) findViewById(R.id.minuteBtn);
-        MinuteHarfBtn = (Button) findViewById(R.id.minuteHarfBtn);
-        SecBtn = (Button) findViewById(R.id.secBtn);
-        SecBtn2 = (Button) findViewById(R.id.secBtn2);
         TimerTextView = (TextView) findViewById(R.id.timerView);
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        StopBtn = (Button) findViewById(R.id.stopBtn);
+        StopBtn2 = (TextView) findViewById(R.id.stopBtn2);
+
+        Intent intent = getIntent();
+        routine = (Routine) intent.getSerializableExtra("routine");
+
+        init(); // 초기화
+        setExercizeRecyclerView();   // 운동 리사이클러 뷰 생성
+
+        StopWatch.setOnClickListener(v -> _start(v)); // 스톱워치 눌렀을 때
+        StopBtn.setOnClickListener(v -> _stop(v)); // 운동 종료 버튼 눌렀을 때
+        StopBtn2.setOnClickListener((v -> _stop(v))); // 여기까지 할래요 버튼
     }
 
-    private void setExercizeRecyclerView(Routine routine) {
-        adapter = new ExercizeAdapter(this, routine);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(adapter);
+    private void init() { // 운동 기록 부분 나중에 수정
+        startTime = 0;
+        runTime = 0;
+        reStTime = 0;
+        pauseTime = 0;
+        isRunning = false;
 
-        if (adapter != null) {
-            adapter.setOnExercizeClickListener(new ExercizeAdapter.OnExercizeClick() { // 어댑터 데이터를 전송 받기 위한 인터페이스 콜백
-                @Override
-                public void onExercizeClick(ArrayList<Exercize> exercizes, String notes) { // 운동 기록과 운동 메모를 전달 받아
-                    recordExercizes = new ArrayList<>(); // 액티비티(recordExercizes)에 저장
-                    exercizeNotes = notes;
+        recordExercizes = new ArrayList<Exercize>();
+        ArrayList<Exercize> exer = routine.getExercizes();
 
-                    for (Exercize i : exercizes) {
-                        recordExercizes.add(i);
-                    }
-                }
-            });
+        for (Exercize i : exer) {
+            recordExercizes.add(new Exercize(i.getTitle(), i.getState(), 0, 0));
         }
-    } // 리사이클러 뷰 생성
-
-    public Routine getRecord() {
-        Routine record = new Routine("운동 테스트", "전신", recordExercizes);
-        record.setNotes(exercizeNotes);
-        record.setStartTime(Long.toString(_startTime));
-        record.setEndTime(Long.toString(System.currentTimeMillis()));
-        record.setRunTime(Long.toString(runTime));
-
-        return record;
-    } // 운동 기록을 토대로 루틴 객체를 만드는 함수
+    }
 
     private void _start(View v) {
-//        v.setVisibility(View.GONE);
-//        PauseBtn.setVisibility(View.VISIBLE);
-//        StopBtn.setVisibility(View.VISIBLE);
-//        timerView.setVisibility(View.VISIBLE);
-
-        if (_startTime == 0) {
-            _startTime = startTime = System.currentTimeMillis(); // 시작 버튼 누를 시 현재 시간 저장
+        if (startTime == 0) { // 처음 눌렀을 때
+            startTime = reStTime = System.currentTimeMillis(); // 시작 버튼 누를 시 현재 시간 저장
             isRunning = true;
 
             TimerCall = new Timer();
@@ -176,97 +106,99 @@ public class ExercizeRecordActivity extends AppCompatActivity {
                 }
             };
             TimerCall.schedule(timerTask,0,10); // 0.01초
-        } else {
+        } else { // 그 다음부터
             isRunning = !isRunning;
 
-            if (isRunning) {
-//            PauseBtn.setText("일시정지");
-                startTime += (System.currentTimeMillis() - pauseTime); // 다시 시작할 때 정지한 시간 만큼
-//            timerView.setVisibility(View.VISIBLE);                 // 운동 시간에서 제외
-            } else {
-//            PauseBtn.setText("재시작");
-                pauseTime = System.currentTimeMillis(); // 정지 버튼 누른 시간 -> 정지한 시간 기록용
-//            timerView.setVisibility(View.GONE);
-            }
+            if (isRunning)
+                reStTime += (System.currentTimeMillis() - pauseTime); // 다시 시작할 때 정지한 시간 만큼 운동 시간에서 제외
+            else
+                pauseTime = System.currentTimeMillis(); // 정지 버튼 누른 시간
         }
-    } // 시작 버튼 눌렀을 때 동작
+    } // 상단 시간 00:00:00 눌렀을 때 동작
 
-    private void _pause() {
-        isRunning = !isRunning;
+    private void _stop(View v) {
+        if (startTime != 0) {
+            AlertDialog.Builder alert_ex = new AlertDialog.Builder(ExercizeRecordActivity.this);
+            alert_ex.setMessage("운동을 끝낼까요?");
+            alert_ex.setPositiveButton("예", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    isRunning = false;
+                    startTime = 0;
+                    pauseTime = 0; // 스톱버튼 누를 시 전부 초기화
+                    timerTask.cancel();
 
-        if (isRunning) {
-//            PauseBtn.setText("일시정지");
-            startTime += (System.currentTimeMillis() - pauseTime); // 다시 시작할 때 정지한 시간 만큼
-//            timerView.setVisibility(View.VISIBLE);                 // 운동 시간에서 제외
-        } else {
-//            PauseBtn.setText("재시작");
-            pauseTime = System.currentTimeMillis(); // 정지 버튼 누른 시간 -> 정지한 시간 기록용
-//            timerView.setVisibility(View.GONE);
-        }
-    } // 일시정지 버튼 눌렀을 때 동작
-
-    private void _stop() {
-        AlertDialog.Builder alert_ex = new AlertDialog.Builder(ExercizeRecordActivity.this);
-        alert_ex.setMessage("운동을 끝낼까요?");
-        alert_ex.setPositiveButton("예", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                isRunning = false;
-                TimerRunning = false;
-                startTime = 0;
-                pauseTime = 0;
-                timer = 0;
-                _timer = 0;// 스톱버튼 누를 시 전부 초기화
-                // runTime -> 운동시간은 기록해야 하니 제외
-
-                timerTask.cancel();
-
-                Intent intent = new Intent(getApplicationContext(), ExercizeResultActivity.class);
-                intent.putExtra("record", getRecord());
-                startActivity(intent);
-                finish();
-            }
-        });
-        alert_ex.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
+                    Intent intent = new Intent(getApplicationContext(), ExercizeResultActivity.class);
+                    intent.putExtra("record", getRecord());
+                    startActivity(intent);
+                    finish(); // 운동 결과 페이지 보여주고 종료
+                }
+            });
+            alert_ex.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
 //                  // 아니오 누를 시 아무것도 안 함
-            }
-        });
-        alert_ex.setTitle("수고하셨습니다!");
-        AlertDialog alert = alert_ex.create();
-        alert.show();
-    } // 종료 버튼 눌렀을 때
+                }
+            });
+            alert_ex.setTitle("수고하셨습니다!");
+            AlertDialog alert = alert_ex.create();
+            alert.show();
+        }
+    } // 종료 버튼 눌렀을 때. 지금은 운동 시작 안 하면 종료 불가 -> 추후 수정 필요
 
-    private void _timerStart() {
-        if (_timer == 0)
-            _timer = timer;
+    private void setExercizeRecyclerView() {
+        adapter = new ExercizeAdapter(routine);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
 
-        if (timer != 0)
-            TimerRunning = !TimerRunning;
+        if (adapter != null) {
+            adapter.setOnExercizeClickListener(new ExercizeAdapter.OnExercizeClick() { // 어댑터 데이터를 전송 받기 위한 인터페이스 콜백
+                @Override
+                public void onExercizeClick(int position, TextView CountView, TextView AerobicTxtView, ProgressBar AerobicBar) { // 운동 기록과 운동 메모를 전달 받아
+                    if (isRunning) {
+                        Exercize e = routine.getExercizes().get(position);
+                        String cat = e.getState();
+                        int count = e.getCount();
+                        int SetCnt = recordExercizes.get(position).getCount();
 
-        if (TimerRunning)
-            TimerStBtn.setText("중지");
-        else
-            TimerStBtn.setText("시작");
-    } // 타이머 시작
+                        if (cat.equals("유산소")) {
+                            if (AdapterAerobicBar == null) {
+                                AdapterAerobicBar = AerobicBar;
+                                AdapterAerobicTxtView = AerobicTxtView;
+                            } else if (AdapterAerobicBar == AerobicBar) {
+                                AdapterAerobicBar = null;
+                                AdapterAerobicTxtView = null;
+                            }
+                        } else {
+                            if (SetCnt < count)
+                                SetCnt++;
 
-    private void _timerReset() {
-        TimerRunning = false;
-        TimerStBtn.setText("시작");
-        timer = 0;
-        _timer = 0;
-    } // 타이머 초기화
+                            recordExercizes.get(position).setCount(SetCnt);
+                            CountView.setText(Integer.toString(SetCnt) + "/" + Integer.toString(count));
+                        }
+                    }
+                }
+            });
+        }
+    } // 리사이클러 뷰 생성 -> 추후 수정 필요
 
-    private void timerPlus(int sec) {
-        timer += sec;
-    }
+    public Routine getRecord() {
+        Routine record = new Routine("운동 테스트", "전신", recordExercizes);
+        record.setStartTime(Long.toString(startTime));
+        record.setEndTime(Long.toString(System.currentTimeMillis()));
+        record.setRunTime(Long.toString(runTime));
+
+        return record;
+    } // 운동 기록을 토대로 루틴 객체를 만드는 메서드
 
     private void someWork() {
         Message msg = new Message();
-
+        // arg1 휴식시간
         if (isRunning)
-            runTime = (int)(System.currentTimeMillis() - startTime); // 현재 시간 - 시작 버튼 누른 시간 = 동작 시간
+            runTime = (int) (System.currentTimeMillis() - reStTime); // 현재 시간 - 시작 버튼 누른 시간 = 동작 시간
+        else
+            msg.arg1 = (int) (System.currentTimeMillis() - pauseTime); // 휴식시간
 
         handler.sendMessage(msg);
     }
@@ -275,44 +207,52 @@ public class ExercizeRecordActivity extends AppCompatActivity {
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            int mSec = runTime % 1000 / 10;
+            int mSec = runTime % 1000 / 10; // msec은 언젠가 쓸 수도 있음
             int sec = (runTime / 1000) % 60;
             int min = (runTime / 1000) / 60 % 60;
             int hour = (runTime / 1000) / (60 * 60);
 
-            // 1000이 1초 1000*60 은 1분 1000*60*10은 10분 1000*60*60은 한시간
-
-            if (TimerRunning && timer > 0 && xrunTime/1000 < runTime/1000)
-                timer--; // 1초에 1씩 줄어들게
-
-            int sec2 = timer % 60; // 타이머는 1이 1초
-            int min2 = timer / 60 % 60;
-
-            if (timer == 0) {
-                TimerRunning = false;
-                TimerStBtn.setText("시작");
-                timer = _timer;
-                _timer = 0;
-            }
-
-            xrunTime = runTime; // 이전 운동 시간을 기록
+            int restMSec = msg.arg1 % 1000 / 10; // msec은 언젠가 쓸 수도 있음
+            int restSec = (msg.arg1 / 1000) % 60;
+            int restMin = (msg.arg1 / 1000) / 60 % 60;
+            int restHour = (msg.arg1 / 1000) / (60 * 60);
 
             @SuppressLint("DefaultLocale") String result = String.format("%02d:%02d:%02d", hour, min, sec);
-            @SuppressLint("DefaultLocale") String result2 = String.format("%02d:%02d", min2, sec2);
+            @SuppressLint("DefaultLocale") String result2 = String.format("%02d:%02d:%02d", restHour, restMin, restSec);
+
             StopWatchTextView.setText(result);
             TimerTextView.setText(result2);
+
+            if (AdapterAerobicBar != null) {
+                int t = AdapterAerobicBar.getProgress();
+
+                if (xRunTime < runTime && t < AdapterAerobicBar.getMax()) {
+                    t++; // 1초에 1씩 증가하게 바꾸기 나중에
+                    AdapterAerobicBar.setProgress(t);
+                }
+
+                if (t == AdapterAerobicBar.getMax())
+                    AdapterAerobicBar = null;
+
+                int Asec  = t % 60;
+                int Amin  = t / 60 % 60;
+                int Ahour = t / (60 * 60);
+
+                @SuppressLint("DefaultLocale") String resultT = String.format("%02d:%02d:%02d", Ahour, Amin, Asec);
+                AdapterAerobicTxtView.setText(resultT);
+            }
+
+            xRunTime = runTime;
         }
     };
 
-    public boolean workRunning() {
-        return isRunning;
-    }
-
     @Override
-    public void onBackPressed() { 
+    public void onBackPressed() {
         Intent intent = new Intent(Intent.ACTION_MAIN);
         intent.addCategory(Intent.CATEGORY_HOME);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
-    } // 뒤로가기 버튼 눌렀을 때 홈화면과 동일한 효과를 내도록
+    } // 뒤로가기 버튼 눌렀을 때 홈화면과 동일한 효과를 내도록, 일단 유지
+      // 나중에 뒤로가기 눌렀을 종료하시겠습니까? 저장 안 됩니다~ 뜨게 하고 종료하게 할지
+      // 아니면 뒤로가고 다시 돌아왔을 때 운동 상택가 유지되게 할지 결정하고 수정
 }
