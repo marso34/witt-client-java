@@ -57,13 +57,13 @@ public class ExercizeResultActivity extends AppCompatActivity {
             result += i.getTitle() + "\n";
 
             int cnt = 0;
-
-            String weight, Set;
-
-            weight = i.getCount().substring(0, i.getCount().lastIndexOf(":"));
-            Set = i.getCount().substring(i.getCount().lastIndexOf(":")+1);
-
-            result += weight + "Kg " + Set + "세트" + "\n";
+//
+//            String weight, Set;
+//
+//            weight = i.getCount().substring(0, i.getCount().lastIndexOf(":"));
+//            Set = i.getCount().substring(i.getCount().lastIndexOf(":")+1);
+//
+//            result += weight + "Kg " + Set + "세트" + "\n";
 
             if (cnt != 0)
                 result += "시작시간 = " + DateConversion(i.getStartTime(), 0) + ", 종료시간 = " + DateConversion(i.getEndTime(), 0) + "\n";

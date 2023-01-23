@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.healthappttt.Activity.CalenderActivity;
 import com.example.healthappttt.Activity.CreateRoutineActivity;
+import com.example.healthappttt.Activity.SetExercizeActivity;
 import com.example.healthappttt.Activity.ExercizeRecordActivity;
 import com.example.healthappttt.Activity.LoginActivity;
 import com.example.healthappttt.R;
@@ -109,10 +110,9 @@ public class HomeFragment extends Fragment {
         StartBtn.setOnClickListener(new View.OnClickListener() { //운동시작 버튼 누를시 이벤트
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), ExercizeRecordActivity.class);
+                Intent intent = new Intent(getActivity(), SetExercizeActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
-
             }
         });
 
