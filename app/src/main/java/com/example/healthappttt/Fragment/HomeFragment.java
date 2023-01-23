@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -75,7 +76,6 @@ public class HomeFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
     }
 
     @Override
@@ -88,7 +88,7 @@ public class HomeFragment extends Fragment {
         userAdapter = new UserAdapter(getActivity(), userList);
 
         final RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
-
+        recyclerView.addItemDecoration(new DividerItemDecoration(view.getContext(), 1));
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(userAdapter);
@@ -120,7 +120,7 @@ public class HomeFragment extends Fragment {
                 int lastVisibleItemPosition = ((LinearLayoutManager)layoutManager).findLastVisibleItemPosition();
 
                 if(totalItemCount - 3 <= lastVisibleItemPosition && !updating){
-                    postsUpdate(false);
+                    postsUpdate(true);
                 }
 
                 if(0 < firstVisibleItemPosition){
@@ -138,7 +138,7 @@ public class HomeFragment extends Fragment {
     private void postsUpdate(final boolean clear) {
         updating = true;
         //Date date = userList.size() == 0 || clear ? new Date() : userList.get(userList.size() - 1).getCreatedAt();
-        CollectionReference collectionReference = firebaseFirestore.collection("user");
+        CollectionReference collectionReference = firebaseFirestore.collection("users");
         collectionReference.get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -148,10 +148,30 @@ public class HomeFragment extends Fragment {
                                 userList.clear();
                             }
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d(TAG, document.getId() + " => " + document.getData());
-//                               ***** userList.add(new User()); DB에서 각 값들긇어와서 넣어주기.
+                                Log.d(TAG, document.getId() + " &&&&+&=> " + document.getData().get("userName").toString());
+                               User a= new User(
+                                       Double.parseDouble(document.getData().get("userTemperature").toString()),
+                                        document.getData().get("reviewTableKey").toString(),
+                                        Double.parseDouble(document.getData().get("lat").toString()),
+                                        Double.parseDouble(document.getData().get("lon").toString()),
+                                        document.getData().get("GoodTime").toString(),
+                                        document.getData().get("userName").toString(),
+                                        document.getData().get("profileImg").toString(),
+                                        document.getData().get("bench").toString(),
+                                        document.getData().get("deadlift").toString(),
+                                        document.getData().get("squat").toString(),
+                                        document.getData().get("locationName").toString()
+                                        );
+                                Log.d(TAG,  " listaaaa " +
+                                        a.getUserName());
+                                userList.add(a);
+                                Log.d(TAG,  " list " +
+                                        userList.get(0).getUserName());
                             }
                             userAdapter.notifyDataSetChanged();
+
+
+
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }

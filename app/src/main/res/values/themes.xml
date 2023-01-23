@@ -1,7 +1,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.HealthAppTTT" parent='Theme.AppCompat.Light' >
+    <style name="Theme.HealthAppTTT" parent='Theme.AppCompat.Light.NoActionBar' >
         <!-- Primary brand color. -->
+        <item name="android:windowFullscreen">true</item>
         <item name="colorPrimary">@color/purple_500</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
         <item name="colorOnPrimary">@color/white</item>
@@ -12,10 +13,8 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
-
         <item name="windowNoTitle">true</item>
 <!--        <item name="android:windowFullscreen">true</item>-->
-
     </style>
     <style name="Theme.HealthAppTTT.NoActionBar">
         <item name="windowActionBar">false</item>
@@ -23,13 +22,11 @@
     </style>
     <style name="Theme.HealthAppTTT.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
     <style name="Theme.HealthAppTTT.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
     <style name="AppBottomSheetDialogTheme"
         parent="Theme.Design.Light.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/AppModalStyle</item>
         <item name="android:windowIsFloating">false</item>
     </style>
-
     <style name="AppModalStyle"
             parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@drawable/rounded_dialog</item>
