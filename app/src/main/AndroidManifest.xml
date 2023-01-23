@@ -19,7 +19,7 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".Activity.SetExercizeActivity"
+            android:name=".Activity.SetExerciseActivity"
             android:exported="false" />
         <activity
             android:name=".Activity.signupActivity"
@@ -50,16 +50,16 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".Activity.CreateExercizeActivity"
+            android:name=".Activity.CreateExerciseActivity"
             android:exported="false" />
         <activity
             android:name=".Activity.CreateRoutineActivity"
             android:exported="false" />
         <activity
-            android:name=".Activity.ExercizeRecordActivity"
+            android:name=".Activity.ExerciseRecordActivity"
             android:exported="false" />
         <activity
-            android:name=".Activity.ExercizeResultActivity"
+            android:name=".Activity.ExerciseResultActivity"
             android:exported="false" />
         <activity
             android:name=".Activity.MainActivity"

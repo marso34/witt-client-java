@@ -67,14 +67,18 @@ public class ProflieFragment extends Fragment {
         // Inflate the layout for this fragment
 
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_proflie, container, false);
+
         Button testBtn = (Button) view.findViewById(R.id.testBtn);
 
-        testBtn.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), SetExerciseActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-            startActivity(intent);
+        testBtn.setOnClickListener(new View.OnClickListener() { //운동시작 버튼 누를시 이벤트
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), SetExerciseActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(intent);
+            }
         });
 
-        return inflater.inflate(R.layout.fragment_proflie, container, false);
+        return view;
     }
 }
