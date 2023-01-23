@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -27,6 +28,8 @@ public class setExercizeAdapter extends RecyclerView.Adapter<setExercizeAdapter.
     }
 
     public static class MainViewHolder extends RecyclerView.ViewHolder {
+        public LinearLayout AerobicLayout;
+        public LinearLayout countLayout;
         public TextView CatView;
         public TextView NameView;
         public TextView DetailView;
@@ -36,6 +39,8 @@ public class setExercizeAdapter extends RecyclerView.Adapter<setExercizeAdapter.
         public MainViewHolder(View view) {
             super(view);
 
+            this.AerobicLayout = (LinearLayout) view.findViewById(R.id.AerobicLayout);
+            this.countLayout = (LinearLayout) view.findViewById(R.id.countLayout);
             this.CatView = (TextView) view.findViewById(R.id.exerciseCat);
             this.NameView = (TextView) view.findViewById(R.id.exerciseName);
             this.DetailView = (TextView) view.findViewById(R.id.exerciseDetail);
@@ -45,7 +50,7 @@ public class setExercizeAdapter extends RecyclerView.Adapter<setExercizeAdapter.
     @NonNull
     @Override
     public MainViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adpter_set_exercize, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_exercize, parent, false);
         final MainViewHolder mainViewHolder = new MainViewHolder(view);
 
         return mainViewHolder;
@@ -54,6 +59,9 @@ public class setExercizeAdapter extends RecyclerView.Adapter<setExercizeAdapter.
     @Override
     public void onBindViewHolder(@NonNull MainViewHolder holder, int position) {
         setTxt(holder);
+
+        holder.AerobicLayout.setVisibility(View.GONE);
+        holder.countLayout.setVisibility(View.GONE);
 
         holder.CatView.setText(this.exercizes.get(position).getState()); // 운동 부위
         holder.CatView.setBackgroundColor(Color.parseColor(this.exercizes.get(position).getColor()));

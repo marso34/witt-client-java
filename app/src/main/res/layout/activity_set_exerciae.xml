@@ -37,7 +37,7 @@
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:listitem="@layout/adpter_set_exercize"
+            tools:listitem="@layout/adapter_exercize"
             app:layout_constrainedHeight="true"
             android:paddingBottom="200dp"
             android:clipToPadding="false" >
