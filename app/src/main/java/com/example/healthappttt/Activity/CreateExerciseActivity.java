@@ -7,11 +7,11 @@ import android.widget.Button;
 
 import com.example.healthappttt.R;
 
-public class CreateExercizeActivity extends AppCompatActivity {
+public class CreateExerciseActivity extends AppCompatActivity {
     Button exSelectBtn[] =  new Button[3];
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_exercize);
+        setContentView(R.layout.activity_create_exercise);
     }
 }

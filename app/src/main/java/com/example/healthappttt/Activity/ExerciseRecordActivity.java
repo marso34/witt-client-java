@@ -1,6 +1,5 @@
 package com.example.healthappttt.Activity;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -12,30 +11,27 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.example.healthappttt.Data.Exercize;
-import com.example.healthappttt.adapter.ExercizeAdapter;
+import com.example.healthappttt.Data.Exercise;
+import com.example.healthappttt.adapter.ExerciseAdapter;
 import com.example.healthappttt.R;
 import com.example.healthappttt.Data.Routine;
-import com.example.healthappttt.Data.Exercize;
-import com.example.healthappttt.Data.Set;
 
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class ExercizeRecordActivity extends AppCompatActivity {
+public class ExerciseRecordActivity extends AppCompatActivity {
     private LinearLayout StopWatch;     // 스톱워치, 타이머 레이아웃
     private TextView StopWatchTextView; // 운동 시간 보여주는 뷰
     private TextView TimerTextView;     // 휴식시간 보여주는 뷰
     private RecyclerView recyclerView;
-    private ExercizeAdapter adapter;
+    private ExerciseAdapter adapter;
     private Button StopBtn;  // 종료 버튼
     private TextView StopBtn2; // 오늘은 여기까지 버튼
 
@@ -46,7 +42,7 @@ public class ExercizeRecordActivity extends AppCompatActivity {
     private TimerTask timerTask;
 
     private Routine routine;
-    private ArrayList<Exercize> recordExercizes; // 실제 운동을 기록, 어댑터에서 한 기록을 받아옴
+    private ArrayList<Exercise> recordExercises; // 실제 운동을 기록, 어댑터에서 한 기록을 받아옴
 
     private Boolean isRunning;
     private long startTime; // 운동 시작 시간
@@ -58,7 +54,7 @@ public class ExercizeRecordActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_exercize_record);
+        setContentView(R.layout.activity_exercise_record);
 
         StopWatch = (LinearLayout) findViewById(R.id.stopWatch);
         StopWatchTextView = (TextView) findViewById(R.id.stopWatchView);
@@ -71,7 +67,7 @@ public class ExercizeRecordActivity extends AppCompatActivity {
         routine = (Routine) intent.getSerializableExtra("routine");
 
         init(); // 초기화
-        setExercizeRecyclerView();   // 운동 리사이클러 뷰 생성
+        setExerciseRecyclerView();   // 운동 리사이클러 뷰 생성
 
         StopWatch.setOnClickListener(v -> _start(v)); // 스톱워치 눌렀을 때
         StopBtn.setOnClickListener(v -> _stop(v)); // 운동 종료 버튼 눌렀을 때
@@ -85,11 +81,11 @@ public class ExercizeRecordActivity extends AppCompatActivity {
         pauseTime = 0;
         isRunning = false;
 
-        recordExercizes = new ArrayList<Exercize>();
-        ArrayList<Exercize> exer = routine.getExercizes();
+        recordExercises = new ArrayList<Exercise>();
+        ArrayList<Exercise> exer = routine.getExercises();
 
-        for (Exercize i : exer) {
-            recordExercizes.add(new Exercize(i.getTitle(), i.getState(), 0, 0));
+        for (Exercise i : exer) {
+            recordExercises.add(new Exercise(i.getTitle(), i.getState(), 0, 0));
         }
     }
 
@@ -118,7 +114,7 @@ public class ExercizeRecordActivity extends AppCompatActivity {
 
     private void _stop(View v) {
         if (startTime != 0) {
-            AlertDialog.Builder alert_ex = new AlertDialog.Builder(ExercizeRecordActivity.this);
+            AlertDialog.Builder alert_ex = new AlertDialog.Builder(ExerciseRecordActivity.this);
             alert_ex.setMessage("운동을 끝낼까요?");
             alert_ex.setPositiveButton("예", new DialogInterface.OnClickListener() {
                 @Override
@@ -128,7 +124,7 @@ public class ExercizeRecordActivity extends AppCompatActivity {
                     pauseTime = 0; // 스톱버튼 누를 시 전부 초기화
                     timerTask.cancel();
 
-                    Intent intent = new Intent(getApplicationContext(), ExercizeResultActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), ExerciseResultActivity.class);
                     intent.putExtra("record", getRecord());
                     startActivity(intent);
                     finish(); // 운동 결과 페이지 보여주고 종료
@@ -146,21 +142,21 @@ public class ExercizeRecordActivity extends AppCompatActivity {
         }
     } // 종료 버튼 눌렀을 때. 지금은 운동 시작 안 하면 종료 불가 -> 추후 수정 필요
 
-    private void setExercizeRecyclerView() {
-        adapter = new ExercizeAdapter(routine);
+    private void setExerciseRecyclerView() {
+        adapter = new ExerciseAdapter(routine);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
         if (adapter != null) {
-            adapter.setOnExercizeClickListener(new ExercizeAdapter.OnExercizeClick() { // 어댑터 데이터를 전송 받기 위한 인터페이스 콜백
+            adapter.setOnExerciseClickListener(new ExerciseAdapter.OnExerciseClick() { // 어댑터 데이터를 전송 받기 위한 인터페이스 콜백
                 @Override
-                public void onExercizeClick(int position, TextView CountView, TextView AerobicTxtView, ProgressBar AerobicBar) { // 운동 기록과 운동 메모를 전달 받아
+                public void onExerciseClick(int position, TextView CountView, TextView AerobicTxtView, ProgressBar AerobicBar) { // 운동 기록과 운동 메모를 전달 받아
                     if (isRunning) {
-                        Exercize e = routine.getExercizes().get(position);
+                        Exercise e = routine.getExercises().get(position);
                         String cat = e.getState();
                         int count = e.getCount();
-                        int SetCnt = recordExercizes.get(position).getCount();
+                        int SetCnt = recordExercises.get(position).getCount();
 
                         if (cat.equals("유산소")) {
                             if (AdapterAerobicBar == null) {
@@ -174,7 +170,7 @@ public class ExercizeRecordActivity extends AppCompatActivity {
                             if (SetCnt < count)
                                 SetCnt++;
 
-                            recordExercizes.get(position).setCount(SetCnt);
+                            recordExercises.get(position).setCount(SetCnt);
                             CountView.setText(Integer.toString(SetCnt) + "/" + Integer.toString(count));
                         }
                     }
@@ -184,7 +180,7 @@ public class ExercizeRecordActivity extends AppCompatActivity {
     } // 리사이클러 뷰 생성 -> 추후 수정 필요
 
     public Routine getRecord() {
-        Routine record = new Routine("운동 테스트", "전신", recordExercizes);
+        Routine record = new Routine("운동 테스트", "전신", recordExercises);
         record.setStartTime(Long.toString(startTime));
         record.setEndTime(Long.toString(System.currentTimeMillis()));
         record.setRunTime(Long.toString(runTime));

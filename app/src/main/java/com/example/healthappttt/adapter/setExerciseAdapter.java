@@ -10,21 +10,21 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.healthappttt.Data.Exercize;
+import com.example.healthappttt.Data.Exercise;
 import com.example.healthappttt.Data.Routine;
 import com.example.healthappttt.R;
 
 import java.util.ArrayList;
 
-public class setExercizeAdapter extends RecyclerView.Adapter<setExercizeAdapter.MainViewHolder> {
-    private ArrayList<Exercize> exercizes;
-    private String exercizeCategories;
-    private int exercizeCnt;
+public class setExerciseAdapter extends RecyclerView.Adapter<setExerciseAdapter.MainViewHolder> {
+    private ArrayList<Exercise> exercises;
+    private String exerciseCategories;
+    private int exerciseCnt;
 
-    public setExercizeAdapter(Routine routine) { // 일단 테스트
-        this.exercizes = new ArrayList<>(routine.getExercizes());
-        this.exercizeCategories = routine.getExercizeCategories();
-        this.exercizeCnt = routine.getExerciezeCount();
+    public setExerciseAdapter(Routine routine) { // 일단 테스트
+        this.exercises = new ArrayList<>(routine.getExercises());
+        this.exerciseCategories = routine.getExerciseCategories();
+        this.exerciseCnt = routine.getExercieseCount();
     }
 
     public static class MainViewHolder extends RecyclerView.ViewHolder {
@@ -50,7 +50,7 @@ public class setExercizeAdapter extends RecyclerView.Adapter<setExercizeAdapter.
     @NonNull
     @Override
     public MainViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_exercize, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_exercise, parent, false);
         final MainViewHolder mainViewHolder = new MainViewHolder(view);
 
         return mainViewHolder;
@@ -63,25 +63,25 @@ public class setExercizeAdapter extends RecyclerView.Adapter<setExercizeAdapter.
         holder.AerobicLayout.setVisibility(View.GONE);
         holder.countLayout.setVisibility(View.GONE);
 
-        holder.CatView.setText(this.exercizes.get(position).getState()); // 운동 부위
-        holder.CatView.setBackgroundColor(Color.parseColor(this.exercizes.get(position).getColor()));
-        holder.NameView.setText(this.exercizes.get(position).getTitle()); // 운동 이름
+        holder.CatView.setText(this.exercises.get(position).getState()); // 운동 부위
+        holder.CatView.setBackgroundColor(Color.parseColor(this.exercises.get(position).getColor()));
+        holder.NameView.setText(this.exercises.get(position).getTitle()); // 운동 이름
         holder.DetailView.setText(holder.DetailViewTxt);
     }
 
 
     @Override
     public int getItemCount() {
-        return exercizeCnt;
+        return exerciseCnt;
     }
 
     private void setTxt(@NonNull MainViewHolder holder) { // 초기값 설정
         int position = holder.getAdapterPosition();
-        int count = this.exercizes.get(position).getCount();
-        int volume = this.exercizes.get(position).getVolume();
+        int count = this.exercises.get(position).getCount();
+        int volume = this.exercises.get(position).getVolume();
 
         if (holder.DetailViewTxt == null) {
-            if (this.exercizes.get(position).getState() == "유산소") {
+            if (this.exercises.get(position).getState() == "유산소") {
                 holder.DetailViewTxt = "속도 " + volume +  "· " + count + "분";
             } else {
                 holder.DetailViewTxt = volume + " Kg · " + count + " 세트";

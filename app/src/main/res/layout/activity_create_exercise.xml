@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    tools:context=".Activity.CreateExercizeActivity"
+    tools:context=".Activity.CreateExerciseActivity"
     >
     <ScrollView
         android:layout_width="match_parent"
@@ -69,6 +69,7 @@
 
         </LinearLayout>
         <Button
+            android:id="@+id/set"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
             android:layout_width="80dp"
@@ -77,7 +78,6 @@
             android:layout_gravity="center"
             android:background="#00000000"
             style="?android:attr/borderlessButtonStyle"
-            android:id="@+id/set"
             >
         </Button>
         <LinearLayout

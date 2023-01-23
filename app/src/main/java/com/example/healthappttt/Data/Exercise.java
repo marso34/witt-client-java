@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Exercize implements Serializable {
+public class Exercise implements Serializable {
     private String title;
     private String state;  // 운동 부위 결정 (시간인지 무게, 세트인지)
     private String color;
@@ -14,9 +14,7 @@ public class Exercize implements Serializable {
     private String startTime;
     private String endTime;
 
-//    private ArrayList<Set> exercizeSet; // 나중에 ArrayList로 변경
-
-    public Exercize(String title, String state, int count, int volume) {
+    public Exercise(String title, String state, int count, int volume) {
         this.title = title;
         this.state = state;
         this.count = count;
@@ -31,7 +29,7 @@ public class Exercize implements Serializable {
         }
     }
 
-    public Exercize(Exercize e) {
+    public Exercise(Exercise e) {
         this.title = e.title;
         this.state = e.state;
         this.count = e.count;
@@ -39,13 +37,12 @@ public class Exercize implements Serializable {
         this.endTime = e.endTime;
     }
 
-    public Map<String, Object> getExercize() {
+    public Map<String, Object> getExercise() {
         Map<String, Object> docData = new HashMap<>();
         docData.put("title", title);
         docData.put("state", state);
         docData.put("startTime", startTime);
         docData.put("endTime", endTime);
-//        docData.put("exercizeSet", exercizeSet);
 
         return  docData;
     }

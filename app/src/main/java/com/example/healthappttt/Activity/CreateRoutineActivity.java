@@ -11,7 +11,7 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 
-import com.example.healthappttt.Activity.CreateExercizeActivity;
+import com.example.healthappttt.Activity.CreateExerciseActivity;
 import com.example.healthappttt.R;
 
 public class CreateRoutineActivity extends AppCompatActivity {
@@ -37,7 +37,7 @@ public class CreateRoutineActivity extends AppCompatActivity {
         btnAddEx.setOnClickListener(new Button.OnClickListener(){
           @Override
             public void onClick(View view){
-              myStartActivity(CreateExercizeActivity.class);
+              myStartActivity(CreateExerciseActivity.class);
           }
         });
     }

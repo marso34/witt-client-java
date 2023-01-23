@@ -1,10 +1,17 @@
 package com.example.healthappttt.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+
 import com.example.healthappttt.R;
+import com.example.healthappttt.Activity.SetExerciseActivity;
+
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import androidx.fragment.app.Fragment;
 
 /**
@@ -58,6 +65,16 @@ public class ProflieFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
+        ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_proflie, container, false);
+        Button testBtn = (Button) view.findViewById(R.id.testBtn);
+
+        testBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), SetExerciseActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            startActivity(intent);
+        });
+
         return inflater.inflate(R.layout.fragment_proflie, container, false);
     }
 }
