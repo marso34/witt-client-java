@@ -1,6 +1,9 @@
 package com.example.healthappttt.adapter;//package com.example.healthappttt.adapter;
 
+import static android.content.ContentValues.TAG;
+
 import android.app.Activity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.healthappttt.Data.User;
 import com.example.healthappttt.R;
 import com.google.firebase.auth.UserInfo;
@@ -65,9 +69,15 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
         TextView ExerciseArea = cardView.findViewById(R.id.EArea);
 
         User userInfo = mDataset.get(position);
-//        if(mDataset.get(position).getPhotoUrl() != null){
-//            Glide.with(activity).load(mDataset.get(position).getPhotoUrl()).centerCrop().override(500).into(photoImageVIew);
-//        } 사진넣기
+        Log.d(TAG, "onBindViewHolder: "+ userInfo.getUserName().toString());
+        Name.setText(userInfo.getUserName().toString());
+        LocaName.setText(userInfo.getLocationName());
+        PreferredTime.setText("11~13");
+        ExerciseArea.setText("가슴");
+
+       if(userInfo.getProfileImg() != null){
+          Glide.with(activity).load(userInfo.getProfileImg()).centerCrop().override(500).into(photoImageVIew);
+       }
 
     }
 

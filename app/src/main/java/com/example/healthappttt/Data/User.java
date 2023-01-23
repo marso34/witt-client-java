@@ -8,18 +8,31 @@ import java.util.Map;
 
     public class User implements Serializable {
 
-        private String UserName;
-        private Double UserTemperature;
-        private String ProfileImg;
-        private String Bench;
-        public String GoodTime;
-        private String Deadlift;
-        private String Squat;
-        private String LocationName;
-        private String ReviewTableKey;
-        private Double Lat;
-        private Double Lon;
-
+        private String UserName = "";
+        private Double UserTemperature = 36.5;
+        private String ProfileImg = "";
+        private String Bench = "";
+        public String GoodTime = "";
+        private String Deadlift = "";
+        private String Squat = "";
+        private String LocationName = "";
+        private String ReviewTableKey ="";
+        private Double Lat = 0.0;
+        private Double Lon = 0.0;
+//
+//        public User(User a){
+//            this.UserName = a.getUserName();
+//            this.UserTemperature = a.getUserTemperature();
+//            this.ProfileImg = a.getProfileImg();
+//            this.Bench = a.getBench();
+//            this.Deadlift = a.getDeadlift();
+//            this.Squat = a.getSquat();
+//            this.LocationName =a.getLocationName();
+//            this.ReviewTableKey =  a.getReviewTableKey();// 유저생성할 때 이키로 유저만들것.
+//            this.Lat = a.getLat();
+//            this.Lon = a.getLon();
+//            GoodTime = a.GoodTime;
+//        }
         public User(String UID,String UN, String PRI, String Bench, String Deadlift, String Squat,String LCN) {
 
             this.UserName = UN;
@@ -33,6 +46,19 @@ import java.util.Map;
             this.Lat = 0.0;
             this.Lon = 0.0;
             GoodTime = "0";
+        }
+        public User(Double UserTemperature_,String ReviewTableKey_,Double lat,Double lon,String Good,String UN, String PRI, String Bench, String Deadlift, String Squat,String LCN) {
+            this.UserName = UN;
+            this.UserTemperature = UserTemperature_;
+            this.ProfileImg = PRI;
+            this.Bench = Bench;
+            this.Deadlift = Deadlift;
+            this.Squat = Squat;
+            this.LocationName = LCN;
+            this.ReviewTableKey = ReviewTableKey_;// 유저생성할 때 이키로 유저만들것.
+            this.Lat = lat;
+            this.Lon = lon;
+            GoodTime = Good;
         }
         public String getUserName(){return this.UserName;}
         public String getBench(){
