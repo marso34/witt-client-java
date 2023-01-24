@@ -12,7 +12,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.healthappttt.Fragment.HomeFragment;
 import com.example.healthappttt.Fragment.ProflieFragment;
-import com.example.healthappttt.Fragment.SettingFragment;
+import com.example.healthappttt.Fragment.ChattingFragment;
 import com.example.healthappttt.R;
 import com.example.healthappttt.databinding.ActivityMainBinding;
 
@@ -45,11 +45,14 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.home:
                     replaceFragment(new HomeFragment());
                     break;
+                case R.id.routine:
+//                    replaceFragment(new RoutineFragment());
+                    break;
+                case R.id.chatting:
+                    replaceFragment(new ChattingFragment());
+                    break;
                 case R.id.profile:
                     replaceFragment(new ProflieFragment());
-                    break;
-                case R.id.setting:
-                    replaceFragment(new SettingFragment());
                     break;
             }
 
