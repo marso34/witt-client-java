@@ -5,20 +5,12 @@
     android:layout_height="match_parent"
     tools:context=".Fragment.ProflieFragment">
 
-    <LinearLayout
+
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical" >
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Proflie" />
-        <Button
-            android:id="@+id/testBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="운동하기 테스트"/>
-    </LinearLayout>
+        android:layout_height="wrap_content"
+        android:text="Proflie" />
+
 
 
 </FrameLayout>

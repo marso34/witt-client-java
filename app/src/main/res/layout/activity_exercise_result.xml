@@ -68,7 +68,7 @@
         android:background="#3facfa" >
 <!--모서리 라운드 처리-->
         <TextView
-            android:id="@+id/exercizeCategories"
+            android:id="@+id/exerciseCategories"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="3dp"
