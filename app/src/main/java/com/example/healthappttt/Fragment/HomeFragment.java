@@ -170,8 +170,6 @@ public class HomeFragment extends Fragment {
                             }
                             userAdapter.notifyDataSetChanged();
 
-
-
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }

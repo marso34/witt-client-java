@@ -33,6 +33,7 @@
                 android:layout_marginLeft="15dp"
                 android:background="@color/white"
                 >
+
                 <Button
                     android:gravity="left|center"
                     android:layout_width="70dp"
@@ -51,7 +52,7 @@
                     android:layout_height="30dp"
                     android:text="같은 헬스장만"
                     android:textStyle="bold"
-                    android:textColor="@color/black"
+                    android:textColor="@color/gray"
                     android:background="#00ff0000"
                     ></Button>
                 <Button
@@ -62,9 +63,13 @@
                     android:layout_height="30dp"
                     android:text="선호 시간순"
                     android:textStyle="bold"
-                    android:textColor="@color/black"
+                    android:textColor="@color/gray"
                     android:background="#00ff0000"
                     ></Button>
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tabLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
             </LinearLayout>
             <View
                 android:layout_width="match_parent"
