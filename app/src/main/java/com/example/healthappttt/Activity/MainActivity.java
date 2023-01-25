@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.healthappttt.Fragment.HomeFragment;
 import com.example.healthappttt.Fragment.ProflieFragment;
 import com.example.healthappttt.Fragment.ChattingFragment;
+import com.example.healthappttt.Fragment.RoutineFragment;
 import com.example.healthappttt.R;
 import com.example.healthappttt.databinding.ActivityMainBinding;
 
@@ -30,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
                     replaceFragment(new HomeFragment());
                     break;
                 case R.id.routine:
-//                    replaceFragment(new RoutineFragment());
+                    replaceFragment(new RoutineFragment());
                     break;
                 case R.id.chatting:
                     replaceFragment(new ChattingFragment());
@@ -45,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
 
         binding.fab.setOnClickListener (view -> {
             Intent intent = new Intent(getApplicationContext(), SetExerciseActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
             startActivity(intent);
         });
     }

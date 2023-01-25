@@ -61,6 +61,7 @@ public class SetExerciseActivity extends AppCompatActivity {
     private void _start(View v) {
         Intent intent = new Intent(getApplicationContext(), ExerciseRecordActivity.class);
         intent.putExtra("routine", routine);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         startActivity(intent);
         finish(); // 운동 결과 페이지 보여주고 종료
     }

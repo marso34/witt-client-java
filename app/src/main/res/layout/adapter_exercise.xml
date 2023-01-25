@@ -8,6 +8,8 @@
     android:layout_marginHorizontal="10dp"
     android:layout_marginVertical="5dp"
     app:cardCornerRadius="25dp"
+    app:strokeWidth="0dp"
+    app:strokeColor="#e005c78c"
     tools:context=".adapter.ExerciseAdapter" >
 
     <LinearLayout
