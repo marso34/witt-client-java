@@ -141,7 +141,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.MainVi
         }
 
         if (holder.CountTxt == null) {
-            if (this.exercises.get(position).getState() == "유산소")
+            if (this.exercises.get(position).getState().equals("유산소"))
                 holder.CountTxt = Integer.toString(count);
             else
                 holder.CountTxt = "0/" + count;

@@ -85,7 +85,7 @@ public class ExerciseRecordActivity extends AppCompatActivity {
         ArrayList<Exercise> exer = routine.getExercises();
 
         for (Exercise i : exer) {
-            recordExercises.add(new Exercise(i.getTitle(), i.getState(), 0, 0));
+            recordExercises.add(new Exercise(i.getTitle(), i.getState(), 0, i.getVolume()));
         }
     }
 
@@ -224,6 +224,7 @@ public class ExerciseRecordActivity extends AppCompatActivity {
 
                 if (xRunTime < runTime && t < AdapterAerobicBar.getMax()) {
                     t++; // 1초에 1씩 증가하게 바꾸기 나중에
+//                    recordExercises.get(position).setCount(t); // position 지정 방법 필요
                     AdapterAerobicBar.setProgress(t);
                 }
 

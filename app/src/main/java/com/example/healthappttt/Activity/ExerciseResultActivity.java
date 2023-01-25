@@ -34,7 +34,7 @@ public class ExerciseResultActivity extends AppCompatActivity {
         runtime = (TextView) findViewById(R.id.runTime);
         totalWeight = (TextView) findViewById(R.id.totalWeight);
         name = (TextView) findViewById(R.id.name);
-        categories = (TextView) findViewById(R.id.exercizeCategories);
+        categories = (TextView) findViewById(R.id.exerciseCategories);
 
         text = (TextView) findViewById(R.id.text);
         ttttt = (TextView) findViewById(R.id.ttttt);
