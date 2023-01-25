@@ -15,8 +15,8 @@ import com.example.healthappttt.Activity.CreateExerciseActivity;
 import com.example.healthappttt.R;
 
 public class CreateRoutineActivity extends AppCompatActivity {
-    Button exSelectBtn[] =  new Button[9],btnAddEx;//운동부위선택 버튼들, 운동추가 액티비티로넘어가는 버튼
-    boolean t[] = new boolean[]{false,false,false,false,false,false,false,false,false};// 버튼 색 바꿀 때 눌렸나 안눌렸나 체크.
+    Button exSelectBtn[] =  new Button[8],btnAddEx;//운동부위선택 버튼들, 운동추가 액티비티로넘어가는 버튼
+    boolean t[] = new boolean[]{false,false,false,false,false,false,false,false};// 버튼 색 바꿀 때 눌렸나 안눌렸나 체크.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,17 +29,16 @@ public class CreateRoutineActivity extends AppCompatActivity {
         exSelectBtn[5] = (Button) findViewById(R.id.exercisePart5);
         exSelectBtn[6] = (Button) findViewById(R.id.exercisePart6);
         exSelectBtn[7] = (Button) findViewById(R.id.exercisePart7);
-        exSelectBtn[8] = (Button) findViewById(R.id.exercisePart8);
-        btnAddEx = (Button) findViewById(R.id.AddEx);
-        for(int i=0;i<9;++i){
-            ExercizeareaSelect(exSelectBtn[i],i);
+//        btnAddEx = (Button) findViewById(R.id.AddEx);
+        for(int i=0;i<8;++i){
+//            ExercizeareaSelect(exSelectBtn[i],i);
         }
-        btnAddEx.setOnClickListener(new Button.OnClickListener(){
-          @Override
-            public void onClick(View view){
-              myStartActivity(CreateExerciseActivity.class);
-          }
-        });
+//        btnAddEx.setOnClickListener(new Button.OnClickListener(){
+//          @Override
+//            public void onClick(View view){
+//              myStartActivity(CreateExerciseActivity.class);
+//          }
+//        });
     }
 
     private void myStartActivity(Class c) {// loginactivity페이지에서 mainactivity페이지로 넘기는 코드

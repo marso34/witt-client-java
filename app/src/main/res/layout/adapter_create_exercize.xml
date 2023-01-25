@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="10dp"
+    android:layout_marginVertical="6dp"
+    app:cardCornerRadius="10dp"
+    tools:context=".adapter.ExerciseAdapter" >
+
+    <LinearLayout
+        android:id="@+id/exerciseLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/backround" >
+
+        <LinearLayout
+            android:layout_margin="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:gravity="left"
+            android:orientation="vertical" >
+
+            <TextView
+                android:layout_marginLeft="15dp"
+                android:id="@+id/exerciseName"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginVertical="5dp"
+                android:textColor="#ffffff"
+                android:text="운동 이름"
+                android:textSize="25dp"/>
+            <LinearLayout
+                android:layout_marginLeft="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent">
+                </EditText>
+                <TextView
+                    android:layout_width="40dp"
+                    android:layout_height="20dp"
+                    android:text="v KG">
+
+                </TextView>
+                <EditText
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent">
+                </EditText>
+                <TextView
+                    android:layout_width="40dp"
+                    android:layout_height="20dp"
+                    android:text="v 회">
+
+                </TextView>
+                <EditText
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent">
+                </EditText>
+                <TextView
+                    android:layout_width="40dp"
+                    android:layout_height="20dp"
+                    android:text="v 세트">
+
+                </TextView>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
