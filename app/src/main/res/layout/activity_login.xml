@@ -5,16 +5,16 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:layout_height="match_parent"
         android:background="#fff"
+        android:orientation="vertical"
         android:padding="20dp">
 
         <ImageView
             android:id="@+id/ImageView_logo"
-            android:transitionName="img_logo"
             android:layout_width="80dp"
-            android:layout_height="80dp"/>
+            android:layout_height="80dp"
+            android:transitionName="img_logo" />
 
         <TextView
             android:id="@+id/textView"
@@ -22,13 +22,13 @@
             android:layout_height="wrap_content"
             android:text="환영합니다"
             android:textColor="#000"
-            android:textSize="60sp"/>
+            android:textSize="60sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="로그인을 하십시오"
-            android:textSize="16sp"/>
+            android:textSize="16sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -58,19 +58,35 @@
                 android:id="@+id/loginButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="로그인"
                 android:backgroundTint="#000"
-                android:textColor="#fff"/>
+                android:text="로그인"
+                android:textColor="#fff" />
 
-            <Button
-                android:id="@+id/gotoPasswordResetButton"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:elevation="0dp"
-                android:text="비밀번호를 잊어버리셨나요?"
-                android:background="#00000000"
-                android:textColor="#000"/>
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btnSignUp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:background="#00000000"
+                    android:elevation="0dp"
+                    android:text="회원가입"
+                    android:textColor="#000" />
+
+                <Button
+                    android:id="@+id/gotoPasswordResetButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:background="#00000000"
+                    android:elevation="0dp"
+                    android:text="비밀번호를 잊어버리셨나요?"
+                    android:textColor="#000" />
+            </LinearLayout>
         </LinearLayout>
 
     </LinearLayout>

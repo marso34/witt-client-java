@@ -1,8 +1,10 @@
 package com.example.healthappttt.Activity;
 
+import static android.content.ContentValues.TAG;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
@@ -19,18 +21,17 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;// 파이어 베이스의 auth기능의 접급권한을 갖는 변수
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);//activity_login_layout과 연결됨.
-
         mAuth = FirebaseAuth.getInstance();// 파이어베이스의 auth기능의 접근 권한을 갖는변수
-
         findViewById(R.id.loginButton).setOnClickListener(onClickListener);
         //findViewById = >activity_login_layout에서 "loginbutton" id를 가진
         //컴포넌트를 찾음
         findViewById(R.id.gotoPasswordResetButton).setOnClickListener(onClickListener);
+        findViewById(R.id.btnSignUp).setOnClickListener(onClickListener);
+
         //findViewById = >activity_login_layout에서 "gotoPasswordResetButton" id를 가진
         //컴포넌트를 찾음
     }
@@ -45,6 +46,9 @@ public class LoginActivity extends AppCompatActivity {
                 case R.id.gotoPasswordResetButton:// 클릭된것이 패스워드 버튼일시
                    // myStartActivity(PasswordResetActivity.class);
                     break;
+                case R.id.btnSignUp:// 클릭된것이 패스워드 버튼일시
+                    myStartActivity(signupActivity.class);
+                    break;
             }
         }
     };
@@ -52,16 +56,25 @@ public class LoginActivity extends AppCompatActivity {
     private void login() {
         String email = ((EditText) findViewById(R.id.emailEditText)).getText().toString();//emailEditText 컴포넌트에서 아이디 문자열 가져오기
         String password = ((EditText) findViewById(R.id.passwordEditText)).getText().toString();// passwordEditText컴포넌트에서 비번 문자열 가져오기
-
         if (email.length() > 0 && password.length() > 0) {//이메일과 비번의 길이가 둘 다 0보다 크면
             final RelativeLayout loaderLayout = findViewById(R.id.loaderLyaout);//변수에 loaderLyaout id를 가진 컴포넌트 할당
             loaderLayout.setVisibility(View.VISIBLE);//loaderLyaout을 보이게함 (공간차지)
-
-        } else {
-//            Util.showToast(LoginActivity.this, "이메일 또는 비밀번호를 입력해 주세요.");//이메일이나 패스워드가 입력안됐을때 메세지 출력(첫한순간에)
-        }
+            mAuth.signInWithEmailAndPassword(email, password)//파이어베이스 서버로 이메일과 비번을 보낸다. (맞나 틀리나 검증)체크
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {//람다식?
+                            loaderLayout.setVisibility(View.GONE);//loaderLyaout 삭제함.(공간차지x)
+                            if (task.isSuccessful()) {//로그인 검증이 성공하면
+                                FirebaseUser user = mAuth.getCurrentUser();//현재유저의 db에 접근권한 활성화
+                                myStartActivity(MainActivity.class);//메인엑티비티 실행
+                            } else {
+                                if (task.getException() != null) {
+                                }
+                            }
+                        }
+                    });
+        } 
     }
-
     private void myStartActivity(Class c) {// loginactivity페이지에서 mainactivity페이지로 넘기는 코드
         Intent intent = new Intent(this, c);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
