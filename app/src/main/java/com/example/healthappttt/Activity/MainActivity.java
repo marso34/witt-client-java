@@ -28,15 +28,19 @@ public class MainActivity extends AppCompatActivity {
         binding.bottomNav.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.home:
+                    binding.viewName.setText("홈");
                     replaceFragment(new HomeFragment());
                     break;
                 case R.id.routine:
+                    binding.viewName.setText("루틴");
                     replaceFragment(new RoutineFragment());
                     break;
                 case R.id.chatting:
+                    binding.viewName.setText("채팅");
                     replaceFragment(new ChattingFragment());
                     break;
                 case R.id.profile:
+                    binding.viewName.setText("프로필");
                     replaceFragment(new ProflieFragment());
                     break;
             }
