@@ -5,27 +5,25 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Routine implements Serializable { // routine 으로 수정
+public class Routine implements Serializable {
     private String title;
+    private String exerciseCategories;
     private String startTime;
     private String endTime;
     private String runTime;
-    private String exercizeCategories; // exercizeCategories 수정
-    private String notes;
 
+    private ArrayList<Exercise> exercises;
 
-    private ArrayList<Exercize> exercizes;
-
-    public Routine(String title, String exerciseArea) {
+    public Routine(String title, String exerciseCategories) {
         this.title = title;
-        this.exercizeCategories = exerciseArea;
-        this.exercizes = new ArrayList<Exercize>();
+        this.exerciseCategories = exerciseCategories;
+        this.exercises = new ArrayList<Exercise>();
     }
 
-    public Routine(String title, String exerciseArea, ArrayList<Exercize> exercizes) {
+    public Routine(String title, String exerciseCategories, ArrayList<Exercise> exercises) {
         this.title = title;
-        this.exercizeCategories = exerciseArea;
-        this.exercizes = new ArrayList<Exercize>(exercizes);
+        this.exerciseCategories = exerciseCategories;
+        this.exercises = new ArrayList<Exercise>(exercises);
     }
 
     public Routine(Routine r) {
@@ -33,10 +31,9 @@ public class Routine implements Serializable { // routine 으로 수정
         this.startTime = r.startTime;
         this.endTime = r.endTime;
         this.runTime = r.runTime;
-        this.exercizeCategories = r.exercizeCategories;
-        this.exercizes = new ArrayList<Exercize>(r.exercizes);
+        this.exerciseCategories = r.exerciseCategories;
+        this.exercises = new ArrayList<Exercise>(r.exercises);
     }
-
 
     public Map<String, Object> getRoutine() {
         Map<String, Object> docData = new HashMap<>();
@@ -44,8 +41,8 @@ public class Routine implements Serializable { // routine 으로 수정
         docData.put("startTime", startTime);
         docData.put("endTime", endTime);
         docData.put("runTime", runTime);
-        docData.put("exercizeCategories",exercizeCategories);
-        docData.put("exercizes", exercizes);
+        docData.put("exercizeCategories",exerciseCategories);
+        docData.put("exercizes", exercises);
 
         return  docData;
     }
@@ -62,13 +59,11 @@ public class Routine implements Serializable { // routine 으로 수정
     public void setEndTime(String endTime) { this.endTime = endTime; }
     public String getRunTime() { return this.runTime; }
     public void setRunTime(String runTime) { this.runTime = runTime; }
-    public String getExercizeCategories() { return this.exercizeCategories; }
-    public void setExercizeCategories(String exercizeCategories) { this.exercizeCategories = exercizeCategories; }
-    public String getNotes() { return this.notes; }
-    public void setNotes(String notes) { this.notes = notes; }
-    public ArrayList<Exercize> getExercizes() { return this.exercizes; }
-    public void setExercizes(ArrayList<Exercize> exercizes) { this.exercizes = new ArrayList<Exercize>(exercizes); }
-    public int getExerciezeCount() { return this.exercizes.size(); }
+    public String getExerciseCategories() { return this.exerciseCategories; }
+    public void setExercizeCategories(String exercizeCategories) { this.exerciseCategories = exercizeCategories; }
+    public ArrayList<Exercise> getExercises() { return this.exercises; }
+    public void setExercises(ArrayList<Exercise> exercises) { this.exercises = new ArrayList<Exercise>(exercises); }
+    public int getExercieseCount() { return this.exercises.size(); }
 }
 
 

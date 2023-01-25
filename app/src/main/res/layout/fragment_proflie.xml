@@ -5,10 +5,20 @@
     android:layout_height="match_parent"
     tools:context=".Fragment.ProflieFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Proflie" />
+        android:orientation="vertical" >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Proflie" />
+        <Button
+            android:id="@+id/testBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="운동하기 테스트"/>
+    </LinearLayout>
+
 
 </FrameLayout>

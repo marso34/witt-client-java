@@ -5,46 +5,44 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Exercize implements Serializable {
+public class Exercise implements Serializable {
     private String title;
-    private String state; // 무게만 or 무게 세트수 or 시간
+    private String state;  // 운동 부위 결정 (시간인지 무게, 세트인지)
     private String color;
+    private int count;  // 세트 or 시간 (유산소일 때만 시간)
+    private int volume; // 무게 or 속도 (유산소일 때만 속도)
     private String startTime;
     private String endTime;
-    private ArrayList<Set> exercizeSet; // 나중에 ArrayList로 변경
 
-    public Exercize(String title, String state, ArrayList<Set> exercizeSet) {
+    public Exercise(String title, String state, int count, int volume) {
         this.title = title;
         this.state = state;
-        this.color = "기본색"; // 기본색
-        this.exercizeSet = new ArrayList<>(exercizeSet);
+        this.count = count;
+        this.volume = volume;
+
+        switch (state) {
+            case "가슴" : this.color = "#f257af"; break;
+            case "등" : this.color = "#e26e5b"; break;
+            case "하체" : this.color = "#05c78c"; break;
+            case "어깨" : this.color = "#8c5adb"; break;
+            case "유산소" : this.color = "#579ef2"; break;
+        }
     }
 
-    public Exercize(String title, String state, String color, ArrayList<Set> exercizeSet) {
-        this.title = title;
-        this.state = state;
-        this.color = color;
-        this.exercizeSet = new ArrayList<>(exercizeSet);
-    }
-
-    public Exercize(Exercize e) {
+    public Exercise(Exercise e) {
         this.title = e.title;
         this.state = e.state;
-        this.color = e.color;
+        this.count = e.count;
         this.startTime = e.startTime;
         this.endTime = e.endTime;
-
-        this.exercizeSet = new ArrayList<>(e.exercizeSet);
     }
 
-    public Map<String, Object> getExercize() {
+    public Map<String, Object> getExercise() {
         Map<String, Object> docData = new HashMap<>();
         docData.put("title", title);
         docData.put("state", state);
-        docData.put("color",color);
         docData.put("startTime", startTime);
         docData.put("endTime", endTime);
-        docData.put("exercizeSet", exercizeSet);
 
         return  docData;
     }
@@ -59,11 +57,12 @@ public class Exercize implements Serializable {
     public void setState(String state) { this.state = state; }
     public String getColor() { return this.color; }
     public void setColor(String color) { this.color = color; }
+    public int getCount() { return this.count; }
+    public void setCount(int count) { this.count = count; }
+    public int getVolume() { return this.volume; }
+    public void setVolume(int volume) { this.volume = volume; }
     public String getStartTime() { return this.startTime; }
     public void setStartTime(String startTime) { this.startTime = startTime; }
     public String getEndTime() { return this.endTime; }
     public void setEndTime(String endTime) { this.endTime = endTime; }
-    public ArrayList<Set> getExercizeSet() { return this.exercizeSet; }
-    public void setExercizeSet(ArrayList<Set> exercizeSet) { this.exercizeSet = new ArrayList<>(exercizeSet); }
-    public int getExercizeSetCount() { return exercizeSet.size(); }
 }

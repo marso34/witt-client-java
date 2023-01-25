@@ -11,10 +11,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import com.example.healthappttt.R;
 import com.example.healthappttt.Data.Routine;
-import com.example.healthappttt.Data.Exercize;
-import com.example.healthappttt.Data.Set;
+import com.example.healthappttt.Data.Exercise;
 
-public class ExercizeResultActivity extends AppCompatActivity {
+public class ExerciseResultActivity extends AppCompatActivity {
     private TextView title;
     private TextView runtime;
     private TextView totalWeight;
@@ -24,11 +23,10 @@ public class ExercizeResultActivity extends AppCompatActivity {
     private TextView text;
     private Routine record;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_exercize_result);
+        setContentView(R.layout.activity_exercise_result);
 
         Intent intent = getIntent();
         record = (Routine) intent.getSerializableExtra("record");
@@ -45,22 +43,24 @@ public class ExercizeResultActivity extends AppCompatActivity {
         title.setText(DateConversion(record.getStartTime(), 1));
         runtime.setText(DateConversion(record.getStartTime(), 0) + " ~ " + DateConversion(record.getEndTime(), 0));
         name.setText(record.getTitle());
-        categories.setText(record.getExercizeCategories());
-        text.setText("\n운동 메모 :\n" + record.getNotes() + "\n");
+        categories.setText(record.getExerciseCategories());
+        text.setText("\n운동 메모 : 없음\n" + "\n");
 
         int sum = 0;
 
         String result = "";
         
-        for (Exercize i : record.getExercizes()) { // 데이터 전달 여부 확인
+        for (Exercise i : record.getExercises()) { // 데이터 전달 여부 확인
             result += i.getTitle() + "\n";
 
             int cnt = 0;
-            for (Set s : i.getExercizeSet()) {
-                result += s.getWeight() + "Kg X " + s.getCount() + "개" + "\n";
-                sum += Integer.parseInt(s.getWeight());
-                cnt++;
-            }
+//
+//            String weight, Set;
+//
+//            weight = i.getCount().substring(0, i.getCount().lastIndexOf(":"));
+//            Set = i.getCount().substring(i.getCount().lastIndexOf(":")+1);
+//
+//            result += weight + "Kg " + Set + "세트" + "\n";
 
             if (cnt != 0)
                 result += "시작시간 = " + DateConversion(i.getStartTime(), 0) + ", 종료시간 = " + DateConversion(i.getEndTime(), 0) + "\n";
