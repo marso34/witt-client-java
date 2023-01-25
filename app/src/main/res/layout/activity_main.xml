@@ -51,7 +51,7 @@
         android:layout_margin="8dp"
         android:clickable="true"
         android:backgroundTint="#05c78c"
-        app:fabCustomSize="60dp"
+        app:fabCustomSize="62dp"
         app:layout_anchor="@id/bottomAppBar"
         app:layout_anchorGravity="center_horizontal|center" />
 
