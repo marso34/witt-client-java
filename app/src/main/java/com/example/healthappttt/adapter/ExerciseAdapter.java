@@ -111,7 +111,8 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.MainVi
             if (this.exercises.get(position).getState().equals("유산소")) {
                 holder.AerobicLayout.setVisibility(View.VISIBLE);
                 holder.AerobicMView.setVisibility(View.VISIBLE);
-                holder.AerobicBar.setMax(this.exercises.get(position).getCount() * 60); // 시간 (프로그레스 바)
+                holder.AerobicBar.setMax(this.exercises.get(position).getCount() * 60 * 10); // 시간 (프로그레스 바) 일단 초 0.01초
+                holder.AerobicBar.setProgress(holder.AerobicBar.getProgress());
             } else {
                 holder.AerobicLayout.setVisibility(View.GONE);
                 holder.AerobicMView.setVisibility(View.GONE);

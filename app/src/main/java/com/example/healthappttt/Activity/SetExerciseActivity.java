@@ -50,8 +50,8 @@ public class SetExerciseActivity extends AppCompatActivity {
         exercises.add(new Exercise("딥스", "가슴", 4, 0));
         exercises.add(new Exercise("달리기", "유산소", 30, 3));
         exercises.add(new Exercise("대충 유산소", "유산소", 20, 3));
-        exercises.add(new Exercise("이것도 유산소", "유산소", 20, 3));
-        exercises.add(new Exercise("이것도 유산소2", "유산소", 20, 3));
+        exercises.add(new Exercise("이것도 유산소", "유산소", 3, 3));
+        exercises.add(new Exercise("이것도 유산소2", "유산소", 10, 3));
 
         Routine routine = new Routine("기본 루틴", "전신", exercises); // 여기까지 클래스 테스트
 
