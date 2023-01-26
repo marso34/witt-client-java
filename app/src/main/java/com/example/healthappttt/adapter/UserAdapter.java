@@ -51,7 +51,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //
+                //클릭됐을시 행동 여기에 적으면 돼네.....시벌...
             }
         });
 

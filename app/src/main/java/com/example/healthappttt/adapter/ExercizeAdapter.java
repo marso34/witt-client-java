@@ -40,7 +40,6 @@ public class ExercizeAdapter extends RecyclerView.Adapter<ExercizeAdapter.MainVi
         this.exercizeArea = routine.getExercizeCategories();
         this.exercizes = new ArrayList<>(routine.getExercizes());
         this.exercizeCnt = routine.getExerciezeCount();
-
         this.recordExercizes = new ArrayList<>();
 
         for (int i = 0; i < exercizeCnt; i++) {

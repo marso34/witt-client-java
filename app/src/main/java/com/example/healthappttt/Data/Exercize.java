@@ -18,6 +18,8 @@ public class Exercize implements Serializable {
         this.state = state;
         this.color = "기본색"; // 기본색
         this.exercizeSet = new ArrayList<>(exercizeSet);
+        this.startTime = "0";
+        this.endTime = "0";
     }
 
     public Exercize(String title, String state, String color, ArrayList<Set> exercizeSet) {
@@ -45,7 +47,6 @@ public class Exercize implements Serializable {
         docData.put("startTime", startTime);
         docData.put("endTime", endTime);
         docData.put("exercizeSet", exercizeSet);
-
         return  docData;
     }
 
