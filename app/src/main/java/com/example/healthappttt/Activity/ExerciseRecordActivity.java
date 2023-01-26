@@ -2,6 +2,7 @@ package com.example.healthappttt.Activity;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -151,7 +152,7 @@ public class ExerciseRecordActivity extends AppCompatActivity {
         if (adapter != null) {
             adapter.setOnExerciseClickListener(new ExerciseAdapter.OnExerciseClick() { // 어댑터 데이터를 전송 받기 위한 인터페이스 콜백
                 @Override
-                public void onExerciseClick(int position, TextView CountView, TextView AerobicTxtView, ProgressBar AerobicBar) { // 운동 기록과 운동 메모를 전달 받아
+                public void onExerciseClick(int position, CardView cardView, TextView CountView, TextView AerobicTxtView, ProgressBar AerobicBar) { // 운동 기록과 운동 메모를 전달 받아
                     if (isRunning) {
                         Exercise e = routine.getExercises().get(position);
                         String cat = e.getState();
@@ -161,8 +162,11 @@ public class ExerciseRecordActivity extends AppCompatActivity {
                         if (cat.equals("유산소")) {
                             if (AdapterAerobicBar == null) {
                                 AdapterAerobicBar = AerobicBar;
+                                AdapterAerobicBar.setProgressDrawable(getDrawable(R.drawable.progressbar_exercise1));
+//                                cardView.setBackground();
                                 AdapterAerobicTxtView = AerobicTxtView;
                             } else if (AdapterAerobicBar == AerobicBar) {
+                                AdapterAerobicBar.setProgressDrawable(getDrawable(R.drawable.progressbar_exercise2));
                                 AdapterAerobicBar = null;
                                 AdapterAerobicTxtView = null;
                             }
@@ -228,8 +232,10 @@ public class ExerciseRecordActivity extends AppCompatActivity {
                     AdapterAerobicBar.setProgress(t);
                 }
 
-                if (t == AdapterAerobicBar.getMax())
+                if (t == AdapterAerobicBar.getMax()) {
+                    AdapterAerobicBar.setProgressDrawable(getDrawable(R.drawable.progressbar_exercise2));
                     AdapterAerobicBar = null;
+                }
 
                 int Asec  = (t / 10) % 60;
                 int Amin  = (t / 10) / 60 % 60;

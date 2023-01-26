@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#ffffff"
-            android:elevation="2dp">
+            android:elevation="5dp">
 
             <TextView
                 android:id="@+id/viewName"
@@ -29,8 +29,8 @@
                 android:text="홈" />
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_gravity="right"
                 android:layout_margin="15dp"
                 android:src="@drawable/ic_baseline_notifications_none_24" />

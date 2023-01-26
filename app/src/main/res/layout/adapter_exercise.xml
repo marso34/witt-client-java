@@ -7,17 +7,19 @@
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="10dp"
     android:layout_marginVertical="5dp"
+    android:background="@drawable/cardview_default"
+    android:clickable="true"
     app:cardCornerRadius="25dp"
     app:strokeWidth="0dp"
-    app:strokeColor="#e005c78c"
+    app:strokeColor="@color/default_color"
     tools:context=".adapter.ExerciseAdapter" >
 
     <LinearLayout
         android:id="@+id/exerciseLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
         android:orientation="vertical"
+        android:layout_margin="20dp"
         app:layout_constraintTop_toTopOf="parent" >
 
         <LinearLayout
@@ -29,12 +31,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                app:cardCornerRadius="13dp" >
+                app:cardCornerRadius="25dp" >
 
                 <TextView
                     android:id="@+id/exerciseCat"
-                    android:layout_height="25dp"
+                    android:layout_height="wrap_content"
                     android:layout_width="50dp"
+                    android:padding="3dp"
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:background="#000000"
@@ -104,7 +107,7 @@
             <ProgressBar
                 android:id="@+id/AerobicBar"
                 style="?android:attr/progressBarStyleHorizontal"
-                android:progressDrawable="@drawable/progressbar_exercise"
+                android:progressDrawable="@drawable/progressbar_exercise2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:max="10"
@@ -126,13 +129,13 @@
         android:layout_height="match_parent"
         android:orientation="horizontal"
         app:layout_constraintTop_toTopOf="parent"
-        android:background="#e005c78c"
+        android:background="@color/default_color_80"
         android:visibility="gone" >
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:textColor="#ffffff"
+            android:textColor="@color/white"
             android:text="완료"
             android:textSize="25sp"
             android:gravity="center" />

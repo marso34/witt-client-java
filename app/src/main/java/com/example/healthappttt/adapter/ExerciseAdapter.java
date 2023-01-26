@@ -73,12 +73,12 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.MainVi
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_exercise, parent, false);
         final MainViewHolder mainViewHolder = new MainViewHolder(view);
 
-        view.findViewById(R.id.exerciseLayout).setOnClickListener(new View.OnClickListener() {
+        view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int position = mainViewHolder.getAdapterPosition();
 
-                onExerciseClick.onExerciseClick(position, mainViewHolder.CountView, mainViewHolder.AerobicTxtView, mainViewHolder.AerobicBar);
+                onExerciseClick.onExerciseClick(position, mainViewHolder.ExerciseCard, mainViewHolder.CountView, mainViewHolder.AerobicTxtView, mainViewHolder.AerobicBar);
 
                 if (exercises.get(position).getState().equals("유산소")) {
                     if (mainViewHolder.AerobicBar.getProgress() == mainViewHolder.AerobicBar.getMax())
@@ -90,7 +90,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.MainVi
 
                     if (str1.equals(str2))
                         mainViewHolder.EndLayout.setVisibility(View.VISIBLE);
-                }
+                } // 운동 set 달성 시 완료 표시
             }
         });
 
@@ -154,6 +154,6 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.MainVi
     } // 액티비티에서 콜백 메서드를 set
 
     public interface OnExerciseClick {
-        void onExerciseClick(int position, TextView CountView, TextView AerobicTxtView, ProgressBar AerobicBar);
+        void onExerciseClick(int position, CardView cardView, TextView CountView, TextView AerobicTxtView, ProgressBar AerobicBar);
     } // 운동 클릭했을 때, 엑티비티에 값 전달을 위한 인터페이스
 }
