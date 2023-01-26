@@ -2,6 +2,7 @@ package com.example.healthappttt.Activity;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -151,7 +152,7 @@ public class ExerciseRecordActivity extends AppCompatActivity {
         if (adapter != null) {
             adapter.setOnExerciseClickListener(new ExerciseAdapter.OnExerciseClick() { // 어댑터 데이터를 전송 받기 위한 인터페이스 콜백
                 @Override
-                public void onExerciseClick(int position, TextView CountView, TextView AerobicTxtView, ProgressBar AerobicBar) { // 운동 기록과 운동 메모를 전달 받아
+                public void onExerciseClick(int position, CardView cardView, TextView CountView, TextView AerobicTxtView, ProgressBar AerobicBar) { // 운동 기록과 운동 메모를 전달 받아
                     if (isRunning) {
                         Exercise e = routine.getExercises().get(position);
                         String cat = e.getState();
@@ -161,8 +162,11 @@ public class ExerciseRecordActivity extends AppCompatActivity {
                         if (cat.equals("유산소")) {
                             if (AdapterAerobicBar == null) {
                                 AdapterAerobicBar = AerobicBar;
+                                AdapterAerobicBar.setProgressDrawable(getDrawable(R.drawable.progressbar_exercise1));
+//                                cardView.setBackground();
                                 AdapterAerobicTxtView = AerobicTxtView;
                             } else if (AdapterAerobicBar == AerobicBar) {
+                                AdapterAerobicBar.setProgressDrawable(getDrawable(R.drawable.progressbar_exercise2));
                                 AdapterAerobicBar = null;
                                 AdapterAerobicTxtView = null;
                             }
@@ -222,24 +226,26 @@ public class ExerciseRecordActivity extends AppCompatActivity {
             if (AdapterAerobicBar != null) {
                 int t = AdapterAerobicBar.getProgress();
 
-                if (xRunTime < runTime && t < AdapterAerobicBar.getMax()) {
-                    t++; // 1초에 1씩 증가하게 바꾸기 나중에
-//                    recordExercises.get(position).setCount(t); // position 지정 방법 필요
+                if (xRunTime < (runTime / 100) && t < AdapterAerobicBar.getMax()) {
+                    t++;
+//                    recordExercises.get(position).setCount(t / 600); // position 지정 방법 필요, 일단 600으로 나눈 정수(분 단위) 저장
                     AdapterAerobicBar.setProgress(t);
                 }
 
-                if (t == AdapterAerobicBar.getMax())
+                if (t == AdapterAerobicBar.getMax()) {
+                    AdapterAerobicBar.setProgressDrawable(getDrawable(R.drawable.progressbar_exercise2));
                     AdapterAerobicBar = null;
+                }
 
-                int Asec  = t % 60;
-                int Amin  = t / 60 % 60;
-                int Ahour = t / (60 * 60);
+                int Asec  = (t / 10) % 60;
+                int Amin  = (t / 10) / 60 % 60;
+                int Ahour = (t / 10) / (60 * 60);
 
                 @SuppressLint("DefaultLocale") String resultT = String.format("%02d:%02d:%02d", Ahour, Amin, Asec);
                 AdapterAerobicTxtView.setText(resultT);
             }
 
-            xRunTime = runTime;
+            xRunTime = runTime / 100;
         }
     };
 

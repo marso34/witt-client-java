@@ -69,7 +69,6 @@ public class setExerciseAdapter extends RecyclerView.Adapter<setExerciseAdapter.
         holder.DetailView.setText(holder.DetailViewTxt);
     }
 
-
     @Override
     public int getItemCount() {
         return exerciseCnt;
