@@ -11,11 +11,12 @@
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/drawable/round_button.xml" value="0.248" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/drawable/round_button_blue.xml" value="0.248" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/drawable/round_button_white.xml" value="0.248" />
+        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/drawable/rounded_dialog.xml" value="0.1855" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_calender.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_calender_sub.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_chatt.xml" value="0.2" />
-        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_create_exercize.xml" value="0.10400000000000001" />
-        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_create_routine.xml" value="0.264" />
+        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_create_exercize.xml" value="0.16" />
+        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_create_routine.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_exercize_record.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_exercize_result.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_index.xml" value="0.6" />

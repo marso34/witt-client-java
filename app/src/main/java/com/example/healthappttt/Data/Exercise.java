@@ -43,7 +43,6 @@ public class Exercise implements Serializable {
         docData.put("state", state);
         docData.put("startTime", startTime);
         docData.put("endTime", endTime);
-
         return  docData;
     }
 
