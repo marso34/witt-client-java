@@ -189,55 +189,6 @@
                 </androidx.recyclerview.widget.RecyclerView>
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_height="220dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="30dp"
-                android:background="@drawable/backround"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/ExChrecyclerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="170dp"
-                    android:clipToPadding="false"
-                    android:paddingBottom="200dp"
-                    app:layout_constrainedHeight="true"
-                    tools:listitem="@layout/adapter_name_exercize"></androidx.recyclerview.widget.RecyclerView>
-
-                <Button
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="#00000000"
-                    android:text="찾는 운동이없으면 추가하세요">
-
-                </Button>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="350dp"
-                android:layout_marginTop="20dp"
-                android:background="@color/white"
-                android:gravity="center"
-                android:orientation="vertical"
-                >
-                <androidx.recyclerview.widget.RecyclerView
-
-                    android:id="@+id/ExSetrecyclerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="300dp"
-                    android:clipToPadding="false"
-                    android:paddingBottom="200dp"
-                    app:layout_constrainedHeight="true"
-                    tools:listitem="@layout/adapter_create_exercize">
-
-                </androidx.recyclerview.widget.RecyclerView>
-                </LinearLayout>
         </LinearLayout>
 
     </ScrollView>
