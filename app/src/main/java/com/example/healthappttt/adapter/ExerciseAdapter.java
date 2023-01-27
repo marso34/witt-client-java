@@ -36,15 +36,15 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.MainVi
         public CardView ExerciseCard;
         public LinearLayout ExerciseLayout; // 운동 기록에 광고 안 들어가면 삭제
         public LinearLayout EndLayout; // 운동 완료 표시
-        public LinearLayout AerobicLayout; // 유산소 운동일 때만 표시
+        public LinearLayout CardioLayout; // 유산소 운동일 때만 표시
 
         public TextView CatView;
         public TextView NameView;
         public TextView DetailView;
         public TextView CountView;
-        public TextView AerobicMView;
-        public TextView AerobicTxtView;
-        public ProgressBar AerobicBar;
+        public TextView CardioMView;
+        public TextView CardioTxtView;
+        public ProgressBar CardioBar;
 
         public String DetailViewTxt;
         public String CountTxt;
@@ -55,15 +55,15 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.MainVi
             this.ExerciseCard = (CardView) view.findViewById(R.id.exerciseCard);
             this.ExerciseLayout = (LinearLayout) view.findViewById(R.id.exerciseLayout);
             this.EndLayout = (LinearLayout) view.findViewById(R.id.end);
-            this.AerobicLayout = (LinearLayout) view.findViewById(R.id.AerobicLayout);
+            this.CardioLayout = (LinearLayout) view.findViewById(R.id.cardioLayout);
 
             this.CatView = (TextView) view.findViewById(R.id.exerciseCat);
             this.NameView = (TextView) view.findViewById(R.id.exerciseName);
             this.DetailView = (TextView) view.findViewById(R.id.exerciseDetail);
             this.CountView = (TextView) view.findViewById(R.id.setCount);
-            this.AerobicMView = (TextView) view.findViewById(R.id.AerobicM);
-            this.AerobicTxtView = (TextView) view.findViewById(R.id.AerobicTxt);
-            this.AerobicBar = (ProgressBar) view.findViewById(R.id.AerobicBar);
+            this.CardioMView = (TextView) view.findViewById(R.id.cardioM);
+            this.CardioTxtView = (TextView) view.findViewById(R.id.cardioTxt);
+            this.CardioBar = (ProgressBar) view.findViewById(R.id.cardioBar);
         }
     }
 
@@ -78,10 +78,10 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.MainVi
             public void onClick(View v) {
                 int position = mainViewHolder.getAdapterPosition();
 
-                onExerciseClick.onExerciseClick(position, mainViewHolder.ExerciseCard, mainViewHolder.CountView, mainViewHolder.AerobicTxtView, mainViewHolder.AerobicBar);
+                onExerciseClick.onExerciseClick(position, mainViewHolder.CountView, mainViewHolder.CardioTxtView, mainViewHolder.CardioBar);
 
                 if (exercises.get(position).getState().equals("유산소")) {
-                    if (mainViewHolder.AerobicBar.getProgress() == mainViewHolder.AerobicBar.getMax())
+                    if (mainViewHolder.CardioBar.getProgress() == mainViewHolder.CardioBar.getMax())
                         mainViewHolder.EndLayout.setVisibility(View.VISIBLE);
                 } else {
                     String str = (String) mainViewHolder.CountView.getText();
@@ -109,13 +109,13 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.MainVi
             holder.CountView.setText(holder.CountTxt);          // 1/5 or 남은 시간
 
             if (this.exercises.get(position).getState().equals("유산소")) {
-                holder.AerobicLayout.setVisibility(View.VISIBLE);
-                holder.AerobicMView.setVisibility(View.VISIBLE);
-                holder.AerobicBar.setMax(this.exercises.get(position).getCount() * 60 * 10); // 시간 (프로그레스 바) 일단 초 0.01초
-                holder.AerobicBar.setProgress(holder.AerobicBar.getProgress());
+                holder.CardioLayout.setVisibility(View.VISIBLE);
+                holder.CardioMView.setVisibility(View.VISIBLE);
+                holder.CardioBar.setMax(this.exercises.get(position).getCount() * 60 * 10); // 시간 (프로그레스 바) 일단 초 0.01초
+                holder.CardioBar.setProgress(holder.CardioBar.getProgress());
             } else {
-                holder.AerobicLayout.setVisibility(View.GONE);
-                holder.AerobicMView.setVisibility(View.GONE);
+                holder.CardioLayout.setVisibility(View.GONE);
+                holder.CardioMView.setVisibility(View.GONE);
             }
         }
         else { // -> exercizeCnt+1
@@ -137,7 +137,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.MainVi
             if (this.exercises.get(position).getState().equals("유산소")) {
                 holder.DetailViewTxt = "속도 " + volume;
             } else {
-                holder.DetailViewTxt = volume + " Kg · " + count + " 세트";
+                holder.DetailViewTxt = volume + " kg · " + count + " 세트";
             }
         }
 
@@ -154,6 +154,6 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.MainVi
     } // 액티비티에서 콜백 메서드를 set
 
     public interface OnExerciseClick {
-        void onExerciseClick(int position, CardView cardView, TextView CountView, TextView AerobicTxtView, ProgressBar AerobicBar);
+        void onExerciseClick(int position, TextView CountView, TextView CardioTxtView, ProgressBar CardioBar);
     } // 운동 클릭했을 때, 엑티비티에 값 전달을 위한 인터페이스
 }

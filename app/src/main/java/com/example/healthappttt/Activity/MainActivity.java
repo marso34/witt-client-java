@@ -24,7 +24,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         replaceFragment(new HomeFragment());
 
-        binding.bottomNav.setBackground(null);
         binding.bottomNav.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.home:
