@@ -20,7 +20,6 @@ public class ExerciseResultActivity extends AppCompatActivity {
     private TextView name;
     private TextView categories;
     private TextView ttttt;
-    private TextView text;
     private Routine record;
 
     @Override
@@ -43,7 +42,7 @@ public class ExerciseResultActivity extends AppCompatActivity {
         runtime.setText(DateConversion(record.getStartTime(), 0) + " ~ " + DateConversion(record.getEndTime(), 0));
         name.setText(record.getTitle());
         categories.setText(record.getExerciseCategories());
-        text.setText("\n운동 메모 : 없음\n" + "\n");
+//        text.setText("\n운동 메모 : 없음\n" + "\n");
 
         int sum = 0;
 

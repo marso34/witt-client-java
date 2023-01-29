@@ -28,7 +28,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.MainVi
 
     public ExerciseAdapter(Routine routine) { // 일단 테스트
         this.title = routine.getTitle();
-        this.exercises = new ArrayList<>(routine.getExercises());
+        this.exercises = routine.getExercises();
         this.exerciseCnt = routine.getExercieseCount();
     }
 

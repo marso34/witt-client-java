@@ -14,6 +14,21 @@ public class Exercise implements Serializable {
     private String startTime;
     private String endTime;
 
+    public Exercise(String title, String state) {
+        this.title = title;
+        this.state = state;
+        this.count = 0;
+        this.volume = 0;
+
+        switch (state) {
+            case "가슴" : this.color = "#f257af"; break;
+            case "등" : this.color = "#e26e5b"; break;
+            case "하체" : this.color = "#05c78c"; break;
+            case "어깨" : this.color = "#8c5adb"; break;
+            case "유산소" : this.color = "#579ef2"; break;
+        }
+    }
+
     public Exercise(String title, String state, int count, int volume) {
         this.title = title;
         this.state = state;

@@ -7,9 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,15 +20,21 @@ import com.example.healthappttt.Data.Routine;
 import com.example.healthappttt.R;
 import com.example.healthappttt.adapter.RoutineAdapter;
 
+import java.util.List;
+
 public class RoutineFragment extends Fragment {
     Context context;
 
     private Button weekBtn;
     private RecyclerView recyclerView;
     private RoutineAdapter adapter;
+    private ListView ExerciseList;
+
+    private CardView testCard;
 
     private Routine routine;
 
+    private boolean testetstsetsfe;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -67,16 +75,39 @@ public class RoutineFragment extends Fragment {
 
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_routine, container, false);
         weekBtn = (Button) view.findViewById(R.id.mon);
+        testCard = (CardView) view.findViewById(R.id.plusExercise);
+        recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+        ExerciseList = (ListView) view.findViewById(R.id.exerciseList);
 
+        setRoutine();
+        setRecyclerView();
 
+        testetstsetsfe = false;
 
+        testCard.setOnClickListener(v -> {
+            testetstsetsfe = !testetstsetsfe;
+
+            if (testetstsetsfe)
+                ExerciseList.setVisibility(View.VISIBLE);
+            else
+                ExerciseList.setVisibility(View.GONE);
+
+//            routine.setExerciseOne();
+//            setRecyclerView();
+        });
 
 
         return view;
     }
 
+    private void setRoutine() {
+
+        // DB 접근해서 요일에 맞는 루틴 가져와서 루틴 생성
+        routine = new Routine("월", "전신");
+    }
+
     private void setRecyclerView() {
-        adapter = new RoutineAdapter(routine);
+        adapter = new RoutineAdapter(routine); // 나중에 routine
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
