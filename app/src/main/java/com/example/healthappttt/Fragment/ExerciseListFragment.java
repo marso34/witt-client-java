@@ -15,11 +15,11 @@ import android.view.ViewGroup;
 import com.example.healthappttt.R;
 
 
-public class BottomFragment extends Fragment {
+public class ExerciseListFragment extends Fragment {
 
     Context context;
 
-    public BottomFragment(Context applicationContext) {
+    public ExerciseListFragment(Context applicationContext) {
             this.context = context;
     }
 
@@ -30,6 +30,7 @@ public class BottomFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_bottom, container, false);
+
 
 
         return view;

@@ -197,7 +197,7 @@
             >
 
         <TextView
-            android:layout_width="60dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:text="스쿼트 130"
             android:textColor="@color/white"
@@ -208,7 +208,7 @@
             android:layout_weight="1"
             />
         <TextView
-            android:layout_width="60dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:text="벤치프레스 100"
             android:textColor="@color/white"
@@ -218,7 +218,7 @@
             android:background="@drawable/circle"
             android:layout_weight="1"/>
         <TextView
-            android:layout_width="60dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:text="데드리프트 200"
             android:textColor="@color/white"

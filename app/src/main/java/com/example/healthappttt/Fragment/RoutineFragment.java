@@ -1,7 +1,6 @@
 package com.example.healthappttt.Fragment;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,8 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.healthappttt.Data.Routine;
 import com.example.healthappttt.R;
 import com.example.healthappttt.adapter.RoutineAdapter;
-
-import java.util.List;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 public class RoutineFragment extends Fragment {
     Context context;
@@ -87,10 +85,13 @@ public class RoutineFragment extends Fragment {
         testCard.setOnClickListener(v -> {
             testetstsetsfe = !testetstsetsfe;
 
-            if (testetstsetsfe)
-                ExerciseList.setVisibility(View.VISIBLE);
-            else
-                ExerciseList.setVisibility(View.GONE);
+            final BottomSheetDialog bottomSheetFragment = new BottomSheetDialog(getContext());
+            bottomSheetFragment.setContentView(R.layout.fragment_bottom);
+            bottomSheetFragment.show();
+
+            // bottomSheetFragment.dismiss();
+
+
 
 //            routine.setExerciseOne();
 //            setRecyclerView();
