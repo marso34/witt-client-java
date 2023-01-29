@@ -11,15 +11,21 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.healthappttt.Activity.CreateRoutineActivity;
+import com.example.healthappttt.Data.Routine;
 import com.example.healthappttt.R;
+import com.example.healthappttt.adapter.RoutineAdapter;
 
 public class RoutineFragment extends Fragment {
-
     Context context;
-    private Button testBtn;
 
+    private Button weekBtn;
+    private RecyclerView recyclerView;
+    private RoutineAdapter adapter;
+
+    private Routine routine;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -60,14 +66,19 @@ public class RoutineFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
 
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_routine, container, false);
-        testBtn = (Button) view.findViewById(R.id.testBtn);
+        weekBtn = (Button) view.findViewById(R.id.mon);
 
-        testBtn.setOnClickListener(view1 -> {
-            Intent intent = new Intent(getContext(), CreateRoutineActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
-        });
+
+
+
 
         return view;
+    }
+
+    private void setRecyclerView() {
+        adapter = new RoutineAdapter(routine);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(adapter);
     }
 }

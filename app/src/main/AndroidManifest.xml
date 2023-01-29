@@ -59,9 +59,6 @@
             android:name=".Activity.CreateExerciseActivity"
             android:exported="false" />
         <activity
-            android:name=".Activity.CreateRoutineActivity"
-            android:exported="false" />
-        <activity
             android:name=".Activity.ExerciseRecordActivity"
             android:exported="false" />
         <activity
