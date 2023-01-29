@@ -67,13 +67,13 @@
             android:name=".Activity.ExerciseResultActivity"
             android:exported="false" />
             <activity
-            android:name=".Activity.LoginActivity"
+            android:name=".Activity.googleMaps"
             android:exported="false" />
         <activity
             android:name=".Activity.MainActivity"
             android:exported="false" />
         <activity
-            android:name=".Activity.googleMaps"
+            android:name=".Activity.LoginActivity"
             android:exported="true"
             android:usesCleartextTraffic="true">
             <intent-filter>
