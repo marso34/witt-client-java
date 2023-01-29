@@ -23,6 +23,7 @@
                 android:id="@+id/mon"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
+                android:layout_marginLeft="39dp"
                 android:background="@drawable/round_button_green"
                 android:text="월" />
 
@@ -30,6 +31,7 @@
                 android:id="@+id/tue"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
+                android:layout_marginLeft="12dp"
                 android:background="@drawable/round_button_green"
                 android:text="화" />
 
@@ -37,6 +39,7 @@
                 android:id="@+id/wed"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
+                android:layout_marginLeft="12dp"
                 android:background="@drawable/round_button_green"
                 android:text="수" />
 
@@ -44,6 +47,7 @@
                 android:id="@+id/thu"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
+                android:layout_marginLeft="12dp"
                 android:background="@drawable/round_button_green"
                 android:text="목" />
 
@@ -51,6 +55,7 @@
                 android:id="@+id/fri"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
+                android:layout_marginLeft="12dp"
                 android:background="@drawable/round_button_green"
                 android:text="금" />
 
@@ -58,6 +63,7 @@
                 android:id="@+id/sat"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
+                android:layout_marginLeft="12dp"
                 android:background="@drawable/round_button_green"
                 android:text="토" />
 
@@ -65,9 +71,11 @@
                 android:id="@+id/sun"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
+                android:layout_marginLeft="12dp"
                 android:background="@drawable/round_button_green"
                 android:text="일" />
         </LinearLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -175,7 +183,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:background="@drawable/ic_baseline_check_24"
+                        android:background="@drawable/ic_baseline_add_24"
                         android:backgroundTint="@color/black"/>
                 </androidx.cardview.widget.CardView>
 
@@ -185,12 +193,6 @@
 
     </LinearLayout>
 
-    <ListView
-        android:id="@+id/exerciseList"
-        android:layout_width="match_parent"
-        android:layout_height="500dp"
-        android:layout_gravity="bottom"
-        android:visibility="gone"/>
 </FrameLayout>
 
 

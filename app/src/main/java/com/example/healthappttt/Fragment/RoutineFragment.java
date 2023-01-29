@@ -24,15 +24,14 @@ public class RoutineFragment extends Fragment {
     Context context;
 
     private Button weekBtn;
+
     private RecyclerView recyclerView;
     private RoutineAdapter adapter;
-    private ListView ExerciseList;
 
     private CardView testCard;
 
     private Routine routine;
 
-    private boolean testetstsetsfe;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -75,26 +74,15 @@ public class RoutineFragment extends Fragment {
         weekBtn = (Button) view.findViewById(R.id.mon);
         testCard = (CardView) view.findViewById(R.id.plusExercise);
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
-        ExerciseList = (ListView) view.findViewById(R.id.exerciseList);
+
+        final ExerciseListFragment exerciseListFragment = new ExerciseListFragment(getContext()); // 운동 부위 정보도 추가
+
 
         setRoutine();
         setRecyclerView();
 
-        testetstsetsfe = false;
-
         testCard.setOnClickListener(v -> {
-            testetstsetsfe = !testetstsetsfe;
-
-            final BottomSheetDialog bottomSheetFragment = new BottomSheetDialog(getContext());
-            bottomSheetFragment.setContentView(R.layout.fragment_bottom);
-            bottomSheetFragment.show();
-
-            // bottomSheetFragment.dismiss();
-
-
-
-//            routine.setExerciseOne();
-//            setRecyclerView();
+            exerciseListFragment.show(getActivity().getSupportFragmentManager(), exerciseListFragment.getTag());
         });
 
 
