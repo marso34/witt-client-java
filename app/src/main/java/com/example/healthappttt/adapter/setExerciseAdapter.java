@@ -39,7 +39,7 @@ public class setExerciseAdapter extends RecyclerView.Adapter<setExerciseAdapter.
         public MainViewHolder(View view) {
             super(view);
 
-            this.AerobicLayout = (LinearLayout) view.findViewById(R.id.AerobicLayout);
+            this.AerobicLayout = (LinearLayout) view.findViewById(R.id.cardioLayout);
             this.countLayout = (LinearLayout) view.findViewById(R.id.countLayout);
             this.CatView = (TextView) view.findViewById(R.id.exerciseCat);
             this.NameView = (TextView) view.findViewById(R.id.exerciseName);
@@ -83,7 +83,7 @@ public class setExerciseAdapter extends RecyclerView.Adapter<setExerciseAdapter.
             if (this.exercises.get(position).getState() == "유산소") {
                 holder.DetailViewTxt = "속도 " + volume +  "· " + count + "분";
             } else {
-                holder.DetailViewTxt = volume + " Kg · " + count + " 세트";
+                holder.DetailViewTxt = volume + " kg · " + count + " 세트";
             }
         }
     }

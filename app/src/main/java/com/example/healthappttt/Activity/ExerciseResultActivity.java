@@ -36,7 +36,6 @@ public class ExerciseResultActivity extends AppCompatActivity {
         name = (TextView) findViewById(R.id.name);
         categories = (TextView) findViewById(R.id.exerciseCategories);
 
-        text = (TextView) findViewById(R.id.text);
         ttttt = (TextView) findViewById(R.id.ttttt);
 
 

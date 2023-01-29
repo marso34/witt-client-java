@@ -46,22 +46,18 @@ public class Exercise implements Serializable {
         return  docData;
     }
 
-    public String getTitle(){
-        return this.title;
-    }
-    public void setTitle(String title){
-        this.title = title;
-    }
-    public String getState() { return this.state; }
-    public void setState(String state) { this.state = state; }
-    public String getColor() { return this.color; }
-    public void setColor(String color) { this.color = color; }
-    public int getCount() { return this.count; }
-    public void setCount(int count) { this.count = count; }
-    public int getVolume() { return this.volume; }
-    public void setVolume(int volume) { this.volume = volume; }
-    public String getStartTime() { return this.startTime; }
-    public void setStartTime(String startTime) { this.startTime = startTime; }
-    public String getEndTime() { return this.endTime; }
-    public void setEndTime(String endTime) { this.endTime = endTime; }
+    public String getTitle()                    { return this.title; }
+    public void setTitle(String title)          { this.title = title; }
+    public String getState()                    { return this.state; }
+    public void setState(String state)          { this.state = state; }
+    public String getColor()                    { return this.color; }
+    public void setColor(String color)          { this.color = color; }
+    public int getCount()                       { return this.count; }
+    public void setCount(int count)             { this.count = count; }
+    public int getVolume()                      { return this.volume; }
+    public void setVolume(int volume)           { this.volume = volume; }
+    public String getStartTime()                { return this.startTime; }
+    public void setStartTime(String startTime)  { this.startTime = startTime; }
+    public String getEndTime()                  { return this.endTime; }
+    public void setEndTime(String endTime)      { this.endTime = endTime; }
 }

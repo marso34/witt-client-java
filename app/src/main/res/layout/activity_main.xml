@@ -52,29 +52,23 @@
 
     </LinearLayout>
 
-    <com.google.android.material.bottomappbar.BottomAppBar
-        android:id="@+id/bottomAppBar"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:backgroundTint="@color/white"
-        app:fabCradleVerticalOffset="0dp"
-        app:fabCradleMargin="0dp"
-        app:fabAlignmentMode="center"
-        app:fabAnchorMode="embed"
-        app:fabCradleRoundedCornerRadius="0dp">
+        android:layout_height="match_parent" >
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomNav"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="15dp"
+            android:layout_gravity="bottom"
+            android:background="@android:color/transparent"
+            app:itemBackground="@color/white"
             app:itemHorizontalTranslationEnabled="false"
             app:labelVisibilityMode="labeled"
-            app:menu="@menu/bottom_nav_menu"
-            android:background="@android:color/transparent" />
+            app:menu="@menu/bottom_nav_menu" />
 
-    </com.google.android.material.bottomappbar.BottomAppBar>
+
+    </FrameLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
@@ -84,7 +78,7 @@
         android:clickable="true"
         android:backgroundTint="#05c78c"
         app:fabCustomSize="62dp"
-        app:layout_anchor="@id/bottomAppBar"
+        app:layout_anchor="@id/bottomNav"
         app:layout_anchorGravity="center_horizontal|center" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
