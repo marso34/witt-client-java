@@ -5,18 +5,21 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import android.location.Location;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.healthappttt.Data.CompareUser;
+import com.example.healthappttt.Data.CompareUser;
 import com.example.healthappttt.Data.User;
 import com.example.healthappttt.R;
 import com.example.healthappttt.adapter.UserAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -24,7 +27,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -32,10 +37,14 @@ import java.util.Date;
  * create an instance of this fragment.
  */
 public class HomeFragment extends Fragment {
+
+    private static boolean pivotList[] = null;
     private static final String TAG = "HomeFragment";
+    private FirebaseAuth mAuth;
     private FirebaseFirestore firebaseFirestore;
     private UserAdapter userAdapter;
     private ArrayList<User> userList;
+    private ArrayList<CompareUser> CompareuserList;
     private boolean updating;
     private boolean topScrolled;
     // TODO: Rename parameter arguments, choose names that match
@@ -83,10 +92,10 @@ public class HomeFragment extends Fragment {
         //fragment_main에 인플레이션을 함
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_home, container, false);
         firebaseFirestore = FirebaseFirestore.getInstance();
-
-        userList = new ArrayList<>();
+        mAuth = FirebaseAuth.getInstance();// 파이어베이스의 auth기능의 접근 권한을 갖는변수
+        userList = new ArrayList<User>();
         userAdapter = new UserAdapter(getActivity(), userList);
-
+        CompareuserList = new ArrayList<>();
         final RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.addItemDecoration(new DividerItemDecoration(view.getContext(), 1));
         recyclerView.setHasFixedSize(true);
@@ -143,6 +152,7 @@ public class HomeFragment extends Fragment {
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        User currentUser = null;
                         if (task.isSuccessful()) {
                             if(clear){
                                 userList.clear();
@@ -151,7 +161,7 @@ public class HomeFragment extends Fragment {
                                 Log.d(TAG, document.getId() + " &&&&+&=> " + document.getData().get("userName").toString());
                                User a= new User(
                                        Double.parseDouble(document.getData().get("userTemperature").toString()),
-                                        document.getData().get("reviewTableKey").toString(),
+                                        document.getData().get("key").toString(),
                                         Double.parseDouble(document.getData().get("lat").toString()),
                                         Double.parseDouble(document.getData().get("lon").toString()),
                                         document.getData().get("GoodTime").toString(),
@@ -162,12 +172,29 @@ public class HomeFragment extends Fragment {
                                         document.getData().get("squat").toString(),
                                         document.getData().get("locationName").toString()
                                         );
-                                Log.d(TAG,  " listaaaa " +
-                                        a.getUserName());
                                 userList.add(a);
-                                Log.d(TAG,  " list " +
-                                        userList.get(0).getUserName());
+                                if(a.getKey() != mAuth.getCurrentUser().getUid()) currentUser = a;
                             }
+                            //퀵정렬 편집해서 만드는건 가능한데 일단 보류 난이도가 높음.
+                            //
+                            ArrayList<Double> distans = new ArrayList<Double>();
+                            for(int i=0;i<userList.size();++i){
+                                if(userList.get(i).getKey() != currentUser.getKey())
+                                    distans.add(0.0);
+                                else {
+                                    distans.add(DistanceByDegreeAndroid(currentUser.getLat(),currentUser.getLon(),userList.get(i).getLat(),userList.get(i).getLon()));
+                                }
+                            }
+//                            for(int i=0;i<userList.size();++i){
+//                                CompareuserList.add(new CompareUser(userList.get(i),distans.get(i)));
+//                            }
+//                            Collections.sort(CompareuserList);
+//                            for(int i = 0; i<CompareuserList.size();++i)
+//                            Log.d("list",CompareuserList.get(i).getDistance().toString());
+//                            userList.clear();
+//                            for(int i=0;i<CompareuserList.size();++i){
+//                                userList.add(CompareuserList.get(i).getUser());
+//                            }
                             userAdapter.notifyDataSetChanged();
 
                         } else {
@@ -210,5 +237,19 @@ public class HomeFragment extends Fragment {
                 break;
         }
         return day;
+    }
+
+    public double DistanceByDegreeAndroid(double _latitude1, double _longitude1, double _latitude2, double _longitude2){
+        Location startPos = new Location("PointA");
+        Location endPos = new Location("PointB");
+
+        startPos.setLatitude(_latitude1);
+        startPos.setLongitude(_longitude1);
+        endPos.setLatitude(_latitude2);
+        endPos.setLongitude(_longitude2);
+
+        double distance = startPos.distanceTo(endPos);
+
+        return distance;
     }
 }
