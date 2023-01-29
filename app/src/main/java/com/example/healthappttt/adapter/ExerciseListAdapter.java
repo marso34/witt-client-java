@@ -8,7 +8,10 @@ import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.example.healthappttt.Data.ExerciseName;
 import com.example.healthappttt.R;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -17,9 +20,9 @@ public class ExerciseListAdapter extends BaseAdapter {
     Context context = null;
     android.view.LayoutInflater LayoutInflater = null;
 
-    ArrayList<String> data;
+    ArrayList<ExerciseName> data;
 
-    public ExerciseListAdapter(Context context, ArrayList<String> data) {
+    public ExerciseListAdapter(Context context, ArrayList<ExerciseName> data) {
         this.context = context;
         LayoutInflater = android.view.LayoutInflater.from(context);
         this.data = data;
@@ -30,7 +33,7 @@ public class ExerciseListAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int position) {
+    public ExerciseName getItem(int position) {
         return data.get(position);
     }
 
@@ -43,9 +46,10 @@ public class ExerciseListAdapter extends BaseAdapter {
     public View getView(int position, View converView, ViewGroup parent) {
         View view = LayoutInflater.inflate(R.layout.adapter_exercise_list, null);
 
-        TextView textView = (TextView) view.findViewById(R.id.exerciseName);
+        TextView nameView = (TextView) view.findViewById(R.id.exerciseName);
 
-        textView.setText(data.get(position));
+        nameView.setText(data.get(position).getName());
+
 
         return view;
     }
