@@ -16,7 +16,7 @@ import java.util.Map;
         private String Deadlift = "";
         private String Squat = "";
         private String LocationName = "";
-        private String ReviewTableKey ="";
+        private String Key ="";
         private Double Lat = 0.0;
         private Double Lon = 0.0;
 //
@@ -34,7 +34,6 @@ import java.util.Map;
 //            GoodTime = a.GoodTime;
 //        }
         public User(String UID,String UN, String PRI, String Bench, String Deadlift, String Squat,String LCN) {
-
             this.UserName = UN;
             this.UserTemperature = 36.5;
             this.ProfileImg = PRI;
@@ -42,7 +41,7 @@ import java.util.Map;
             this.Deadlift = Deadlift;
             this.Squat = Squat;
             this.LocationName = LCN;
-            this.ReviewTableKey =  UID+ Calendar.getInstance().getTime();// 유저생성할 때 이키로 유저만들것.
+            this.Key =  UID;// 유저생성할 때 이키로 유저만들것.
             this.Lat = 0.0;
             this.Lon = 0.0;
             GoodTime = "0";
@@ -55,7 +54,7 @@ import java.util.Map;
             this.Deadlift = Deadlift;
             this.Squat = Squat;
             this.LocationName = LCN;
-            this.ReviewTableKey = ReviewTableKey_;// 유저생성할 때 이키로 유저만들것.
+            this.Key = ReviewTableKey_;// 유저생성할 때 이키로 유저만들것.
             this.Lat = lat;
             this.Lon = lon;
             GoodTime = Good;
@@ -77,8 +76,8 @@ import java.util.Map;
         public Double getUserTemperature(){
             return this.UserTemperature;
         }
-        public String getReviewTableKey(){
-            return this.ReviewTableKey;
+        public String getKey(){
+            return this.Key;
         }
         public String getLocationName(){return this.LocationName;}
         public Double getLat(){
