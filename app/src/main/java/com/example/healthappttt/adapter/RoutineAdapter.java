@@ -1,5 +1,6 @@
 package com.example.healthappttt.adapter;
 
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -19,16 +20,24 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
     private String exerciseCategories;
     private int exerciseCnt;
 
+    public RoutineAdapter() {
+    }
+
     public RoutineAdapter(Routine routine) {
-        this.exercises = new ArrayList<>(routine.getExercises());
+        this.exercises = routine.getExercises();
         this.exerciseCategories = routine.getExerciseCategories();
         this.exerciseCnt = routine.getExercieseCount();
+
     }
 
     public static class MainViewHolder extends RecyclerView.ViewHolder {
+        public LinearLayout AerobicLayout, countLayout;
 
         public MainViewHolder(View view) {
             super(view);
+
+            this.AerobicLayout = (LinearLayout) view.findViewById(R.id.cardioLayout);
+            this.countLayout = (LinearLayout) view.findViewById(R.id.countLayout);
 
         }
     }
@@ -36,18 +45,21 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
     @NonNull
     @Override
     public MainViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return null;
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_exercise, parent, false);
+        final MainViewHolder mainViewHolder = new MainViewHolder(view);
+
+
+        return mainViewHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull MainViewHolder holder, int position) {
-
+        holder.AerobicLayout.setVisibility(View.GONE);
+        holder.countLayout.setVisibility(View.GONE);
     }
 
     @Override
-    public int getItemCount() {
-        return 0;
-    }
+    public int getItemCount() { return exerciseCnt; }
 
 
 

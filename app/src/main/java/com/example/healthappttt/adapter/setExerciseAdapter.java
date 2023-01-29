@@ -22,14 +22,13 @@ public class setExerciseAdapter extends RecyclerView.Adapter<setExerciseAdapter.
     private int exerciseCnt;
 
     public setExerciseAdapter(Routine routine) { // 일단 테스트
-        this.exercises = new ArrayList<>(routine.getExercises());
+        this.exercises = routine.getExercises();
         this.exerciseCategories = routine.getExerciseCategories();
         this.exerciseCnt = routine.getExercieseCount();
     }
 
     public static class MainViewHolder extends RecyclerView.ViewHolder {
-        public LinearLayout AerobicLayout;
-        public LinearLayout countLayout;
+        public LinearLayout AerobicLayout, countLayout;
         public TextView CatView;
         public TextView NameView;
         public TextView DetailView;

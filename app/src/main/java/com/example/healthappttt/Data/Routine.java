@@ -63,6 +63,7 @@ public class Routine implements Serializable {
     public void setExercizeCategories(String exercizeCategories) { this.exerciseCategories = exercizeCategories; }
     public ArrayList<Exercise> getExercises() { return this.exercises; }
     public void setExercises(ArrayList<Exercise> exercises) { this.exercises = new ArrayList<Exercise>(exercises); }
+    public void setExerciseOne(Exercise exercise) { this.exercises.add(exercise); }
     public int getExercieseCount() { return this.exercises.size(); }
 }
 
