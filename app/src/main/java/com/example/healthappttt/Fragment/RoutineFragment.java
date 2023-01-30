@@ -147,7 +147,6 @@ public class RoutineFragment extends Fragment {
             exerciseListFragment.show(getActivity().getSupportFragmentManager(), exerciseListFragment.getTag());
         });
 
-
         return view;
     }
 
@@ -171,7 +170,6 @@ public class RoutineFragment extends Fragment {
     }
 
     private void setRoutine() {
-
         // DB 접근해서 요일에 맞는 루틴 가져와서 루틴 생성
         // dayOfWeek 요일 정보
 
@@ -185,7 +183,6 @@ public class RoutineFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
     }
-
 
     public void clickBtn(View v) {
         for (Button btn : weekBtn) {

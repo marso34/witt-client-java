@@ -1,5 +1,7 @@
 package com.example.healthappttt.Fragment;
 
+import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 
@@ -34,7 +36,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-
 
 public class ExerciseListFragment extends BottomSheetDialogFragment {
     Context context;
@@ -87,7 +88,6 @@ public class ExerciseListFragment extends BottomSheetDialogFragment {
         ttt.add(new ExerciseName("운동20", "복근"));
         ttt.add(new ExerciseName("운동21", "하체"));
         ttt.add(new ExerciseName("운동22", "등"));
-
 
         listView = (ListView) view.findViewById(R.id.listView);
         adapter = new ExerciseListAdapter(getContext(), ttt);
