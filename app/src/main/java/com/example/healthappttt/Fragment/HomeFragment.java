@@ -167,10 +167,12 @@ public class HomeFragment extends Fragment {
                 if(newState == 1 && firstVisibleItemPosition == 0){
                     topScrolled = true;
                 }
+
                 if(newState == 0 && topScrolled){
                     //postsUpdate(true);
                     topScrolled = false;
                 }
+
             }
 
             @Override
@@ -212,7 +214,6 @@ public class HomeFragment extends Fragment {
                             if(clear){
                                 userList.clear();
                             }
-
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, document.getId() + " &&&&+&=> " + document.getData().get("userName").toString());
                                User a= new User(
@@ -235,7 +236,7 @@ public class HomeFragment extends Fragment {
                             //
                             ArrayList<Double> distans = new ArrayList<Double>();
                             for(int i=0;i<userList.size();++i){
-                                if(userList.get(i).getKey() != currentUser.getKey()) {
+                                if(userList.get(i).getKey() == currentUser.getKey()) {
                                     distans.add(0.0);
                                     userList.get(i).setDistance(0.0);
                                 }
@@ -243,15 +244,14 @@ public class HomeFragment extends Fragment {
                                     Double dis = DistanceByDegreeAndroid(currentUser.getLat(),currentUser.getLon(),userList.get(i).getLat(),userList.get(i).getLon());
                                     distans.add(dis);
                                     userList.get(i).setDistance(dis);
-
                                 }
                             }
                             for(int i=0;i<userList.size();++i){
                                 CompareuserList.add(new CompareUser(userList.get(i),distans.get(i)));
                             }
                             Collections.sort(CompareuserList);
-                            for(int i = 0; i<CompareuserList.size();++i)
-                                Log.d("list",CompareuserList.get(i).getDistance().toString());
+                            for(int i = 0; i < CompareuserList.size();++i)
+                                Log.d("list" , CompareuserList.get(i).getDistance().toString());
                             userList.clear();
                             for(int i=0;i<CompareuserList.size();++i){
                                 userList.add(CompareuserList.get(i).getUser());
@@ -268,10 +268,8 @@ public class HomeFragment extends Fragment {
 
     public static String getCurrentWeek() {
         Date currentDate = new Date();
-
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(currentDate);
-
         int dayOfWeekNumber = calendar.get(Calendar.DAY_OF_WEEK);
         String day = null;
         switch (dayOfWeekNumber) {

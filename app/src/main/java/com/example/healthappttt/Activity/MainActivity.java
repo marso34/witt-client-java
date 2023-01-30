@@ -72,7 +72,6 @@ public class MainActivity extends AppCompatActivity {
                         "경도 : " + latitude + "\n" +
                         "고도  : " + altitude);
 
-
                 DocumentReference washingtonRef = db.collection("users").document(user.getUid());
                 washingtonRef
                         .update("lat", latitude)
@@ -150,8 +149,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-
     final LocationListener gpsLocationListener = new LocationListener() {
         public void onLocationChanged(Location location) {
             // 위치 리스너는 위치정보를 전달할 때 호출되므로 onLocationChanged()메소드 안에 위지청보를 처리를 작업을 구현 해야합니다.
@@ -171,6 +168,7 @@ public class MainActivity extends AppCompatActivity {
 
         }
     };
+
     private void replaceFragment (Fragment fragment){ //프래그먼트 설정
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
