@@ -47,24 +47,20 @@ public class Routine implements Serializable {
         return  docData;
     }
 
-    public String getTitle(){
-        return this.title;
-    }
-    public void setTitle(String title){
-        this.title = title;
-    }
-    public String getStartTime() { return this.startTime; }
-    public void setStartTime(String startTime) { this.startTime = startTime; }
-    public String getEndTime() { return this.endTime; }
-    public void setEndTime(String endTime) { this.endTime = endTime; }
-    public String getRunTime() { return this.runTime; }
-    public void setRunTime(String runTime) { this.runTime = runTime; }
-    public String getExerciseCategories() { return this.exerciseCategories; }
-    public void setExercizeCategories(String exercizeCategories) { this.exerciseCategories = exercizeCategories; }
-    public ArrayList<Exercise> getExercises() { return this.exercises; }
-    public void setExercises(ArrayList<Exercise> exercises) { this.exercises = new ArrayList<Exercise>(exercises); }
-    public void setExerciseOne(Exercise exercise) { this.exercises.add(exercise); }
-    public int getExercieseCount() { return this.exercises.size(); }
+    public String getTitle()                                     { return this.title; }
+    public void setTitle(String title)                           { this.title = title; }
+    public String getStartTime()                                 { return this.startTime; }
+    public void setStartTime(String startTime)                   { this.startTime = startTime; }
+    public String getEndTime()                                   { return this.endTime; }
+    public void setEndTime(String endTime)                       { this.endTime = endTime; }
+    public String getRunTime()                                   { return this.runTime; }
+    public void setRunTime(String runTime)                       { this.runTime = runTime; }
+    public String getExerciseCategories()                        { return this.exerciseCategories; }
+    public void setExerciseCategories(String exerciseCategories) { this.exerciseCategories = exerciseCategories; }
+    public ArrayList<Exercise> getExercises()                    { return this.exercises; }
+    public void setExercises(ArrayList<Exercise> exercises)      { this.exercises = new ArrayList<Exercise>(exercises); }
+    public void addExercise(Exercise exercise)                   { this.exercises.add(exercise); }
+    public int getExercieseCount()                               { return this.exercises.size(); }
 }
 
 

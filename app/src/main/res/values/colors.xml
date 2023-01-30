@@ -2,6 +2,7 @@
 <resources>
     <color name="default_color">#ff05c78c</color>
     <color name="default_color_80">#ee05c78c</color>
+    <color name="transparent">#00000000</color>
     <color name="purple_200">#05C78C</color>
     <color name="purple_500">#05C78C</color>
     <color name="purple_700">#FF3700B3</color>

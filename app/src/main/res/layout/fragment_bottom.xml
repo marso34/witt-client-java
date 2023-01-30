@@ -3,50 +3,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="500dp"
     android:padding="20dp"
     android:gravity="center"
     android:orientation="vertical"
-    android:background="@drawable/rounded_dialog"
-    android:id="@+id/poplayout"
+    android:id="@+id/poplayout" >
 
-    tools:context=".Fragment.BottomFragment">
 
-        <ImageView
-            android:id="@+id/popid"
-
-            android:layout_width="131dp"
-            android:layout_height="120dp"
-            android:src="@drawable/ic_baseline_android_24">
-
-        </ImageView>
-
-        <TextView
-            android:id="@+id/popname"
-            android:layout_width="wrap_content"
+        <androidx.appcompat.widget.SearchView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="이름">
+            app:iconifiedByDefault="false"
+            app:queryHint="검색" />
 
-        </TextView>
-        <TextView
-            android:id="@+id/poplocate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="장소">
-
-        </TextView>
-        <TextView
-            android:id="@+id/poptext"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="텍스트">
-
-        </TextView>
-        <Button
-            android:id="@+id/popbtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="위트하기">
-        </Button>
+        <ListView
+            android:id="@+id/listView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:listitem="@layout/adapter_exercise_list"/>
 
 </LinearLayout>
