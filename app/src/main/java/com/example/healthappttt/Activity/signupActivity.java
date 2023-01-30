@@ -56,6 +56,7 @@ public class signupActivity extends AppCompatActivity {
                 startActivityForResult(intent, 45);
             }
        });
+
     }
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
