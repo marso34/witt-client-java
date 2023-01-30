@@ -102,7 +102,7 @@ public class ChatActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String message = messageBox.getText().toString();
                 if(message != ""){
-                    Message messageObject = new Message(message,senderUid);
+                    Message messageObject = new Message(message,senderUid, receiverUid);
 
                     mDbRef.child("chats").child(senderRoom).child("messages").push()
                             .setValue(messageObject).addOnSuccessListener(new OnSuccessListener<Void>() {
