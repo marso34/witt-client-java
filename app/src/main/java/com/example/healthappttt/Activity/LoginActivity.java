@@ -34,6 +34,8 @@ public class LoginActivity extends AppCompatActivity {
 
         //findViewById = >activity_login_layout에서 "gotoPasswordResetButton" id를 가진
         //컴포넌트를 찾음
+
+        userIsLoggedIn(); //자동로그인
     }
 
     View.OnClickListener onClickListener = new View.OnClickListener() {// 클릭됐을시
@@ -52,6 +54,15 @@ public class LoginActivity extends AppCompatActivity {
             }
         }
     };
+
+    private void userIsLoggedIn() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if(user != null){
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            finish();
+            return;
+        }
+    }
 
     private void login() {
         String email = ((EditText) findViewById(R.id.emailEditText)).getText().toString();//emailEditText 컴포넌트에서 아이디 문자열 가져오기
