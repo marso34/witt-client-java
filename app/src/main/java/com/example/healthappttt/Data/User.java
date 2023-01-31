@@ -20,7 +20,7 @@ import java.util.Map;
         private Double Lat = 0.0;
         private Double Lon = 0.0;
         private Double Distance = 0.0;
-//
+
 //        public User(User a){
 //            this.UserName = a.getUserName();
 //            this.UserTemperature = a.getUserTemperature();
