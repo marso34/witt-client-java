@@ -101,13 +101,14 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String message = messageBox.getText().toString();
-                if(message != ""){
-                    Message messageObject = new Message(message,senderUid, receiverUid);
-
+                if(!message.isEmpty()){
+                    Log.i(ContentValues.TAG,message);
+                    Message messageObject = new Message(message,senderUid,receiverUid);
                     mDbRef.child("chats").child(senderRoom).child("messages").push()
                             .setValue(messageObject).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void unused) {
+                             //       Message messageObject = new Message(message,receiverUid ,senderUid);
                                     mDbRef.child("chats").child(receiverRoom).child("messages").push()
                                             .setValue(messageObject);
                                 }
@@ -115,8 +116,12 @@ public class ChatActivity extends AppCompatActivity {
                     messageBox.setText("");
                     chatRecyclerView.scrollToPosition(messageList.size()-1);
                 }
+                else
+                    return;
             }
         });
+
+
 
     }
 }

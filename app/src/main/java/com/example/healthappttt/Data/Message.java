@@ -4,14 +4,14 @@ public class Message {
 
     private String message = "";
     private String senderId = "";
-    private String receiver;
+    private String receiver ="";
 
     public Message(){}
 
-    public Message(String message, String receiver, String senderId){
+    public Message(String message,  String senderId, String receiver){
         this.message = message;
-        this.receiver = receiver;
         this.senderId = senderId;
+        this.receiver = receiver;
     }
 
     public String getMessage() {
@@ -33,6 +33,7 @@ public class Message {
     public void setReceiver(String receiver) {
         this.receiver = receiver;
     }
+
 
     public String getReceiver() {
         return receiver;

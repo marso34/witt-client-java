@@ -76,7 +76,7 @@ public class ChattingFragment extends Fragment {
                                 userList.clear();
 
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d(TAG, document.getId() + " &&&&+&=> " + document.getData().get("userName").toString());
+                               //Log.d(TAG, document.getId() + " &&&&+&=> " + document.getData().get("userName").toString());
                                 User a= new User(
                                         Double.parseDouble(document.getData().get("userTemperature").toString()),
                                         document.getData().get("key").toString(),
@@ -89,6 +89,7 @@ public class ChattingFragment extends Fragment {
                                         document.getData().get("deadlift").toString(),
                                         document.getData().get("squat").toString(),
                                         document.getData().get("locationName").toString()
+
                                 );
 
                                 if(!a.getKey().equals( mAuth.getCurrentUser().getUid()))
@@ -98,7 +99,7 @@ public class ChattingFragment extends Fragment {
                             userListAdapter.notifyDataSetChanged();
 
                         } else {
-                            Log.d(TAG, "Error getting documents: ", task.getException());
+                           // Log.d(TAG, "Error getting documents: ", task.getException());
                         }
 
                     }
