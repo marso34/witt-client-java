@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -22,19 +23,22 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.healthappttt.Data.Exercise;
 import com.example.healthappttt.Data.ExerciseName;
 import com.example.healthappttt.Data.Routine;
+import com.example.healthappttt.Data.User;
 import com.example.healthappttt.R;
+import com.example.healthappttt.adapter.ExerciseAdapter;
 import com.example.healthappttt.adapter.setExerciseAdapter;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-
-
-
-//
 
 public class RoutineFragment extends Fragment {
     Context context;
@@ -44,7 +48,7 @@ public class RoutineFragment extends Fragment {
 
     private Button[] weekBtn;
     private ToggleButton[] exerciseTxt;
-    TextView StartTime, EndTime;
+    private TextView StartTime, EndTime;
     private CardView addCard;
 
     private Routine routine;
@@ -209,6 +213,17 @@ public class RoutineFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
+
+        if (adapter != null) {
+            adapter.setOnExerciseClickListener(new setExerciseAdapter.OnExerciseClick() { // 어댑터 데이터를 전송 받기 위한 인터페이스 콜백
+                @Override
+                public void onExerciseClick(int postion) { // 운동 기록과 운동 메모를 전달 받아
+                    adapter.notifyDataSetChanged();
+                    adapter.removeItem(postion);
+                    saveRoutine();
+                }
+            });
+        }
     }
 
     public void clickBtn(View v) {

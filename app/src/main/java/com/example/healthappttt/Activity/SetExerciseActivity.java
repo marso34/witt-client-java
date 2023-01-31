@@ -62,6 +62,7 @@ public class SetExerciseActivity extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(), ExerciseRecordActivity.class);
         intent.putExtra("routine", routine);
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
         finish(); // 운동 결과 페이지 보여주고 종료
     }
@@ -75,5 +76,15 @@ public class SetExerciseActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
+
+        if (adapter != null) {
+            adapter.setOnExerciseClickListener(new setExerciseAdapter.OnExerciseClick() { // 어댑터 데이터를 전송 받기 위한 인터페이스 콜백
+                @Override
+                public void onExerciseClick(int postion) { // 운동 기록과 운동 메모를 전달 받아
+                    adapter.notifyDataSetChanged();
+                    adapter.removeItem(postion);
+                }
+            });
+        }
     }
 }
