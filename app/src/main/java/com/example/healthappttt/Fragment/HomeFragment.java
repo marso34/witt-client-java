@@ -158,7 +158,7 @@ public class HomeFragment extends Fragment {
                                 userList.clear();
                             }
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d(TAG, document.getId() + " &&&&+&=> " + document.getData().get("userName").toString());
+                               // Log.d(TAG, document.getId() + " &&&&+&=> " + document.getData().get("userName").toString());
                                User a= new User(
                                        Double.parseDouble(document.getData().get("userTemperature").toString()),
                                         document.getData().get("key").toString(),
@@ -198,7 +198,7 @@ public class HomeFragment extends Fragment {
                             userAdapter.notifyDataSetChanged();
 
                         } else {
-                            Log.d(TAG, "Error getting documents: ", task.getException());
+                            //Log.d(TAG, "Error getting documents: ", task.getException());
                         }
                         updating = false;
                     }
