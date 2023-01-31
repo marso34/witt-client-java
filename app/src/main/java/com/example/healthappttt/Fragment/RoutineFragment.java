@@ -9,9 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -26,27 +23,38 @@ import com.example.healthappttt.Data.Exercise;
 import com.example.healthappttt.Data.ExerciseName;
 import com.example.healthappttt.Data.Routine;
 import com.example.healthappttt.R;
-import com.example.healthappttt.adapter.RoutineAdapter;
 import com.example.healthappttt.adapter.setExerciseAdapter;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+
+
+
+//
 
 public class RoutineFragment extends Fragment {
     Context context;
 
-    private Button[] weekBtn;
-    private ToggleButton[] exerciseTxt;
-
     private RecyclerView recyclerView;
     private setExerciseAdapter adapter;
+
+    private Button[] weekBtn;
+    private ToggleButton[] exerciseTxt;
+    TextView StartTime, EndTime;
     private CardView addCard;
 
     private Routine routine;
+    private ArrayList<Exercise> exercises;
 
     private int dayOfWeek;
-    private String testStr;
+
+
+    private FirebaseFirestore firebaseFirestore;
+    private FirebaseAuth mAuth;// 파이어베이스 유저관련 접속하기위한 변수
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -88,10 +96,12 @@ public class RoutineFragment extends Fragment {
 
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_routine, container, false);
 
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
         weekBtn = new Button[7];
         exerciseTxt = new ToggleButton[7];
 
-        weekBtn[0] = (Button) view.findViewById(R.id.sun);
+        weekBtn[0] = (Button) view.findViewById(R.id.sun); // 일요일부터 배치
         weekBtn[1] = (Button) view.findViewById(R.id.mon);
         weekBtn[2] = (Button) view.findViewById(R.id.tue);
         weekBtn[3] = (Button) view.findViewById(R.id.wed);
@@ -107,11 +117,13 @@ public class RoutineFragment extends Fragment {
         exerciseTxt[5] = (ToggleButton) view.findViewById(R.id.absTxt);
         exerciseTxt[6] = (ToggleButton) view.findViewById(R.id.cardioTxt);
 
-
+        StartTime = (TextView) view.findViewById(R.id.startTime);
+        EndTime = (TextView) view.findViewById(R.id.endTime);
         addCard = (CardView) view.findViewById(R.id.plusExercise);
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
 
         getCurrentWeek();
+//        setRecyclerView();
         setRoutine();
 
         final ExerciseListFragment exerciseListFragment = new ExerciseListFragment(getContext()); // 운동 부위 정보도 추가
@@ -120,15 +132,16 @@ public class RoutineFragment extends Fragment {
             @Override
             public void onExerciseClick(ExerciseName exerciseName) {
                 routine.addExercise(new Exercise(exerciseName.getName(), exerciseName.getCat()));
-                setRecyclerView();
+                adapter.notifyDataSetChanged();
+                saveRoutine();
             }
         });
 
         for (Button btn : weekBtn) {
-            btn.setOnClickListener(v -> clickBtn(v));
+            btn.setOnClickListener(v -> clickBtn(v)); // 요일 버튼
         }
 
-        for (ToggleButton txt : exerciseTxt) {
+        for (ToggleButton txt : exerciseTxt) { // 운동 부위 버튼
             txt.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
@@ -170,11 +183,25 @@ public class RoutineFragment extends Fragment {
     }
 
     private void setRoutine() {
-        // DB 접근해서 요일에 맞는 루틴 가져와서 루틴 생성
-        // dayOfWeek 요일 정보
+        // 없으면 빈 루틴 생성
+        Log.d("현재 유저 Uid ", mAuth.getCurrentUser().getUid());
+
+        // mAuth.getCurrentUser().getUid(), 유저 id와
+        // dayOfWeek, 요일 정보를 토대로 DB 접근
+        // 루틴 정보 있으면 루틴 생성
+        // 없으면 빈 루틴 생성
 
         routine = new Routine("월", "전신");
+
+        StartTime.setText(routine.getStartTime());
+        EndTime.setText(routine.getEndTime());
+
         setRecyclerView();
+    }
+
+    private void saveRoutine() {
+        // 루틴을 DB에 저장
+
     }
 
     private void setRecyclerView() {
@@ -194,7 +221,7 @@ public class RoutineFragment extends Fragment {
 
         button.setBackgroundResource(R.drawable.round_button_green);
         button.setTextColor(Color.parseColor("#ffffff") );
-        dayOfWeek = Integer.parseInt((String) v.getTag()); // v.getTag가 (int)로 형변환 안 됨
+        dayOfWeek = Integer.parseInt((String) v.getTag()); // v.getTag가 (int)로 형변환 안 됨 귀찮으니 방법 나중에 찾아보기
 
         setRoutine();
     }

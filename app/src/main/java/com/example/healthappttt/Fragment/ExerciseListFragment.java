@@ -97,7 +97,6 @@ public class ExerciseListFragment extends BottomSheetDialogFragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-
                 onExerciseClick.onExerciseClick(adapter.getItem(position));
                 dismiss();
             }
@@ -105,7 +104,6 @@ public class ExerciseListFragment extends BottomSheetDialogFragment {
 
         return view;
     }
-
 
     private void Parse() {
 

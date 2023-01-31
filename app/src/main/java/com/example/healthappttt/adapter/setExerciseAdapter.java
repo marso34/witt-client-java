@@ -19,12 +19,15 @@ import java.util.ArrayList;
 public class setExerciseAdapter extends RecyclerView.Adapter<setExerciseAdapter.MainViewHolder> {
     private ArrayList<Exercise> exercises;
     private String exerciseCategories;
-    private int exerciseCnt;
 
     public setExerciseAdapter(Routine routine) { // 일단 테스트
         this.exercises = routine.getExercises();
         this.exerciseCategories = routine.getExerciseCategories();
-        this.exerciseCnt = routine.getExercieseCount();
+    }
+
+    public setExerciseAdapter(ArrayList<Exercise> exercises) { // 일단 테스트
+        this.exercises = exercises;
+//        this.exerciseCategories = routine.getExerciseCategories();
     }
 
     public static class MainViewHolder extends RecyclerView.ViewHolder {
@@ -69,9 +72,7 @@ public class setExerciseAdapter extends RecyclerView.Adapter<setExerciseAdapter.
     }
 
     @Override
-    public int getItemCount() {
-        return exerciseCnt;
-    }
+    public int getItemCount() { return exercises.size(); }
 
     private void setTxt(@NonNull MainViewHolder holder) { // 초기값 설정
         int position = holder.getAdapterPosition();

@@ -19,17 +19,19 @@ import com.example.healthappttt.Data.Routine;
 import java.util.ArrayList;
 
 public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.MainViewHolder>  {
-    private ArrayList<Exercise> exercises;
-
     private String title;
-    private int exerciseCnt;
+    private ArrayList<Exercise> exercises;
 
     private OnExerciseClick onExerciseClick;
 
     public ExerciseAdapter(Routine routine) { // 일단 테스트
         this.title = routine.getTitle();
         this.exercises = routine.getExercises();
-        this.exerciseCnt = routine.getExercieseCount();
+    }
+
+    public ExerciseAdapter(ArrayList<Exercise> exercises) {
+        this.title = "";
+        this.exercises = exercises;
     }
 
     public static class MainViewHolder extends RecyclerView.ViewHolder {
@@ -99,7 +101,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.MainVi
 
     @Override
     public void onBindViewHolder(@NonNull MainViewHolder holder, int position) {
-        if (exerciseCnt > position) { // 운동 기록에서 광고 없으면 없어도 됨
+        if (exercises.size() > position) { // 운동 기록에서 광고 없으면 없어도 됨
             setTxt(holder); // DetailViewTxt, CountTxt 초기값 설정
 
             holder.CatView.setText(this.exercises.get(position).getState()); // 운동 부위
@@ -118,15 +120,15 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.MainVi
                 holder.CardioMView.setVisibility(View.GONE);
             }
         }
-        else { // -> exercizeCnt+1
+        else { // -> exercises.size()+1
             holder.ExerciseLayout.setVisibility(View.GONE); // 만약 광고 넣으면 광고 자리
         }
     }
 
     @Override
     public int getItemCount() {
-        return (exerciseCnt);
-    } // exercizeCnt+1 -> 광고 자리를 위한 +1
+        return exercises.size();
+    } // exercises.size()+1 -> 광고 자리를 위한 +1
 
     private void setTxt(@NonNull MainViewHolder holder) { // 초기값 설정
         int position = holder.getAdapterPosition();
