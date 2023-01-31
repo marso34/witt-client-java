@@ -1,5 +1,7 @@
 package com.example.healthappttt.Fragment;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -20,6 +22,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.healthappttt.Activity.MainActivity;
 import com.example.healthappttt.Data.Exercise;
 import com.example.healthappttt.Data.ExerciseName;
 import com.example.healthappttt.Data.Routine;
@@ -28,6 +31,8 @@ import com.example.healthappttt.R;
 import com.example.healthappttt.adapter.ExerciseAdapter;
 import com.example.healthappttt.adapter.setExerciseAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
@@ -59,6 +64,7 @@ public class RoutineFragment extends Fragment {
 
     private FirebaseFirestore firebaseFirestore;
     private FirebaseAuth mAuth;// 파이어베이스 유저관련 접속하기위한 변수
+    private FirebaseFirestore db;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -102,6 +108,8 @@ public class RoutineFragment extends Fragment {
 
         firebaseFirestore = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
+
         weekBtn = new Button[7];
         exerciseTxt = new ToggleButton[7];
 
@@ -127,7 +135,6 @@ public class RoutineFragment extends Fragment {
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
 
         getCurrentWeek();
-//        setRecyclerView();
         setRoutine();
 
         final ExerciseListFragment exerciseListFragment = new ExerciseListFragment(getContext()); // 운동 부위 정보도 추가
@@ -189,6 +196,52 @@ public class RoutineFragment extends Fragment {
     private void setRoutine() {
         // 없으면 빈 루틴 생성
         Log.d("현재 유저 Uid ", mAuth.getCurrentUser().getUid());
+
+        String str = "";
+
+        switch (dayOfWeek) {
+            case 0: str = "sun"; break;
+            case 1: str = "mon"; break;
+            case 2: str = "tue"; break;
+            case 3: str = "wed"; break;
+            case 4: str = "thu"; break;
+            case 5: str = "fri"; break;
+            case 6: str = "sat"; break;
+        }
+
+//        db.collection("users").document(mAuth.getCurrentUser().getUid()).
+//                collection("routines").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                        if (task.isSuccessful()) {
+//                            for (QueryDocumentSnapshot document : task.getResult()) {
+//                                Log.d(TAG, document.getId() + " => " + document.getData());
+//                            }
+//                        } else {
+//                            Log.w(TAG, "Error writing document", task.getException());
+//                        }
+//                    }
+//                });
+
+
+
+
+
+//
+//                document(str).set(new Routine(str,"1")).addOnSuccessListener(new OnSuccessListener<Void>() {
+//            @Override
+//            public void onSuccess(Void aVoid) {
+//                Log.d(TAG, "DocumentSnapshot successfully written!");
+//
+//            }
+//        }).addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(@NonNull Exception e) {
+//            }
+//        });
+
+
+
 
         // mAuth.getCurrentUser().getUid(), 유저 id와
         // dayOfWeek, 요일 정보를 토대로 DB 접근
