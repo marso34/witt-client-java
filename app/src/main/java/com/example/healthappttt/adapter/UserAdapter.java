@@ -3,6 +3,9 @@ package com.example.healthappttt.adapter;//package com.example.healthappttt.adap
 import static android.content.ContentValues.TAG;
 
 import android.app.Activity;
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +18,9 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.healthappttt.Activity.ChatActivity;
+import com.example.healthappttt.Activity.MainActivity;
+import com.example.healthappttt.Activity.ProfileActivity;
 import com.example.healthappttt.Data.User;
 import com.example.healthappttt.R;
 import com.google.firebase.auth.UserInfo;
@@ -23,8 +29,10 @@ import java.util.ArrayList;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder> {
     private ArrayList<User> mDataset;
-    private Activity activity;
 
+
+    private Context mContext;
+    private User thisUser;
     static class MainViewHolder extends RecyclerView.ViewHolder {
         CardView cardView;
         MainViewHolder(CardView v) {
@@ -33,9 +41,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
         }
     }
 
-    public UserAdapter(Activity activity, ArrayList<User> myDataset) {
+    public UserAdapter(Context Context, ArrayList<User> myDataset) {
         this.mDataset = myDataset;
-        this.activity = activity;
+        this.mContext = Context;
     }
 
     @Override
@@ -76,9 +84,18 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
         ExerciseArea.setText("가슴");
 
        if(userInfo.getProfileImg() != null){
-          Glide.with(activity).load(userInfo.getProfileImg()).centerCrop().override(500).into(photoImageVIew);
+          Glide.with(mContext).load(userInfo.getProfileImg()).centerCrop().override(500).into(photoImageVIew);
        }
-
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(mContext, ProfileActivity.class);
+                intent.putExtra("userId",thisUser.getKey());
+                Log.i(ContentValues.TAG,thisUser.getKey());
+                intent.putExtra("username",thisUser.getUserName());
+                mContext.startActivity(intent);
+            }
+        });
     }
 
     @Override
