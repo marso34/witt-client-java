@@ -70,7 +70,6 @@ public class ChatActivity extends AppCompatActivity {
         messageBox = findViewById(R.id.messageBox);
         sendButton = findViewById(R.id.sentButton);
 
-
         mAuth = FirebaseAuth.getInstance();
         messageList = new ArrayList<Message>();
         chatRecyclerView.setHasFixedSize(true);
