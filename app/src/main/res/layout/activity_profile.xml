@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragment.ProflieFragment">
+    tools:context=".Activity.ProfileActivity">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -12,8 +12,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            tools:context=".Activity.ProfileActivity">
-
+           >
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -33,11 +32,12 @@
                     android:layout_marginLeft="12dp"
                     android:text="김건우"
                     android:layout_gravity="center"
-                    android:fontFamily="@font/spoqa_han_sans_neo"
                     android:textStyle="bold"
                     android:textSize="16sp"
                     android:letterSpacing="-0.06"
                     android:lineSpacingExtra="5sp"/>
+<!--                    android:fontFamily="@font/spoqa_han_sans_neo"-->
+
                 <TextView
                     android:id="@+id/UserNum"
                     android:layout_width="wrap_content"
@@ -45,12 +45,13 @@
                     android:text="#4630844"
                     android:layout_gravity="center"
                     android:layout_marginLeft="4dp"
-                    android:fontFamily="@font/spoqa_han_sans_neo"
                     android:textStyle="normal"
                     android:textSize="12sp"
                     android:textColor="#aaaaaa"
                     android:letterSpacing="0.03"
                     android:lineSpacingExtra="3sp"/>
+<!--                    android:fontFamily="@font/spoqa_han_sans_neo"-->
+
 
             </LinearLayout>
 
@@ -76,13 +77,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="부안군 부안읍ㆍMK헬스장"
-                    android:fontFamily="@font/spoqa_han_sans_neo"
                     android:textStyle="normal"
                     android:textSize="14sp"
                     android:textColor="#111111"
                     android:letterSpacing="-0.06"
                     android:lineSpacingExtra="4sp"
                     android:layout_gravity="center"/>
+<!--                    android:fontFamily="@font/spoqa_han_sans_neo"-->
+
 
             </LinearLayout>
 
@@ -96,21 +98,23 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="위트온도"
-                    android:fontFamily="@font/spoqa_han_sans_neo"
                     android:textStyle="bold"
                     android:textSize="12sp"
                     android:textColor="#111111"
                     android:letterSpacing="-0.06"
                     android:lineSpacingExtra="3sp"
                     />
+<!--                    android:fontFamily="@font/spoqa_han_sans_neo"-->
+
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/ic_baseline_info_24"
                     android:layout_gravity="center"
                     android:layout_marginLeft="4dp"
                     />
+<!--                    android:background="@drawable/ic_baseline_info_24"-->
+
 
             </LinearLayout>
 
@@ -120,7 +124,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="41.4°C"
-                android:fontFamily="@font/spoqa_han_sans_neo"
                 android:textStyle="bold"
                 android:textSize="16sp"
                 android:textColor="#111111"
@@ -128,6 +131,8 @@
                 android:lineSpacingExtra="5sp"
                 android:layout_gravity="right"
                 android:layout_marginRight="25dp"/>
+<!--                android:fontFamily="@font/spoqa_han_sans_neo"-->
+
 
             <ProgressBar
                 android:id="@+id/MTProgresser"
@@ -172,35 +177,36 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="재운동희망률"
-                            android:fontFamily="@font/spoqa_han_sans_neo"
                             android:textStyle="normal"
                             android:textSize="12sp"
                             android:textColor="#111111"
                             android:letterSpacing="-0.06"
                             android:lineSpacingExtra="3sp"/>
+
+<!--                        android:fontFamily="@font/spoqa_han_sans_neo-->
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="100%"
-                            android:fontFamily="@font/spoqa_han_sans_neo"
                             android:textStyle="bold"
                             android:textSize="12sp"
                             android:textColor="#111111"
                             android:letterSpacing="0.03"
                             android:lineSpacingExtra="3sp"/>
-
+<!--                        android:fontFamily="@font/spoqa_han_sans_neo"-->
                     </LinearLayout>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="15명중 15명이 만족"
-                        android:fontFamily="@font/spoqa_han_sans_neo"
+
                         android:textStyle="normal"
                         android:textSize="10sp"
                         android:textColor="#aaaaaa"
                         android:letterSpacing="0.03"
                         android:lineSpacingExtra="3sp"/>
+<!--                    android:fontFamily="@font/spoqa_han_sans_neo"-->
                 </LinearLayout>
 
                 <LinearLayout
@@ -217,17 +223,18 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="응답률"
-                            android:fontFamily="@font/spoqa_han_sans_neo"
+
                             android:textStyle="normal"
                             android:textSize="12sp"
                             android:textColor="#111111"
                             android:letterSpacing="-0.06"
                             android:lineSpacingExtra="3sp"/>
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="-%"
-                            android:fontFamily="@font/spoqa_han_sans_neo"
+
                             android:textStyle="bold"
                             android:textSize="12sp"
                             android:textColor="#111111"
@@ -240,7 +247,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="표시될 만큼 충분히 채팅하지 않았아요."
-                        android:fontFamily="@font/spoqa_han_sans_neo"
                         android:textStyle="normal"
                         android:textSize="10sp"
                         android:textColor="#aaaaaa"
@@ -271,7 +277,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="3대 측정"
-                android:fontFamily="@font/spoqa_han_sans_neo"
                 android:textStyle="bold"
                 android:textSize="14sp"
                 android:textColor="#111111"
@@ -301,7 +306,6 @@
                         android:layout_height="13dp"
                         android:layout_marginTop="23dp"
                         android:layout_marginHorizontal="27dp"
-                        android:fontFamily="@font/spoqa_han_sans_neo"
                         android:letterSpacing="-0.06"
                         android:lineSpacingExtra="3sp"
                         android:text="스쿼트"
@@ -314,7 +318,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="25dp"
-                        android:fontFamily="@font/spoqa_han_sans_neo"
                         android:text="130"
                         android:textStyle="bold"
                         android:textSize="15sp"
@@ -340,7 +343,6 @@
                         android:layout_height="13dp"
                         android:layout_marginHorizontal="18dp"
                         android:layout_marginTop="23dp"
-                        android:fontFamily="@font/spoqa_han_sans_neo"
                         android:letterSpacing="-0.06"
                         android:lineSpacingExtra="3sp"
                         android:text="벤치프레스"
@@ -354,7 +356,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="25dp"
                         android:layout_marginBottom="23dp"
-                        android:fontFamily="@font/spoqa_han_sans_neo"
                         android:letterSpacing="0.03"
                         android:lineSpacingExtra="5sp"
                         android:text="100"
@@ -379,7 +380,6 @@
                         android:layout_height="13dp"
                         android:layout_marginHorizontal="18dp"
                         android:layout_marginTop="23dp"
-                        android:fontFamily="@font/spoqa_han_sans_neo"
                         android:letterSpacing="-0.06"
                         android:lineSpacingExtra="3sp"
                         android:text="데드리프트"
@@ -392,7 +392,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="25dp"
-                        android:fontFamily="@font/spoqa_han_sans_neo"
                         android:letterSpacing="0.03"
                         android:lineSpacingExtra="5sp"
                         android:text="200"
@@ -457,7 +456,6 @@
                             android:layout_height="wrap_content"
                             android:layout_marginRight="10dp"
                             android:text="15"
-                            android:fontFamily="@font/spoqa_han_sans_neo"
                             android:textStyle="bold"
                             android:textSize="14sp"
                             android:textColor="#05c78c"
@@ -469,7 +467,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="친절하고 매너가 좋아요"
-                            android:fontFamily="@font/spoqa_han_sans_neo"
                             android:textStyle="normal"
                             android:textSize="14sp"
                             android:textColor="#111111"
@@ -497,7 +494,6 @@
                             android:layout_height="wrap_content"
                             android:layout_marginRight="10dp"
                             android:text="3"
-                            android:fontFamily="@font/spoqa_han_sans_neo"
                             android:textStyle="bold"
                             android:textSize="14sp"
                             android:textColor="#05c78c"
@@ -508,7 +504,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="시간 약속을 잘 지켜요"
-                            android:fontFamily="@font/spoqa_han_sans_neo"
                             android:textStyle="normal"
                             android:textSize="14sp"
                             android:textColor="#111111"
@@ -536,7 +531,6 @@
                             android:layout_height="wrap_content"
                             android:layout_marginRight="10dp"
                             android:text="102"
-                            android:fontFamily="@font/spoqa_han_sans_neo"
                             android:textStyle="bold"
                             android:textSize="14sp"
                             android:textColor="#05c78c"
@@ -548,7 +542,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="응답이 빨라요"
-                            android:fontFamily="@font/spoqa_han_sans_neo"
                             android:textStyle="normal"
                             android:textSize="14sp"
                             android:textColor="#111111"
@@ -577,7 +570,6 @@
                             android:layout_height="wrap_content"
                             android:layout_marginRight="10dp"
                             android:text="1"
-                            android:fontFamily="@font/spoqa_han_sans_neo"
                             android:textStyle="bold"
                             android:textSize="14sp"
                             android:textColor="#05c78c"
@@ -589,7 +581,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="운동을 잘 알려줘요"
-                            android:fontFamily="@font/spoqa_han_sans_neo"
                             android:textStyle="normal"
                             android:textSize="14sp"
                             android:textColor="#111111"
@@ -617,7 +608,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="위트내역"
-                        android:fontFamily="@font/spoqa_han_sans_neo"
                         android:textStyle="bold"
                         android:textSize="14sp"
                         android:textColor="#111111"
@@ -649,7 +639,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="고객센터"
-                        android:fontFamily="@font/spoqa_han_sans_neo"
                         android:textStyle="bold"
                         android:textSize="14sp"
                         android:textColor="#111111"
@@ -681,7 +670,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="설정"
-                        android:fontFamily="@font/spoqa_han_sans_neo"
                         android:textStyle="bold"
                         android:textSize="14sp"
                         android:textColor="#111111"

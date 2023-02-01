@@ -16,7 +16,7 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-        wittBtn = findViewById(R.id.wittBtn);
+        //wittBtn = findViewById(R.id.wittBtn);
         //메인에서 이 상세프로필의 주인의 유저 클래스를 받는다 thisUser;
         // ui에 값들 채워넣기코드, 채워널때 루틴정보는 준이가 만든 루틴 테이블접근해서 얻을것.
         wittBtn.setOnClickListener(new View.OnClickListener() {
