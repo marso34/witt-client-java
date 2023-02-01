@@ -19,6 +19,7 @@ import java.util.Map;
         private String Key ="";
         private Double Lat = 0.0;
         private Double Lon = 0.0;
+        private Double Distance = 0.0;
         private Boolean state = false;
 //
 //        public User(User a){
@@ -88,11 +89,23 @@ import java.util.Map;
         public Double getLon(){
             return  this.Lon;
         }
+        public Double getDistance(){
+            return this.Distance;
+        }
+        public void setDistance(Double D){
+            this.Distance = D;
+        }
+        public void setLat(Double L){
+            this.Lat = L;
+        }
         public Boolean getState(){
             return  this.state;
         }
 
 
+        public void setLon(Double L){
+            this.Lon = L;
+        }
     }
 
 

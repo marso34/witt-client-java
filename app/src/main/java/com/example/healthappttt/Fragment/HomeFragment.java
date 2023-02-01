@@ -1,11 +1,63 @@
 package com.example.healthappttt.Fragment;
 
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
+import android.Manifest;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
+import android.os.Bundle;
+import android.os.Looper;
+import android.util.Log;
+import android.view.View;
+import android.view.WindowManager;
+import android.widget.Toast;
+
+import com.example.healthappttt.R;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.snackbar.Snackbar;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
+
+
+
+
+
+
+import android.content.Context;
+
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.location.Location;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -81,15 +133,18 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //fragment_main에 인플레이션을 함
+
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_home, container, false);
         firebaseFirestore = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();// 파이어베이스의 auth기능의 접근 권한을 갖는변수
@@ -112,10 +167,12 @@ public class HomeFragment extends Fragment {
                 if(newState == 1 && firstVisibleItemPosition == 0){
                     topScrolled = true;
                 }
+
                 if(newState == 0 && topScrolled){
                     //postsUpdate(true);
                     topScrolled = false;
                 }
+
             }
 
             @Override
@@ -179,24 +236,28 @@ public class HomeFragment extends Fragment {
                             //
                             ArrayList<Double> distans = new ArrayList<Double>();
                             for(int i=0;i<userList.size();++i){
-                                if(userList.get(i).getKey() != currentUser.getKey())
+                                if(userList.get(i).getKey() == currentUser.getKey()) {
                                     distans.add(0.0);
+                                    userList.get(i).setDistance(0.0);
+                                }
                                 else {
-                                    distans.add(DistanceByDegreeAndroid(currentUser.getLat(),currentUser.getLon(),userList.get(i).getLat(),userList.get(i).getLon()));
+                                    Double dis = DistanceByDegreeAndroid(currentUser.getLat(),currentUser.getLon(),userList.get(i).getLat(),userList.get(i).getLon());
+                                    distans.add(dis);
+                                    userList.get(i).setDistance(dis);
                                 }
                             }
-//                            for(int i=0;i<userList.size();++i){
-//                                CompareuserList.add(new CompareUser(userList.get(i),distans.get(i)));
-//                            }
-//                            Collections.sort(CompareuserList);
-//                            for(int i = 0; i<CompareuserList.size();++i)
-//                            Log.d("list",CompareuserList.get(i).getDistance().toString());
-//                            userList.clear();
-//                            for(int i=0;i<CompareuserList.size();++i){
-//                                userList.add(CompareuserList.get(i).getUser());
-//                            }
+                            for(int i=0;i<userList.size();++i){
+                                CompareuserList.add(new CompareUser(userList.get(i),distans.get(i)));
+                            }
+                            Collections.sort(CompareuserList);
+                            for(int i = 0; i < CompareuserList.size();++i)
+                                Log.d("list" , CompareuserList.get(i).getDistance().toString());
+                            userList.clear();
+                            for(int i=0;i<CompareuserList.size();++i){
+                                userList.add(CompareuserList.get(i).getUser());
+                            }
+                            CompareuserList.clear();
                             userAdapter.notifyDataSetChanged();
-
                         } else {
                             //Log.d(TAG, "Error getting documents: ", task.getException());
                         }
@@ -207,10 +268,8 @@ public class HomeFragment extends Fragment {
 
     public static String getCurrentWeek() {
         Date currentDate = new Date();
-
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(currentDate);
-
         int dayOfWeekNumber = calendar.get(Calendar.DAY_OF_WEEK);
         String day = null;
         switch (dayOfWeekNumber) {
