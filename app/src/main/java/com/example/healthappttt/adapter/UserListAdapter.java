@@ -33,15 +33,14 @@ public class UserListAdapter  extends RecyclerView.Adapter<UserListAdapter.MainV
 
     private Context mContext;
     private ArrayList<User> userlist;
-    private boolean ischat;
     FirebaseUser fuser;
-    String theLastMessage;
+    String theLastMessage ="";
+    Integer num = 0;
 
 
-    public UserListAdapter(Context context, ArrayList<User> userList) {
+    public UserListAdapter(Context context, ArrayList<User> userList ){
         this.mContext = context;
         this.userlist = userList;
-        //this.ischat = ischat; ,boolean ischat
     }
 
     @NonNull
@@ -65,13 +64,8 @@ public class UserListAdapter  extends RecyclerView.Adapter<UserListAdapter.MainV
 //        } else {
             holder.photoImageVIew.setImageResource(R.drawable.profile);
         }
-//
-//        if (ischat){
-//            lastMessage(user.getKey(), holder.last_msg);
-//        } else {
-//            holder.last_msg.setVisibility(View.GONE);
-//        }
-//
+
+        lastMessage(user.getKey(), holder.last_msg);
 
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -79,9 +73,7 @@ public class UserListAdapter  extends RecyclerView.Adapter<UserListAdapter.MainV
             public void onClick(View view) {
                 Intent intent = new Intent(mContext, ChatActivity.class);
                 intent.putExtra("userId",user.getKey());
-                Log.i(ContentValues.TAG,user.getKey());
                 intent.putExtra("username",user.getUserName());
-                Log.i(ContentValues.TAG,user.getUserName());
                 mContext.startActivity(intent);
             }
         });
@@ -109,43 +101,49 @@ public class UserListAdapter  extends RecyclerView.Adapter<UserListAdapter.MainV
 
         }
     }
-//    private void lastMessage(final String userid, final TextView last_msg){
-//        theLastMessage = "default";
-//        final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-//        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("chats");
-//
-//        reference.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-//                    Message chat = snapshot.getValue(Message.class);
-//                    if (firebaseUser != null && chat != null) {
-//                        if (chat.getReceiver().equals(firebaseUser.getUid()) && chat.getSender().equals(userid) ||
-//                                chat.getReceiver().equals(userid) && chat.getSender().equals(firebaseUser.getUid())) {
-//                            theLastMessage = chat.getMessage();
-//                        }
-//                    }
-//                }
-//
-//                switch (theLastMessage){
-//                    case  "default":
-//                        last_msg.setText("No Message");
-//                        break;
-//
-//                    default:
-//                        last_msg.setText(theLastMessage);
-//                        break;
-//                }
-//
-//                theLastMessage = "default";
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//
-//
-//        });
-//    }
+    private void lastMessage(final String userid, final TextView last_msg){
+        theLastMessage = "default";
+
+        final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+
+        String getRoom = userid + firebaseUser.getUid();
+//        Log.i(ContentValues.TAG,userid);
+//        Log.i(ContentValues.TAG,firebaseUser.getUid());
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("chats").child(getRoom).child("messages");
+
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    Message chat = snapshot.getValue(Message.class);
+                    if (firebaseUser != null && chat != null) {
+                        if(chat.getSender().equals(userid) && chat.getReceiver().equals(firebaseUser.getUid()))
+                            theLastMessage = chat.getMessage();
+                    }
+                }
+
+                switch (theLastMessage){
+                    case  "default":
+                        last_msg.setText(" ");
+                        theLastMessage = "default";
+                        break;
+
+                    default:
+                        last_msg.setText(theLastMessage);
+                        theLastMessage = "default";
+                        break;
+                }
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+
+
+        });
+    }
 }

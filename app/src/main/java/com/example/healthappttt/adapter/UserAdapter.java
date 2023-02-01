@@ -77,7 +77,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
         TextView ExerciseArea = cardView.findViewById(R.id.EArea);
 
         User userInfo = mDataset.get(position);
-        Log.d(TAG, "onBindViewHolder: "+ userInfo.getUserName().toString());
+      //  Log.d(TAG, "onBindViewHolder: "+ userInfo.getUserName().toString());
         Name.setText(userInfo.getUserName().toString());
         LocaName.setText(userInfo.getLocationName());
         PreferredTime.setText("11~13");
