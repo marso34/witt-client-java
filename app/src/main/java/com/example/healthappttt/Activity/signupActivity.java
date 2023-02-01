@@ -19,6 +19,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
+import com.example.healthappttt.Data.Exercise;
+import com.example.healthappttt.Data.Routine;
 import com.example.healthappttt.Data.User;
 import com.example.healthappttt.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -30,6 +32,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.util.Util;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+
 public class signupActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;

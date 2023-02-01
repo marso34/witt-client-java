@@ -20,13 +20,11 @@ import java.util.ArrayList;
 
 public class setExerciseAdapter extends RecyclerView.Adapter<setExerciseAdapter.MainViewHolder> {
     private ArrayList<Exercise> exercises;
-    private String exerciseCategories;
 
     private OnExerciseClick onExerciseClick;
 
     public setExerciseAdapter(Routine routine) { // 일단 테스트
         this.exercises = routine.getExercises();
-        this.exerciseCategories = routine.getExerciseCategories();
     }
 
     public setExerciseAdapter(ArrayList<Exercise> exercises) { // 일단 테스트

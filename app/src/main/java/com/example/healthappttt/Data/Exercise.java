@@ -18,8 +18,8 @@ public class Exercise implements Serializable {
     public Exercise(String title, String state) {
         this.title = title;
         this.state = state;
-        this.count = 0;      // 세트 카운트 or 시간(유산소)
-        this.volume = 0;    // 무게 or 속도 (유산소)
+        this.count = 5;      // 세트 카운트 or 시간(유산소)
+        this.volume = 10;    // 무게 or 속도 (유산소)
         this.startTime = "";
         this.endTime = "";
 
@@ -41,10 +41,12 @@ public class Exercise implements Serializable {
         this.volume = volume;
 
         switch (state) {
-            case "가슴" : this.color = "#f257af"; break;
-            case "등" : this.color = "#e26e5b"; break;
+            case "가슴" : this.color = "#f257af"; break; // 색은 일단 다 임시
+            case "등"   : this.color = "#e26e5b"; break;
             case "하체" : this.color = "#05c78c"; break;
             case "어깨" : this.color = "#8c5adb"; break;
+            case "복근" : this.color = "#ffcc00"; break;
+            case "팔"   : this.color = "#4cd964"; break;
             case "유산소" : this.color = "#579ef2"; break;
         }
     }

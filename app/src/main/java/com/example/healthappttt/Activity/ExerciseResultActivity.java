@@ -41,7 +41,7 @@ public class ExerciseResultActivity extends AppCompatActivity {
         title.setText(DateConversion(record.getStartTime(), 1));
         runtime.setText(DateConversion(record.getStartTime(), 0) + " ~ " + DateConversion(record.getEndTime(), 0));
         name.setText(record.getTitle());
-        categories.setText(record.getExerciseCategories());
+//        categories.setText(record.getExerciszeCategories());
 //        text.setText("\n운동 메모 : 없음\n" + "\n");
 
         int sum = 0;

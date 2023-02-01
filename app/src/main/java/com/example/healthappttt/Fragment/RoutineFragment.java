@@ -37,6 +37,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -62,7 +63,6 @@ public class RoutineFragment extends Fragment {
     private ArrayList<Exercise> exercises;
 
     private int dayOfWeek;
-
 
     private FirebaseFirestore firebaseFirestore;
     private FirebaseAuth mAuth;// 파이어베이스 유저관련 접속하기위한 변수
@@ -112,6 +112,7 @@ public class RoutineFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
+
         weekBtn = new Button[7];
         exerciseTxt = new ToggleButton[7];
 
@@ -145,8 +146,8 @@ public class RoutineFragment extends Fragment {
             @Override
             public void onExerciseClick(ExerciseName exerciseName) {
                 routine.addExercise(new Exercise(exerciseName.getName(), exerciseName.getCat()));
+                saveRoutine(new Exercise(exerciseName.getName(), exerciseName.getCat()));
                 adapter.notifyDataSetChanged();
-                saveRoutine();
             }
         });
 
@@ -197,20 +198,142 @@ public class RoutineFragment extends Fragment {
 
     private void setRoutine() {
         // 없으면 빈 루틴 생성
-        Log.d("현재 유저 Uid ", mAuth.getCurrentUser().getUid());
+        Log.d("현재 유저 Uid ", mAuth.getCurrentUser().getUid());;
 
+        String str = "";
 
-        routine = new Routine("월", "전신");
-        Log.d("ttt -> ", routine.getTitle());
+        switch (dayOfWeek) {
+            case 0: str = "sun"; break;
+            case 1: str = "mon"; break;
+            case 2: str = "tue"; break;
+            case 3: str = "wed"; break;
+            case 4: str = "thu"; break;
+            case 5: str = "fri"; break;
+            case 6: str = "sat"; break;
+        }
 
-//        StartTime.setText(routine.getStartTime());
-//        EndTime.setText(routine.getEndTime());
+        String d = str;
 
-        setRecyclerView();
+        db.collection("routines").document(mAuth.getCurrentUser().getUid() +"_" + str).
+                get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                Log.d(TAG, "Document exists!");
+                                routine = new Routine(
+                                        document.getData().get("title").toString(),
+                                        document.getData().get("exerciseCategories").toString(),
+                                        document.getData().get("startTime").toString(),
+                                        document.getData().get("endTime").toString()
+                                );
+
+                                setExercises();
+
+                                StartTime.setText(routine.getStartTime());
+                                EndTime.setText(routine.getEndTime());
+                            } else {
+                                Log.d(TAG, "Document does not exist!");
+                                createDB(mAuth.getCurrentUser().getUid(), d);
+                            }
+                        } else {
+                            Log.d(TAG, "Failed with: ", task.getException());
+                        }
+                    }
+                });
     }
 
-    private void saveRoutine() {
+    private void setExercises() {
+
+        String str = "";
+
+        switch (dayOfWeek) {
+            case 0: str = "sun"; break;
+            case 1: str = "mon"; break;
+            case 2: str = "tue"; break;
+            case 3: str = "wed"; break;
+            case 4: str = "thu"; break;
+            case 5: str = "fri"; break;
+            case 6: str = "sat"; break;
+        }
+
+        String d = str;
+
+        db.collection("routines").document(mAuth.getCurrentUser().getUid() +"_" + str).
+                collection("exercises").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                routine.addExercise(new Exercise(
+                                        document.getData().get("title").toString(),
+                                        document.getData().get("state").toString(),
+                                        Integer.parseInt(document.getData().get("count").toString()),
+                                        Integer.parseInt(document.getData().get("volume").toString())
+                                ));
+                            }
+
+                            setRecyclerView();
+
+                        } else {
+
+                        }
+                    }
+                });
+    }
+
+    private void createDB(String UserID, String dayOfWeek) {
+        routine = new Routine(dayOfWeek, "전신");
+
+        db.collection("routines").document(UserID +"_" + dayOfWeek)
+                .set(routine)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        setRecyclerView();
+                        Log.d(TAG, "DocumentSnapshot successfully written!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error writing document", e);
+                    }
+                });
+    }
+
+    private void saveRoutine(Exercise exercise) {
         // 루틴을 DB에 저장
+        String str = "";
+
+        switch (dayOfWeek) {
+            case 0: str = "sun"; break;
+            case 1: str = "mon"; break;
+            case 2: str = "tue"; break;
+            case 3: str = "wed"; break;
+            case 4: str = "thu"; break;
+            case 5: str = "fri"; break;
+            case 6: str = "sat"; break;
+        }
+
+        String d = str;
+
+        db.collection("routines").document(mAuth.getCurrentUser().getUid() +"_" + str).
+                collection("exercises").document(exercise.getTitle()).set(exercise).
+                addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Log.d(TAG, "DocumentSnapshot successfully written!");
+
+                    }
+                }).
+                addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error writing document", e);
+                    }
+                });
 
     }
 
@@ -221,12 +344,12 @@ public class RoutineFragment extends Fragment {
         recyclerView.setAdapter(adapter);
 
         if (adapter != null) {
-            adapter.setOnExerciseClickListener(new setExerciseAdapter.OnExerciseClick() { // 어댑터 데이터를 전송 받기 위한 인터페이스 콜백
+            adapter.setOnExerciseClickListener(new setExerciseAdapter.OnExerciseClick() {
                 @Override
-                public void onExerciseClick(int postion) { // 운동 기록과 운동 메모를 전달 받아
+                public void onExerciseClick(int postion) {
                     adapter.notifyDataSetChanged();
                     adapter.removeItem(postion);
-                    saveRoutine();
+//                    saveRoutine();
                 }
             });
         }
