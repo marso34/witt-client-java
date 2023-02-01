@@ -41,6 +41,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import org.checkerframework.checker.units.qual.A;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -197,61 +199,12 @@ public class RoutineFragment extends Fragment {
         // 없으면 빈 루틴 생성
         Log.d("현재 유저 Uid ", mAuth.getCurrentUser().getUid());
 
-        String str = "";
-
-        switch (dayOfWeek) {
-            case 0: str = "sun"; break;
-            case 1: str = "mon"; break;
-            case 2: str = "tue"; break;
-            case 3: str = "wed"; break;
-            case 4: str = "thu"; break;
-            case 5: str = "fri"; break;
-            case 6: str = "sat"; break;
-        }
-
-//        db.collection("users").document(mAuth.getCurrentUser().getUid()).
-//                collection("routines").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                        if (task.isSuccessful()) {
-//                            for (QueryDocumentSnapshot document : task.getResult()) {
-//                                Log.d(TAG, document.getId() + " => " + document.getData());
-//                            }
-//                        } else {
-//                            Log.w(TAG, "Error writing document", task.getException());
-//                        }
-//                    }
-//                });
-
-
-
-
-
-//
-//                document(str).set(new Routine(str,"1")).addOnSuccessListener(new OnSuccessListener<Void>() {
-//            @Override
-//            public void onSuccess(Void aVoid) {
-//                Log.d(TAG, "DocumentSnapshot successfully written!");
-//
-//            }
-//        }).addOnFailureListener(new OnFailureListener() {
-//            @Override
-//            public void onFailure(@NonNull Exception e) {
-//            }
-//        });
-
-
-
-
-        // mAuth.getCurrentUser().getUid(), 유저 id와
-        // dayOfWeek, 요일 정보를 토대로 DB 접근
-        // 루틴 정보 있으면 루틴 생성
-        // 없으면 빈 루틴 생성
 
         routine = new Routine("월", "전신");
+        Log.d("ttt -> ", routine.getTitle());
 
-        StartTime.setText(routine.getStartTime());
-        EndTime.setText(routine.getEndTime());
+//        StartTime.setText(routine.getStartTime());
+//        EndTime.setText(routine.getEndTime());
 
         setRecyclerView();
     }

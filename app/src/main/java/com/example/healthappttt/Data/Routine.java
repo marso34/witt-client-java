@@ -23,6 +23,15 @@ public class Routine implements Serializable {
         this.runTime = "0";
     }
 
+    public Routine(String title, String exerciseCategories, String startTime, String endTime) {
+        this.title = title;
+        this.exerciseCategories = exerciseCategories;
+        this.exercises = new ArrayList<Exercise>();
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.runTime = "0";
+    }
+
     public Routine(String title, String exerciseCategories, ArrayList<Exercise> exercises) {
         this.title = title;
         this.exerciseCategories = exerciseCategories;
