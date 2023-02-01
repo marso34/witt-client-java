@@ -12,7 +12,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_marginTop="30dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -23,50 +24,64 @@
                 android:id="@+id/mon"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:background="@drawable/round_button_green"
-                android:text="월" />
+                android:layout_marginLeft="39dp"
+                android:background="@color/transparent"
+                android:text="월"
+                android:tag="1"/>
 
             <Button
                 android:id="@+id/tue"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:background="@drawable/round_button_green"
-                android:text="화" />
+                android:layout_marginLeft="12dp"
+                android:background="@color/transparent"
+                android:text="화"
+                android:tag="2"/>
 
             <Button
                 android:id="@+id/wed"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:background="@drawable/round_button_green"
-                android:text="수" />
+                android:layout_marginLeft="12dp"
+                android:background="@color/transparent"
+                android:text="수"
+                android:tag="3"/>
 
             <Button
                 android:id="@+id/thu"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:background="@drawable/round_button_green"
-                android:text="목" />
+                android:layout_marginLeft="12dp"
+                android:background="@color/transparent"
+                android:text="목"
+                android:tag="4"/>
 
             <Button
                 android:id="@+id/fri"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:background="@drawable/round_button_green"
-                android:text="금" />
+                android:layout_marginLeft="12dp"
+                android:background="@color/transparent"
+                android:text="금"
+                android:tag="5"/>
 
             <Button
                 android:id="@+id/sat"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:background="@drawable/round_button_green"
-                android:text="토" />
+                android:layout_marginLeft="12dp"
+                android:background="@color/transparent"
+                android:text="토"
+                android:tag="6"/>
 
             <Button
                 android:id="@+id/sun"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:background="@drawable/round_button_green"
-                android:text="일" />
+                android:layout_marginLeft="12dp"
+                android:background="@color/transparent"
+                android:text="일"
+                android:tag="0"/>
         </LinearLayout>
 
         <LinearLayout
@@ -106,91 +121,125 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:gravity="center"
+                android:paddingRight="50dp"
                 android:orientation="horizontal">
 
-                <Button
-                    android:layout_width="70dp"
-                    android:layout_height="wrap_content"
-                    android:text="가슴" />
 
-                <Button
-                    android:layout_width="70dp"
-                    android:layout_height="wrap_content"
-                    android:text="등" />
+                <ToggleButton
+                    android:id="@+id/chestTxt"
+                    android:layout_width="60dp"
+                    android:layout_height="30dp"
+                    android:layout_marginHorizontal="5dp"
+                    android:background="@drawable/border_layout"
+                    android:gravity="center"
+                    android:textOff="가슴"
+                    android:textOn="가슴"/>
 
-                <Button
-                    android:layout_width="70dp"
-                    android:layout_height="wrap_content"
-                    android:text="어깨" />
+                <ToggleButton
+                    android:id="@+id/backTxt"
+                    android:layout_width="60dp"
+                    android:layout_height="30dp"
+                    android:layout_marginHorizontal="5dp"
+                    android:background="@drawable/border_layout"
+                    android:gravity="center"
+                    android:textOff="등"
+                    android:textOn="등"/>
 
-                <Button
-                    android:layout_width="70dp"
-                    android:layout_height="wrap_content"
-                    android:text="하체" />
+                <ToggleButton
+                    android:id="@+id/shoulderTxt"
+                    android:layout_width="60dp"
+                    android:layout_height="30dp"
+                    android:layout_marginHorizontal="5dp"
+                    android:background="@drawable/border_layout"
+                    android:gravity="center"
+                    android:textOff="어깨"
+                    android:textOn="어깨" />
 
-                <Button
-                    android:layout_width="70dp"
-                    android:layout_height="wrap_content"
-                    android:text="팔" />
+                <ToggleButton
+                    android:id="@+id/lowBodyTxt"
+                    android:layout_width="60dp"
+                    android:layout_height="30dp"
+                    android:layout_marginHorizontal="5dp"
+                    android:background="@drawable/border_layout"
+                    android:gravity="center"
+                    android:textOff="하체"
+                    android:textOn="하체" />
 
-                <Button
-                    android:layout_width="70dp"
-                    android:layout_height="wrap_content"
-                    android:text="복근" />
+                <ToggleButton
+                    android:id="@+id/armTxt"
+                    android:layout_width="60dp"
+                    android:layout_height="30dp"
+                    android:layout_marginHorizontal="5dp"
+                    android:background="@drawable/border_layout"
+                    android:gravity="center"
+                    android:textOff="팔"
+                    android:textOn="팔"/>
 
-                <Button
-                    android:layout_width="70dp"
-                    android:layout_height="wrap_content"
-                    android:text="유산소" />
+                <ToggleButton
+                    android:id="@+id/absTxt"
+                    android:layout_width="60dp"
+                    android:layout_height="30dp"
+                    android:layout_marginHorizontal="5dp"
+                    android:background="@drawable/border_layout"
+                    android:gravity="center"
+                    android:textOff="복근"
+                    android:textOn="복근"/>
+
+                <ToggleButton
+                    android:id="@+id/cardioTxt"
+                    android:layout_width="60dp"
+                    android:layout_height="30dp"
+                    android:layout_marginHorizontal="5dp"
+                    android:background="@drawable/border_layout"
+                    android:gravity="center"
+                    android:textOff="유산소"
+                    android:textOn="유산소"/>
 
             </LinearLayout>
 
         </HorizontalScrollView>
 
-
-        <ScrollView
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="800dp">
+            android:layout_height="wrap_content"
+            android:fillViewport="true">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingBottom="200dp">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerView"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:overScrollMode="never"
+                    android:nestedScrollingEnabled="false" />
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/plusExercise"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="10dp"
-                    android:layout_marginVertical="5dp"
+                    android:layout_height="75dp"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginVertical="2dp"
                     app:cardCornerRadius="25dp" >
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:background="@drawable/ic_baseline_check_24"
+                        android:background="@drawable/ic_baseline_add_24"
                         android:backgroundTint="@color/black"/>
+
                 </androidx.cardview.widget.CardView>
 
             </LinearLayout>
 
-        </ScrollView>
+        </androidx.core.widget.NestedScrollView>
 
     </LinearLayout>
 
-    <ListView
-        android:id="@+id/exerciseList"
-        android:layout_width="match_parent"
-        android:layout_height="500dp"
-        android:layout_gravity="bottom"
-        android:visibility="gone"/>
 </FrameLayout>
 
 

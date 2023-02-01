@@ -20,7 +20,8 @@ import java.util.Map;
         private Double Lat = 0.0;
         private Double Lon = 0.0;
         private Double Distance = 0.0;
-
+        private Boolean state = false;
+//
 //        public User(User a){
 //            this.UserName = a.getUserName();
 //            this.UserTemperature = a.getUserTemperature();
@@ -46,6 +47,7 @@ import java.util.Map;
             this.Lat = 0.0;
             this.Lon = 0.0;
             GoodTime = "0";
+
         }
         public User(Double UserTemperature_,String ReviewTableKey_,Double lat,Double lon,String Good,String UN, String PRI, String Bench, String Deadlift, String Squat,String LCN) {
             this.UserName = UN;
@@ -96,6 +98,10 @@ import java.util.Map;
         public void setLat(Double L){
             this.Lat = L;
         }
+        public Boolean getState(){
+            return  this.state;
+        }
+
 
         public void setLon(Double L){
             this.Lon = L;

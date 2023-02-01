@@ -47,7 +47,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:listitem="@layout/adapter_exercise"
-            android:layout_marginHorizontal="16dp"
             android:paddingBottom="200dp"
             app:layout_constrainedHeight="true"
             android:clipToPadding="false" >
@@ -58,7 +57,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginHorizontal="10dp"
         android:orientation="vertical"
         android:gravity="center"
         android:background="#fafafa" >
@@ -67,7 +65,8 @@
             android:id="@+id/stopBtn"
             android:layout_width="match_parent"
             android:layout_height="80dp"
-            android:layout_margin="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginHorizontal="16dp"
             android:background="@drawable/default_layout"
             android:textColor="#ffffff"
             android:text="운동 마치기"
