@@ -83,7 +83,6 @@ public class ChatActivity extends AppCompatActivity {
 
         toolbarName.setText(name);
 
-
         mAuth = FirebaseAuth.getInstance();
         messageList = new ArrayList<Message>();
         chatRecyclerView.setHasFixedSize(true);

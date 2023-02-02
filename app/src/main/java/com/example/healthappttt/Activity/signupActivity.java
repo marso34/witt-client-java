@@ -19,8 +19,11 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
+import com.example.healthappttt.Data.Exercise;
+import com.example.healthappttt.Data.Routine;
 import com.example.healthappttt.Data.User;
 import com.example.healthappttt.R;
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -28,13 +31,27 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserInfo;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.util.Util;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+
 public class signupActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     private ImageView profileImageVIew;
-
+    private Uri downloadUri = Uri.parse("kkkkkkk");
     private String profilePath;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,8 +79,8 @@ public class signupActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if(requestCode==45 && resultCode == RESULT_OK && data!=null && data.getData()!= null) {
-            profilePath = data.getData().toString();
-            Glide.with(this).load(profilePath).centerCrop().override(500).into(profileImageVIew);
+            downloadUri = data.getData();
+            profileImageVIew.setImageURI(downloadUri);
         }
     }
     @Override
@@ -110,13 +127,17 @@ public class signupActivity extends AppCompatActivity {
                                     loaderLayout.setVisibility(View.GONE);
                                 if (task.isSuccessful()) {
                                     FirebaseUser user = mAuth.getCurrentUser();
-                                    db.collection("users").document(user.getUid())
-                                            .set(new User(user.getUid(),uName,profilePath, BenchPower, DeadPower,SquatPower,LN))
+                                    FirebaseStorage storage = FirebaseStorage.getInstance();
+                                    storage.getReference().child("article/photo").child(user.getUid())
+                                            .putFile(downloadUri);
+
+                                db.collection("users").document(user.getUid())
+                                            .set(new User(user.getUid(),uName,downloadUri.toString(), BenchPower, DeadPower,SquatPower,LN))
                                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                 @Override
                                                 public void onSuccess(Void aVoid) {
                                                     Log.d(TAG, "DocumentSnapshot successfully written!");
-                                                    myStartActivity(MainActivity.class);
+                                                    setRoutine();
 
                                                 }
                                             })
@@ -126,14 +147,46 @@ public class signupActivity extends AppCompatActivity {
                                                     Log.w(TAG, "Error writing document", e);
                                                 }
                                             });
-
-                                } else {
-                                    if(task.getException() != null){ }
                                 }
-                            }
-                        });
+
+                        }
+            });
             }
         }
+    }
+
+    private void setRoutine() {
+
+        for (int i = 0; i < 7; i++) {
+            String dayOfWeek = "";
+
+            switch (i) {
+                case 0: dayOfWeek = "sun"; break;
+                case 1: dayOfWeek = "mon"; break;
+                case 2: dayOfWeek = "tue"; break;
+                case 3: dayOfWeek = "wed"; break;
+                case 4: dayOfWeek = "thu"; break;
+                case 5: dayOfWeek = "fri"; break;
+                case 6: dayOfWeek = "sat"; break;
+            }
+
+            db.collection("routines").document(mAuth.getCurrentUser().getUid() +"_" + dayOfWeek).
+                    set(new Routine(dayOfWeek,"")).
+                    addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            Log.d("루틴 생성 = >", "success");
+                        }
+                    }).
+                    addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.e("루틴 생성 => ", "failure");
+                        }
+                    });
+        }
+
+        myStartActivity(MainActivity.class);
     }
 
     private void myStartActivity(Class c) {
