@@ -8,7 +8,6 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -88,23 +87,27 @@
                 android:id="@+id/startTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="00:00"/>
+                android:text="00:00"
+                android:textSize="20sp"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="부터 " />
+                android:text="부터  "
+                android:textSize="20sp"/>
 
             <TextView
                 android:id="@+id/endTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="00:00"/>
+                android:text="00:00"
+                android:textSize="20sp"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="까지" />
+                android:text="까지"
+                android:textSize="20sp"/>
 
 
         </LinearLayout>
@@ -237,6 +240,3 @@
     </LinearLayout>
 
 </FrameLayout>
-
-
-
