@@ -59,7 +59,11 @@
                 android:layout_height="1.5dp"
                 android:background="#E2E2E2"
                 android:layout_gravity="center"/>
-
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/swipe_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
@@ -69,5 +73,6 @@
                 android:clipToPadding="false"
                 tools:listitem="@layout/adapter_user">
             </androidx.recyclerview.widget.RecyclerView>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
         </LinearLayout>
 </FrameLayout>

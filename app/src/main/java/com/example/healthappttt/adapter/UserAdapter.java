@@ -1,5 +1,6 @@
 package com.example.healthappttt.adapter;//package com.example.healthappttt.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.view.menu.MenuView;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,6 +18,8 @@ import com.bumptech.glide.Glide;
 import com.example.healthappttt.Activity.ProfileActivity;
 import com.example.healthappttt.Data.User;
 import com.example.healthappttt.R;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -27,20 +31,20 @@ import java.util.ArrayList;
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder> {
     private ArrayList<User> mDataset;
     private FirebaseStorage storage;
-
+    private User userInfo;
     private Context mContext;
     private User thisUser;
     static class MainViewHolder extends RecyclerView.ViewHolder {
-        CardView cardView;
-        MainViewHolder(CardView v) {
-            super(v);
+        View cardView;
+        MainViewHolder(View v) {
+            super((View) v);
             cardView = v;
         }
     }
 
-    public UserAdapter(Context Context, ArrayList<User> myDataset) {
+    public UserAdapter(Activity activity, ArrayList<User> myDataset) {
         this.mDataset = myDataset;
-        this.mContext = Context;
+        this.mContext = activity;
     }
 
     @Override
@@ -51,7 +55,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
     @NonNull
     @Override
     public UserAdapter.MainViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        CardView cardView = (CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_user, parent, false);
+        View cardView = (View) LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_user, parent, false);
         final MainViewHolder mainViewHolder = new MainViewHolder(cardView);
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,17 +70,18 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
     @Override
     public void onBindViewHolder(@NonNull final MainViewHolder holder, int position) {
         storage = FirebaseStorage.getInstance();
-        CardView cardView = holder.cardView;
+        View cardView = holder.cardView;
         TextView Name =  cardView.findViewById(R.id.UNE);
         TextView LocaName = cardView.findViewById(R.id.GT);
         ImageView photoImageVIew = cardView.findViewById(R.id.PRI);
         TextView PreferredTime = cardView.findViewById(R.id.GoodTime);
         TextView ExerciseArea = cardView.findViewById(R.id.EArea);
-
         User userInfo = mDataset.get(position);
+
         String fileName = userInfo.getKey();
 
         File profilefile = null;
+
         try {
             profilefile = File.createTempFile("images","jpeg");
         } catch (IOException e) {
@@ -84,11 +89,24 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
         }
 
         StorageReference sref  = storage.getReference().child("article/photo").child(fileName);
+        File finalProfilefile = profilefile;
+        sref.getFile(profilefile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                    // Local temp file has been created
+                    Glide.with(mContext).load(finalProfilefile).into(photoImageVIew);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Handle any errors
+                }
+            });
 
-        if(fileName != null){
-            sref.getFile(profilefile);
-            Glide.with(mContext).load(profilefile).centerCrop().override(500).into(photoImageVIew);
-        }
+
+
+
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -97,6 +115,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
                 mContext.startActivity(intent);
             }
         });
+
       //  Log.d(TAG, "onBindViewHolder: "+ userInfo.getUserName().toString());
         Name.setText(userInfo.getUserName().toString());
         LocaName.setText(userInfo.getLocationName());

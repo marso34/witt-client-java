@@ -16,12 +16,14 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.example.healthappttt.Activity.MainActivity;
 import com.example.healthappttt.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -60,9 +62,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.healthappttt.Data.CompareUser;
 import com.example.healthappttt.Data.CompareUser;
@@ -116,7 +120,7 @@ public class HomeFragment extends Fragment {
 
     /**
      * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
+     * th-is fragment using the provided parameters.
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
@@ -139,13 +143,11 @@ public class HomeFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //fragment_main에 인플레이션을 함
-
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_home, container, false);
         firebaseFirestore = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();// 파이어베이스의 auth기능의 접근 권한을 갖는변수
@@ -157,44 +159,72 @@ public class HomeFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(userAdapter);
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+        SwipeRefreshLayout mSwipeRefreshLayout = view.findViewById(R.id.swipe_layout);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
+            public void onRefresh() {
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
+                        int visibleItemCount = layoutManager.getChildCount();
+                        int totalItemCount = layoutManager.getItemCount();
+                        int firstVisibleItemPosition = ((LinearLayoutManager)layoutManager).findFirstVisibleItemPosition();
+                        int lastVisibleItemPosition = ((LinearLayoutManager)layoutManager).findLastVisibleItemPosition();
 
-                RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
-                int firstVisibleItemPosition = ((LinearLayoutManager)layoutManager).findFirstVisibleItemPosition();
+                        if(totalItemCount - 3 <= lastVisibleItemPosition && !updating){
+                            postsUpdate(true);
+                        }
 
-                if(newState == 1 && firstVisibleItemPosition == 0){
-                    topScrolled = true;
-                }
+                        if(0 < firstVisibleItemPosition){
+                            topScrolled = false;
+                        }
+                        mSwipeRefreshLayout.setRefreshing(false);
+                    }
+                }, 500);
 
-                if(newState == 0 && topScrolled){
-                    //postsUpdate(true);
-                    topScrolled = false;
-                }
-
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy){
-                super.onScrolled(recyclerView, dx, dy);
-
-                RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
-                int visibleItemCount = layoutManager.getChildCount();
-                int totalItemCount = layoutManager.getItemCount();
-                int firstVisibleItemPosition = ((LinearLayoutManager)layoutManager).findFirstVisibleItemPosition();
-                int lastVisibleItemPosition = ((LinearLayoutManager)layoutManager).findLastVisibleItemPosition();
-
-                if(totalItemCount - 3 <= lastVisibleItemPosition && !updating){
-                    postsUpdate(true);
-                }
-
-                if(0 < firstVisibleItemPosition){
-                    topScrolled = false;
-                }
             }
         });
+//        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+//                super.onScrollStateChanged(recyclerView, newState);
+//
+//                RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
+//                int firstVisibleItemPosition = ((LinearLayoutManager)layoutManager).findFirstVisibleItemPosition();
+//
+//                if(newState == 1 && firstVisibleItemPosition == 0){
+//                    topScrolled = true;
+//                }
+//
+//                if(newState == 0 && topScrolled){
+//                    //postsUpdate(true);
+//                    topScrolled = false;
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onScrolled(RecyclerView recyclerView, int dx, int dy){
+//                super.onScrolled(recyclerView, dx, dy);
+//
+//                RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
+//                int visibleItemCount = layoutManager.getChildCount();
+//                int totalItemCount = layoutManager.getItemCount();
+//                int firstVisibleItemPosition = ((LinearLayoutManager)layoutManager).findFirstVisibleItemPosition();
+//                int lastVisibleItemPosition = ((LinearLayoutManager)layoutManager).findLastVisibleItemPosition();
+//
+//                if(totalItemCount - 3 <= lastVisibleItemPosition && !updating){
+//                    postsUpdate(true);
+//                }
+//
+//                if(0 < firstVisibleItemPosition){
+//                    topScrolled = false;
+//                }
+//            }
+//        });
 
         postsUpdate(false);
 

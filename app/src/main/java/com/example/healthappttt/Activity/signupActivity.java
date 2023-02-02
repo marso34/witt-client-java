@@ -51,7 +51,7 @@ public class signupActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     private ImageView profileImageVIew;
-    private Uri downloadUri = Uri.parse("kkkkkkk");
+    private Uri downloadUri = Uri.parse("android.resource://" + "com.example.healthappttt" + "/" + R.drawable.profile);
     private String profilePath;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
