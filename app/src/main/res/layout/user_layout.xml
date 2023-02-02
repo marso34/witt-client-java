@@ -71,6 +71,7 @@
             android:layout_toRightOf="@id/img_rv_photo"
             android:layout_marginTop="5dp"
             android:paddingTop="5dp"
+            android:text="최근메세지"
             android:id="@+id/last_msg"
             android:textColor="#363866"
             android:layout_marginLeft="20dp"

@@ -1,109 +1,623 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".Activity.ProfileActivity">
-
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/titleBar"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#ffffff"
-        android:elevation="5dp">
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+           >
 
-        <TextView
-            android:id="@+id/viewName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:textSize="35dp"
-            android:textStyle="bold"
-            android:text="프로필" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="15dp">
 
-        <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_gravity="right"
-            android:layout_margin="15dp"
-            android:src="@drawable/ic_baseline_notifications_none_24" />
+                <ImageView
+                    android:id="@+id/UserImg"
+                    android:layout_width="66dp"
+                    android:layout_height="66dp"
+                    android:src="@drawable/profile" />
+                <TextView
+                    android:id="@+id/UserName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="12dp"
+                    android:text="김건우"
+                    android:layout_gravity="center"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:letterSpacing="-0.06"
+                    android:lineSpacingExtra="5sp"/>
+<!--                    android:fontFamily="@font/spoqa_han_sans_neo"-->
 
-    </androidx.appcompat.widget.Toolbar>
+                <TextView
+                    android:id="@+id/UserNum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="#4630844"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="4dp"
+                    android:textStyle="normal"
+                    android:textSize="12sp"
+                    android:textColor="#aaaaaa"
+                    android:letterSpacing="0.03"
+                    android:lineSpacingExtra="3sp"/>
+<!--                    android:fontFamily="@font/spoqa_han_sans_neo"-->
 
-    <LinearLayout
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/rectangle"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="12dp"
+                android:elevation="5dp">
+
+                <ImageView
+                    android:id="@+id/MapImg"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_margin="19dp"
+                    android:src="@drawable/ic_baseline_place_24"
+                    tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+                <TextView
+                    android:id="@+id/MyLocation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="부안군 부안읍ㆍMK헬스장"
+                    android:textStyle="normal"
+                    android:textSize="14sp"
+                    android:textColor="#111111"
+                    android:letterSpacing="-0.06"
+                    android:lineSpacingExtra="4sp"
+                    android:layout_gravity="center"/>
+<!--                    android:fontFamily="@font/spoqa_han_sans_neo"-->
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="위트온도"
+                    android:textStyle="bold"
+                    android:textSize="12sp"
+                    android:textColor="#111111"
+                    android:letterSpacing="-0.06"
+                    android:lineSpacingExtra="3sp"
+                    />
+<!--                    android:fontFamily="@font/spoqa_han_sans_neo"-->
+
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="4dp"
+                    />
+<!--                    android:background="@drawable/ic_baseline_info_24"-->
+
+
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/MyTempreture"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="36.4°C"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:textColor="#111111"
+                android:letterSpacing="-0.06"
+                android:lineSpacingExtra="5sp"
+                android:layout_gravity="right"
+                android:layout_marginRight="25dp"/>
+<!--                android:fontFamily="@font/spoqa_han_sans_neo"-->
+
+
+            <ProgressBar
+                android:id="@+id/MTProgresser"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="4dp"
+                android:max="100"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                android:progressDrawable="@drawable/progressbar_exercise1"
+                android:progress="41"
+                android:secondaryProgress="36"
+                />
+
+
+
+
+
+
+
+            <!--재운동 희망률과 응답률 큰 레이아웃-->
+            <!--레이아웃 반반 비율로 맞춰야함.. marginright 임시로 해놓음-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginVertical="24dp"
+                android:layout_marginHorizontal="16dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginRight="64dp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="재운동희망률"
+                            android:textStyle="normal"
+                            android:textSize="12sp"
+                            android:textColor="#111111"
+                            android:letterSpacing="-0.06"
+                            android:lineSpacingExtra="3sp"/>
+
+<!--                        android:fontFamily="@font/spoqa_han_sans_neo-->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="100%"
+                            android:textStyle="bold"
+                            android:textSize="12sp"
+                            android:textColor="#111111"
+                            android:letterSpacing="0.03"
+                            android:lineSpacingExtra="3sp"/>
+<!--                        android:fontFamily="@font/spoqa_han_sans_neo"-->
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="15명중 15명이 만족"
+
+                        android:textStyle="normal"
+                        android:textSize="10sp"
+                        android:textColor="#aaaaaa"
+                        android:letterSpacing="0.03"
+                        android:lineSpacingExtra="3sp"/>
+<!--                    android:fontFamily="@font/spoqa_han_sans_neo"-->
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="응답률"
+
+                            android:textStyle="normal"
+                            android:textSize="12sp"
+                            android:textColor="#111111"
+                            android:letterSpacing="-0.06"
+                            android:lineSpacingExtra="3sp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="-%"
+
+                            android:textStyle="bold"
+                            android:textSize="12sp"
+                            android:textColor="#111111"
+                            android:letterSpacing="0.03"
+                            android:lineSpacingExtra="3sp"/>
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="표시될 만큼 충분히 채팅하지 않았아요."
+                        android:textStyle="normal"
+                        android:textSize="10sp"
+                        android:textColor="#aaaaaa"
+                        android:letterSpacing="0.03"
+                        android:lineSpacingExtra="3sp"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="#d3d3d3"
+                android:layout_margin="5dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constrainedHeight="true"
+                android:clipToPadding="false"
+                tools:listitem="@layout/adapter_exercise"
+                android:layout_marginHorizontal="16dp"
+                android:visibility="visible"/>
+
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3대 측정"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:textColor="#111111"
+                android:letterSpacing="-0.06"
+                android:lineSpacingExtra="4sp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"/>
+
+            <!--3대 측정 레이아웃-->
+            <LinearLayout
+                android:layout_width="288dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginHorizontal="36dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="24dp"
+                android:layout_gravity="center">
+
+                <LinearLayout
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:orientation="vertical"
+                    android:background="@drawable/circle">
+
+                    <TextView
+                        android:layout_width="26dp"
+                        android:layout_height="13dp"
+                        android:layout_marginTop="23dp"
+                        android:layout_marginHorizontal="27dp"
+                        android:letterSpacing="-0.06"
+                        android:lineSpacingExtra="3sp"
+                        android:text="스쿼트"
+                        android:textColor="#ffffff"
+                        android:textSize="10sp"
+                        android:textStyle="normal" />
+
+                    <TextView
+                        android:id="@+id/squat"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="25dp"
+                        android:text="130"
+                        android:textStyle="bold"
+                        android:textSize="15sp"
+                        android:textColor="#ffffff"
+                        android:letterSpacing="0.03"
+                        android:lineSpacingExtra="5sp"/>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="24dp"
+                    android:layout_height="80dp"/>
+
+
+                <LinearLayout
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:orientation="vertical"
+                    android:background="@drawable/circle">
+
+                    <TextView
+                        android:layout_width="44dp"
+                        android:layout_height="13dp"
+                        android:layout_marginHorizontal="18dp"
+                        android:layout_marginTop="23dp"
+                        android:letterSpacing="-0.06"
+                        android:lineSpacingExtra="3sp"
+                        android:text="벤치프레스"
+                        android:textColor="#ffffff"
+                        android:textSize="10sp"
+                        android:textStyle="normal" />
+
+                    <TextView
+                        android:id="@+id/benchpress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="25dp"
+                        android:layout_marginBottom="23dp"
+                        android:letterSpacing="0.03"
+                        android:lineSpacingExtra="5sp"
+                        android:text="100"
+                        android:textColor="#ffffff"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="24dp"
+                    android:layout_height="80dp"/>
+
+                <LinearLayout
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:orientation="vertical"
+                    android:background="@drawable/circle">
+
+                    <TextView
+                        android:layout_width="44dp"
+                        android:layout_height="13dp"
+                        android:layout_marginHorizontal="18dp"
+                        android:layout_marginTop="23dp"
+                        android:letterSpacing="-0.06"
+                        android:lineSpacingExtra="3sp"
+                        android:text="데드리프트"
+                        android:textColor="#ffffff"
+                        android:textSize="10sp"
+                        android:textStyle="normal" />
+
+                    <TextView
+                        android:id="@+id/deadlift"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="25dp"
+                        android:letterSpacing="0.03"
+                        android:lineSpacingExtra="5sp"
+                        android:text="200"
+                        android:textColor="#ffffff"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="#d3d3d3"
+                android:layout_margin="5dp"/>
+            <!--받은 후기 레잉아웃-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginVertical="24dp">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="받은 후기"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:textColor="#111111"
+                    android:letterSpacing="-0.06"
+                    android:lineSpacingExtra="4sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rectangle"
+                    android:orientation="vertical"
+                    android:padding="5dp"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="24dp">
+
+
+                    <LinearLayout
+                        android:id="@+id/review1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginVertical="8dp"
+                        android:paddingHorizontal="50dp">
+                        <ImageButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/ic_baseline_check_24"
+                            android:layout_marginRight="10dp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:text="15"
+                            android:textStyle="bold"
+                            android:textSize="14sp"
+                            android:textColor="#05c78c"
+                            android:letterSpacing="-0.06"
+                            android:lineSpacingExtra="10sp"
+                            android:layout_gravity="center"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="친절하고 매너가 좋아요"
+                            android:textStyle="normal"
+                            android:textSize="14sp"
+                            android:textColor="#111111"
+                            android:letterSpacing="-0.06"
+                            android:lineSpacingExtra="10sp"
+                            android:layout_gravity="center"/>
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/review2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginVertical="8dp"
+                        android:paddingHorizontal="50dp">
+
+                        <ImageButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/ic_baseline_check_24"
+                            android:layout_marginRight="10dp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:text="3"
+                            android:textStyle="bold"
+                            android:textSize="14sp"
+                            android:textColor="#05c78c"
+                            android:letterSpacing="-0.06"
+                            android:lineSpacingExtra="10sp"
+                            android:layout_gravity="center"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="시간 약속을 잘 지켜요"
+                            android:textStyle="normal"
+                            android:textSize="14sp"
+                            android:textColor="#111111"
+                            android:letterSpacing="-0.06"
+                            android:lineSpacingExtra="10sp"
+                            android:layout_gravity="center"/>
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/review3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginVertical="8dp"
+                        android:paddingHorizontal="50dp">
+
+                        <ImageButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/ic_baseline_check_24"
+                            android:layout_marginRight="10dp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:text="102"
+                            android:textStyle="bold"
+                            android:textSize="14sp"
+                            android:textColor="#05c78c"
+                            android:letterSpacing="-0.06"
+                            android:lineSpacingExtra="10sp"
+                            android:layout_gravity="center"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="응답이 빨라요"
+                            android:textStyle="normal"
+                            android:textSize="14sp"
+                            android:textColor="#111111"
+                            android:letterSpacing="-0.06"
+                            android:lineSpacingExtra="10sp"
+                            android:layout_gravity="center"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/review4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginVertical="8dp"
+                        android:paddingHorizontal="50dp">
+
+                        <ImageButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/ic_baseline_check_24"
+                            android:layout_marginRight="10dp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:text="1"
+                            android:textStyle="bold"
+                            android:textSize="14sp"
+                            android:textColor="#05c78c"
+                            android:letterSpacing="-0.06"
+                            android:lineSpacingExtra="10sp"
+                            android:layout_gravity="center"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="운동을 잘 알려줘요"
+                            android:textStyle="normal"
+                            android:textSize="14sp"
+                            android:textColor="#111111"
+                            android:letterSpacing="-0.06"
+                            android:lineSpacingExtra="10sp"
+                            android:layout_gravity="center"/>
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="#d3d3d3"
+                    android:layout_margin="5dp" />
+
+                <!--위트내역,고객센터,설정 레이아웃-->
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="#d3d3d3"
+                    android:layout_margin="5dp" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+    <Button
+        android:id="@+id/WittBtn"
+        android:background="@drawable/round_button_green"
+        android:text="위트하기"
+        android:textSize="30dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="15dp">
+        android:layout_height="70dp"
+        android:layout_gravity="bottom|center"
+        android:layout_marginBottom="30dp"
+        >
 
-        <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:src="@drawable/profile" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:text="김건우"
-            android:layout_gravity="center"
-            android:textStyle="bold"
-            android:textSize="30dp"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="#4630844"
-            android:layout_gravity="center"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="10dp"
-        android:background="@drawable/rectangle">
-
-        <ImageButton
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/pin"
-            android:layout_margin="10dp"></ImageButton>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="부안군 부안읍 - MK 헬스장"
-            android:layout_gravity="center"/>
-
-    </LinearLayout>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="위트온도"
-        android:textStyle="bold"
-        android:textSize="20dp"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="41.4°C"
-        android:textSize="18dp"
-        android:layout_gravity="right"
-        android:layout_marginRight="25dp"/>
-    <ProgressBar
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:max="100"
-        android:progress="43"
-        />
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        />
-
-</LinearLayout>
+    </Button>
+</FrameLayout>

@@ -11,12 +11,13 @@ public class CompareUser implements Comparable<CompareUser>{
 
     @Override
     public int compareTo(CompareUser o) {
-        if (o.getDistance() - getDistance() < 2.0) {
+        if (o.getDistance() > this.distance ) {
             return 1;
         }
-        else {
-            return (int)(o.getDistance() - getDistance());
+        else if(o.getDistance() < this.distance){
+            return -1;
         }
+        else return 0;
     }
 
     public Double getDistance(){
