@@ -1,6 +1,7 @@
 package com.example.healthappttt.Fragment;
 
 
+import android.content.ContentValues;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -68,6 +69,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.example.healthappttt.Activity.MainActivity;
 import com.example.healthappttt.Data.CompareUser;
 import com.example.healthappttt.Data.CompareUser;
 import com.example.healthappttt.Data.User;
@@ -76,6 +78,7 @@ import com.example.healthappttt.adapter.UserAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -342,4 +345,6 @@ public class HomeFragment extends Fragment {
 
         return distance;
     }
+
+
 }
