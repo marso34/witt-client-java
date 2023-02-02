@@ -90,9 +90,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(mContext, ProfileActivity.class);
-                intent.putExtra("userId",thisUser.getKey());
-                Log.i(ContentValues.TAG,thisUser.getKey());
-                intent.putExtra("username",thisUser.getUserName());
+                intent.putExtra("User",userInfo);
                 mContext.startActivity(intent);
             }
         });
