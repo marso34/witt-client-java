@@ -18,49 +18,52 @@ public class Routine implements Serializable {
         this.title = title;
         this.exerciseCategories = exerciseCategories;
         this.exercises = new ArrayList<Exercise>();
+        this.startTime = "00:00";
+        this.endTime = "00:00";
+        this.runTime = "0";
+    }
+
+    public Routine(String title, String exerciseCategories, String startTime, String endTime) {
+        this.title = title;
+        this.exerciseCategories = exerciseCategories;
+        this.exercises = new ArrayList<Exercise>();
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.runTime = "0";
     }
 
     public Routine(String title, String exerciseCategories, ArrayList<Exercise> exercises) {
         this.title = title;
         this.exerciseCategories = exerciseCategories;
         this.exercises = new ArrayList<Exercise>(exercises);
+        this.startTime = "00:00";
+        this.endTime = "00:00";
+        this.runTime = "0";
     }
 
     public Routine(Routine r) {
         this.title = r.title;
+        this.exerciseCategories = r.exerciseCategories;
+        this.exercises = new ArrayList<Exercise>(r.exercises);
         this.startTime = r.startTime;
         this.endTime = r.endTime;
         this.runTime = r.runTime;
-        this.exerciseCategories = r.exerciseCategories;
-        this.exercises = new ArrayList<Exercise>(r.exercises);
-    }
-
-    public Map<String, Object> getRoutine() {
-        Map<String, Object> docData = new HashMap<>();
-        docData.put("title", title);
-        docData.put("startTime", startTime);
-        docData.put("endTime", endTime);
-        docData.put("runTime", runTime);
-        docData.put("exercizeCategories",exerciseCategories);
-        docData.put("exercizes", exercises);
-
-        return  docData;
     }
 
     public String getTitle()                                     { return this.title; }
-    public void setTitle(String title)                           { this.title = title; }
     public String getStartTime()                                 { return this.startTime; }
-    public void setStartTime(String startTime)                   { this.startTime = startTime; }
     public String getEndTime()                                   { return this.endTime; }
-    public void setEndTime(String endTime)                       { this.endTime = endTime; }
     public String getRunTime()                                   { return this.runTime; }
-    public void setRunTime(String runTime)                       { this.runTime = runTime; }
     public String getExerciseCategories()                        { return this.exerciseCategories; }
-    public void setExerciseCategories(String exerciseCategories) { this.exerciseCategories = exerciseCategories; }
     public ArrayList<Exercise> getExercises()                    { return this.exercises; }
+    public int getExercieseCount()                               { return this.exercises.size(); }
+    public void setTitle(String title)                           { this.title = title; }
+    public void setStartTime(String startTime)                   { this.startTime = startTime; }
+    public void setEndTime(String endTime)                       { this.endTime = endTime; }
+    public void setRunTime(String runTime)                       { this.runTime = runTime; }
+    public void setExerciseCategories(String exerciseCategories) { this.exerciseCategories = exerciseCategories; }
     public void setExercises(ArrayList<Exercise> exercises)      { this.exercises = new ArrayList<Exercise>(exercises); }
     public void addExercise(Exercise exercise)                   { this.exercises.add(exercise); }
-    public int getExercieseCount()                               { return this.exercises.size(); }
 }
 
 

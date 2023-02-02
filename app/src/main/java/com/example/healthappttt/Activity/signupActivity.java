@@ -19,6 +19,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
+import com.example.healthappttt.Data.Exercise;
+import com.example.healthappttt.Data.Routine;
 import com.example.healthappttt.Data.User;
 import com.example.healthappttt.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -28,8 +30,14 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.util.Util;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+
 public class signupActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
@@ -116,7 +124,7 @@ public class signupActivity extends AppCompatActivity {
                                                 @Override
                                                 public void onSuccess(Void aVoid) {
                                                     Log.d(TAG, "DocumentSnapshot successfully written!");
-                                                    myStartActivity(MainActivity.class);
+                                                    setRoutine();
 
                                                 }
                                             })
@@ -134,6 +142,40 @@ public class signupActivity extends AppCompatActivity {
                         });
             }
         }
+    }
+
+    private void setRoutine() {
+
+        for (int i = 0; i < 7; i++) {
+            String dayOfWeek = "";
+
+            switch (i) {
+                case 0: dayOfWeek = "sun"; break;
+                case 1: dayOfWeek = "mon"; break;
+                case 2: dayOfWeek = "tue"; break;
+                case 3: dayOfWeek = "wed"; break;
+                case 4: dayOfWeek = "thu"; break;
+                case 5: dayOfWeek = "fri"; break;
+                case 6: dayOfWeek = "sat"; break;
+            }
+
+            db.collection("routines").document(mAuth.getCurrentUser().getUid() +"_" + dayOfWeek).
+                    set(new Routine(dayOfWeek,"")).
+                    addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            Log.d("루틴 생성 = >", "success");
+                        }
+                    }).
+                    addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.e("루틴 생성 => ", "failure");
+                        }
+                    });
+        }
+
+        myStartActivity(MainActivity.class);
     }
 
     private void myStartActivity(Class c) {

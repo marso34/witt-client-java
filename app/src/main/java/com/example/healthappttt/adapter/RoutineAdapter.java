@@ -26,7 +26,7 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
     public RoutineAdapter(Routine routine) {
         this.exercises = routine.getExercises();
         this.exerciseCategories = routine.getExerciseCategories();
-        this.exerciseCnt = routine.getExercieseCount();
+        this.exerciseCnt = exercises.size();
 
     }
 

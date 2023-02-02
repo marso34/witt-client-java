@@ -4,7 +4,9 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,39 +20,48 @@ import java.util.ArrayList;
 
 public class setExerciseAdapter extends RecyclerView.Adapter<setExerciseAdapter.MainViewHolder> {
     private ArrayList<Exercise> exercises;
-    private String exerciseCategories;
-    private int exerciseCnt;
+
+    private OnExerciseClick onExerciseClick;
 
     public setExerciseAdapter(Routine routine) { // 일단 테스트
         this.exercises = routine.getExercises();
-        this.exerciseCategories = routine.getExerciseCategories();
-        this.exerciseCnt = routine.getExercieseCount();
+    }
+
+    public setExerciseAdapter(ArrayList<Exercise> exercises) { // 일단 테스트
+        this.exercises = exercises;
+//        this.exerciseCategories = routine.getExerciseCategories();
     }
 
     public static class MainViewHolder extends RecyclerView.ViewHolder {
-        public LinearLayout AerobicLayout, countLayout;
-        public TextView CatView;
-        public TextView NameView;
-        public TextView DetailView;
+        public TextView CatView, NameView, DetailView;
+        public ImageView DelImageVIew;
 
         public String DetailViewTxt;
 
         public MainViewHolder(View view) {
             super(view);
 
-            this.AerobicLayout = (LinearLayout) view.findViewById(R.id.cardioLayout);
-            this.countLayout = (LinearLayout) view.findViewById(R.id.countLayout);
             this.CatView = (TextView) view.findViewById(R.id.exerciseCat);
             this.NameView = (TextView) view.findViewById(R.id.exerciseName);
             this.DetailView = (TextView) view.findViewById(R.id.exerciseDetail);
+            this.DelImageVIew = (ImageView) view.findViewById(R.id.delBtn);
         }
     }
 
     @NonNull
     @Override
     public MainViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_exercise, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_set_exercise, parent, false);
         final MainViewHolder mainViewHolder = new MainViewHolder(view);
+
+        mainViewHolder.DelImageVIew.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int position = mainViewHolder.getAdapterPosition();
+
+                onExerciseClick.onExerciseClick(position);
+            }
+        });
 
         return mainViewHolder;
     }
@@ -59,9 +70,6 @@ public class setExerciseAdapter extends RecyclerView.Adapter<setExerciseAdapter.
     public void onBindViewHolder(@NonNull MainViewHolder holder, int position) {
         setTxt(holder);
 
-        holder.AerobicLayout.setVisibility(View.GONE);
-        holder.countLayout.setVisibility(View.GONE);
-
         holder.CatView.setText(this.exercises.get(position).getState()); // 운동 부위
         holder.CatView.setBackgroundColor(Color.parseColor(this.exercises.get(position).getColor()));
         holder.NameView.setText(this.exercises.get(position).getTitle()); // 운동 이름
@@ -69,9 +77,9 @@ public class setExerciseAdapter extends RecyclerView.Adapter<setExerciseAdapter.
     }
 
     @Override
-    public int getItemCount() {
-        return exerciseCnt;
-    }
+    public int getItemCount() { return exercises.size(); }
+
+    public void removeItem(int position) { exercises.remove(position); }
 
     private void setTxt(@NonNull MainViewHolder holder) { // 초기값 설정
         int position = holder.getAdapterPosition();
@@ -86,4 +94,12 @@ public class setExerciseAdapter extends RecyclerView.Adapter<setExerciseAdapter.
             }
         }
     }
+
+    public void setOnExerciseClickListener(OnExerciseClick onExerciseClickListener) {
+        this.onExerciseClick = onExerciseClickListener;
+    } // 액티비티에서 콜백 메서드를 set
+
+    public interface OnExerciseClick {
+        void onExerciseClick(int position);
+    } // 운동 클릭했을 때, 엑티비티에 값 전달을 위한 인터페이스
 }
