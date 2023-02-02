@@ -15,6 +15,7 @@ import com.example.healthappttt.adapter.UserListAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -42,10 +43,6 @@ public class ChattingFragment extends Fragment {
     private FirebaseFirestore firebaseFirestore;
     private FirebaseAuth mAuth;// 파이어베이스 유저관련 접속하기위한 변수
 
-
-
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -63,6 +60,7 @@ public class ChattingFragment extends Fragment {
 
         userListAdapter = new UserListAdapter(getContext(), userList);
         recyclerView.setAdapter(userListAdapter);
+
 
 
         //Date date = userList.size() == 0 || clear ? new Date() : userList.get(userList.size() - 1).getCreatedAt();
@@ -108,4 +106,5 @@ public class ChattingFragment extends Fragment {
 
         return view;
     }
+
 }

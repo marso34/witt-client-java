@@ -35,7 +35,7 @@ public class LoginActivity extends AppCompatActivity {
         //findViewById = >activity_login_layout에서 "gotoPasswordResetButton" id를 가진
         //컴포넌트를 찾음
 
-        userIsLoggedIn(); //자동로그인
+       // userIsLoggedIn(); //자동로그인
     }
 
     View.OnClickListener onClickListener = new View.OnClickListener() {// 클릭됐을시
@@ -76,6 +76,7 @@ public class LoginActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {//람다식?
                             loaderLayout.setVisibility(View.GONE);//loaderLyaout 삭제함.(공간차지x)
                             if (task.isSuccessful()) {//로그인 검증이 성공하면
+
                                 FirebaseUser user = mAuth.getCurrentUser();//현재유저의 db에 접근권한 활성화
                                 myStartActivity(MainActivity.class);//메인엑티비티 실행
                             } else {

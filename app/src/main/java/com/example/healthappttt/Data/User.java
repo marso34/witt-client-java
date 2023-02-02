@@ -19,7 +19,6 @@ import java.util.Map;
         private String Key ="";
         private Double Lat = 0.0;
         private Double Lon = 0.0;
-        private Boolean state = false;
 //
 //        public User(User a){
 //            this.UserName = a.getUserName();
@@ -87,9 +86,6 @@ import java.util.Map;
         }
         public Double getLon(){
             return  this.Lon;
-        }
-        public Boolean getState(){
-            return  this.state;
         }
 
 

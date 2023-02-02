@@ -12,6 +12,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.example.healthappttt.Data.Message;
 import com.example.healthappttt.Data.User;
@@ -27,7 +29,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class ChatActivity extends AppCompatActivity {
 
@@ -38,6 +42,7 @@ public class ChatActivity extends AppCompatActivity {
     ArrayList<Message> messageList;
     private EditText messageBox;
     private ImageView sendButton;
+    private TextView toolbarName;
 
     String receiverRoom;
     String senderRoom;
@@ -45,6 +50,9 @@ public class ChatActivity extends AppCompatActivity {
     Intent intent;
     String receiverUid;
     String name;
+
+
+    String time = "";
 
 
     MessageAdapter messageAdapter;
@@ -59,6 +67,8 @@ public class ChatActivity extends AppCompatActivity {
         name = intent.getStringExtra("username");
         fuser = FirebaseAuth.getInstance().getCurrentUser();
 
+
+
         String senderUid = fuser.getUid(); //Firebase 인증 객체 초기화
         mDbRef = FirebaseDatabase.getInstance().getReference(); //Firebase에 데이터를 추가하거나 조회하기 위한 코드, 정의
 
@@ -69,6 +79,9 @@ public class ChatActivity extends AppCompatActivity {
         chatRecyclerView = findViewById(R.id.chatRecyclerView);
         messageBox = findViewById(R.id.messageBox);
         sendButton = findViewById(R.id.sentButton);
+        toolbarName = findViewById(R.id.toolbarName);
+
+        toolbarName.setText(name);
 
 
         mAuth = FirebaseAuth.getInstance();
@@ -102,8 +115,9 @@ public class ChatActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String message = messageBox.getText().toString();
                 if(!message.isEmpty()){
+                    time = getTime();
                     Log.i(ContentValues.TAG,message);
-                    Message messageObject = new Message(message,senderUid,receiverUid);
+                    Message messageObject = new Message(message,senderUid,receiverUid,time);
                     mDbRef.child("chats").child(senderRoom).child("messages").push()
                             .setValue(messageObject).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
@@ -123,5 +137,14 @@ public class ChatActivity extends AppCompatActivity {
 
 
 
+    }
+
+    private String getTime() {
+        long now = System.currentTimeMillis();
+        Date date = new Date(now);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yy/MM/dd HH:mm:ss");
+        String getTime = dateFormat.format(date);
+
+        return getTime;
     }
 }
