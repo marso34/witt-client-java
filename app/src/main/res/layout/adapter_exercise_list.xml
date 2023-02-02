@@ -10,8 +10,9 @@
         android:id="@+id/exerciseName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="5dp"
+        android:layout_marginVertical="10dp"
         android:layout_marginHorizontal="10dp"
-        android:text="ddd"/>
+        android:text="운동 이름"
+        android:textSize="20sp"/>
 
 </LinearLayout>

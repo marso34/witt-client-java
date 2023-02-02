@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -20,6 +22,8 @@ public class ExerciseResultActivity extends AppCompatActivity {
     private TextView name;
     private TextView categories;
     private TextView ttttt;
+    private Button EndBtn;
+
     private Routine record;
 
     @Override
@@ -28,30 +32,38 @@ public class ExerciseResultActivity extends AppCompatActivity {
         setContentView(R.layout.activity_exercise_result);
 
         Intent intent = getIntent();
+
         record = (Routine) intent.getSerializableExtra("record");
-        title = (TextView) findViewById(R.id.title);
-        runtime = (TextView) findViewById(R.id.runTime);
-        totalWeight = (TextView) findViewById(R.id.totalWeight);
-        name = (TextView) findViewById(R.id.name);
-        categories = (TextView) findViewById(R.id.exerciseCategories);
 
-        ttttt = (TextView) findViewById(R.id.ttttt);
+        EndBtn = (Button) findViewById(R.id.endBtn);
 
+        EndBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
-        title.setText(DateConversion(record.getStartTime(), 1));
-        runtime.setText(DateConversion(record.getStartTime(), 0) + " ~ " + DateConversion(record.getEndTime(), 0));
-        name.setText(record.getTitle());
+//        title = (TextView) findViewById(R.id.title);
+//        runtime = (TextView) findViewById(R.id.runTime);
+//        totalWeight = (TextView) findViewById(R.id.totalWeight);
+//        name = (TextView) findViewById(R.id.name);
+//        categories = (TextView) findViewById(R.id.exerciseCategories);
+//        ttttt = (TextView) findViewById(R.id.ttttt);
+//        title.setText(DateConversion(record.getStartTime(), 1));
+//        runtime.setText(DateConversion(record.getStartTime(), 0) + " ~ " + DateConversion(record.getEndTime(), 0));
+//        name.setText(record.getTitle());
 //        categories.setText(record.getExerciszeCategories());
 //        text.setText("\n운동 메모 : 없음\n" + "\n");
-
-        int sum = 0;
-
-        String result = "";
-        
-        for (Exercise i : record.getExercises()) { // 데이터 전달 여부 확인
-            result += i.getTitle() + "\n";
-
-            int cnt = 0;
+//
+//        int sum = 0;
+//
+//        String result = "";
+//
+//        for (Exercise i : record.getExercises()) { // 데이터 전달 여부 확인
+//            result += i.getTitle() + "\n";
+//
+//            int cnt = 0;
 //
 //            String weight, Set;
 //
@@ -59,15 +71,15 @@ public class ExerciseResultActivity extends AppCompatActivity {
 //            Set = i.getCount().substring(i.getCount().lastIndexOf(":")+1);
 //
 //            result += weight + "Kg " + Set + "세트" + "\n";
-
-            if (cnt != 0)
-                result += "시작시간 = " + DateConversion(i.getStartTime(), 0) + ", 종료시간 = " + DateConversion(i.getEndTime(), 0) + "\n";
-        }
-
-        result += "\n runtime: " + time(record.getRunTime());
-
-        totalWeight.setText(Integer.toString(sum) + "Kg");
-        ttttt.setText(result);
+//
+//            if (cnt != 0)
+//                result += "시작시간 = " + DateConversion(i.getStartTime(), 0) + ", 종료시간 = " + DateConversion(i.getEndTime(), 0) + "\n";
+//        }
+//
+//        result += "\n runtime: " + time(record.getRunTime());
+//
+//        totalWeight.setText(Integer.toString(sum) + "Kg");
+//        ttttt.setText(result);
     }
 
     private String time(String t) {

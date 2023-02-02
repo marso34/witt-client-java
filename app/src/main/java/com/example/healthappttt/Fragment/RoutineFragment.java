@@ -170,6 +170,7 @@ public class RoutineFragment extends Fragment {
         }
 
         addCard.setOnClickListener(v -> {
+//            exerciseListFragment.ExerciseCat("ttt"); // 운동 부위 전달
             exerciseListFragment.show(getActivity().getSupportFragmentManager(), exerciseListFragment.getTag());
         });
 
@@ -261,7 +262,6 @@ public class RoutineFragment extends Fragment {
                             setRecyclerView();
 
                         } else {
-
                         }
                     }
                 });
@@ -284,7 +284,6 @@ public class RoutineFragment extends Fragment {
                         Log.w(TAG, "Error writing document", e);
                     }
                 });
-
     }
 
     private void deleteExercise(int position) {
