@@ -105,6 +105,10 @@ public class ExerciseListFragment extends BottomSheetDialogFragment {
         return view;
     }
 
+    public void ExerciseCat(String cat) {
+        // 운동 부위(cat) 전달
+    }
+
     private void Parse() {
 
     }
