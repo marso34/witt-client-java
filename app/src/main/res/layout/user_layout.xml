@@ -1,14 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:padding="10dp"
-        android:layout_height="wrap_content">
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:padding="10dp"
+    android:background="@drawable/backgroundimagestroke"
+    android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/state"
+            tools:ignore="UseAppTint"
+            android:layout_centerVertical="true"
+            android:tint="@color/white"/>
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:id="@+id/img_rv_photo"
+            android:layout_marginLeft="5dp"
+            android:layout_toEndOf="@+id/state"
             android:src="@drawable/profile"/>
 
         <TextView
@@ -16,40 +29,13 @@
             android:layout_height="wrap_content"
             android:text="username"
             android:id="@+id/txt_name"
-            android:textColor="#363866"
+            android:textColor="@color/black"
+            android:textStyle="bold"
             android:layout_toRightOf="@id/img_rv_photo"
             android:layout_toEndOf="@id/img_rv_photo"
             android:layout_marginLeft="10dp"
-            android:layout_centerVertical="true"
-            android:textSize="18sp"/>
+            android:textSize="20sp"/>
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="15dp"
-            android:layout_height="15dp"
-            app:civ_border_width="10dp"
-            app:civ_border_color="#05df29"
-            android:id="@+id/img_on"
-            android:visibility="gone"
-            android:src="@drawable/profile"
-            android:layout_below="@id/txt_name"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="-15dp"
-            android:layout_toRightOf="@id/img_rv_photo"
-            android:layout_toEndOf="@id/img_rv_photo"/>
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="15dp"
-            android:layout_height="15dp"
-            app:civ_border_width="10dp"
-            app:civ_border_color="#bfbfbf"
-            android:id="@+id/img_off"
-            android:visibility="gone"
-            android:src="@drawable/profile"
-            android:layout_below="@id/txt_name"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="-15dp"
-            android:layout_toRightOf="@id/img_rv_photo"
-            android:layout_toEndOf="@id/img_rv_photo"/>
 
         <TextView
             android:id="@+id/location"
@@ -57,25 +43,41 @@
             android:layout_height="wrap_content"
             android:text="위치"
             android:gravity="center"
-            android:textColor="@color/black"
-            android:layout_toEndOf="@+id/txt_name"
+            android:textColor="#363866"
+            android:layout_toRightOf="@+id/txt_name"
             android:layout_marginLeft="20dp"
-            android:layout_centerVertical="true"
-            android:textSize="15sp"
-            android:textStyle="bold" />
+            android:layout_marginTop="5dp"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/messagetime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="#363866"
+            android:layout_toRightOf="@+id/location"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="5dp"
+            android:textSize="13sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/txt_name"
             android:layout_toRightOf="@id/img_rv_photo"
-            android:layout_marginTop="5dp"
             android:paddingTop="5dp"
-            android:text="최근메세지"
             android:id="@+id/last_msg"
-            android:textColor="#363866"
-            android:layout_marginLeft="20dp"
+            android:textColor="@color/black"
+            android:layout_marginLeft="15dp"
             android:maxLines="1"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_baseline_chevron_right_24"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true">
+        </ImageView>
 
         </RelativeLayout>
 

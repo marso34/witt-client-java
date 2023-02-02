@@ -25,7 +25,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -35,6 +38,7 @@ public class UserListAdapter  extends RecyclerView.Adapter<UserListAdapter.MainV
     private ArrayList<User> userlist;
     FirebaseUser fuser;
     String theLastMessage ="";
+    String messageTime ="";
     Integer num = 0;
 
 
@@ -65,7 +69,7 @@ public class UserListAdapter  extends RecyclerView.Adapter<UserListAdapter.MainV
             holder.photoImageVIew.setImageResource(R.drawable.profile);
         }
 
-        lastMessage(user.getKey(), holder.last_msg);
+        lastMessage(user.getKey(), holder.last_msg, holder.time_msg);
 
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -90,6 +94,7 @@ public class UserListAdapter  extends RecyclerView.Adapter<UserListAdapter.MainV
         public TextView location;
         public CircleImageView photoImageVIew;
         private TextView last_msg;
+        private TextView time_msg;
 
         public MainViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -98,11 +103,14 @@ public class UserListAdapter  extends RecyclerView.Adapter<UserListAdapter.MainV
             photoImageVIew = itemView.findViewById(R.id.img_rv_photo);
             location = itemView.findViewById(R.id.location);
             last_msg = itemView.findViewById(R.id.last_msg);
+            time_msg = itemView.findViewById(R.id.messagetime);
+
 
         }
     }
-    private void lastMessage(final String userid, final TextView last_msg){
+    private void lastMessage(final String userid, final TextView last_msg, final TextView time_msg){
         theLastMessage = "default";
+        messageTime = "default";
 
         final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -118,22 +126,30 @@ public class UserListAdapter  extends RecyclerView.Adapter<UserListAdapter.MainV
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                     Message chat = snapshot.getValue(Message.class);
                     if (firebaseUser != null && chat != null) {
-                        if(chat.getSender().equals(userid) && chat.getReceiver().equals(firebaseUser.getUid()))
+                        if(chat.getSender().equals(userid) && chat.getReceiver().equals(firebaseUser.getUid())) {
                             theLastMessage = chat.getMessage();
+                            messageTime = chat.getTime();
+                            messageTime = setTime(messageTime);
+                        }
                     }
                 }
 
                 switch (theLastMessage){
                     case  "default":
                         last_msg.setText(" ");
+                        time_msg.setText("");
+                        messageTime = "default";
                         theLastMessage = "default";
                         break;
 
                     default:
                         last_msg.setText(theLastMessage);
+                        time_msg.setText(messageTime);
+                        messageTime = "default";
                         theLastMessage = "default";
                         break;
                 }
+
 
 
             }
@@ -145,5 +161,52 @@ public class UserListAdapter  extends RecyclerView.Adapter<UserListAdapter.MainV
 
 
         });
+    }
+
+    private String getTime() {
+        long now = System.currentTimeMillis();
+        Date date = new Date(now);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yy/MM/dd HH:mm:ss");
+        String getTime = dateFormat.format(date);
+
+        return getTime;
+    }
+
+    private String setTime(String messageTime) {
+
+        String date1 = getTime();
+        String date2 = messageTime; //날짜2
+
+        SimpleDateFormat format = new SimpleDateFormat("yy/MM/dd HH:mm:ss");
+
+        Date d1 = null;
+        Date d2 = null;
+        try {
+            d1 = format.parse(date2);
+            d2 = format.parse(date1);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+
+
+// Get msec from each, and subtract.
+        long diff = d2.getTime() - d1.getTime();
+        long diffSeconds = diff / 1000;
+        long diffMinutes = diff / (60 * 1000);
+        long diffHours = diff / (60 * 60 * 1000);
+        long diffDays = diffSeconds / (24*60*60);
+
+        if(diffDays != 0 ){
+            return diffDays + "일 전";
+        }
+        else if(diffHours != 0){
+            return diffHours + "시간 전";
+        }
+        else if(diffMinutes != 0){
+            return diffMinutes + "분 전";
+        }
+        else
+            return "방금전";
     }
 }

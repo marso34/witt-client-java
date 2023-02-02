@@ -5,13 +5,15 @@ public class Message {
     private String message = "";
     private String senderId = "";
     private String receiver ="";
+    private String time = "";
 
     public Message(){}
 
-    public Message(String message,  String senderId, String receiver){
+    public Message(String message,  String senderId, String receiver, String time){
         this.message = message;
         this.senderId = senderId;
         this.receiver = receiver;
+        this.time = time;
     }
 
     public String getMessage() {
@@ -37,6 +39,9 @@ public class Message {
 
     public String getReceiver() {
         return receiver;
+    }
+    public String getTime() {
+        return time;
     }
 
 }
