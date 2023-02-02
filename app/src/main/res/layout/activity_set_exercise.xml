@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/white"
     tools:context=".Activity.MainActivity" >
 
     <LinearLayout
@@ -55,7 +56,7 @@
         android:layout_alignParentBottom="true"
         android:orientation="vertical"
         android:gravity="center"
-        android:background="#fafafa" >
+        android:background="@color/white">
 
         <Button
             android:id="@+id/startBtn"

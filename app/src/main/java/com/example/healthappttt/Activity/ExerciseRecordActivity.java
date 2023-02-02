@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -62,7 +63,7 @@ public class ExerciseRecordActivity extends AppCompatActivity {
         TimerTextView = (TextView) findViewById(R.id.timerView);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         StopBtn = (Button) findViewById(R.id.stopBtn);
-        StopBtn2 = (TextView) findViewById(R.id.stopBtn2);
+//        StopBtn2 = (TextView) findViewById(R.id.stopBtn2);
 
         Intent intent = getIntent();
         routine = (Routine) intent.getSerializableExtra("routine");
@@ -72,7 +73,7 @@ public class ExerciseRecordActivity extends AppCompatActivity {
 
         StopWatch.setOnClickListener(v -> _start(v)); // 스톱워치 눌렀을 때
         StopBtn.setOnClickListener(v -> _stop(v)); // 운동 종료 버튼 눌렀을 때
-        StopBtn2.setOnClickListener((v -> _stop(v))); // 여기까지 할래요 버튼
+//        StopBtn2.setOnClickListener((v -> _stop(v))); // 여기까지 할래요 버튼
     }
 
     private void init() { // 운동 기록 부분 나중에 수정
@@ -94,6 +95,8 @@ public class ExerciseRecordActivity extends AppCompatActivity {
         if (startTime == 0) { // 처음 눌렀을 때
             startTime = reStTime = System.currentTimeMillis(); // 시작 버튼 누를 시 현재 시간 저장
             isRunning = true;
+            StopBtn.setBackgroundResource(R.drawable.default_layout);
+            StopBtn.setTextColor(Color.parseColor("#ffffff"));
 
             TimerCall = new Timer();
             timerTask = new TimerTask() {

@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/white"
     tools:context=".Activity.MainActivity" >
 
     <LinearLayout
@@ -40,7 +41,6 @@
                 android:text="00:00:00"
                 android:textColor="#3facfa"
                 android:textSize="16sp"
-
                 android:textStyle="normal" />
         </LinearLayout>
 
@@ -60,8 +60,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:orientation="vertical"
-        android:gravity="center"
-        android:background="#fafafa" >
+        android:background="@color/white"
+        android:gravity="center" >
 
         <Button
             android:id="@+id/stopBtn"
@@ -69,18 +69,12 @@
             android:layout_height="66dp"
             android:layout_marginTop="10dp"
             android:layout_marginHorizontal="16dp"
-            android:background="@drawable/default_layout"
-            android:textColor="#ffffff"
+            android:layout_marginBottom="40dp"
+            android:background="@drawable/default_layout_gray"
+            android:textColor="#aaaaaa"
             android:text="운동 마치기"
             android:textSize="20sp"
             android:textStyle="bold"/>
-
-        <TextView
-            android:id="@+id/stopBtn2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="30dp"
-            android:text="오늘은 여기까지 할래요"/>
     </LinearLayout>
 
 </RelativeLayout>

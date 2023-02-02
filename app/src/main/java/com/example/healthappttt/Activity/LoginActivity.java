@@ -35,7 +35,7 @@ public class LoginActivity extends AppCompatActivity {
         //findViewById = >activity_login_layout에서 "gotoPasswordResetButton" id를 가진
         //컴포넌트를 찾음
 
-       // userIsLoggedIn(); //자동로그인
+        userIsLoggedIn(); //자동로그인
     }
 
     View.OnClickListener onClickListener = new View.OnClickListener() {// 클릭됐을시

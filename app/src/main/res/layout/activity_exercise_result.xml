@@ -17,7 +17,7 @@
             android:id="@+id/titleBar"
             android:layout_width="match_parent"
             android:layout_height="74dp"
-            android:background="#ffffff"
+            android:background="@color/white"
             android:elevation="10dp">
 
             <TextView

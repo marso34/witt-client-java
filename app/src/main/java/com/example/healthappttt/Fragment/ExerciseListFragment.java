@@ -19,17 +19,12 @@ import android.widget.AbsListView;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.healthappttt.Activity.MainActivity;
 import com.example.healthappttt.Data.Exercise;
 import com.example.healthappttt.Data.ExerciseName;
 import com.example.healthappttt.R;
-import com.example.healthappttt.adapter.ExerciseAdapter;
 import com.example.healthappttt.adapter.ExerciseListAdapter;
-import com.example.healthappttt.adapter.setExerciseAdapter;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -104,6 +99,36 @@ public class ExerciseListFragment extends BottomSheetDialogFragment {
 
         return view;
     }
+
+    @SuppressLint("RestrictedApi")
+    @Override
+    public void setupDialog(Dialog dialog, int style) {
+        BottomSheetDialog bottomSheetDialog = (BottomSheetDialog) dialog;
+        bottomSheetDialog.setContentView(R.layout.fragment_bottom);
+
+        try {
+            Field behaviorField = bottomSheetDialog.getClass().getDeclaredField("behavior");
+            behaviorField.setAccessible(true);
+            final BottomSheetBehavior behavior = (BottomSheetBehavior) behaviorField.get(bottomSheetDialog);
+            behavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+
+                @Override
+                public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                    if (newState == BottomSheetBehavior.STATE_DRAGGING) {
+                        behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                    }
+                }
+
+                @Override
+                public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+                }
+            });
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+    } // BottomSheetDialogFragment 드래그 안 되게 하는 코드
 
     public void ExerciseCat(String cat) {
         // 운동 부위(cat) 전달
