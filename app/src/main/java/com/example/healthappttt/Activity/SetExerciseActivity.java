@@ -159,7 +159,7 @@ public class SetExerciseActivity extends AppCompatActivity {
 
 
     private void setRecyclerView() {
-        adapter = new setExerciseAdapter(routine);
+        adapter = new setExerciseAdapter(routine, true);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);

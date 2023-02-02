@@ -20,15 +20,29 @@ import java.util.ArrayList;
 
 public class setExerciseAdapter extends RecyclerView.Adapter<setExerciseAdapter.MainViewHolder> {
     private ArrayList<Exercise> exercises;
+    private boolean isChangeable;
 
     private OnExerciseClick onExerciseClick;
 
-    public setExerciseAdapter(Routine routine) { // 일단 테스트
+    public setExerciseAdapter(Routine routine) {
         this.exercises = routine.getExercises();
+        this.isChangeable = false;
+    }
+
+    public setExerciseAdapter(Routine routine, boolean isChangeable) { // 일단 테스트
+        this.exercises = routine.getExercises();
+        this.isChangeable = isChangeable;
     }
 
     public setExerciseAdapter(ArrayList<Exercise> exercises) { // 일단 테스트
         this.exercises = exercises;
+        this.isChangeable = false;
+//        this.exerciseCategories = routine.getExerciseCategories();
+    }
+
+    public setExerciseAdapter(ArrayList<Exercise> exercises, boolean isChangeable) { // 일단 테스트
+        this.exercises = exercises;
+        this.isChangeable = isChangeable;
 //        this.exerciseCategories = routine.getExerciseCategories();
     }
 
@@ -74,6 +88,9 @@ public class setExerciseAdapter extends RecyclerView.Adapter<setExerciseAdapter.
         holder.CatView.setBackgroundColor(Color.parseColor(this.exercises.get(position).getColor()));
         holder.NameView.setText(this.exercises.get(position).getTitle()); // 운동 이름
         holder.DetailView.setText(holder.DetailViewTxt);
+
+        if (!isChangeable)
+            holder.DelImageVIew.setVisibility(View.GONE);
     }
 
     @Override

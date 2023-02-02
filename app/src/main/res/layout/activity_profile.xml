@@ -267,8 +267,7 @@
                 android:layout_height="wrap_content"
                 app:layout_constrainedHeight="true"
                 android:clipToPadding="false"
-                tools:listitem="@layout/adapter_exercise"
-                android:layout_marginHorizontal="16dp"
+                tools:listitem="@layout/adapter_set_exercise"
                 android:visibility="visible"/>
 
 

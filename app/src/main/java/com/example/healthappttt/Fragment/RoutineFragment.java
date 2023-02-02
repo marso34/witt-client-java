@@ -307,7 +307,7 @@ public class RoutineFragment extends Fragment {
     }
 
     private void setRecyclerView() {
-        adapter = new setExerciseAdapter(routine); // 나중에 routine
+        adapter = new setExerciseAdapter(routine, true); // 나중에 routine
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
