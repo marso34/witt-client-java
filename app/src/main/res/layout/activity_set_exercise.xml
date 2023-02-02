@@ -19,12 +19,14 @@
             android:orientation="horizontal" >
 
             <TextView
+                android:id="@+id/introduceTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="오늘의 루틴이에요."
                 android:textSize="20sp"
                 android:textColor="#000000" />
+
             <ImageView
                 android:id="@+id/optionBtn"
                 android:layout_width="wrap_content"

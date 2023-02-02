@@ -62,7 +62,7 @@ public class RoutineFragment extends Fragment {
     private Routine routine;
     private ArrayList<Exercise> exercises;
 
-    private int dayOfWeek;
+    private String dayOfWeek;
 
     private FirebaseFirestore firebaseFirestore;
     private FirebaseAuth mAuth;// 파이어베이스 유저관련 접속하기위한 변수
@@ -111,7 +111,6 @@ public class RoutineFragment extends Fragment {
         firebaseFirestore = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
-
 
         weekBtn = new Button[7];
         exerciseTxt = new ToggleButton[7];
@@ -183,16 +182,28 @@ public class RoutineFragment extends Fragment {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(currentDate);
 
-        dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK) - 1;
-
-        switch (dayOfWeek) {
-            case 0: weekBtn[0].setBackgroundResource(R.drawable.round_button_green); weekBtn[0].setTextColor(Color.parseColor("#ffffff") ); break; // 일
-            case 1: weekBtn[1].setBackgroundResource(R.drawable.round_button_green); weekBtn[1].setTextColor(Color.parseColor("#ffffff") ); break; // 월
-            case 2: weekBtn[2].setBackgroundResource(R.drawable.round_button_green); weekBtn[2].setTextColor(Color.parseColor("#ffffff") ); break; // 화
-            case 3: weekBtn[3].setBackgroundResource(R.drawable.round_button_green); weekBtn[3].setTextColor(Color.parseColor("#ffffff") ); break; // 수
-            case 4: weekBtn[4].setBackgroundResource(R.drawable.round_button_green); weekBtn[4].setTextColor(Color.parseColor("#ffffff") ); break; // 목
-            case 5: weekBtn[5].setBackgroundResource(R.drawable.round_button_green); weekBtn[5].setTextColor(Color.parseColor("#ffffff") ); break; // 금
-            case 6: weekBtn[6].setBackgroundResource(R.drawable.round_button_green); weekBtn[6].setTextColor(Color.parseColor("#ffffff") ); break; // 토
+        switch (calendar.get(Calendar.DAY_OF_WEEK) - 1) {
+            case 0: weekBtn[0].setBackgroundResource(R.drawable.round_button_green);
+                    weekBtn[0].setTextColor(Color.parseColor("#ffffff"));
+                    dayOfWeek = "sun"; break; // 일
+            case 1: weekBtn[1].setBackgroundResource(R.drawable.round_button_green);
+                    weekBtn[1].setTextColor(Color.parseColor("#ffffff"));
+                    dayOfWeek = "mon";break; // 월
+            case 2: weekBtn[2].setBackgroundResource(R.drawable.round_button_green);
+                    weekBtn[2].setTextColor(Color.parseColor("#ffffff"));
+                    dayOfWeek = "tue";break; // 화
+            case 3: weekBtn[3].setBackgroundResource(R.drawable.round_button_green);
+                    weekBtn[3].setTextColor(Color.parseColor("#ffffff"));
+                    dayOfWeek = "wed"; break; // 수
+            case 4: weekBtn[4].setBackgroundResource(R.drawable.round_button_green);
+                    weekBtn[4].setTextColor(Color.parseColor("#ffffff"));
+                    dayOfWeek = "thu";break; // 목
+            case 5: weekBtn[5].setBackgroundResource(R.drawable.round_button_green);
+                    weekBtn[5].setTextColor(Color.parseColor("#ffffff"));
+                    dayOfWeek = "fri";break; // 금
+            case 6: weekBtn[6].setBackgroundResource(R.drawable.round_button_green);
+                    weekBtn[6].setTextColor(Color.parseColor("#ffffff"));
+                    dayOfWeek = "sat";break; // 토
         }
     }
 
@@ -200,22 +211,9 @@ public class RoutineFragment extends Fragment {
         // 없으면 빈 루틴 생성
         Log.d("현재 유저 Uid ", mAuth.getCurrentUser().getUid());;
 
-        String str = "";
-
-        switch (dayOfWeek) {
-            case 0: str = "sun"; break;
-            case 1: str = "mon"; break;
-            case 2: str = "tue"; break;
-            case 3: str = "wed"; break;
-            case 4: str = "thu"; break;
-            case 5: str = "fri"; break;
-            case 6: str = "sat"; break;
-        }
-
-        String d = str;
-
-        db.collection("routines").document(mAuth.getCurrentUser().getUid() +"_" + str).
-                get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        db.collection("routines").document(mAuth.getCurrentUser().getUid() +"_" + dayOfWeek).
+                get().
+                addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if (task.isSuccessful()) {
@@ -235,7 +233,6 @@ public class RoutineFragment extends Fragment {
                                 EndTime.setText(routine.getEndTime());
                             } else {
                                 Log.d(TAG, "Document does not exist!");
-                                createDB(mAuth.getCurrentUser().getUid(), d);
                             }
                         } else {
                             Log.d(TAG, "Failed with: ", task.getException());
@@ -245,23 +242,10 @@ public class RoutineFragment extends Fragment {
     }
 
     private void setExercises() {
-
-        String str = "";
-
-        switch (dayOfWeek) {
-            case 0: str = "sun"; break;
-            case 1: str = "mon"; break;
-            case 2: str = "tue"; break;
-            case 3: str = "wed"; break;
-            case 4: str = "thu"; break;
-            case 5: str = "fri"; break;
-            case 6: str = "sat"; break;
-        }
-
-        String d = str;
-
-        db.collection("routines").document(mAuth.getCurrentUser().getUid() +"_" + str).
-                collection("exercises").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        db.collection("routines").document(mAuth.getCurrentUser().getUid() +"_" + dayOfWeek).
+                collection("exercises").
+                get().
+                addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
@@ -283,49 +267,15 @@ public class RoutineFragment extends Fragment {
                 });
     }
 
-    private void createDB(String UserID, String dayOfWeek) {
-        routine = new Routine(dayOfWeek, "전신");
-
-        db.collection("routines").document(UserID +"_" + dayOfWeek)
-                .set(routine)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        setRecyclerView();
-                        Log.d(TAG, "DocumentSnapshot successfully written!");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error writing document", e);
-                    }
-                });
-    }
-
     private void saveRoutine(Exercise exercise) {
-        // 루틴을 DB에 저장
-        String str = "";
-
-        switch (dayOfWeek) {
-            case 0: str = "sun"; break;
-            case 1: str = "mon"; break;
-            case 2: str = "tue"; break;
-            case 3: str = "wed"; break;
-            case 4: str = "thu"; break;
-            case 5: str = "fri"; break;
-            case 6: str = "sat"; break;
-        }
-
-        String d = str;
-
-        db.collection("routines").document(mAuth.getCurrentUser().getUid() +"_" + str).
-                collection("exercises").document(exercise.getTitle()).set(exercise).
+        // 루틴을 DB에 저장, document 이름 다시 생각할 것 동일 운동 저장 못 함
+        db.collection("routines").document(mAuth.getCurrentUser().getUid() +"_" + dayOfWeek).
+                collection("exercises").document(exercise.getTitle()).
+                set(exercise).
                 addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
                         Log.d(TAG, "DocumentSnapshot successfully written!");
-
                     }
                 }).
                 addOnFailureListener(new OnFailureListener() {
@@ -335,6 +285,25 @@ public class RoutineFragment extends Fragment {
                     }
                 });
 
+    }
+
+    private void deleteExercise(int position) {
+        // db에서 운동 삭제, document 이름 다시 생각할 것 동일 운동 저장 못 함
+        db.collection("routines").document(mAuth.getCurrentUser().getUid()+"_"+dayOfWeek).
+                collection("exercises").document(routine.getExercises().get(position).getTitle())
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "DocumentSnapshot successfully deleted!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error deleting document", e);
+                    }
+                });
     }
 
     private void setRecyclerView() {
@@ -348,8 +317,9 @@ public class RoutineFragment extends Fragment {
                 @Override
                 public void onExerciseClick(int postion) {
                     adapter.notifyDataSetChanged();
+                    deleteExercise(postion);
                     adapter.removeItem(postion);
-//                    saveRoutine();
+//                    saveRoutine(routine.getExercises().get(postion));
                 }
             });
         }
@@ -361,11 +331,20 @@ public class RoutineFragment extends Fragment {
             btn.setTextColor(Color.parseColor("#000000"));
         }
 
-        Button button = (Button) v;
+        ((Button) v).setBackgroundResource(R.drawable.round_button_green);
+        ((Button) v).setTextColor(Color.parseColor("#ffffff") );
 
-        button.setBackgroundResource(R.drawable.round_button_green);
-        button.setTextColor(Color.parseColor("#ffffff") );
-        dayOfWeek = Integer.parseInt((String) v.getTag()); // v.getTag가 (int)로 형변환 안 됨 귀찮으니 방법 나중에 찾아보기
+        Log.d("test", Integer.toString(v.getId()));
+
+        switch(((Button) v).getText().toString()) {
+            case "일": dayOfWeek = "sun"; break; // 일
+            case "월": dayOfWeek = "mon"; break; // 월
+            case "화": dayOfWeek = "tue"; break; // 화
+            case "수": dayOfWeek = "wed"; break; // 수
+            case "목": dayOfWeek = "thu"; break; // 목
+            case "금": dayOfWeek = "fri"; break; // 금
+            case "토": dayOfWeek = "sat"; break; // 토
+        }
 
         setRoutine();
     }

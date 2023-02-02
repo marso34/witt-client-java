@@ -26,8 +26,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:background="@color/transparent"
-                android:text="월"
-                android:tag="1"/>
+                android:text="월"/>
 
             <Button
                 android:id="@+id/tue"
@@ -35,8 +34,7 @@
                 android:layout_height="30dp"
                 android:layout_marginLeft="12dp"
                 android:background="@color/transparent"
-                android:text="화"
-                android:tag="2"/>
+                android:text="화"/>
 
             <Button
                 android:id="@+id/wed"
@@ -44,8 +42,7 @@
                 android:layout_height="30dp"
                 android:layout_marginLeft="12dp"
                 android:background="@color/transparent"
-                android:text="수"
-                android:tag="3"/>
+                android:text="수"/>
 
             <Button
                 android:id="@+id/thu"
@@ -53,8 +50,7 @@
                 android:layout_height="30dp"
                 android:layout_marginLeft="12dp"
                 android:background="@color/transparent"
-                android:text="목"
-                android:tag="4"/>
+                android:text="목"/>
 
             <Button
                 android:id="@+id/fri"
@@ -62,8 +58,7 @@
                 android:layout_height="30dp"
                 android:layout_marginLeft="12dp"
                 android:background="@color/transparent"
-                android:text="금"
-                android:tag="5"/>
+                android:text="금"/>
 
             <Button
                 android:id="@+id/sat"
@@ -71,8 +66,7 @@
                 android:layout_height="30dp"
                 android:layout_marginLeft="12dp"
                 android:background="@color/transparent"
-                android:text="토"
-                android:tag="6"/>
+                android:text="토"/>
 
             <Button
                 android:id="@+id/sun"
@@ -80,8 +74,7 @@
                 android:layout_height="30dp"
                 android:layout_marginLeft="12dp"
                 android:background="@color/transparent"
-                android:text="일"
-                android:tag="0"/>
+                android:text="일"/>
         </LinearLayout>
 
         <LinearLayout

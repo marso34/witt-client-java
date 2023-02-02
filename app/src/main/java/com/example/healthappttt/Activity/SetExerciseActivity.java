@@ -26,18 +26,21 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
 public class SetExerciseActivity extends AppCompatActivity {
+    private TextView IntroduceTxt;
     private ImageView OptionBtn; // 옵션
     private RecyclerView recyclerView;
     private setExerciseAdapter adapter;
     private Button StartBtn;  // 시작 버튼
 
     private Routine routine;
+    private String dayOfWeek;
 
     private FirebaseFirestore firebaseFirestore;
     private FirebaseAuth mAuth;// 파이어베이스 유저관련 접속하기위한 변수
@@ -48,6 +51,7 @@ public class SetExerciseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_exercise);
 
+        IntroduceTxt = (TextView) findViewById(R.id.introduceTxt); // 안내 글
         OptionBtn = (ImageView) findViewById(R.id.optionBtn); // 옵션
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         StartBtn = (Button) findViewById(R.id.startBtn);  // 시작 버튼
@@ -56,37 +60,36 @@ public class SetExerciseActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
-        routine = new Routine("", "");
+        getCurrentWeek();
         createRoutine();
 
         OptionBtn.setOnClickListener(v -> _option(v)); // 옵션 버튼 눌렀을 때
         StartBtn.setOnClickListener((v -> _start(v))); // 운동 시작하기 눌렀을 때
     }
 
-    private void createRoutine() {
+    private void getCurrentWeek() {
         Date currentDate = new Date();
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(currentDate);
 
-        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK) - 1;
-
-        String str = "";
-
-        switch (dayOfWeek) {
-            case 0: str = "sun"; break;
-            case 1: str = "mon"; break;
-            case 2: str = "tue"; break;
-            case 3: str = "wed"; break;
-            case 4: str = "thu"; break;
-            case 5: str = "fri"; break;
-            case 6: str = "sat"; break;
+        switch (calendar.get(Calendar.DAY_OF_WEEK)) {
+            case 1: dayOfWeek = "sun"; break;
+            case 2: dayOfWeek = "mon"; break;
+            case 3: dayOfWeek = "tue"; break;
+            case 4: dayOfWeek = "wed"; break;
+            case 5: dayOfWeek = "thu"; break;
+            case 6: dayOfWeek = "fri"; break;
+            case 7: dayOfWeek = "sat"; break;
         }
 
-        String d = str;
+        Log.d("오늘", dayOfWeek);
+    }
 
-        db.collection("routines").document(mAuth.getCurrentUser().getUid() +"_" + str).
-                get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+    private void createRoutine() {
+        db.collection("routines").document(mAuth.getCurrentUser().getUid() +"_" + dayOfWeek).
+                get().
+                addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if (task.isSuccessful()) {
@@ -100,10 +103,9 @@ public class SetExerciseActivity extends AppCompatActivity {
                                         document.getData().get("endTime").toString()
                                 );
 
-                                setExercises(dayOfWeek);
+                                setExercises();
 
                             } else {
-                                routine = new Routine("", "");
                                 Log.d(TAG, "Document does not exist!");
                             }
                         } else {
@@ -113,24 +115,12 @@ public class SetExerciseActivity extends AppCompatActivity {
                 });
     } // DB 연동 전까지 사용할 루틴 만드는 메서드 -> 추후 수정 필요
 
-    private void setExercises(int dayOfWeek) {
+    private void setExercises() {
 
-        String str = "";
-
-        switch (dayOfWeek) {
-            case 0: str = "sun"; break;
-            case 1: str = "mon"; break;
-            case 2: str = "tue"; break;
-            case 3: str = "wed"; break;
-            case 4: str = "thu"; break;
-            case 5: str = "fri"; break;
-            case 6: str = "sat"; break;
-        }
-
-        String d = str;
-
-        db.collection("routines").document(mAuth.getCurrentUser().getUid() +"_" + str).
-                collection("exercises").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        db.collection("routines").document(mAuth.getCurrentUser().getUid() +"_" + dayOfWeek).
+                collection("exercises").
+                get().
+                addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
@@ -142,6 +132,10 @@ public class SetExerciseActivity extends AppCompatActivity {
                                         Integer.parseInt(document.getData().get("volume").toString())
                                 ));
                             }
+
+                            if (routine.getExercises().size() == 0)
+                                IntroduceTxt.setText("오늘 루틴이 없어요");
+
                             setRecyclerView();
 
                         } else {
@@ -151,15 +145,13 @@ public class SetExerciseActivity extends AppCompatActivity {
                 });
     }
 
-
-
     private void _start(View v) {
         Intent intent = new Intent(getApplicationContext(), ExerciseRecordActivity.class);
         intent.putExtra("routine", routine);
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
-        finish(); // 운동 결과 페이지 보여주고 종료
+        finish(); // 운동 기록 페이지 보여주고 종료
     }
 
     private void _option(View v) {
@@ -178,6 +170,9 @@ public class SetExerciseActivity extends AppCompatActivity {
                 public void onExerciseClick(int postion) { // 운동 기록과 운동 메모를 전달 받아
                     adapter.notifyDataSetChanged();
                     adapter.removeItem(postion);
+
+//                    if (routine.getExercises().size() == 0)
+//                        IntroduceTxt.setText("오늘 루틴이 없어요");
                 }
             });
         }
