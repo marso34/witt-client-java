@@ -13,8 +13,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.healthappttt.Data.Exercise;
 import com.example.healthappttt.Data.Message;
 import com.example.healthappttt.Data.Routine;
@@ -34,11 +36,13 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import org.checkerframework.checker.units.qual.Temperature;
 
+import java.io.File;
 import java.util.Calendar;
 import java.util.Date;
 
 public class ProfileActivity extends AppCompatActivity {
     private Button wittBtn;
+    private ImageView ProImg;
     private String ThisProfileUid;
     private TextView ThisProfileName;
     private TextView LocationName;
@@ -59,6 +63,7 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+        ProImg = findViewById(R.id.UserImg);
         ThisProfileName = findViewById(R.id.UserName);
         LocationName = findViewById(R.id.MyLocation);
         ThisProfileTemperature = findViewById(R.id.MyTempreture);
@@ -71,6 +76,7 @@ public class ProfileActivity extends AppCompatActivity {
         intent = getIntent();
         firebaseFirestore = FirebaseFirestore.getInstance();
         User U = (User) getIntent().getSerializableExtra("User");//포스트인포 객체 만들어서 할당.;
+        File f =  (File) getIntent().getSerializableExtra("post");
         ThisProfileUid = U.getKey();
         ThisProfileName.setText(U.getUserName());
         LocationName.setText(U.getLocationName());
@@ -81,8 +87,15 @@ public class ProfileActivity extends AppCompatActivity {
         Dead.setText(U.getDeadlift());
         getCurrentWeek(); // 요일
         createRoutine();
+        Glide.with(this).load(f).into(ProImg);
         //준이가 짤 코드 요일 알아내서 루틴 테이블에서 운동들 가져와서 리사이클로뷰에 넣기.
 
+        ProImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                myStartActivity(enlargementActivity.class,f);
+            }
+        });
         wittBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -170,10 +183,16 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void setRecyclerView() {
-        adapter = new setExerciseAdapter(routine); // 나중에 routine
+        adapter = new setExerciseAdapter(routine); // 나중에 rout  ine
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
+    }
+    private void myStartActivity(Class c,File f) {// loginactivity페이지에서 mainactivity페이지로 넘기는 코드
+        Intent intent = new Intent(this, c);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra("post",f);
+        startActivity(intent);
     }
 
 }

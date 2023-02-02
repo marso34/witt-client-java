@@ -190,45 +190,6 @@ public class HomeFragment extends Fragment {
 
             }
         });
-//        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//            @Override
-//            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-//                super.onScrollStateChanged(recyclerView, newState);
-//
-//                RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
-//                int firstVisibleItemPosition = ((LinearLayoutManager)layoutManager).findFirstVisibleItemPosition();
-//
-//                if(newState == 1 && firstVisibleItemPosition == 0){
-//                    topScrolled = true;
-//                }
-//
-//                if(newState == 0 && topScrolled){
-//                    //postsUpdate(true);
-//                    topScrolled = false;
-//                }
-//
-//            }
-//
-//            @Override
-//            public void onScrolled(RecyclerView recyclerView, int dx, int dy){
-//                super.onScrolled(recyclerView, dx, dy);
-//
-//                RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
-//                int visibleItemCount = layoutManager.getChildCount();
-//                int totalItemCount = layoutManager.getItemCount();
-//                int firstVisibleItemPosition = ((LinearLayoutManager)layoutManager).findFirstVisibleItemPosition();
-//                int lastVisibleItemPosition = ((LinearLayoutManager)layoutManager).findLastVisibleItemPosition();
-//
-//                if(totalItemCount - 3 <= lastVisibleItemPosition && !updating){
-//                    postsUpdate(true);
-//                }
-//
-//                if(0 < firstVisibleItemPosition){
-//                    topScrolled = false;
-//                }
-//            }
-//        });
-
         postsUpdate(false);
 
         return view;
