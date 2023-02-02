@@ -1,12 +1,7 @@
 package com.example.healthappttt.adapter;//package com.example.healthappttt.adapter;
 
-import static android.content.ContentValues.TAG;
-
-import android.app.Activity;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,18 +13,20 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.healthappttt.Activity.ChatActivity;
-import com.example.healthappttt.Activity.MainActivity;
 import com.example.healthappttt.Activity.ProfileActivity;
 import com.example.healthappttt.Data.User;
 import com.example.healthappttt.R;
-import com.google.firebase.auth.UserInfo;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder> {
     private ArrayList<User> mDataset;
-
+    private FirebaseStorage storage;
 
     private Context mContext;
     private User thisUser;
@@ -68,7 +65,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull final MainViewHolder holder, int position) {
-
+        storage = FirebaseStorage.getInstance();
         CardView cardView = holder.cardView;
         TextView Name =  cardView.findViewById(R.id.UNE);
         TextView LocaName = cardView.findViewById(R.id.GT);
@@ -77,15 +74,21 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
         TextView ExerciseArea = cardView.findViewById(R.id.EArea);
 
         User userInfo = mDataset.get(position);
-      //  Log.d(TAG, "onBindViewHolder: "+ userInfo.getUserName().toString());
-        Name.setText(userInfo.getUserName().toString());
-        LocaName.setText(userInfo.getLocationName());
-        PreferredTime.setText("11~13");
-        ExerciseArea.setText("가슴");
+        String fileName = userInfo.getKey();
 
-       if(userInfo.getProfileImg() != null){
-          Glide.with(mContext).load(userInfo.getProfileImg()).centerCrop().override(500).into(photoImageVIew);
-       }
+        File profilefile = null;
+        try {
+            profilefile = File.createTempFile("images","jpeg");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        StorageReference sref  = storage.getReference().child("article/photo").child(fileName);
+
+        if(fileName != null){
+            sref.getFile(profilefile);
+            Glide.with(mContext).load(profilefile).centerCrop().override(500).into(photoImageVIew);
+        }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -94,6 +97,13 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
                 mContext.startActivity(intent);
             }
         });
+      //  Log.d(TAG, "onBindViewHolder: "+ userInfo.getUserName().toString());
+        Name.setText(userInfo.getUserName().toString());
+        LocaName.setText(userInfo.getLocationName());
+        PreferredTime.setText("11~13");
+        ExerciseArea.setText("가슴");
+
+
     }
 
     @Override

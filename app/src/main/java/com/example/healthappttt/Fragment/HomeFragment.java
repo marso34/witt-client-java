@@ -76,6 +76,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -94,6 +95,7 @@ public class HomeFragment extends Fragment {
     private static final String TAG = "HomeFragment";
     private FirebaseAuth mAuth;
     private FirebaseFirestore firebaseFirestore;
+
     private UserAdapter userAdapter;
     private ArrayList<User> userList;
     private ArrayList<CompareUser> CompareuserList;
@@ -133,7 +135,6 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);

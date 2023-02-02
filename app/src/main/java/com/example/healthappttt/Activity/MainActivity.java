@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
             else {
                 Log.d("wwwwww","qeqeqeqeqe");
             }
-            //위치정보를 원하는 시간, 거리마다 갱신해준다.
+//            위치정보를 원하는 시간, 거리마다 갱신해준다.
 //            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER,
 //                    5000,
 //                    4,
@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
 //                    5000,
 //                    4,
 //                    gpsLocationListener);
-        }
+                    }
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -138,7 +138,6 @@ public class MainActivity extends AppCompatActivity {
                     replaceFragment(new ProflieFragment());
                     break;
             }
-
             return true;
         });
 
@@ -168,6 +167,7 @@ public class MainActivity extends AppCompatActivity {
 
         }
     };
+
 
     private void replaceFragment (Fragment fragment){ //프래그먼트 설정
         FragmentManager fragmentManager = getSupportFragmentManager();

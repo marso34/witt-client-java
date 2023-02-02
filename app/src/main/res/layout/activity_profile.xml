@@ -434,7 +434,7 @@
                     android:padding="5dp"
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="12dp"
-                    android:layout_marginBottom="24dp">
+                    android:layout_marginBottom="100dp">
 
 
                     <LinearLayout
