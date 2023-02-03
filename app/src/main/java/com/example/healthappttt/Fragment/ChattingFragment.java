@@ -13,8 +13,10 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -30,7 +32,7 @@ import java.util.ArrayList;
 
 public class ChattingFragment extends Fragment {
     private RecyclerView recyclerView;
-
+    int index;
     private static final String TAG = "chat";
     private UserListAdapter userListAdapter;
     private ArrayList<User> userList;
@@ -82,17 +84,29 @@ public class ChattingFragment extends Fragment {
                                     userList.add(a);
                                 else CurrentUser = a;
                             }
-                            for (int i = 0; i < userList.size(); i++) {
-                                String senderRoom = CurrentUser.getKey() + userList.get(i).getKey();
-                                if(null==mDbRef.child("chats").child(senderRoom).child("messages").get().getResult().getValue());
-
-                            }
-
-
                         }
-
                     }
                 });
+        for (  index = 0; index < userList.size(); index++) {
+            String senderRoom = CurrentUser.getKey() + userList.get(index).getKey();
+            mDbRef.child("chats").child(senderRoom).child("messages").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    Log.d("good", "v");
+                    if(null==dataSnapshot.getValue())
+                    {
+                        userList.remove(index);
+                        index = index -1;
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    Log.d("bad", "c");
+                }
+            });
+
+        }
         userListAdapter.notifyDataSetChanged();
         return view;
     }
