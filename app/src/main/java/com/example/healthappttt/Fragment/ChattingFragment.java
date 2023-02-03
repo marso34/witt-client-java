@@ -110,7 +110,7 @@ public class ChattingFragment extends Fragment {
                                         Log.d("최종tt 리스트", q.getUserName());
                                         userList.add(q);
                                     }
-
+                                    TuserList.clear();
                                     userListAdapter.notifyDataSetChanged();
                                 }
 
