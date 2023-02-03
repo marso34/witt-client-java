@@ -51,18 +51,21 @@ import java.util.Date;
 public class RoutineFragment extends Fragment {
     Context context;
 
-    private RecyclerView recyclerView;
-    private setExerciseAdapter adapter;
-
     private Button[] weekBtn;
     private ToggleButton[] exerciseTxt;
     private TextView StartTime, EndTime;
     private CardView addCard;
 
+    private RecyclerView recyclerView;
+    private setExerciseAdapter adapter;
+
     private Routine routine;
     private ArrayList<Exercise> exercises;
 
-    private String dayOfWeek;
+    private String dayOfWeek = "";
+    private int exerciseCat = 0;
+    private String UserUid;
+
 
     private FirebaseFirestore firebaseFirestore;
     private FirebaseAuth mAuth;// 파이어베이스 유저관련 접속하기위한 변수
@@ -112,6 +115,8 @@ public class RoutineFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
+        UserUid = mAuth.getCurrentUser().getUid();
+
         weekBtn = new Button[7];
         exerciseTxt = new ToggleButton[7];
 
@@ -145,7 +150,7 @@ public class RoutineFragment extends Fragment {
             @Override
             public void onExerciseClick(ExerciseName exerciseName) {
                 routine.addExercise(new Exercise(exerciseName.getName(), exerciseName.getCat()));
-                saveRoutine(new Exercise(exerciseName.getName(), exerciseName.getCat()));
+                saveExercise(new Exercise(exerciseName.getName(), exerciseName.getCat()));
                 adapter.notifyDataSetChanged();
             }
         });
@@ -158,6 +163,25 @@ public class RoutineFragment extends Fragment {
             txt.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                    switch(compoundButton.getText().toString()) {
+                        case "가슴":
+                            exerciseCat ^= 0x1; break;
+                        case "등":
+                            exerciseCat ^= 0x2; break;
+                        case "어깨":
+                            exerciseCat ^= 0x4; break;
+                        case "하체":
+                            exerciseCat ^= 0x8; break;
+                        case "팔":
+                            exerciseCat ^= 0x10; break;
+                        case "복근":
+                            exerciseCat ^= 0x20; break;
+                        case "유산소":
+                            exerciseCat ^= 0x40; break;
+                    }
+
+                    Log.d("categorieCat ==>", Integer.toString(exerciseCat));
+
                     if (isChecked) {
                         compoundButton.setBackgroundResource(R.drawable.green_border_layout);
                         compoundButton.setTextColor(Color.parseColor("#05c78c"));
@@ -165,12 +189,15 @@ public class RoutineFragment extends Fragment {
                         compoundButton.setBackgroundResource(R.drawable.border_layout);
                         compoundButton.setTextColor(Color.parseColor("#747474"));
                     }
+
+                    routine.setExerciseCategories(exerciseCat);
+                    saveRoutine();
                 }
             });
         }
 
         addCard.setOnClickListener(v -> {
-//            exerciseListFragment.ExerciseCat("ttt"); // 운동 부위 전달
+            exerciseListFragment.ExerciseCat(exerciseCat); // 운동 부위 전달
             exerciseListFragment.show(getActivity().getSupportFragmentManager(), exerciseListFragment.getTag());
         });
 
@@ -209,10 +236,7 @@ public class RoutineFragment extends Fragment {
     }
 
     private void setRoutine() {
-        // 없으면 빈 루틴 생성
-        Log.d("현재 유저 Uid ", mAuth.getCurrentUser().getUid());;
-
-        db.collection("routines").document(mAuth.getCurrentUser().getUid() +"_" + dayOfWeek).
+        db.collection("routines").document(UserUid +"_" + dayOfWeek).
                 get().
                 addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
@@ -223,11 +247,12 @@ public class RoutineFragment extends Fragment {
                                 Log.d(TAG, "Document exists!");
                                 routine = new Routine(
                                         document.getData().get("title").toString(),
-                                        document.getData().get("exerciseCategories").toString(),
+                                        Integer.parseInt(document.getData().get("exerciseCategories").toString()),
                                         document.getData().get("startTime").toString(),
                                         document.getData().get("endTime").toString()
                                 );
 
+                                checkCat(routine.getExerciseCategories());
                                 setExercises();
 
                                 StartTime.setText(routine.getStartTime());
@@ -267,9 +292,28 @@ public class RoutineFragment extends Fragment {
                 });
     }
 
-    private void saveRoutine(Exercise exercise) {
+    private void saveRoutine() {
+        routine.setExerciseCategories(exerciseCat);
+
+        db.collection("routines").document(UserUid +"_" + dayOfWeek).
+                set(routine).
+                addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Log.d(TAG, "DocumentSnapshot successfully written!");
+                    }
+                }).
+                addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error writing document", e);
+                    }
+                });
+    }
+
+    private void saveExercise(Exercise exercise) {
         // 루틴을 DB에 저장, document 이름 다시 생각할 것 동일 운동 저장 못 함
-        db.collection("routines").document(mAuth.getCurrentUser().getUid() +"_" + dayOfWeek).
+        db.collection("routines").document(UserUid +"_" + dayOfWeek).
                 collection("exercises").document(exercise.getTitle()).
                 set(exercise).
                 addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -346,5 +390,27 @@ public class RoutineFragment extends Fragment {
         }
 
         setRoutine();
+    }
+
+    private void checkCat(int cat) {
+        for (ToggleButton txt : exerciseTxt) {
+            txt.setChecked(false);
+        }
+        exerciseCat = 0;
+
+        if ((cat & 0x1) == 0x1)
+            exerciseTxt[0].setChecked(true);
+        if ((cat & 0x2) == 0x2)
+            exerciseTxt[1].setChecked(true);
+        if ((cat & 0x4) == 0x4)
+            exerciseTxt[2].setChecked(true);
+        if ((cat & 0x8) == 0x8)
+            exerciseTxt[3].setChecked(true);
+        if ((cat & 0x10) == 0x10)
+            exerciseTxt[1].setChecked(true);
+        if ((cat & 0x20) == 0x20)
+            exerciseTxt[2].setChecked(true);
+        if ((cat & 0x40) == 040)
+            exerciseTxt[3].setChecked(true);
     }
 }

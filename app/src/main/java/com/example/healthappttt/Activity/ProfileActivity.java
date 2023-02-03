@@ -34,6 +34,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import org.checkerframework.checker.units.qual.Temperature;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -46,7 +47,9 @@ public class ProfileActivity extends AppCompatActivity {
     private TextView Squat;
     private TextView Bench;
     private TextView Dead;
+
     private Routine routine;
+    private ArrayList<Exercise> exercises;
     private setExerciseAdapter adapter;
     private String dayOfWeek;
     private RecyclerView recyclerView;
@@ -79,8 +82,10 @@ public class ProfileActivity extends AppCompatActivity {
         Squat.setText(U.getSquat());
         Bench.setText(U.getBench());
         Dead.setText(U.getDeadlift());
+
+        exercises = new ArrayList<>();
         getCurrentWeek(); // 요일
-        createRoutine();
+        setExercises();
         //준이가 짤 코드 요일 알아내서 루틴 테이블에서 운동들 가져와서 리사이클로뷰에 넣기.
 
         wittBtn.setOnClickListener(new View.OnClickListener() {
@@ -125,7 +130,7 @@ public class ProfileActivity extends AppCompatActivity {
                                 Log.d(TAG, "Document exists!");
                                 routine = new Routine(
                                         document.getData().get("title").toString(),
-                                        document.getData().get("exerciseCategories").toString(),
+                                        Integer.parseInt(document.getData().get("exerciseCategories").toString()),
                                         document.getData().get("startTime").toString(),
                                         document.getData().get("endTime").toString()
                                 );
@@ -152,12 +157,14 @@ public class ProfileActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                routine.addExercise(new Exercise(
+                                Exercise e = new Exercise(
                                         document.getData().get("title").toString(),
                                         document.getData().get("state").toString(),
                                         Integer.parseInt(document.getData().get("count").toString()),
                                         Integer.parseInt(document.getData().get("volume").toString())
-                                ));
+                                );
+
+                                exercises.add(e);
                             }
 
                             setRecyclerView();
@@ -170,7 +177,7 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void setRecyclerView() {
-        adapter = new setExerciseAdapter(routine); // 나중에 routine
+        adapter = new setExerciseAdapter(exercises); // 나중에 routine
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);

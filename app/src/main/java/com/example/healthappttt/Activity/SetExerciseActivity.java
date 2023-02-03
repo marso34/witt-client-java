@@ -40,6 +40,7 @@ public class SetExerciseActivity extends AppCompatActivity {
     private Button StartBtn;  // 시작 버튼
 
     private Routine routine;
+    private ArrayList<Exercise> exercises;
     private String dayOfWeek;
 
     private FirebaseFirestore firebaseFirestore;
@@ -60,8 +61,11 @@ public class SetExerciseActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
+        routine = new Routine("", 0);
+        exercises = new ArrayList<>();
+
         getCurrentWeek();
-        createRoutine();
+        setExercises();
 
         OptionBtn.setOnClickListener(v -> _option(v)); // 옵션 버튼 눌렀을 때
         StartBtn.setOnClickListener((v -> _start(v))); // 운동 시작하기 눌렀을 때
@@ -98,7 +102,7 @@ public class SetExerciseActivity extends AppCompatActivity {
                                 Log.d(TAG, "Document exists!");
                                 routine = new Routine(
                                         document.getData().get("title").toString(),
-                                        document.getData().get("exerciseCategories").toString(),
+                                        Integer.parseInt(document.getData().get("exerciseCategories").toString()),
                                         document.getData().get("startTime").toString(),
                                         document.getData().get("endTime").toString()
                                 );
@@ -171,8 +175,8 @@ public class SetExerciseActivity extends AppCompatActivity {
                     adapter.notifyDataSetChanged();
                     adapter.removeItem(postion);
 
-//                    if (routine.getExercises().size() == 0)
-//                        IntroduceTxt.setText("오늘 루틴이 없어요");
+                    if (routine.getExercises().size() == 0)
+                        IntroduceTxt.setText("오늘 루틴이 없어요");
                 }
             });
         }

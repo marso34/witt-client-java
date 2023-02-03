@@ -186,7 +186,7 @@ public class ExerciseRecordActivity extends AppCompatActivity {
     } // 리사이클러 뷰 생성 -> 추후 수정 필요
 
     public Routine getRecord() {
-        Routine record = new Routine("운동 테스트", "전신", recordExercises);
+        Routine record = new Routine("운동 테스트", 0, recordExercises);
         record.setStartTime(Long.toString(startTime));
         record.setEndTime(Long.toString(System.currentTimeMillis()));
         record.setRunTime(Long.toString(runTime));

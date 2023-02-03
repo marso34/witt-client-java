@@ -19,6 +19,7 @@ import android.widget.AbsListView;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ToggleButton;
 
 import com.example.healthappttt.Activity.MainActivity;
 import com.example.healthappttt.Data.Exercise;
@@ -31,9 +32,12 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class ExerciseListFragment extends BottomSheetDialogFragment {
     Context context;
+
+    private int exerciseCat = 0;
 
     private ListView listView;
     private ExerciseListAdapter adapter;
@@ -42,8 +46,9 @@ public class ExerciseListFragment extends BottomSheetDialogFragment {
 
     public ExerciseListFragment(Context applicationContext) {
             this.context = context;
-    } // 운동 부위 정보도 추가
+    }
 
+    // 여기는 그냥 동작만 가능하도록 대충 짜고 있고 정리 안 됨
 
     @Nullable
     @Override
@@ -53,39 +58,69 @@ public class ExerciseListFragment extends BottomSheetDialogFragment {
 
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_bottom, container, false);
 
-
         ArrayList<ExerciseName> ttt = new ArrayList<>();
         ttt.add(new ExerciseName("팔굽혀펴기", "가슴"));
         ttt.add(new ExerciseName("스쿼트", "하체"));
         ttt.add(new ExerciseName("딥스", "가슴"));
         ttt.add(new ExerciseName("턱걸이", "등"));
         ttt.add(new ExerciseName("유산소1", "유산소"));
-        ttt.add(new ExerciseName("유산소2", "유산소"));
-        ttt.add(new ExerciseName("운동1", "가슴"));
-        ttt.add(new ExerciseName("운동2", "복근"));
-        ttt.add(new ExerciseName("운동3", "하체"));
-        ttt.add(new ExerciseName("운동4", "등"));
-        ttt.add(new ExerciseName("운동5", "가슴"));
-        ttt.add(new ExerciseName("운동6", "복근"));
-        ttt.add(new ExerciseName("운동7", "하체"));
-        ttt.add(new ExerciseName("운동8", "등"));
-        ttt.add(new ExerciseName("운동9", "가슴"));
-        ttt.add(new ExerciseName("운동10", "복근"));
-        ttt.add(new ExerciseName("운동11", "하체"));
-        ttt.add(new ExerciseName("운동12", "등"));
-        ttt.add(new ExerciseName("운동13", "하체"));
-        ttt.add(new ExerciseName("운동14", "등"));
-        ttt.add(new ExerciseName("운동15", "가슴"));
-        ttt.add(new ExerciseName("운동16", "복근"));
-        ttt.add(new ExerciseName("운동17", "하체"));
-        ttt.add(new ExerciseName("운동18", "등"));
-        ttt.add(new ExerciseName("운동19", "가슴"));
-        ttt.add(new ExerciseName("운동20", "복근"));
-        ttt.add(new ExerciseName("운동21", "하체"));
-        ttt.add(new ExerciseName("운동22", "등"));
+        ttt.add(new ExerciseName("가슴운동1", "가슴"));
+        ttt.add(new ExerciseName("어깨운동1", "어깨"));
+        ttt.add(new ExerciseName("등운동1", "등"));
+        ttt.add(new ExerciseName("하체운동1", "하체"));
+        ttt.add(new ExerciseName("팔운동1", "팔"));
+        ttt.add(new ExerciseName("복근운동1", "복근"));
+        ttt.add(new ExerciseName("유산소운동1", "유산소"));
+        ttt.add(new ExerciseName("가슴운동2", "가슴"));
+        ttt.add(new ExerciseName("어깨운동2", "어깨"));
+        ttt.add(new ExerciseName("등운동2", "등"));
+        ttt.add(new ExerciseName("하체운동2", "하체"));
+        ttt.add(new ExerciseName("팔운동2", "팔"));
+        ttt.add(new ExerciseName("복근운동2", "복근"));
+        ttt.add(new ExerciseName("유산소운동2", "유산소"));
+        ttt.add(new ExerciseName("가슴운동3", "가슴"));
+        ttt.add(new ExerciseName("어깨운동3", "어깨"));
+        ttt.add(new ExerciseName("등운동3", "등"));
+        ttt.add(new ExerciseName("하체운동3", "하체"));
+        ttt.add(new ExerciseName("팔운동3", "팔"));
+        ttt.add(new ExerciseName("복근운동3", "복근"));
+        ttt.add(new ExerciseName("유산소운동3", "유산소"));
+
+        ArrayList<ExerciseName> test = new ArrayList<>();
+
+        for (ExerciseName e : ttt) {
+            if ((exerciseCat & 0x1) == 0x1) {
+                if (e.getCat().equals("가슴"))
+                    test.add(e);
+            }
+            if ((exerciseCat & 0x2) == 0x2) {
+                if (e.getCat().equals("등"))
+                    test.add(e);
+            }
+            if ((exerciseCat & 0x4) == 0x4) {
+                if (e.getCat().equals("어깨"))
+                    test.add(e);
+            }
+            if ((exerciseCat & 0x8) == 0x8) {
+                if (e.getCat().equals("하체"))
+                    test.add(e);
+            }
+            if ((exerciseCat & 0x10) == 0x10) {
+                if (e.getCat().equals("팔"))
+                    test.add(e);
+            }
+            if ((exerciseCat & 0x20) == 0x20) {
+                if (e.getCat().equals("복근"))
+                    test.add(e);
+            }
+            if ((exerciseCat & 0x40) == 040) {
+                if (e.getCat().equals("유산소"))
+                    test.add(e);
+            }
+        }
 
         listView = (ListView) view.findViewById(R.id.listView);
-        adapter = new ExerciseListAdapter(getContext(), ttt);
+        adapter = new ExerciseListAdapter(getContext(), test);
 
         listView.setAdapter(adapter);
 
@@ -130,8 +165,8 @@ public class ExerciseListFragment extends BottomSheetDialogFragment {
         }
     } // BottomSheetDialogFragment 드래그 안 되게 하는 코드
 
-    public void ExerciseCat(String cat) {
-        // 운동 부위(cat) 전달
+    public void ExerciseCat(int cat) {
+        exerciseCat = cat;
     }
 
     private void Parse() {
