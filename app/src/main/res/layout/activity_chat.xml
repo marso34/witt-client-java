@@ -41,11 +41,23 @@
 
     <!--채팅메세지-->
     <!--메세지 박스 레이아웃-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/timeText"-->
+<!--            android:layout_below="@+id/Toolbar"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="36dp"-->
+<!--            android:gravity="center"-->
+<!--            android:textSize="12sp"-->
+<!--            tools:text="11:40" />-->
+
     <androidx.recyclerview.widget.RecyclerView
         android:layout_below="@+id/Toolbar"
         android:id="@+id/chatRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="55dp"
+       />
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -84,6 +96,7 @@
             android:layout_height="50dp"
             android:layout_weight="15"
             android:layout_gravity="center"
+            android:background="@color/white"
             android:gravity="center">
             <ImageView
                 android:id="@+id/sentButton"
