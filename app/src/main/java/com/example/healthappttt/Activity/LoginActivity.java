@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import com.example.healthappttt.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -76,8 +77,8 @@ public class LoginActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {//람다식?
                             loaderLayout.setVisibility(View.GONE);//loaderLyaout 삭제함.(공간차지x)
                             if (task.isSuccessful()) {//로그인 검증이 성공하면
-
                                 FirebaseUser user = mAuth.getCurrentUser();//현재유저의 db에 접근권한 활성화
+                                finishAffinity();
                                 myStartActivity(MainActivity.class);//메인엑티비티 실행
                             } else {
                                 if (task.getException() != null) {

@@ -190,45 +190,6 @@ public class HomeFragment extends Fragment {
 
             }
         });
-//        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//            @Override
-//            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-//                super.onScrollStateChanged(recyclerView, newState);
-//
-//                RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
-//                int firstVisibleItemPosition = ((LinearLayoutManager)layoutManager).findFirstVisibleItemPosition();
-//
-//                if(newState == 1 && firstVisibleItemPosition == 0){
-//                    topScrolled = true;
-//                }
-//
-//                if(newState == 0 && topScrolled){
-//                    //postsUpdate(true);
-//                    topScrolled = false;
-//                }
-//
-//            }
-//
-//            @Override
-//            public void onScrolled(RecyclerView recyclerView, int dx, int dy){
-//                super.onScrolled(recyclerView, dx, dy);
-//
-//                RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
-//                int visibleItemCount = layoutManager.getChildCount();
-//                int totalItemCount = layoutManager.getItemCount();
-//                int firstVisibleItemPosition = ((LinearLayoutManager)layoutManager).findFirstVisibleItemPosition();
-//                int lastVisibleItemPosition = ((LinearLayoutManager)layoutManager).findLastVisibleItemPosition();
-//
-//                if(totalItemCount - 3 <= lastVisibleItemPosition && !updating){
-//                    postsUpdate(true);
-//                }
-//
-//                if(0 < firstVisibleItemPosition){
-//                    topScrolled = false;
-//                }
-//            }
-//        });
-
         postsUpdate(false);
 
         return view;
@@ -263,8 +224,9 @@ public class HomeFragment extends Fragment {
                                         document.getData().get("squat").toString(),
                                         document.getData().get("locationName").toString()
                                         );
-                                userList.add(a);
-                                if(a.getKey() != mAuth.getCurrentUser().getUid()) currentUser = a;
+
+                                if(a.getKey().equals(mAuth.getCurrentUser().getUid())) currentUser = a;
+                                else userList.add(a);
                             }
                             //퀵정렬 편집해서 만드는건 가능한데 일단 보류 난이도가 높음.
                             //

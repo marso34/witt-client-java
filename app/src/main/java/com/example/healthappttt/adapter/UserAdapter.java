@@ -112,6 +112,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
             public void onClick(View view) {
                 Intent intent = new Intent(mContext, ProfileActivity.class);
                 intent.putExtra("User",userInfo);
+                intent.putExtra("post",finalProfilefile);
                 mContext.startActivity(intent);
             }
         });
