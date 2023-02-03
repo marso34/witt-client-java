@@ -29,12 +29,12 @@ public class setExerciseAdapter extends RecyclerView.Adapter<setExerciseAdapter.
         this.isChangeable = false;
     }
 
-    public setExerciseAdapter(Routine routine, boolean isChangeable) { // 일단 테스트
+    public setExerciseAdapter(Routine routine, boolean isChangeable) {
         this.exercises = routine.getExercises();
         this.isChangeable = isChangeable;
     }
 
-    public setExerciseAdapter(ArrayList<Exercise> exercises) { // 일단 테스트
+    public setExerciseAdapter(ArrayList<Exercise> exercises) {
         this.exercises = exercises;
         this.isChangeable = false;
 //        this.exerciseCategories = routine.getExerciseCategories();

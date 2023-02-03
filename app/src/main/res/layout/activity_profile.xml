@@ -147,12 +147,6 @@
                 android:secondaryProgress="36"
                 />
 
-
-
-
-
-
-
             <!--재운동 희망률과 응답률 큰 레이아웃-->
             <!--레이아웃 반반 비율로 맞춰야함.. marginright 임시로 해놓음-->
             <LinearLayout
@@ -609,13 +603,16 @@
     </ScrollView>
     <Button
         android:id="@+id/WittBtn"
-        android:background="@drawable/round_button_green"
-        android:text="위트하기"
-        android:textSize="30dp"
+        android:background="@drawable/default_layout"
+        android:text="위트 보내기"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:layout_gravity="bottom|center"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="40dp"
+        android:layout_marginHorizontal="16dp"
         >
 
     </Button>

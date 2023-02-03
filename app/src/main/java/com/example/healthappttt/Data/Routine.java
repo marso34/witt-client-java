@@ -7,14 +7,14 @@ import java.util.Map;
 
 public class Routine implements Serializable {
     private String title;
-    private String exerciseCategories;
+    private int exerciseCategories;
     private String startTime;
     private String endTime;
     private String runTime;
 
     private ArrayList<Exercise> exercises;
 
-    public Routine(String title, String exerciseCategories) {
+    public Routine(String title, int exerciseCategories) {
         this.title = title;
         this.exerciseCategories = exerciseCategories;
         this.exercises = new ArrayList<Exercise>();
@@ -23,7 +23,7 @@ public class Routine implements Serializable {
         this.runTime = "0";
     }
 
-    public Routine(String title, String exerciseCategories, String startTime, String endTime) {
+    public Routine(String title, int exerciseCategories, String startTime, String endTime) {
         this.title = title;
         this.exerciseCategories = exerciseCategories;
         this.exercises = new ArrayList<Exercise>();
@@ -32,7 +32,7 @@ public class Routine implements Serializable {
         this.runTime = "0";
     }
 
-    public Routine(String title, String exerciseCategories, ArrayList<Exercise> exercises) {
+    public Routine(String title, int exerciseCategories, ArrayList<Exercise> exercises) {
         this.title = title;
         this.exerciseCategories = exerciseCategories;
         this.exercises = new ArrayList<Exercise>(exercises);
@@ -54,14 +54,15 @@ public class Routine implements Serializable {
     public String getStartTime()                                 { return this.startTime; }
     public String getEndTime()                                   { return this.endTime; }
     public String getRunTime()                                   { return this.runTime; }
-    public String getExerciseCategories()                        { return this.exerciseCategories; }
+    public int getExerciseCategories()                           { return this.exerciseCategories; }
     public ArrayList<Exercise> getExercises()                    { return this.exercises; }
     public int getExercieseCount()                               { return this.exercises.size(); }
+
     public void setTitle(String title)                           { this.title = title; }
     public void setStartTime(String startTime)                   { this.startTime = startTime; }
     public void setEndTime(String endTime)                       { this.endTime = endTime; }
     public void setRunTime(String runTime)                       { this.runTime = runTime; }
-    public void setExerciseCategories(String exerciseCategories) { this.exerciseCategories = exerciseCategories; }
+    public void setExerciseCategories(int exerciseCategories)    { this.exerciseCategories = exerciseCategories; }
     public void setExercises(ArrayList<Exercise> exercises)      { this.exercises = new ArrayList<Exercise>(exercises); }
     public void addExercise(Exercise exercise)                   { this.exercises.add(exercise); }
 }

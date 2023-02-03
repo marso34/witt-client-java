@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainViewHolder> {
     private ArrayList<Exercise> exercises;
-    private String exerciseCategories;
+    private int exerciseCategories;
     private int exerciseCnt;
 
     public RoutineAdapter() {
