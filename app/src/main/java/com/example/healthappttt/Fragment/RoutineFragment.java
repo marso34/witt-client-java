@@ -60,12 +60,10 @@ public class RoutineFragment extends Fragment {
     private setExerciseAdapter adapter;
 
     private Routine routine;
-    private ArrayList<Exercise> exercises;
 
-    private String dayOfWeek = "";
     private int exerciseCat = 0;
     private String UserUid;
-
+    private String dayOfWeek = "";
 
     private FirebaseFirestore firebaseFirestore;
     private FirebaseAuth mAuth;// 파이어베이스 유저관련 접속하기위한 변수
