@@ -19,6 +19,7 @@ import com.example.healthappttt.R;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -37,6 +38,8 @@ public class ProflieFragment extends Fragment {
     // 파이어스토어에 접근하기 위한 객체 생성
     private ArrayList<User> userList;
     private static FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FirebaseAuth mAuth;// 파이어베이스 유저관련 접속하기위한 변수
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -94,8 +97,10 @@ public class ProflieFragment extends Fragment {
         TextView deadlift = ProfileFrame.findViewById(R.id.deadlift);
         ImageView userImg = ProfileFrame.findViewById(R.id.UserImg);
 
+        mAuth = FirebaseAuth.getInstance();
+
         //CollectionReference -> 파이어스토어의 컬랙션 참조하는 객체
-        DocumentReference productRef = db.collection("users").document("vE8rAti9AgYMKxGdZwQqBZX1qFv1");
+        DocumentReference productRef = db.collection("users").document(mAuth.getCurrentUser().getUid());
         //get()을 통해서 해당 컬랙션의 정보를 가져옴
 
         //단일 문서의 내용 검색
