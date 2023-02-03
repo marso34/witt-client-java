@@ -1,25 +1,20 @@
 package com.example.healthappttt.Fragment;
 
-import android.content.ContentValues;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.healthappttt.Data.Message;
 import com.example.healthappttt.Data.User;
 import com.example.healthappttt.R;
-import com.example.healthappttt.adapter.MessageAdapter;
 import com.example.healthappttt.adapter.UserListAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -31,7 +26,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 
 public class ChattingFragment extends Fragment {
@@ -41,14 +35,15 @@ public class ChattingFragment extends Fragment {
     private UserListAdapter userListAdapter;
     private ArrayList<User> userList;
     private FirebaseFirestore firebaseFirestore;
+    private DatabaseReference mDbRef;
     private FirebaseAuth mAuth;// 파이어베이스 유저관련 접속하기위한 변수
-
+    private User CurrentUser;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_chatting, container, false);
-
+        mDbRef = FirebaseDatabase.getInstance().getReference();
         firebaseFirestore = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
         userList = new ArrayList<User>();
@@ -58,19 +53,18 @@ public class ChattingFragment extends Fragment {
         userList = new ArrayList<>();
         userListAdapter = new UserListAdapter(getContext(), userList);
         recyclerView.setAdapter(userListAdapter);
-
         //Date date = userList.size() == 0 || clear ? new Date() : userList.get(userList.size() - 1).getCreatedAt();
         CollectionReference collectionReference = firebaseFirestore.collection("users");
         collectionReference.get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        User currentUser = null;
                         if (task.isSuccessful()) {
-                                userList.clear();
+                            userList.clear();
+
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                               //Log.d(TAG, document.getId() + " &&&&+&=> " + document.getData().get("userName").toString());
-                                User a= new User(
+                                //Log.d(TAG, document.getId() + " &&&&+&=> " + document.getData().get("userName").toString());
+                                User a = new User(
                                         Double.parseDouble(document.getData().get("userTemperature").toString()),
                                         document.getData().get("key").toString(),
                                         Double.parseDouble(document.getData().get("lat").toString()),
@@ -82,21 +76,24 @@ public class ChattingFragment extends Fragment {
                                         document.getData().get("deadlift").toString(),
                                         document.getData().get("squat").toString(),
                                         document.getData().get("locationName").toString()
-
                                 );
 //내 위트 테이블 collen주소에 이 키가 있는지 && 그콜랙션에 connect 플레그가 참인지 이거 검증끝내면 pass = true
-                                if(!a.getKey().equals( mAuth.getCurrentUser().getUid()))//&&pass == true
+                                if (!a.getKey().equals(mAuth.getCurrentUser().getUid()))//&&pass == true
                                     userList.add(a);
+                                else CurrentUser = a;
                             }
-                            userListAdapter.notifyDataSetChanged();
-                        } else {
-                           // Log.d(TAG, "Error getting documents: ", task.getException());
+                            for (int i = 0; i < userList.size(); i++) {
+                                String senderRoom = CurrentUser.getKey() + userList.get(i).getKey();
+                                if(null==mDbRef.child("chats").child(senderRoom).child("messages").get().getResult().getValue());
+
+                            }
+
+
                         }
 
                     }
                 });
-
-
+        userListAdapter.notifyDataSetChanged();
         return view;
     }
 
