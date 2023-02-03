@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,6 +29,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.appindexing.builders.StickerBuilder;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -37,6 +40,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import org.checkerframework.checker.units.qual.Temperature;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -56,7 +60,8 @@ public class ProfileActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private FirebaseAuth mAuth;
     private FirebaseFirestore firebaseFirestore;
-
+    private DatabaseReference mDbRef;
+    String time = "";
     Intent intent;
     @SuppressLint("SetTextI18n")
     @Override
@@ -64,6 +69,9 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         ProImg = findViewById(R.id.UserImg);
+        mAuth = FirebaseAuth.getInstance();// 파이어베이스의 auth기능의 접근 권한을 갖는변수
+        mDbRef = FirebaseDatabase.getInstance().getReference(); //Firebase에 데이터를 추가하거나 조회하기 위한 코드, 정의
+
         ThisProfileName = findViewById(R.id.UserName);
         LocationName = findViewById(R.id.MyLocation);
         ThisProfileTemperature = findViewById(R.id.MyTempreture);
@@ -101,7 +109,25 @@ public class ProfileActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //thisUser(눌린 유저)의 witt테이블에 doucument 제목으로 current유저(즉 바로나의 uid)저장
                 //witttable에 필드로 현재 시간,int connectFlag 0 저장
-
+                String message = "Witt!!";
+                if(!message.isEmpty()){
+                    time = getTime();
+                    Log.i(ContentValues.TAG,message);
+                    Message messageObject = new Message(message,mAuth.getCurrentUser().getUid(),ThisProfileUid,time);
+                    String senderRoom = mAuth.getCurrentUser().getUid() + ThisProfileUid;
+                    mDbRef.child("chats").child(senderRoom).child("messages").push()
+                            .setValue(messageObject).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+                                    String receiverRoom =  ThisProfileUid + mAuth.getCurrentUser().getUid();
+                                    //       Message messageObject = new Message(message,receiverUid ,senderUid);
+                                    mDbRef.child("chats").child(receiverRoom).child("messages").push()
+                                            .setValue(messageObject);
+                                }
+                            });
+                }
+                else
+                    return;
             }
         });
     }
@@ -193,6 +219,14 @@ public class ProfileActivity extends AppCompatActivity {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra("post",f);
         startActivity(intent);
+    }
+    private String getTime() {
+        long now = System.currentTimeMillis();
+        Date date = new Date(now);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yy/MM/dd HH:mm:ss");
+        String getTime = dateFormat.format(date);
+
+        return getTime;
     }
 
 }

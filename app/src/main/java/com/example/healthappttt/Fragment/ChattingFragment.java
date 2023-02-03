@@ -40,6 +40,8 @@ public class ChattingFragment extends Fragment {
     private DatabaseReference mDbRef;
     private FirebaseAuth mAuth;// 파이어베이스 유저관련 접속하기위한 변수
     private User CurrentUser;
+    ArrayList<User> TuserList;
+    private DataSnapshot dt;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -53,6 +55,7 @@ public class ChattingFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         userList = new ArrayList<>();
+        TuserList = new ArrayList<>();
         userListAdapter = new UserListAdapter(getContext(), userList);
         recyclerView.setAdapter(userListAdapter);
         //Date date = userList.size() == 0 || clear ? new Date() : userList.get(userList.size() - 1).getCreatedAt();
@@ -61,9 +64,9 @@ public class ChattingFragment extends Fragment {
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
                         if (task.isSuccessful()) {
                             userList.clear();
-
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 //Log.d(TAG, document.getId() + " &&&&+&=> " + document.getData().get("userName").toString());
                                 User a = new User(
@@ -85,29 +88,44 @@ public class ChattingFragment extends Fragment {
                                 else CurrentUser = a;
                             }
                         }
+
+
+                            mDbRef.child("chats").addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                    for(User u :userList) {
+                                        String Skey = CurrentUser.getKey() + u.getKey();
+                                        for (DataSnapshot d : dataSnapshot.getChildren()) {
+                                            Log.d("d키", d.getKey());
+                                            Log.d("skey", Skey);
+                                            if (d.getKey().equals(Skey)) {
+                                                TuserList.add(u);
+                                                Log.d("추가", u.getUserName());
+                                            }
+                                        }
+                                    }
+                                    userList.clear();
+                                    for(User q : TuserList) {
+                                        Log.d("최종tt 리스트", q.getUserName());
+                                        userList.add(q);
+                                    }
+
+                                    userListAdapter.notifyDataSetChanged();
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+                                    Log.d("bad", "c");
+                                }
+
+                            });
+
                     }
+
                 });
-        for (  index = 0; index < userList.size(); index++) {
-            String senderRoom = CurrentUser.getKey() + userList.get(index).getKey();
-            mDbRef.child("chats").child(senderRoom).child("messages").addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    Log.d("good", "v");
-                    if(null==dataSnapshot.getValue())
-                    {
-                        userList.remove(index);
-                        index = index -1;
-                    }
-                }
 
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                    Log.d("bad", "c");
-                }
-            });
 
-        }
-        userListAdapter.notifyDataSetChanged();
         return view;
     }
 

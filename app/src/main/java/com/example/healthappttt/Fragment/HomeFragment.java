@@ -224,8 +224,9 @@ public class HomeFragment extends Fragment {
                                         document.getData().get("squat").toString(),
                                         document.getData().get("locationName").toString()
                                         );
-                                userList.add(a);
-                                if(a.getKey() != mAuth.getCurrentUser().getUid()) currentUser = a;
+
+                                if(a.getKey().equals(mAuth.getCurrentUser().getUid())) currentUser = a;
+                                else userList.add(a);
                             }
                             //퀵정렬 편집해서 만드는건 가능한데 일단 보류 난이도가 높음.
                             //
