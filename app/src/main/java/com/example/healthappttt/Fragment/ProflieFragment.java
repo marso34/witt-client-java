@@ -1,18 +1,29 @@
 package com.example.healthappttt.Fragment;
 
-import android.content.Intent;
+import static android.content.ContentValues.TAG;
+
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
+import com.example.healthappttt.Data.User;
 import com.example.healthappttt.R;
-import com.example.healthappttt.Activity.SetExerciseActivity;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -20,6 +31,9 @@ import androidx.fragment.app.Fragment;
  * create an instance of this fragment.
  */
 public class ProflieFragment extends Fragment {
+    // 파이어스토어에 접근하기 위한 객체 생성
+    private ArrayList<User> userList;
+    private static FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -65,8 +79,32 @@ public class ProflieFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_proflie, container, false);
+
+        //CollectionReference -> 파이어스토어의 컬랙션 참조하는 객체
+        DocumentReference productRef = db.collection("users").document("FeXJyKuFvHM2crCAZRG3IgwKvG02");
+        //get()을 통해서 해당 컬랙션의 정보를 가져옴
+
+
+
+        //단일 문서의 내용 검색
+        productRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()){
+                    DocumentSnapshot document = task.getResult();
+                    if( document.exists()) { // 데이터가 존재할 경우
+                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+
+                    }else {
+                        Log.d(TAG, "No such document!");
+                    }
+                }else {
+                    Log.d(TAG, "get failed with",task.getException());
+                }
+            }
+        });
+
 
         return view;
     }
