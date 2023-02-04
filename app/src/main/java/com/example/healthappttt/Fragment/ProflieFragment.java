@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -39,7 +40,7 @@ public class ProflieFragment extends Fragment {
     private ArrayList<User> userList;
     private static FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth mAuth;// 파이어베이스 유저관련 접속하기위한 변수
-
+    private static int progress_percent;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -96,8 +97,9 @@ public class ProflieFragment extends Fragment {
         TextView bench = ProfileFrame.findViewById(R.id.benchpress);
         TextView deadlift = ProfileFrame.findViewById(R.id.deadlift);
         ImageView userImg = ProfileFrame.findViewById(R.id.UserImg);
-
+        ProgressBar mtprogresser = ProfileFrame.findViewById(R.id.MTProgresser);
         mAuth = FirebaseAuth.getInstance();
+
 
         //CollectionReference -> 파이어스토어의 컬랙션 참조하는 객체
         DocumentReference productRef = db.collection("users").document(mAuth.getCurrentUser().getUid());
@@ -112,17 +114,54 @@ public class ProflieFragment extends Fragment {
                     if( document.exists()) { // 데이터가 존재할 경우
                         Log.d(TAG, "DocumentSnapshot data: " + document.getData());
 
-                        mytempreture2.setText(document.getData().get("userTemperature").toString());
+                        mytempreture2.setText(document.getData().get("userTemperature").toString().concat("°C"));
                         username.setText(document.getData().get("userName").toString());
                         bench.setText(document.getData().get("bench").toString());
                         deadlift.setText(document.getData().get("deadlift").toString());
                         squat.setText(document.getData().get("squat").toString());
                         locationname.setText(document.getData().get("locationName").toString());
 
-                        Glide.with(getView()).load(document.getData().get("profileImg")).override(100,100).into(userImg);
+//                        mtprogresser.incrementProgressBy(Integer.parseInt(document.getData().get("userTemperature").toString()) );
 
 
-//                        userImg.setImageURI((Uri) document.getData().get("profileImg"));
+
+                        progress_percent = 0;
+
+                        new Thread(){
+                            public void run() {
+                                while (true) {
+                                    try {
+                                        while(!Thread.currentThread().isInterrupted()) {
+                                            progress_percent += 1;
+                                            Thread.sleep(5);
+                                            Log.d("test","progress_percent" + progress_percent);
+                                            mtprogresser.setProgress(progress_percent);
+
+                                            if(progress_percent >= Integer.parseInt(document.getData().get("userTemperature").toString())){
+                                                currentThread().interrupt();
+                                            }
+                                        }
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+                        }.start();
+
+
+
+
+
+
+
+
+
+
+
+
+
+                        // TODO 아직 미완성 단계
+                        Glide.with(getView()).load(document.getData().get("profileImg")).fitCenter().into(userImg);
 //                      document.getData().get("key").toString();
 //                      document.getData().get("GoodTime").toString();
 
