@@ -57,7 +57,19 @@
                     android:textSize="12sp"
                     android:textStyle="normal" />
 
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+
+                <Button
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/ic_baseline_edit_24" />
+
             </LinearLayout>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -118,7 +130,7 @@
                     android:fontFamily="@font/spoqa_han_sans_neo"
                     android:letterSpacing="-0.06"
                     android:lineSpacingExtra="3sp"
-                    android:text="위트온도"
+                    android:text="위트거리"
                     android:textColor="#111111"
                     android:textSize="12sp"
                     android:textStyle="bold" />
@@ -330,7 +342,7 @@
                         android:fontFamily="@font/spoqa_han_sans_neo"
                         android:letterSpacing="0.03"
                         android:lineSpacingExtra="5sp"
-                        android:text="120"
+                        android:text=""
                         android:textAlignment="center"
                         android:textColor="#ffffff"
                         android:textSize="13sp"
@@ -371,7 +383,7 @@
                         android:fontFamily="@font/spoqa_han_sans_neo"
                         android:letterSpacing="0.03"
                         android:lineSpacingExtra="5sp"
-                        android:text="100"
+                        android:text=""
                         android:textAlignment="center"
                         android:textColor="#ffffff"
                         android:textSize="13sp"
@@ -410,7 +422,7 @@
                         android:fontFamily="@font/spoqa_han_sans_neo"
                         android:letterSpacing="0.03"
                         android:lineSpacingExtra="5sp"
-                        android:text="100"
+                        android:text=""
                         android:textAlignment="center"
                         android:textColor="#ffffff"
                         android:textSize="13sp"

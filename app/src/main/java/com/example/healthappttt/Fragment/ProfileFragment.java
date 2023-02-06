@@ -128,7 +128,7 @@ public class ProfileFragment extends Fragment {
                     if( document.exists()) { // 데이터가 존재할 경우
 //                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
 
-                        mytempreture2.setText(document.getData().get("userTemperature").toString().concat("°C"));
+                        mytempreture2.setText(document.getData().get("userTemperature").toString().concat("km"));
                         username.setText(document.getData().get("userName").toString());
                         bench.setText(document.getData().get("bench").toString());
                         deadlift.setText(document.getData().get("deadlift").toString());
@@ -145,7 +145,7 @@ public class ProfileFragment extends Fragment {
 
 
                         progress_percent = 0;
-
+                        String dcutempre =document.getData().get("userTemperature").toString();
                         new Thread(){
                             public void run() {
                                 while (true) {
@@ -156,7 +156,7 @@ public class ProfileFragment extends Fragment {
                                             Log.d("test","progress_percent" + progress_percent);
                                             mtprogresser.setProgress(progress_percent);
                                             // TODO 유저온도가 소수일 경우도 처리 가능해야함
-                                            if(progress_percent >= Integer.parseInt(document.getData().get("userTemperature").toString())){
+                                            if(progress_percent >= Double.parseDouble(dcutempre)){
                                                 currentThread().interrupt();
                                             }
                                         }
@@ -184,7 +184,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onComplete(@NonNull Task<Uri> task) {
                 if(task.isSuccessful()){
-                    Glide.with(getView()).load(task.getResult()).into(userImg);
+                    Glide.with(getView()).load(task.getResult()).circleCrop().into(userImg);
                 }else {
                     // URL을 가져오지 못하면 토스트 메세지
                     Toast.makeText(getContext(),"이미지를 불러오지 못했습니다.", Toast.LENGTH_SHORT).show();
