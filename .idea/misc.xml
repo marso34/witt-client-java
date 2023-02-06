@@ -10,10 +10,16 @@
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/drawable/custom_progressbar.xml" value="0.167" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/drawable/ic_baseline_forum_24.xml" value="0.167" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/drawable/ic_launcher_background.xml" value="0.248" />
+        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/drawable/rectangle.xml" value="0.207" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/drawable/round_button.xml" value="0.248" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/drawable/round_button_blue.xml" value="0.248" />
+        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/drawable/round_button_gray.xml" value="0.24" />
+        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/drawable/round_button_green.xml" value="0.24" />
+        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/drawable/round_button_red.xml" value="0.24" />
+        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/drawable/round_button_weekred.xml" value="0.24" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/drawable/round_button_white.xml" value="0.248" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/drawable/rounded_dialog.xml" value="0.1855" />
+        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_alarm.xml" value="0.24583333333333332" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_calender.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_calender_sub.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_chat.xml" value="0.13802083333333334" />
@@ -34,18 +40,23 @@
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_profile.xml" value="0.264" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_set_exercise.xml" value="0.20478837109876016" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_signup.xml" value="0.4" />
+        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/adapter_alram.xml" value="0.536" />
+        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/adapter_area.xml" value="0.536" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/adapter_create_exercize.xml" value="0.6" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/adapter_exercise.xml" value="0.20478837109876016" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/adapter_exercise_list.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/adapter_exercize.xml" value="0.264" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/adapter_name_exercize.xml" value="0.24947916666666667" />
-        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/adapter_user.xml" value="0.4919614147909968" />
+        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/adapter_set_exercise.xml" value="0.23385416666666667" />
+        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/adapter_user.xml" value="0.264" />
+        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/fragment_alram.xml" value="0.24583333333333332" />
+        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/fragment_alram_list.xml" value="0.24583333333333332" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/fragment_bottom.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/fragment_chatting.xml" value="0.2296875" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/fragment_home.xml" value="0.264" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/fragment_proflie.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/fragment_routine.xml" value="0.1578125" />
-        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/sent.xml" value="0.1" />
+        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/sent.xml" value="0.4" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/toolbar.xml" value="0.20478837109876016" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/user_layout.xml" value="0.4" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/view_loader.xml" value="0.1" />
@@ -55,13 +66,8 @@
         <entry key="..\:/Users/Thought/{mine}/code/Android Studio/HealthAppTTT/app/src/main/res/drawable/blue_border_layout.xml" value="0.1" />
         <entry key="..\:/Users/Thought/{mine}/code/Android Studio/HealthAppTTT/app/src/main/res/drawable/border_layout.xml" value="0.1125" />
         <entry key="..\:/Users/Thought/{mine}/code/Android Studio/HealthAppTTT/app/src/main/res/drawable/ic_launcher_background.xml" value="0.139" />
-        <entry key="..\:/Users/Thought/{mine}/code/Android Studio/HealthAppTTT/app/src/main/res/drawable/layoutstroke.xml" value="0.185" />
-        <entry key="..\:/Users/Thought/{mine}/code/Android Studio/HealthAppTTT/app/src/main/res/drawable/progressbar_exercise1.xml" value="0.185" />
         <entry key="..\:/Users/Thought/{mine}/code/Android Studio/HealthAppTTT/app/src/main/res/layout/ExercizeAdapter.xml" value="0.5" />
         <entry key="..\:/Users/Thought/{mine}/code/Android Studio/HealthAppTTT/app/src/main/res/layout/activity_calender_sub.xml" value="0.2159042325780248" />
-        <entry key="..\:/Users/Thought/{mine}/code/Android Studio/HealthAppTTT/app/src/main/res/layout/activity_chat.xml" value="0.2159042325780248" />
-        <entry key="..\:/Users/Thought/{mine}/code/Android Studio/HealthAppTTT/app/src/main/res/layout/activity_exercise_record.xml" value="0.3333333333333333" />
-        <entry key="..\:/Users/Thought/{mine}/code/Android Studio/HealthAppTTT/app/src/main/res/layout/activity_exercise_result.xml" value="0.22" />
         <entry key="..\:/Users/Thought/{mine}/code/Android Studio/HealthAppTTT/app/src/main/res/layout/activity_exercize_record.xml" value="0.4466666666666667" />
         <entry key="..\:/Users/Thought/{mine}/code/Android Studio/HealthAppTTT/app/src/main/res/layout/activity_exercize_result.xml" value="0.4466666666666667" />
         <entry key="..\:/Users/Thought/{mine}/code/Android Studio/HealthAppTTT/app/src/main/res/layout/activity_join.xml" value="0.20307823856348867" />
@@ -70,12 +76,6 @@
         <entry key="..\:/Users/Thought/{mine}/code/Android Studio/HealthAppTTT/app/src/main/res/layout/activity_signup.xml" value="0.1" />
         <entry key="..\:/Users/Thought/{mine}/code/Android Studio/HealthAppTTT/app/src/main/res/layout/activity_start_join.xml" value="0.2159042325780248" />
         <entry key="..\:/Users/Thought/{mine}/code/Android Studio/HealthAppTTT/app/src/main/res/layout/adapter_exercize.xml" value="0.3333333333333333" />
-        <entry key="..\:/Users/Thought/{mine}/code/Android Studio/HealthAppTTT/app/src/main/res/layout/adapter_set_exercise.xml" value="0.2159042325780248" />
-        <entry key="..\:/Users/Thought/{mine}/code/Android Studio/HealthAppTTT/app/src/main/res/layout/adapter_user.xml" value="0.1441523118766999" />
-        <entry key="..\:/Users/Thought/{mine}/code/Android Studio/HealthAppTTT/app/src/main/res/layout/fragment_chatting.xml" value="0.1441523118766999" />
-        <entry key="..\:/Users/Thought/{mine}/code/Android Studio/HealthAppTTT/app/src/main/res/layout/fragment_routine.xml" value="0.3333333333333333" />
-        <entry key="..\:/Users/Thought/{mine}/code/Android Studio/HealthAppTTT/app/src/main/res/layout/receive.xml" value="0.4466666666666667" />
-        <entry key="..\:/Users/Thought/{mine}/code/Android Studio/HealthAppTTT/app/src/main/res/layout/sent.xml" value="0.2159042325780248" />
         <entry key="..\:/Users/Thought/{mine}/code/Android Studio/HealthAppTTT/app/src/main/res/layout/sub_rutin.xml" value="0.22" />
         <entry key="..\:/chatapp222/witt-client-java/app/src/main/res/drawable-v24/ic_baseline_android_24.xml" value="0.1" />
         <entry key="..\:/chatapp222/witt-client-java/app/src/main/res/drawable-v24/ic_baseline_calendar_month_24.xml" value="0.205" />
@@ -86,7 +86,6 @@
         <entry key="..\:/chatapp222/witt-client-java/app/src/main/res/drawable/ic_launcher_background.xml" value="0.205" />
         <entry key="..\:/chatapp222/witt-client-java/app/src/main/res/drawable/rounded_dialog.xml" value="0.1945" />
         <entry key="..\:/chatapp222/witt-client-java/app/src/main/res/layout/activity_calender.xml" value="0.2125" />
-        <entry key="..\:/chatapp222/witt-client-java/app/src/main/res/layout/activity_chat.xml" value="0.17603850050658562" />
         <entry key="..\:/chatapp222/witt-client-java/app/src/main/res/layout/activity_exercize_record.xml" value="0.36614583333333334" />
         <entry key="..\:/chatapp222/witt-client-java/app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="..\:/chatapp222/witt-client-java/app/src/main/res/layout/activity_signup.xml" value="0.140625" />

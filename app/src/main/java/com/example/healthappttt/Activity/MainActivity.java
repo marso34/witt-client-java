@@ -137,6 +137,10 @@ public class MainActivity extends AppCompatActivity {
                     binding.viewName.setText("프로필");
                     replaceFragment(new ProflieFragment());
                     break;
+//                case R.id.alarm:
+//                    binding.viewName.setText("알림");
+//                    replaceFragment(new ProflieFragment());
+//                    break;
             }
             return true;
         });

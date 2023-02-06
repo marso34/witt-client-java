@@ -225,14 +225,14 @@ public class HomeFragment extends Fragment {
                                         document.getData().get("locationName").toString()
                                         );
 
-                                if(a.getKey().equals(mAuth.getCurrentUser().getUid())) currentUser = a;
+                                if(a.getKey_().equals(mAuth.getCurrentUser().getUid())) currentUser = a;
                                 else userList.add(a);
                             }
                             //퀵정렬 편집해서 만드는건 가능한데 일단 보류 난이도가 높음.
                             //
                             ArrayList<Double> distans = new ArrayList<Double>();
                             for(int i=0;i<userList.size();++i){
-                                if(userList.get(i).getKey() == currentUser.getKey()) {
+                                if(userList.get(i).getKey_() == currentUser.getKey_()) {
                                     distans.add(0.0);
                                     userList.get(i).setDistance(0.0);
                                 }

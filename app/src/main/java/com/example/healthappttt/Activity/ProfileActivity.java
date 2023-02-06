@@ -88,7 +88,7 @@ public class ProfileActivity extends AppCompatActivity {
         firebaseFirestore = FirebaseFirestore.getInstance();
         User U = (User) getIntent().getSerializableExtra("User");//포스트인포 객체 만들어서 할당.;
         File f =  (File) getIntent().getSerializableExtra("post");
-        ThisProfileUid = U.getKey();
+        ThisProfileUid = U.getKey_();
         ThisProfileName.setText(U.getUserName());
         LocationName.setText(U.getLocationName());
         Integer A = U.getUserTemperature().intValue();
@@ -130,6 +130,8 @@ public class ProfileActivity extends AppCompatActivity {
                                             .setValue(messageObject);
                                 }
                             });
+                    myStartActivity(ChatActivity.class,U);
+
                 }
                 else
                     return;
@@ -235,5 +237,11 @@ public class ProfileActivity extends AppCompatActivity {
 
         return getTime;
     }
-
+    private void myStartActivity(Class c,User u) {// loginactivity페이지에서 mainactivity페이지로 넘기는 코드
+        Intent intent = new Intent(this, c);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra("userId",u.getKey_());
+        intent.putExtra("username",u.getUserName());
+        startActivity(intent);
+    }
 }

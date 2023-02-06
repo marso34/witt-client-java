@@ -79,7 +79,7 @@ import java.util.Map;
         public Double getUserTemperature(){
             return this.UserTemperature;
         }
-        public String getKey(){
+        public String getKey_(){
             return this.Key;
         }
         public String getLocationName(){return this.LocationName;}

@@ -39,7 +39,7 @@
                     android:fontFamily="@font/spoqa_han_sans_neo"
                     android:letterSpacing="-0.06"
                     android:lineSpacingExtra="5sp"
-                    android:text="김건우"
+                    android:text=""
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
@@ -84,7 +84,7 @@
                     android:fontFamily="@font/spoqa_han_sans_neo"
                     android:letterSpacing="-0.06"
                     android:lineSpacingExtra="4sp"
-                    android:text="부안군 부안읍"
+                    android:text=""
                     android:textColor="#111111"
                     android:textSize="14sp"
                     android:textStyle="normal" />

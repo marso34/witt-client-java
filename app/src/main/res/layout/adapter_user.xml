@@ -51,20 +51,16 @@
                 android:textStyle="bold"
                 >
             </TextView>
-        <TextView
-            android:id="@+id/EArea"
-            android:textAlignment="center"
-            android:gravity="center"
-            android:layout_width="45dp"
-            android:layout_height="22dp"
-            android:layout_marginTop="11dp"
-            android:textColor="@color/white"
-            android:text="가슴"
-            android:textSize="9dp"
-            android:background="@drawable/round_button_blue"
-            >
 
-        </TextView>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="11dp"
+                tools:listitem="@layout/adapter_area"
+                >
+            </androidx.recyclerview.widget.RecyclerView>
         </LinearLayout>
 
     </LinearLayout>

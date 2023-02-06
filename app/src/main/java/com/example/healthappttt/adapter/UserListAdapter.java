@@ -17,6 +17,8 @@ import com.example.healthappttt.Activity.ChatActivity;
 import com.example.healthappttt.Data.Message;
 import com.example.healthappttt.Data.User;
 import com.example.healthappttt.R;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -24,7 +26,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -34,13 +41,14 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class UserListAdapter  extends RecyclerView.Adapter<UserListAdapter.MainViewHolder>{
 
+    private FirebaseStorage storage;
     private Context mContext;
     private ArrayList<User> userlist;
     FirebaseUser fuser;
     String theLastMessage ="";
     String messageTime ="";
     Integer num = 0;
-
+    private CircleImageView photoImageVIew;
 
     public UserListAdapter(Context context, ArrayList<User> userList ){
         this.mContext = context;
@@ -57,28 +65,54 @@ public class UserListAdapter  extends RecyclerView.Adapter<UserListAdapter.MainV
     @Override
     public void onBindViewHolder(@NonNull UserListAdapter.MainViewHolder holder, int position) {
         final User user = userlist.get(position);
+        storage = FirebaseStorage.getInstance();
+
         fuser = FirebaseAuth.getInstance().getCurrentUser();
+        holder.photoImageVIew = holder.itemView.findViewById(R.id.img_rv_photo);
 
         holder.username.setText(user.getUserName());
-        holder.location.setText(user.getLocationName());
 
-
-        if (user.getProfileImg() != null){
+//        if (user.getProfileImg() != null){
 //            Glide.with(mContext).load(user.getProfileImg()).into(holder.photoImageVIew);
 //        } else {
-            holder.photoImageVIew.setImageResource(R.drawable.profile);
-        }
+//            hold.photoImageVIew.setImageResource(R.drawable.profile);
+//        }
 
-        lastMessage(user.getKey(), holder.last_msg, holder.time_msg);
+        lastMessage(user.getKey_(), holder.last_msg, holder.time_msg);
 
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(mContext, ChatActivity.class);
-                intent.putExtra("userId",user.getKey());
+                intent.putExtra("userId",user.getKey_());
                 intent.putExtra("username",user.getUserName());
                 mContext.startActivity(intent);
+            }
+        });
+
+        String fileName = user.getKey_();
+
+        File profilefile = null;
+
+        try {
+            profilefile = File.createTempFile("images","jpeg");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        StorageReference sref  = storage.getReference().child("article/photo").child(fileName);
+        File finalProfilefile = profilefile;
+        sref.getFile(profilefile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                // Local temp file has been created
+                Glide.with(mContext).load(finalProfilefile).into(holder.photoImageVIew);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle any errors
             }
         });
     }
@@ -101,7 +135,6 @@ public class UserListAdapter  extends RecyclerView.Adapter<UserListAdapter.MainV
 
             username = itemView.findViewById(R.id.txt_name);
             photoImageVIew = itemView.findViewById(R.id.img_rv_photo);
-            location = itemView.findViewById(R.id.location);
             last_msg = itemView.findViewById(R.id.last_msg);
             time_msg = itemView.findViewById(R.id.messagetime);
 
@@ -133,7 +166,6 @@ public class UserListAdapter  extends RecyclerView.Adapter<UserListAdapter.MainV
                         }
                     }
                 }
-
                 switch (theLastMessage){
                     case  "default":
                         last_msg.setText(" ");

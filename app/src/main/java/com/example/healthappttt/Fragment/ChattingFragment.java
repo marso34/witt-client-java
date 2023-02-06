@@ -83,9 +83,10 @@ public class ChattingFragment extends Fragment {
                                         document.getData().get("locationName").toString()
                                 );
 //내 위트 테이블 collen주소에 이 키가 있는지 && 그콜랙션에 connect 플레그가 참인지 이거 검증끝내면 pass = true
-                                if (!a.getKey().equals(mAuth.getCurrentUser().getUid()))//&&pass == true
+                                if (a.getKey_().equals(mAuth.getCurrentUser().getUid()))//&&pass == true
+                                    CurrentUser = a;
+                                else
                                     userList.add(a);
-                                else CurrentUser = a;
                             }
                         }
 
@@ -95,7 +96,7 @@ public class ChattingFragment extends Fragment {
                                 public void onDataChange(DataSnapshot dataSnapshot) {
 
                                     for(User u :userList) {
-                                        String Skey = CurrentUser.getKey() + u.getKey();
+                                        String Skey = CurrentUser.getKey_() + u.getKey_();
                                         for (DataSnapshot d : dataSnapshot.getChildren()) {
                                             Log.d("d키", d.getKey());
                                             Log.d("skey", Skey);
@@ -112,6 +113,8 @@ public class ChattingFragment extends Fragment {
                                     }
                                     TuserList.clear();
                                     userListAdapter.notifyDataSetChanged();
+
+
                                 }
 
                                 @Override

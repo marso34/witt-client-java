@@ -119,7 +119,7 @@ public class ProflieFragment extends Fragment {
                         squat.setText(document.getData().get("squat").toString());
                         locationname.setText(document.getData().get("locationName").toString());
 
-                        Glide.with(getView()).load(document.getData().get("profileImg")).override(100,100).into(userImg);
+                       // Glide.with(getView()).load(document.getData().get("profileImg")).override(100,100).into(userImg);
 
 
 //                        userImg.setImageURI((Uri) document.getData().get("profileImg"));

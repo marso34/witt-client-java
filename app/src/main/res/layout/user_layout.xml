@@ -11,37 +11,37 @@
             android:id="@+id/state"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/state"
-            tools:ignore="UseAppTint"
             android:layout_centerVertical="true"
-            android:tint="@color/white"/>
+            android:src="@drawable/state"
+            android:tint="@color/white"
+            tools:ignore="UseAppTint" />
 
         <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/img_rv_photo"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:id="@+id/img_rv_photo"
             android:layout_marginLeft="5dp"
-            android:layout_toEndOf="@+id/state"
-            android:src="@drawable/profile"/>
+            android:layout_toEndOf="@+id/state" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="username"
             android:id="@+id/txt_name"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:layout_toRightOf="@id/img_rv_photo"
-            android:layout_toEndOf="@id/img_rv_photo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:textSize="20sp"/>
+            android:layout_toEndOf="@id/img_rv_photo"
+            android:layout_toRightOf="@id/img_rv_photo"
+            android:text="username"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+
 
 
         <TextView
-            android:id="@+id/location"
+            android:id="@+id/messagetime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="위치"
             android:gravity="center"
             android:textColor="#363866"
             android:layout_toRightOf="@+id/txt_name"
@@ -50,26 +50,16 @@
             android:textSize="13sp" />
 
         <TextView
-            android:id="@+id/messagetime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:textColor="#363866"
-            android:layout_toRightOf="@+id/location"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="5dp"
-            android:textSize="13sp" />
-
-        <TextView
+            android:id="@+id/last_msg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/txt_name"
-            android:layout_toRightOf="@id/img_rv_photo"
-            android:paddingTop="5dp"
-            android:id="@+id/last_msg"
-            android:textColor="@color/black"
             android:layout_marginLeft="15dp"
-            android:maxLines="1"/>
+            android:layout_toRightOf="@id/img_rv_photo"
+            android:maxLines="1"
+            android:paddingTop="5dp"
+            android:textColor="@color/black" />
+
 
         <ImageView
             android:layout_width="wrap_content"
@@ -78,6 +68,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true">
         </ImageView>
+
 
         </RelativeLayout>
 
