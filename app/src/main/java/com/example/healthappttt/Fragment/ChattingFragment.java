@@ -71,7 +71,7 @@ public class ChattingFragment extends Fragment {
                                 //Log.d(TAG, document.getId() + " &&&&+&=> " + document.getData().get("userName").toString());
                                 User a = new User(
                                         Double.parseDouble(document.getData().get("userTemperature").toString()),
-                                        document.getData().get("key").toString(),
+                                        document.getData().get("key_").toString(),
                                         Double.parseDouble(document.getData().get("lat").toString()),
                                         Double.parseDouble(document.getData().get("lon").toString()),
                                         document.getData().get("GoodTime").toString(),

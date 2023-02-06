@@ -108,12 +108,12 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
         ExerciseArea.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
         User userInfo = mDataset.get(position);
         getCurrentWeek();
-
             db.collection("routines").document(userInfo.getKey_() +"_" + dayOfWeek).get().
             addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                     if (task.isSuccessful()) {
+                        ExerciseNames.clear();
                         DocumentSnapshot document = task.getResult();
                         Integer exerciseCat = Integer.parseInt(document.get("exerciseCategories").toString());
                         if (document.exists()) {
@@ -154,6 +154,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
                         Log.d(TAG, "Failed with: ", task.getException());
                     }
                     Adapter.notifyDataSetChanged();
+
                 }
             });
 

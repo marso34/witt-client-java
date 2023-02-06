@@ -138,7 +138,7 @@ public class ProfileActivity extends AppCompatActivity {
 
 //                      Glide.with(getView()).load(document.getData().get("profileImg")).fitCenter().into(userImg);
 
-//                      document.getData().get("key").toString();
+//                      document.getData().get().toString();
 //                      document.getData().get("GoodTime").toString();
 
 

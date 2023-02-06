@@ -16,7 +16,7 @@ import java.util.Map;
         private String Deadlift = "";
         private String Squat = "";
         private String LocationName = "";
-        private String Key ="";
+        private String Key_ ="";
         private Double Lat = 0.0;
         private Double Lon = 0.0;
         private Double Distance = 0.0;
@@ -43,7 +43,7 @@ import java.util.Map;
             this.Deadlift = Deadlift;
             this.Squat = Squat;
             this.LocationName = LCN;
-            this.Key =  UID;// 유저생성할 때 이키로 유저만들것.
+            this.Key_ =  UID;// 유저생성할 때 이키로 유저만들것.
             this.Lat = 0.0;
             this.Lon = 0.0;
             GoodTime = "0";
@@ -57,7 +57,7 @@ import java.util.Map;
             this.Deadlift = Deadlift;
             this.Squat = Squat;
             this.LocationName = LCN;
-            this.Key = ReviewTableKey_;// 유저생성할 때 이키로 유저만들것.
+            this.Key_ = ReviewTableKey_;// 유저생성할 때 이키로 유저만들것.
             this.Lat = lat;
             this.Lon = lon;
             GoodTime = Good;
@@ -80,7 +80,7 @@ import java.util.Map;
             return this.UserTemperature;
         }
         public String getKey_(){
-            return this.Key;
+            return this.Key_;
         }
         public String getLocationName(){return this.LocationName;}
         public Double getLat(){
