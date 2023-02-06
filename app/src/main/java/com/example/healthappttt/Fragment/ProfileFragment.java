@@ -2,6 +2,8 @@ package com.example.healthappttt.Fragment;
 
 import static android.content.ContentValues.TAG;
 
+import android.app.Activity;
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,36 +12,47 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.GlideContext;
+import com.example.healthappttt.Activity.MainActivity;
 import com.example.healthappttt.Data.User;
 import com.example.healthappttt.R;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import java.util.ArrayList;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link ProflieFragment#newInstance} factory method to
+ * Use the {@link ProfileFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ProflieFragment extends Fragment {
+public class ProfileFragment extends Fragment {
     // 파이어스토어에 접근하기 위한 객체 생성
-    private ArrayList<User> userList;
-    private static FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private static final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth mAuth;// 파이어베이스 유저관련 접속하기위한 변수
-
+    private FirebaseStorage storage;
+    private StorageReference sref;
+    private static int progress_percent;
+//    private User mDataset;
+//    private Context mContext;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -50,7 +63,9 @@ public class ProflieFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public ProflieFragment() {
+
+
+    public ProfileFragment() {
         // Required empty public constructor
     }
 
@@ -60,11 +75,11 @@ public class ProflieFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment ProflieFragment.
+     * @return A new instance of fragment ProfileFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ProflieFragment newInstance(String param1, String param2) {
-        ProflieFragment fragment = new ProflieFragment();
+    public static ProfileFragment newInstance(String param1, String param2) {
+        ProfileFragment fragment = new ProfileFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -96,8 +111,9 @@ public class ProflieFragment extends Fragment {
         TextView bench = ProfileFrame.findViewById(R.id.benchpress);
         TextView deadlift = ProfileFrame.findViewById(R.id.deadlift);
         ImageView userImg = ProfileFrame.findViewById(R.id.UserImg);
-
+        ProgressBar mtprogresser = ProfileFrame.findViewById(R.id.MTProgresser);
         mAuth = FirebaseAuth.getInstance();
+
 
         //CollectionReference -> 파이어스토어의 컬랙션 참조하는 객체
         DocumentReference productRef = db.collection("users").document(mAuth.getCurrentUser().getUid());
@@ -110,21 +126,46 @@ public class ProflieFragment extends Fragment {
                 if (task.isSuccessful()){
                     DocumentSnapshot document = task.getResult();
                     if( document.exists()) { // 데이터가 존재할 경우
-                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+//                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
 
-                        mytempreture2.setText(document.getData().get("userTemperature").toString());
+                        mytempreture2.setText(document.getData().get("userTemperature").toString().concat("km"));
                         username.setText(document.getData().get("userName").toString());
                         bench.setText(document.getData().get("bench").toString());
                         deadlift.setText(document.getData().get("deadlift").toString());
                         squat.setText(document.getData().get("squat").toString());
                         locationname.setText(document.getData().get("locationName").toString());
 
-                       // Glide.with(getView()).load(document.getData().get("profileImg")).override(100,100).into(userImg);
+//                      TODO 아직 미완성 단계
 
+//                      Glide.with(getView()).load(document.getData().get("profileImg")).fitCenter().into(userImg);
 
-//                        userImg.setImageURI((Uri) document.getData().get("profileImg"));
 //                      document.getData().get("key").toString();
 //                      document.getData().get("GoodTime").toString();
+
+
+                        progress_percent = 0;
+                        String dcutempre =document.getData().get("userTemperature").toString();
+                        new Thread(){
+                            public void run() {
+                                while (true) {
+                                    try {
+                                        while(!Thread.currentThread().isInterrupted()) {
+                                            progress_percent += 1;
+                                            Thread.sleep(5);
+                                            Log.d("test","progress_percent" + progress_percent);
+                                            mtprogresser.setProgress(progress_percent);
+                                            // TODO 유저온도가 소수일 경우도 처리 가능해야함
+                                            if(progress_percent >= Double.parseDouble(dcutempre)){
+                                                currentThread().interrupt();
+                                            }
+                                        }
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+                        }.start();
+
 
                     }else {
                         Log.d(TAG, "No such document!");
@@ -134,6 +175,26 @@ public class ProflieFragment extends Fragment {
                 }
             }
         });
+
+        String FileName = mAuth.getCurrentUser().getUid();
+
+        sref = FirebaseStorage.getInstance().getReference().child("article/photo").child(FileName);
+        sref.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+            @Override
+            public void onComplete(@NonNull Task<Uri> task) {
+                if(task.isSuccessful()){
+                    Glide.with(getView()).load(task.getResult()).circleCrop().into(userImg);
+                }else {
+                    // URL을 가져오지 못하면 토스트 메세지
+                    Toast.makeText(getContext(),"이미지를 불러오지 못했습니다.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+
+
+
+
 
 
         return view;

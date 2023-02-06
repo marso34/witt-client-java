@@ -21,26 +21,18 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.example.healthappttt.Data.User;
 import com.example.healthappttt.Fragment.HomeFragment;
-import com.example.healthappttt.Fragment.ProflieFragment;
+import com.example.healthappttt.Fragment.ProfileFragment;
 import com.example.healthappttt.Fragment.ChattingFragment;
 import com.example.healthappttt.Fragment.RoutineFragment;
 import com.example.healthappttt.R;
 import com.example.healthappttt.databinding.ActivityMainBinding;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-
-import org.checkerframework.checker.units.qual.C;
 
 public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
@@ -135,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case R.id.profile:
                     binding.viewName.setText("프로필");
-                    replaceFragment(new ProflieFragment());
+                    replaceFragment(new ProfileFragment());
                     break;
 //                case R.id.alarm:
 //                    binding.viewName.setText("알림");

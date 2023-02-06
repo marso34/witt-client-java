@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragment.ProflieFragment"
+    tools:context=".Fragment.ProfileFragment"
     android:id="@+id/ProfileFrame">
 
     <ScrollView
@@ -57,7 +57,19 @@
                     android:textSize="12sp"
                     android:textStyle="normal" />
 
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+
+                <Button
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/ic_baseline_edit_24" />
+
             </LinearLayout>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -114,14 +126,14 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:fontFamily="@font/spoqa_han_sans_neo"
                     android:letterSpacing="-0.06"
                     android:lineSpacingExtra="3sp"
-                    android:text="위트온도"
+                    android:text="위트거리"
                     android:textColor="#111111"
                     android:textSize="12sp"
-                    android:textStyle="bold"
-                    android:layout_gravity="center"/>
+                    android:textStyle="bold" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -142,7 +154,7 @@
                 android:fontFamily="@font/spoqa_han_sans_neo"
                 android:letterSpacing="-0.06"
                 android:lineSpacingExtra="5sp"
-                android:text="41.4°C"
+                android:text=""
                 android:textColor="#111111"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -155,7 +167,7 @@
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="4dp"
                 android:max="100"
-                android:progress="41"
+                android:progress="0"
                 android:progressDrawable="@drawable/progressbar_exercise1"
                 android:secondaryProgress="36" />
 
@@ -310,7 +322,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:layout_width="26dp"
+                        android:layout_width="44dp"
                         android:layout_height="13dp"
                         android:layout_marginHorizontal="27dp"
                         android:layout_marginTop="23dp"
@@ -330,11 +342,11 @@
                         android:fontFamily="@font/spoqa_han_sans_neo"
                         android:letterSpacing="0.03"
                         android:lineSpacingExtra="5sp"
-                        android:text="120"
+                        android:text=""
+                        android:textAlignment="center"
                         android:textColor="#ffffff"
                         android:textSize="13sp"
-                        android:textStyle="bold"
-                        android:textAlignment="center"/>
+                        android:textStyle="bold" />
 
                 </LinearLayout>
 
@@ -371,11 +383,11 @@
                         android:fontFamily="@font/spoqa_han_sans_neo"
                         android:letterSpacing="0.03"
                         android:lineSpacingExtra="5sp"
-                        android:text="100"
+                        android:text=""
+                        android:textAlignment="center"
                         android:textColor="#ffffff"
                         android:textSize="13sp"
-                        android:textStyle="bold"
-                        android:textAlignment="center"/>
+                        android:textStyle="bold" />
 
                 </LinearLayout>
 
@@ -410,11 +422,11 @@
                         android:fontFamily="@font/spoqa_han_sans_neo"
                         android:letterSpacing="0.03"
                         android:lineSpacingExtra="5sp"
-                        android:text="100"
+                        android:text=""
+                        android:textAlignment="center"
                         android:textColor="#ffffff"
                         android:textSize="13sp"
-                        android:textStyle="bold"
-                        android:textAlignment="center"/>
+                        android:textStyle="bold" />
 
                 </LinearLayout>
 
