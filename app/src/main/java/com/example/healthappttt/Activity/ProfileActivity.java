@@ -114,7 +114,7 @@ public class ProfileActivity extends AppCompatActivity {
 
 
         //CollectionReference -> 파이어스토어의 컬랙션 참조하는 객체
-        DocumentReference productRef = firebaseFirestore.collection("users").document(mAuth.getCurrentUser().getUid());
+        DocumentReference productRef = firebaseFirestore.collection("users").document(U.getKey_());
         //get()을 통해서 해당 컬랙션의 정보를 가져옴
 
         //단일 문서의 내용 검색
