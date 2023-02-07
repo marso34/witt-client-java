@@ -2,6 +2,7 @@ package com.example.healthappttt.Fragment;
 
 import static android.content.ContentValues.TAG;
 
+import android.annotation.SuppressLint;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.graphics.Color;
@@ -151,25 +152,41 @@ public class RoutineFragment extends Fragment {
             btn.setOnClickListener(v -> clickBtn(v)); // 요일 버튼
         }
 
-//        StartTime.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), android.R.style.Theme_Holo_Light_Dialog_NoActionBar, new TimePickerDialog.OnTimeSetListener() {
-//                    @Override
-//                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-//
-//                    }
-//                }, 15, 24, true);
-//
-//            }
-//        });
-//
-//        EndTime.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//            }
-//        });
+        StartTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), android.R.style.Theme_Holo_Light_Dialog_NoActionBar, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        @SuppressLint("DefaultLocale") String result = String.format("%02d:%02d", hourOfDay, minute);
+
+                        StartTime.setText(result);
+                        routine.setStartTime(result);
+                        saveRoutine();
+                    }
+                }, 00, 00, true);
+                timePickerDialog.setTitle("시작 시간");
+                timePickerDialog.show();
+            }
+        });
+
+        EndTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), android.R.style.Theme_Holo_Light_Dialog_NoActionBar, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        @SuppressLint("DefaultLocale") String result = String.format("%02d:%02d", hourOfDay, minute);
+
+                        EndTime.setText(result);
+                        routine.setEndTime(result);
+                        saveRoutine();
+                    }
+                }, 00, 00, true);
+                timePickerDialog.setTitle("종료 시간");
+                timePickerDialog.show();
+            }
+        });
 
         addCard.setOnClickListener(v -> {
 //            exerciseListFragment.ExerciseCat(exerciseCat); // 운동 부위 전달

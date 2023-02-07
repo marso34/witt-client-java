@@ -1,6 +1,9 @@
 package com.example.healthappttt.adapter;
 
+import static android.content.ContentValues.TAG;
+
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,34 +19,60 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.healthappttt.Data.Exercise;
 import com.example.healthappttt.Data.Routine;
 import com.example.healthappttt.R;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 public class setExerciseAdapter extends RecyclerView.Adapter<setExerciseAdapter.MainViewHolder> {
     private ArrayList<Exercise> exercises;
     private boolean isChangeable;
+
+    private FirebaseFirestore firebaseFirestore;
+    private FirebaseAuth mAuth;// 파이어베이스 유저관련 접속하기위한 변수
+    private FirebaseFirestore db;
 
     private OnExerciseClick onExerciseClick;
 
     public setExerciseAdapter(Routine routine) {
         this.exercises = routine.getExercises();
         this.isChangeable = false;
+
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
     }
 
     public setExerciseAdapter(Routine routine, boolean isChangeable) {
         this.exercises = routine.getExercises();
         this.isChangeable = isChangeable;
+
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
     }
 
     public setExerciseAdapter(ArrayList<Exercise> exercises) {
         this.exercises = exercises;
         this.isChangeable = false;
+
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
 //        this.exerciseCategories = routine.getExerciseCategories();
     }
 
     public setExerciseAdapter(ArrayList<Exercise> exercises, boolean isChangeable) { // 일단 테스트
         this.exercises = exercises;
         this.isChangeable = isChangeable;
+
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
 //        this.exerciseCategories = routine.getExerciseCategories();
     }
 
@@ -99,10 +128,45 @@ public class setExerciseAdapter extends RecyclerView.Adapter<setExerciseAdapter.
         mainViewHolder.EnterView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int position = mainViewHolder.getAdapterPosition();
+
                 mainViewHolder.DetailView.setVisibility(View.VISIBLE);
                 setTxt(mainViewHolder);
                 mainViewHolder.DetailView.setText(mainViewHolder.DetailViewTxt);
                 mainViewHolder.EditLayout.setVisibility(View.GONE);
+
+                Date currentDate = new Date();
+
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(currentDate);
+
+                String dayOfWeek = "";
+
+                switch (calendar.get(Calendar.DAY_OF_WEEK) - 1) {
+                    case 0: dayOfWeek = "sun"; break; // 일
+                    case 1: dayOfWeek = "mon";break; // 월
+                    case 2: dayOfWeek = "tue";break; // 화
+                    case 3: dayOfWeek = "wed"; break; // 수
+                    case 4: dayOfWeek = "thu";break; // 목
+                    case 5: dayOfWeek = "fri";break; // 금
+                    case 6: dayOfWeek = "sat";break; // 토
+                }
+
+                db.collection("routines").document(mAuth.getCurrentUser().getUid() +"_" + dayOfWeek).
+                        collection("exercises").document(exercises.get(position).getTitle()).
+                        set(exercises.get(position)).
+                        addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                Log.d(TAG, "DocumentSnapshot successfully written!");
+                            }
+                        }).
+                        addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.w(TAG, "Error writing document", e);
+                            }
+                        });
             }
         });
 

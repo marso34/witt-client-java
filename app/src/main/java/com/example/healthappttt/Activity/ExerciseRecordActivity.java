@@ -186,12 +186,19 @@ public class ExerciseRecordActivity extends AppCompatActivity {
     } // 리사이클러 뷰 생성 -> 추후 수정 필요
 
     public Routine getRecord() {
-        Routine record = new Routine("운동 테스트", 0, recordExercises);
-        record.setStartTime(Long.toString(startTime));
-        record.setEndTime(Long.toString(System.currentTimeMillis()));
-        record.setRunTime(Long.toString(runTime));
 
-        return record;
+//        Routine record = new Routine("운동 테스트", 0, recordExercises);
+//        record.setStartTime(Long.toString(startTime));
+//        record.setEndTime(Long.toString(System.currentTimeMillis()));
+//        record.setRunTime(Long.toString(runTime));
+//
+//        return record;
+
+        routine.setStartTime(Long.toString(startTime));
+        routine.setEndTime(Long.toString(System.currentTimeMillis()));
+        routine.setRunTime(Long.toString(runTime));
+
+        return routine;
     } // 운동 기록을 토대로 루틴 객체를 만드는 메서드
 
     private void someWork() {
