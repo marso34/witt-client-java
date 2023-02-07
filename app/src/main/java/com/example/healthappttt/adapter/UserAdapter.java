@@ -159,8 +159,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
                     } else {
                         Log.d(TAG, "Failed with: ", task.getException());
                     }
-
-
                 }
             });
 

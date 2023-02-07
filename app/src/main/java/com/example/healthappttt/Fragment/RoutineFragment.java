@@ -2,6 +2,8 @@ package com.example.healthappttt.Fragment;
 
 import static android.content.ContentValues.TAG;
 
+import android.annotation.SuppressLint;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -13,6 +15,7 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
@@ -52,7 +55,6 @@ public class RoutineFragment extends Fragment {
     Context context;
 
     private Button[] weekBtn;
-    private ToggleButton[] exerciseTxt;
     private TextView StartTime, EndTime;
     private CardView addCard;
 
@@ -116,7 +118,6 @@ public class RoutineFragment extends Fragment {
         UserUid = mAuth.getCurrentUser().getUid();
 
         weekBtn = new Button[7];
-        exerciseTxt = new ToggleButton[7];
 
         weekBtn[0] = (Button) view.findViewById(R.id.sun); // 일요일부터 배치
         weekBtn[1] = (Button) view.findViewById(R.id.mon);
@@ -125,14 +126,6 @@ public class RoutineFragment extends Fragment {
         weekBtn[4] = (Button) view.findViewById(R.id.thu);
         weekBtn[5] = (Button) view.findViewById(R.id.fri);
         weekBtn[6] = (Button) view.findViewById(R.id.sat);
-
-        exerciseTxt[0] = (ToggleButton) view.findViewById(R.id.chestTxt);
-        exerciseTxt[1] = (ToggleButton) view.findViewById(R.id.backTxt);
-        exerciseTxt[2] = (ToggleButton) view.findViewById(R.id.shoulderTxt);
-        exerciseTxt[3] = (ToggleButton) view.findViewById(R.id.lowBodyTxt);
-        exerciseTxt[4] = (ToggleButton) view.findViewById(R.id.armTxt);
-        exerciseTxt[5] = (ToggleButton) view.findViewById(R.id.absTxt);
-        exerciseTxt[6] = (ToggleButton) view.findViewById(R.id.cardioTxt);
 
         StartTime = (TextView) view.findViewById(R.id.startTime);
         EndTime = (TextView) view.findViewById(R.id.endTime);
@@ -146,9 +139,11 @@ public class RoutineFragment extends Fragment {
 
         exerciseListFragment.setOnExerciseClickListener(new ExerciseListFragment.OnExerciseClick() {
             @Override
-            public void onExerciseClick(ExerciseName exerciseName) {
-                routine.addExercise(new Exercise(exerciseName.getName(), exerciseName.getCat()));
-                saveExercise(new Exercise(exerciseName.getName(), exerciseName.getCat()));
+            public void onExerciseClick(ExerciseName exerciseName, int exerCat) {
+                exerciseCat |= exerCat;
+                routine.addExercise(new Exercise(exerciseName.getName(), exerciseName.getStrCat()));
+                saveExercise(new Exercise(exerciseName.getName(), exerciseName.getStrCat()));
+                saveRoutine();
                 adapter.notifyDataSetChanged();
             }
         });
@@ -157,45 +152,44 @@ public class RoutineFragment extends Fragment {
             btn.setOnClickListener(v -> clickBtn(v)); // 요일 버튼
         }
 
-        for (ToggleButton txt : exerciseTxt) { // 운동 부위 버튼
-            txt.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                    switch(compoundButton.getText().toString()) {
-                        case "가슴":
-                            exerciseCat ^= 0x1; break;
-                        case "등":
-                            exerciseCat ^= 0x2; break;
-                        case "어깨":
-                            exerciseCat ^= 0x4; break;
-                        case "하체":
-                            exerciseCat ^= 0x8; break;
-                        case "팔":
-                            exerciseCat ^= 0x10; break;
-                        case "복근":
-                            exerciseCat ^= 0x20; break;
-                        case "유산소":
-                            exerciseCat ^= 0x40; break;
+        StartTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), android.R.style.Theme_Holo_Light_Dialog_NoActionBar, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        @SuppressLint("DefaultLocale") String result = String.format("%02d:%02d", hourOfDay, minute);
+
+                        StartTime.setText(result);
+                        routine.setStartTime(result);
+                        saveRoutine();
                     }
+                }, 00, 00, true);
+                timePickerDialog.setTitle("시작 시간");
+                timePickerDialog.show();
+            }
+        });
 
-                    Log.d("categorieCat ==>", Integer.toString(exerciseCat));
+        EndTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), android.R.style.Theme_Holo_Light_Dialog_NoActionBar, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        @SuppressLint("DefaultLocale") String result = String.format("%02d:%02d", hourOfDay, minute);
 
-                    if (isChecked) {
-                        compoundButton.setBackgroundResource(R.drawable.green_border_layout);
-                        compoundButton.setTextColor(Color.parseColor("#05c78c"));
-                    } else {
-                        compoundButton.setBackgroundResource(R.drawable.border_layout);
-                        compoundButton.setTextColor(Color.parseColor("#747474"));
+                        EndTime.setText(result);
+                        routine.setEndTime(result);
+                        saveRoutine();
                     }
-
-                    routine.setExerciseCategories(exerciseCat);
-                    saveRoutine();
-                }
-            });
-        }
+                }, 00, 00, true);
+                timePickerDialog.setTitle("종료 시간");
+                timePickerDialog.show();
+            }
+        });
 
         addCard.setOnClickListener(v -> {
-            exerciseListFragment.ExerciseCat(exerciseCat); // 운동 부위 전달
+//            exerciseListFragment.ExerciseCat(exerciseCat); // 운동 부위 전달
             exerciseListFragment.show(getActivity().getSupportFragmentManager(), exerciseListFragment.getTag());
         });
 
@@ -250,7 +244,6 @@ public class RoutineFragment extends Fragment {
                                         document.getData().get("endTime").toString()
                                 );
 
-                                checkCat(routine.getExerciseCategories());
                                 setExercises();
 
                                 StartTime.setText(routine.getStartTime());
@@ -330,6 +323,30 @@ public class RoutineFragment extends Fragment {
 
     private void deleteExercise(int position) {
         // db에서 운동 삭제, document 이름 다시 생각할 것 동일 운동 저장 못 함
+
+
+        String cat = routine.getExercises().get(position).getState();
+        int cnt = 0, tCat = 0;
+
+        switch (cat) {
+            case "가슴" : tCat = 0x1; break;
+            case "등" : tCat = 0x2; break;
+            case "어깨" : tCat = 0x4; break;
+            case "하체" : tCat = 0x8; break;
+            case "팔" : tCat = 0x10; break;
+            case "복근" : tCat = 0x20; break;
+            case "유산소" : tCat = 0x40; break;
+        }
+
+
+        for (Exercise e : routine.getExercises()) {
+            if (e.getState().equals(cat))
+                cnt++;
+        }
+
+        if (cnt == 1)
+            exerciseCat ^= tCat;
+
         db.collection("routines").document(mAuth.getCurrentUser().getUid()+"_"+dayOfWeek).
                 collection("exercises").document(routine.getExercises().get(position).getTitle())
                 .delete()
@@ -345,6 +362,8 @@ public class RoutineFragment extends Fragment {
                         Log.w(TAG, "Error deleting document", e);
                     }
                 });
+
+        saveRoutine();
     }
 
     private void setRecyclerView() {
@@ -357,9 +376,10 @@ public class RoutineFragment extends Fragment {
             adapter.setOnExerciseClickListener(new setExerciseAdapter.OnExerciseClick() {
                 @Override
                 public void onExerciseClick(int postion) {
-                    adapter.notifyDataSetChanged();
                     deleteExercise(postion);
                     adapter.removeItem(postion);
+                    adapter.notifyDataSetChanged();
+
 //                    saveRoutine(routine.getExercises().get(postion));
                 }
             });
@@ -388,27 +408,5 @@ public class RoutineFragment extends Fragment {
         }
 
         setRoutine();
-    }
-
-    private void checkCat(int cat) {
-        for (ToggleButton txt : exerciseTxt) {
-            txt.setChecked(false);
-        }
-        exerciseCat = 0;
-
-        if ((cat & 0x1) == 0x1)
-            exerciseTxt[0].setChecked(true);
-        if ((cat & 0x2) == 0x2)
-            exerciseTxt[1].setChecked(true);
-        if ((cat & 0x4) == 0x4)
-            exerciseTxt[2].setChecked(true);
-        if ((cat & 0x8) == 0x8)
-            exerciseTxt[3].setChecked(true);
-        if ((cat & 0x10) == 0x10)
-            exerciseTxt[1].setChecked(true);
-        if ((cat & 0x20) == 0x20)
-            exerciseTxt[2].setChecked(true);
-        if ((cat & 0x40) == 040)
-            exerciseTxt[3].setChecked(true);
     }
 }

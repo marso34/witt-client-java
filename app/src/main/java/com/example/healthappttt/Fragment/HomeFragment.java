@@ -210,6 +210,7 @@ public class HomeFragment extends Fragment {
                                 userList.clear();
                             }
                             for (QueryDocumentSnapshot document : task.getResult()) {
+
                                // Log.d(TAG, document.getId() + " &&&&+&=> " + document.getData().get("userName").toString());
                                User a= new User(
                                        Double.parseDouble(document.getData().get("userTemperature").toString()),
@@ -223,7 +224,7 @@ public class HomeFragment extends Fragment {
                                         document.getData().get("deadlift").toString(),
                                         document.getData().get("squat").toString(),
                                         document.getData().get("locationName").toString()
-                                        );
+                                );
 
                                 if(a.getKey_().equals(mAuth.getCurrentUser().getUid())) currentUser = a;
                                 else userList.add(a);

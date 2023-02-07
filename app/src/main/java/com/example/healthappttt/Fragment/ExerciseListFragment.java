@@ -3,6 +3,7 @@ package com.example.healthappttt.Fragment;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -18,6 +19,8 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.Adapter;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.ToggleButton;
 
@@ -39,6 +42,7 @@ public class ExerciseListFragment extends BottomSheetDialogFragment {
 
     private int exerciseCat = 0;
 
+    private ToggleButton[] exerciseTxt;
     private ListView listView;
     private ExerciseListAdapter adapter;
 
@@ -58,66 +62,106 @@ public class ExerciseListFragment extends BottomSheetDialogFragment {
 
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_bottom, container, false);
 
-        ArrayList<ExerciseName> ttt = new ArrayList<>();
-        ttt.add(new ExerciseName("팔굽혀펴기", "가슴"));
-        ttt.add(new ExerciseName("스쿼트", "하체"));
-        ttt.add(new ExerciseName("딥스", "가슴"));
-        ttt.add(new ExerciseName("턱걸이", "등"));
-        ttt.add(new ExerciseName("유산소1", "유산소"));
-        ttt.add(new ExerciseName("가슴운동1", "가슴"));
-        ttt.add(new ExerciseName("어깨운동1", "어깨"));
-        ttt.add(new ExerciseName("등운동1", "등"));
-        ttt.add(new ExerciseName("하체운동1", "하체"));
-        ttt.add(new ExerciseName("팔운동1", "팔"));
-        ttt.add(new ExerciseName("복근운동1", "복근"));
-        ttt.add(new ExerciseName("유산소운동1", "유산소"));
-        ttt.add(new ExerciseName("가슴운동2", "가슴"));
-        ttt.add(new ExerciseName("어깨운동2", "어깨"));
-        ttt.add(new ExerciseName("등운동2", "등"));
-        ttt.add(new ExerciseName("하체운동2", "하체"));
-        ttt.add(new ExerciseName("팔운동2", "팔"));
-        ttt.add(new ExerciseName("복근운동2", "복근"));
-        ttt.add(new ExerciseName("유산소운동2", "유산소"));
-        ttt.add(new ExerciseName("가슴운동3", "가슴"));
-        ttt.add(new ExerciseName("어깨운동3", "어깨"));
-        ttt.add(new ExerciseName("등운동3", "등"));
-        ttt.add(new ExerciseName("하체운동3", "하체"));
-        ttt.add(new ExerciseName("팔운동3", "팔"));
-        ttt.add(new ExerciseName("복근운동3", "복근"));
-        ttt.add(new ExerciseName("유산소운동3", "유산소"));
+        exerciseTxt = new ToggleButton[7];
 
-        ArrayList<ExerciseName> test = new ArrayList<>();
+        exerciseTxt[0] = (ToggleButton) view.findViewById(R.id.chestTxt);
+        exerciseTxt[1] = (ToggleButton) view.findViewById(R.id.backTxt);
+        exerciseTxt[2] = (ToggleButton) view.findViewById(R.id.shoulderTxt);
+        exerciseTxt[3] = (ToggleButton) view.findViewById(R.id.lowBodyTxt);
+        exerciseTxt[4] = (ToggleButton) view.findViewById(R.id.armTxt);
+        exerciseTxt[5] = (ToggleButton) view.findViewById(R.id.absTxt);
+        exerciseTxt[6] = (ToggleButton) view.findViewById(R.id.cardioTxt);
 
-        for (ExerciseName e : ttt) {
-            if ((exerciseCat & 0x1) == 0x1) {
-                if (e.getCat().equals("가슴"))
-                    test.add(e);
-            }
-            if ((exerciseCat & 0x2) == 0x2) {
-                if (e.getCat().equals("등"))
-                    test.add(e);
-            }
-            if ((exerciseCat & 0x4) == 0x4) {
-                if (e.getCat().equals("어깨"))
-                    test.add(e);
-            }
-            if ((exerciseCat & 0x8) == 0x8) {
-                if (e.getCat().equals("하체"))
-                    test.add(e);
-            }
-            if ((exerciseCat & 0x10) == 0x10) {
-                if (e.getCat().equals("팔"))
-                    test.add(e);
-            }
-            if ((exerciseCat & 0x20) == 0x20) {
-                if (e.getCat().equals("복근"))
-                    test.add(e);
-            }
-            if ((exerciseCat & 0x40) == 040) {
-                if (e.getCat().equals("유산소"))
-                    test.add(e);
-            }
+
+
+        ArrayList<ExerciseName> ttt = new ArrayList<>(); // 임시
+        ttt.add(new ExerciseName("팔굽혀펴기", 0x1));
+        ttt.add(new ExerciseName("스쿼트", 0x8));
+        ttt.add(new ExerciseName("딥스", 0x1));
+        ttt.add(new ExerciseName("턱걸이", 0x2));
+        ttt.add(new ExerciseName("달리기", 0x40));
+
+        ttt.add(new ExerciseName("가슴운동1", 0x1));
+        ttt.add(new ExerciseName("가슴운동2", 0x1));
+        ttt.add(new ExerciseName("가슴운동3", 0x1));
+
+
+        ttt.add(new ExerciseName("등운동1", 0x2));
+        ttt.add(new ExerciseName("등운동2", 0x2));
+        ttt.add(new ExerciseName("등운동3", 0x2));
+
+        ttt.add(new ExerciseName("어깨운동1", 0x4));
+        ttt.add(new ExerciseName("어깨운동2", 0x4));
+        ttt.add(new ExerciseName("어깨운동3", 0x4));
+
+        ttt.add(new ExerciseName("하체운동1", 0x8));
+        ttt.add(new ExerciseName("하체운동2", 0x8));
+        ttt.add(new ExerciseName("하체운동3", 0x8));
+
+        ttt.add(new ExerciseName("팔운동1", 0x10));
+        ttt.add(new ExerciseName("팔운동2", 0x10));
+        ttt.add(new ExerciseName("팔운동3", 0x10));
+
+        ttt.add(new ExerciseName("복근운동1", 0x20));
+        ttt.add(new ExerciseName("복근운동2", 0x20));
+        ttt.add(new ExerciseName("복근운동3", 0x20));
+
+        ttt.add(new ExerciseName("유산소운동1", 0x40));
+        ttt.add(new ExerciseName("유산소운동2", 0x40));
+        ttt.add(new ExerciseName("유산소운동3", 0x40));
+
+        ArrayList<ExerciseName> test = new ArrayList<>(); // 임시
+
+
+
+        for (ToggleButton txt : exerciseTxt) { // 운동 부위 버튼
+            txt.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                    if (isChecked) {
+                        switch(compoundButton.getText().toString()) {
+                            case "가슴":
+                                exerciseCat = 0x1; break;
+                            case "등":
+                                exerciseCat = 0x2; break;
+                            case "어깨":
+                                exerciseCat = 0x4; break;
+                            case "하체":
+                                exerciseCat = 0x8; break;
+                            case "팔":
+                                exerciseCat = 0x10; break;
+                            case "복근":
+                                exerciseCat = 0x20; break;
+                            case "유산소":
+                                exerciseCat = 0x40; break;
+                        }
+
+                        compoundButton.setBackgroundResource(R.drawable.green_border_layout);
+                        compoundButton.setTextColor(Color.parseColor("#05c78c"));
+
+                        for (ToggleButton txt : exerciseTxt) {
+                            if (txt.equals(compoundButton)) {
+                                continue;
+                            }
+
+                            txt.setChecked(false);
+                        }
+                    } else {
+                        compoundButton.setBackgroundResource(R.drawable.border_layout);
+                        compoundButton.setTextColor(Color.parseColor("#747474"));
+                    }
+
+                    test.clear();
+                    for (ExerciseName e : ttt) {
+                        if (exerciseCat == e.getCat())
+                            test.add(e);
+                    }
+
+                    adapter.notifyDataSetChanged();
+                }
+            });
         }
+
 
         listView = (ListView) view.findViewById(R.id.listView);
         adapter = new ExerciseListAdapter(getContext(), test);
@@ -127,7 +171,7 @@ public class ExerciseListFragment extends BottomSheetDialogFragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                onExerciseClick.onExerciseClick(adapter.getItem(position));
+                onExerciseClick.onExerciseClick(adapter.getItem(position), exerciseCat);
                 dismiss();
             }
         });
@@ -165,11 +209,12 @@ public class ExerciseListFragment extends BottomSheetDialogFragment {
         }
     } // BottomSheetDialogFragment 드래그 안 되게 하는 코드
 
-    public void ExerciseCat(int cat) {
-        exerciseCat = cat;
+    private void Parse() {
+
     }
 
-    private void Parse() {
+    private void setList(int cat, boolean isChecked) {
+
 
     }
 
@@ -178,6 +223,6 @@ public class ExerciseListFragment extends BottomSheetDialogFragment {
     } // 액티비티에서 콜백 메서드를 set
 
     public interface OnExerciseClick {
-        void onExerciseClick(ExerciseName exerciseName);
+        void onExerciseClick(ExerciseName exerciseName, int exerciseCat);
     } // 운동 클릭했을 때, 엑티비티에 값 전달을 위한 인터페이스
 }
