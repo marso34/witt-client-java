@@ -198,7 +198,7 @@ public class setExerciseAdapter extends RecyclerView.Adapter<setExerciseAdapter.
             int count = this.exercises.get(position).getCount();
             int volume = this.exercises.get(position).getVolume();
 
-            if (this.exercises.get(position).getState() == "유산소") {
+            if (this.exercises.get(position).getState().equals("유산소")) {
                 holder.DetailViewTxt = "속도 " + volume +  "· " + count + "분";
             } else {
                 holder.DetailViewTxt = volume + " kg · " + count + " 세트";
@@ -210,7 +210,7 @@ public class setExerciseAdapter extends RecyclerView.Adapter<setExerciseAdapter.
             this.exercises.get(position).setVolume(Integer.parseInt(volume));
             this.exercises.get(position).setCount(Integer.parseInt(count));
 
-            if (this.exercises.get(position).getState() == "유산소") {
+            if (this.exercises.get(position).getState().equals("유산소")) {
                 holder.DetailViewTxt = "속도 " + volume +  "· " + count + "분";
             } else {
                 holder.DetailViewTxt = volume + " kg · " + count + " 세트";

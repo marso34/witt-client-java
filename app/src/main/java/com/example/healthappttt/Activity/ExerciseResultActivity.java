@@ -1,6 +1,8 @@
 package com.example.healthappttt.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -10,10 +12,13 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import com.example.healthappttt.R;
 import com.example.healthappttt.Data.Routine;
 import com.example.healthappttt.Data.Exercise;
+import com.example.healthappttt.adapter.ExerciseAdapter;
+import com.example.healthappttt.adapter.testAdapter;
 
 public class ExerciseResultActivity extends AppCompatActivity {
     private TextView title;
@@ -22,9 +27,17 @@ public class ExerciseResultActivity extends AppCompatActivity {
     private TextView name;
     private TextView categories;
     private TextView ttttt;
+
+
+    private TextView StartTime, EndTime, RunTime, RestTime;
+    private TextView Weight, Min;
     private Button EndBtn;
 
+    private RecyclerView recyclerView;
+    private testAdapter adapter;
+
     private Routine record;
+    private ArrayList<Exercise> exercises;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +48,40 @@ public class ExerciseResultActivity extends AppCompatActivity {
 
         record = (Routine) intent.getSerializableExtra("record");
 
+        StartTime = (TextView) findViewById(R.id.startTime);
+        EndTime = (TextView) findViewById(R.id.endTime);
+        RunTime = (TextView) findViewById(R.id.runTime);
+        RestTime = (TextView) findViewById(R.id.restTime);
+        Weight = (TextView) findViewById(R.id.weight);
+        Min = (TextView) findViewById(R.id.min);
+
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        setRecyclerView();
+
         EndBtn = (Button) findViewById(R.id.endBtn);
+
+        StartTime.setText(DateConversion(record.getStartTime()));
+        EndTime.setText(DateConversion(record.getEndTime()));
+        RunTime.setText(time(record.getRunTime()));
+//        RestTime.setText();
+
+        exercises = record.getExercises();
+
+        int sum = 0;
+        int min = 0;
+
+        for (Exercise e : exercises) {
+            if (e.getState().equals("유산소")) {
+                min += e.getCount();
+                continue;
+            }
+
+            sum += (e.getVolume() * e.getCount());
+        }
+
+        Weight.setText(sum + " kg");
+        Min.setText(min + " 분");
+
 
         EndBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,16 +140,20 @@ public class ExerciseResultActivity extends AppCompatActivity {
         return result;
     }
 
-    private String DateConversion(String t, int i) {
+    private String DateConversion(String t) {
         Date date = new Date(Long.parseLong(t));
         SimpleDateFormat dateFormat;
-        dateFormat = new SimpleDateFormat("aa h:mm:ss");
+        dateFormat = new SimpleDateFormat("aa hh:mm");
 
-        if (i != 0)
-            dateFormat = new SimpleDateFormat("M월 d일 운동");
 
         String d = dateFormat.format(date);
 
         return d;
+    }
+    private void setRecyclerView() {
+        adapter = new testAdapter(record);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
     }
 }

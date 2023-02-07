@@ -47,6 +47,7 @@ public class ExerciseRecordActivity extends AppCompatActivity {
     private ArrayList<Exercise> recordExercises; // 실제 운동을 기록, 어댑터에서 한 기록을 받아옴
 
     private Boolean isRunning;
+    private long startTime_;
     private long startTime; // 운동 시작 시간
     private long reStTime;  // 총 운동 시간과 휴식 시간을
     private long pauseTime; // 계산하기 위한 시간 -> 스톱워치 눌렀을 때 현재 시간을 저장
@@ -93,7 +94,8 @@ public class ExerciseRecordActivity extends AppCompatActivity {
 
     private void _start(View v) {
         if (startTime == 0) { // 처음 눌렀을 때
-            startTime = reStTime = System.currentTimeMillis(); // 시작 버튼 누를 시 현재 시간 저장
+            reStTime = System.currentTimeMillis(); // 시작 버튼 누를 시 현재 시간 저장
+            startTime = reStTime;
             isRunning = true;
             StopBtn.setBackgroundResource(R.drawable.default_layout);
             StopBtn.setTextColor(Color.parseColor("#ffffff"));
@@ -124,7 +126,6 @@ public class ExerciseRecordActivity extends AppCompatActivity {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     isRunning = false;
-                    startTime = 0;
                     pauseTime = 0; // 스톱버튼 누를 시 전부 초기화
                     timerTask.cancel();
 
@@ -187,18 +188,18 @@ public class ExerciseRecordActivity extends AppCompatActivity {
 
     public Routine getRecord() {
 
-//        Routine record = new Routine("운동 테스트", 0, recordExercises);
-//        record.setStartTime(Long.toString(startTime));
-//        record.setEndTime(Long.toString(System.currentTimeMillis()));
-//        record.setRunTime(Long.toString(runTime));
+        Routine record = new Routine(routine.getTitle(), routine.getExerciseCategories(), recordExercises);
+        record.setStartTime(Long.toString(startTime));
+        record.setEndTime(Long.toString(System.currentTimeMillis()));
+        record.setRunTime(Long.toString(runTime));
+
+        return record;
+
+//        routine.setStartTime(Long.toString(startTime));
+//        routine.setEndTime(Long.toString(System.currentTimeMillis()));
+//        routine.setRunTime(Long.toString(runTime));
 //
-//        return record;
-
-        routine.setStartTime(Long.toString(startTime));
-        routine.setEndTime(Long.toString(System.currentTimeMillis()));
-        routine.setRunTime(Long.toString(runTime));
-
-        return routine;
+//        return routine;
     } // 운동 기록을 토대로 루틴 객체를 만드는 메서드
 
     private void someWork() {
