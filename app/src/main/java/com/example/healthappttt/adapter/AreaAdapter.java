@@ -48,9 +48,6 @@ public class AreaAdapter extends RecyclerView.Adapter<AreaAdapter.MainViewHolder
     public MainViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_area, parent, false);
         final MainViewHolder mainViewHolder = new MainViewHolder(view);
-
-
-
         return mainViewHolder;
     }
 

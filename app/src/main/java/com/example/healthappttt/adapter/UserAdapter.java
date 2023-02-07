@@ -121,7 +121,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
                         holder.ExerciseNames.clear();
                         DocumentSnapshot document = task.getResult();
                         Integer exerciseCat = Integer.parseInt(document.get("exerciseCategories").toString());
-                        if (document.exists()) {
                             Log.d(TAG, "Document exists!");
                             if ((exerciseCat & 0x1) == 0x1) {
                                 String a = "가슴";
@@ -152,16 +151,11 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
                                 holder.ExerciseNames.add(a);
                             }
 
-                        } else {
-                            Log.d(TAG, "Document does not exist!");
-                        }
-                        holder.Adapter.notifyDataSetChanged();
-                    } else {
-                        Log.d(TAG, "Failed with: ", task.getException());
                     }
+                    holder.Adapter.notifyDataSetChanged();
                 }
-            });
 
+            });
         String fileName = userInfo.getKey_();
 
         File profilefile = null;
