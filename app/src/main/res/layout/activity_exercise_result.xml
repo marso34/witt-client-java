@@ -31,9 +31,10 @@
                 android:textStyle="bold" />
         </androidx.appcompat.widget.Toolbar>
 
-        <ScrollView
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:fillViewport="true">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -274,7 +275,8 @@
                         android:id="@+id/recyclerView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:layout_constrainedHeight="true"
+                        android:overScrollMode="never"
+                        android:nestedScrollingEnabled="false"
                         tools:listitem="@layout/adapter_test"
                         android:clipToPadding="false"/>
 
@@ -282,7 +284,7 @@
 
             </LinearLayout>
 
-        </ScrollView>
+        </androidx.core.widget.NestedScrollView>
 
     </LinearLayout>
 
