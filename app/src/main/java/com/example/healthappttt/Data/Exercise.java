@@ -30,7 +30,7 @@ public class Exercise implements Serializable {
             case "어깨" : this.color = "#8c5adb"; break;
             case "복근" : this.color = "#ffcc00"; break;
             case "팔"   : this.color = "#4cd964"; break;
-            case "유산소" : this.color = "#579ef2"; this.count = 10; this.volume = 3; break;
+            case "유산소" : this.color = "#579ef2"; this.count = 3; this.volume = 8; break;
         }
     }
 

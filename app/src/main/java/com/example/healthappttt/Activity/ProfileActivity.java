@@ -67,6 +67,13 @@ public class ProfileActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseFirestore firebaseFirestore;
     private DatabaseReference mDbRef;
+
+
+    //임시
+
+    private TextView UserNameR, Week, RTime;
+
+
     String time = "";
     Intent intent;
     private int progress_percent;
@@ -89,6 +96,10 @@ public class ProfileActivity extends AppCompatActivity {
         wittBtn = findViewById(R.id.WittBtn);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         mtprogresser = findViewById(R.id.MTProgresser);
+
+        // 임시
+        UserNameR = (TextView) findViewById(R.id.UserName2);
+        Week = (TextView) findViewById(R.id.week);
 
         intent = getIntent();
         firebaseFirestore = FirebaseFirestore.getInstance();
@@ -127,11 +138,26 @@ public class ProfileActivity extends AppCompatActivity {
 //                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
 
                         ThisProfileTemperature.setText(document.getData().get("userTemperature").toString().concat("km"));
-                        ThisProfileName.setText(document.getData().get("userName").toString());
+                        String str = document.getData().get("userName").toString();
+                        ThisProfileName.setText(str);
                         Bench.setText(document.getData().get("bench").toString());
                         Dead.setText(document.getData().get("deadlift").toString());
                         Squat.setText(document.getData().get("squat").toString());
                         LocationName.setText(document.getData().get("locationName").toString());
+
+                        UserNameR.setText(str + "님의");
+
+                        switch (dayOfWeek) {
+                            case "sun": str = "일요일"; break;
+                            case "mon": str = "월요일"; break;
+                            case "tue": str = "화요일"; break;
+                            case "wed": str = "수요일"; break;
+                            case "thu": str = "목요일"; break;
+                            case "fri": str = "금요일"; break;
+                            case "sat": str = "토요일"; break;
+                        }
+
+                        Week.setText(str + " 루틴이에요.");
 
 
 //                      TODO 아직 미완성 단계
