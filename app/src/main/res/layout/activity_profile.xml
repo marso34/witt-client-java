@@ -5,14 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Activity.ProfileActivity">
-    <ScrollView
+
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:fillViewport="true">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -317,10 +319,9 @@
                     android:id="@+id/recyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layout_constrainedHeight="true"
-                    android:clipToPadding="false"
-                    tools:listitem="@layout/adapter_set_exercise"
-                    android:visibility="visible"/>
+                    android:overScrollMode="never"
+                    android:nestedScrollingEnabled="false"
+                    tools:listitem="@layout/adapter_set_exercise"/>
 
             </LinearLayout>
 
@@ -682,7 +683,7 @@
 
             </LinearLayout>
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
     <Button
         android:id="@+id/WittBtn"
         android:background="@drawable/default_layout"
