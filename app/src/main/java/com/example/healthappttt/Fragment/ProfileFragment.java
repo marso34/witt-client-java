@@ -176,18 +176,28 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        String FileName = mAuth.getCurrentUser().getUid();
+        String fileName = mAuth.getCurrentUser().getUid();
 
-        sref = FirebaseStorage.getInstance().getReference().child("article/photo").child(FileName);
-        sref.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+        File profilefile = null;
+
+        try {
+            profilefile = File.createTempFile("images","jpeg");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        storage = FirebaseStorage.getInstance();
+        StorageReference sref  = storage.getReference().child("article/photo").child(fileName);
+        File finalProfilefile = profilefile;
+        sref.getFile(profilefile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<Uri> task) {
-                if(task.isSuccessful()){
-                    Glide.with(getView()).load(task.getResult()).circleCrop().into(userImg);
-                }else {
-                    // URL을 가져오지 못하면 토스트 메세지
-                    Toast.makeText(getContext(),"이미지를 불러오지 못했습니다.", Toast.LENGTH_SHORT).show();
-                }
+            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                // Local temp file has been created
+                Glide.with(getActivity()).load(finalProfilefile).into(userImg);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle any errors
             }
         });
 
