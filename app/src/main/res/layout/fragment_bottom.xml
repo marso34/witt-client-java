@@ -15,6 +15,92 @@
             app:iconifiedByDefault="false"
             app:queryHint="검색" />
 
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:paddingRight="50dp"
+                    android:orientation="horizontal">
+
+
+                        <ToggleButton
+                            android:id="@+id/chestTxt"
+                            android:layout_width="60dp"
+                            android:layout_height="30dp"
+                            android:layout_marginHorizontal="6dp"
+                            android:background="@drawable/border_layout"
+                            android:gravity="center"
+                            android:textOff="가슴"
+                            android:textOn="가슴"/>
+
+                        <ToggleButton
+                            android:id="@+id/backTxt"
+                            android:layout_width="60dp"
+                            android:layout_height="30dp"
+                            android:layout_marginHorizontal="6dp"
+                            android:background="@drawable/border_layout"
+                            android:gravity="center"
+                            android:textOff="등"
+                            android:textOn="등"/>
+
+                        <ToggleButton
+                            android:id="@+id/shoulderTxt"
+                            android:layout_width="60dp"
+                            android:layout_height="30dp"
+                            android:layout_marginHorizontal="6dp"
+                            android:background="@drawable/border_layout"
+                            android:gravity="center"
+                            android:textOff="어깨"
+                            android:textOn="어깨" />
+
+                        <ToggleButton
+                            android:id="@+id/lowBodyTxt"
+                            android:layout_width="60dp"
+                            android:layout_height="30dp"
+                            android:layout_marginHorizontal="6dp"
+                            android:background="@drawable/border_layout"
+                            android:gravity="center"
+                            android:textOff="하체"
+                            android:textOn="하체" />
+
+                        <ToggleButton
+                            android:id="@+id/armTxt"
+                            android:layout_width="60dp"
+                            android:layout_height="30dp"
+                            android:layout_marginHorizontal="6dp"
+                            android:background="@drawable/border_layout"
+                            android:gravity="center"
+                            android:textOff="팔"
+                            android:textOn="팔"/>
+
+                        <ToggleButton
+                            android:id="@+id/absTxt"
+                            android:layout_width="60dp"
+                            android:layout_height="30dp"
+                            android:layout_marginHorizontal="6dp"
+                            android:background="@drawable/border_layout"
+                            android:gravity="center"
+                            android:textOff="복근"
+                            android:textOn="복근"/>
+
+                        <ToggleButton
+                            android:id="@+id/cardioTxt"
+                            android:layout_width="60dp"
+                            android:layout_height="30dp"
+                            android:layout_marginHorizontal="6dp"
+                            android:background="@drawable/border_layout"
+                            android:gravity="center"
+                            android:textOff="유산소"
+                            android:textOn="유산소"/>
+
+                </LinearLayout>
+
+        </HorizontalScrollView>
+
         <ListView
             android:id="@+id/listView"
             android:layout_width="match_parent"

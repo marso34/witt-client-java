@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -47,18 +48,27 @@ public class setExerciseAdapter extends RecyclerView.Adapter<setExerciseAdapter.
     }
 
     public static class MainViewHolder extends RecyclerView.ViewHolder {
-        public TextView CatView, NameView, DetailView;
+        public LinearLayout EditLayout;
+        public TextView CatView, NameView, DetailView, EnterView;
         public ImageView DelImageVIew;
+        public EditText EditVolume, EditCount;
 
         public String DetailViewTxt;
 
         public MainViewHolder(View view) {
             super(view);
 
+            this.EditLayout = (LinearLayout) view.findViewById(R.id.editDetail);
             this.CatView = (TextView) view.findViewById(R.id.exerciseCat);
             this.NameView = (TextView) view.findViewById(R.id.exerciseName);
             this.DetailView = (TextView) view.findViewById(R.id.exerciseDetail);
             this.DelImageVIew = (ImageView) view.findViewById(R.id.delBtn);
+
+            this.EnterView = (TextView) view.findViewById(R.id.enter);
+            this.EditVolume = (EditText) view.findViewById(R.id.editVolume);
+            this.EditCount = (EditText) view.findViewById(R.id.editCount);
+
+            this.DetailViewTxt = null;
         }
     }
 
@@ -68,12 +78,31 @@ public class setExerciseAdapter extends RecyclerView.Adapter<setExerciseAdapter.
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_set_exercise, parent, false);
         final MainViewHolder mainViewHolder = new MainViewHolder(view);
 
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isChangeable) {
+                    mainViewHolder.EditLayout.setVisibility(View.VISIBLE);
+                    mainViewHolder.DetailView.setVisibility(View.GONE);
+                }
+            }
+        });
+
         mainViewHolder.DelImageVIew.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int position = mainViewHolder.getAdapterPosition();
-
                 onExerciseClick.onExerciseClick(position);
+            }
+        });
+
+        mainViewHolder.EnterView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mainViewHolder.DetailView.setVisibility(View.VISIBLE);
+                setTxt(mainViewHolder);
+                mainViewHolder.DetailView.setText(mainViewHolder.DetailViewTxt);
+                mainViewHolder.EditLayout.setVisibility(View.GONE);
             }
         });
 
@@ -100,10 +129,23 @@ public class setExerciseAdapter extends RecyclerView.Adapter<setExerciseAdapter.
 
     private void setTxt(@NonNull MainViewHolder holder) { // 초기값 설정
         int position = holder.getAdapterPosition();
-        int count = this.exercises.get(position).getCount();
-        int volume = this.exercises.get(position).getVolume();
 
         if (holder.DetailViewTxt == null) {
+            int count = this.exercises.get(position).getCount();
+            int volume = this.exercises.get(position).getVolume();
+
+            if (this.exercises.get(position).getState() == "유산소") {
+                holder.DetailViewTxt = "속도 " + volume +  "· " + count + "분";
+            } else {
+                holder.DetailViewTxt = volume + " kg · " + count + " 세트";
+            }
+        } else {
+            String volume = holder.EditVolume.getText().toString();
+            String count = holder.EditCount.getText().toString();
+
+            this.exercises.get(position).setVolume(Integer.parseInt(volume));
+            this.exercises.get(position).setCount(Integer.parseInt(count));
+
             if (this.exercises.get(position).getState() == "유산소") {
                 holder.DetailViewTxt = "속도 " + volume +  "· " + count + "분";
             } else {

@@ -85,6 +85,54 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/editDetail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <EditText
+                android:id="@+id/editVolume"
+                android:layout_width="50dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="52dp"
+                android:inputType="number"
+                android:maxLength="4"
+                android:hint="0000"
+                android:text="10"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="kg "/>
+
+            <EditText
+                android:id="@+id/editCount"
+                android:layout_width="50dp"
+                android:layout_height="40dp"
+                android:inputType="number"
+                android:maxLength="4"
+                android:hint="0000"
+                android:text="5"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="세트"/>
+
+            <TextView
+                android:id="@+id/enter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:textColor="#000000"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:text="입력"/>
+
+        </LinearLayout>
+
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>

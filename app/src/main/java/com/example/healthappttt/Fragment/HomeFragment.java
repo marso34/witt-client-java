@@ -207,13 +207,13 @@ public class HomeFragment extends Fragment {
                         User currentUser = null;
                         if (task.isSuccessful()) {
                             if(clear){
-                                userList.clear();
+                                //userList.clear();
                             }
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                               // Log.d(TAG, document.getId() + " &&&&+&=> " + document.getData().get("userName").toString());
-                               User a= new User(
-                                       Double.parseDouble(document.getData().get("userTemperature").toString()),
-                                        document.getData().get("key").toString(),
+                                // Log.d(TAG, document.getId() + " &&&&+&=> " + document.getData().get("userName").toString());
+                                User a= new User(
+                                        Double.parseDouble(document.getData().get("userTemperature").toString()),
+                                        document.getData().get("key_").toString(),
                                         Double.parseDouble(document.getData().get("lat").toString()),
                                         Double.parseDouble(document.getData().get("lon").toString()),
                                         document.getData().get("GoodTime").toString(),
@@ -223,16 +223,16 @@ public class HomeFragment extends Fragment {
                                         document.getData().get("deadlift").toString(),
                                         document.getData().get("squat").toString(),
                                         document.getData().get("locationName").toString()
-                                        );
+                                );
 
-                                if(a.getKey().equals(mAuth.getCurrentUser().getUid())) currentUser = a;
+                                if(a.getKey_().equals(mAuth.getCurrentUser().getUid())) currentUser = a;
                                 else userList.add(a);
                             }
                             //퀵정렬 편집해서 만드는건 가능한데 일단 보류 난이도가 높음.
                             //
                             ArrayList<Double> distans = new ArrayList<Double>();
                             for(int i=0;i<userList.size();++i){
-                                if(userList.get(i).getKey() == currentUser.getKey()) {
+                                if(userList.get(i).getKey_() == currentUser.getKey_()) {
                                     distans.add(0.0);
                                     userList.get(i).setDistance(0.0);
                                 }

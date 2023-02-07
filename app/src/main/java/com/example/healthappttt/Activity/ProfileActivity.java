@@ -88,7 +88,7 @@ public class ProfileActivity extends AppCompatActivity {
         firebaseFirestore = FirebaseFirestore.getInstance();
         User U = (User) getIntent().getSerializableExtra("User");//포스트인포 객체 만들어서 할당.;
         File f =  (File) getIntent().getSerializableExtra("post");
-        ThisProfileUid = U.getKey();
+        ThisProfileUid = U.getKey_();
         ThisProfileName.setText(U.getUserName());
         LocationName.setText(U.getLocationName());
         Integer A = U.getUserTemperature().intValue();

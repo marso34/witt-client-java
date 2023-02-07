@@ -78,7 +78,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
         TextView ExerciseArea = cardView.findViewById(R.id.EArea);
         User userInfo = mDataset.get(position);
 
-        String fileName = userInfo.getKey();
+        String fileName = userInfo.getKey_();
 
         File profilefile = null;
 
