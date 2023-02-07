@@ -329,6 +329,7 @@ public class ProfileActivity extends AppCompatActivity {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra("userId",u.getKey_());
         intent.putExtra("username",u.getUserName());
+        finish();
         startActivity(intent);
     }
 }

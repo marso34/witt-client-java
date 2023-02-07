@@ -75,32 +75,6 @@ public class User implements Serializable {
             return this.Squat;
         }
 
-        public String getProfileImg(){
-            return this.ProfileImg;
-        }
-        public Double getUserTemperature(){
-            return this.UserTemperature;
-        }
-        public String getKey_(){
-            return this.Key_;
-        }
-        public String getLocationName(){return this.LocationName;}
-        public Double getLat(){
-            return this.Lat;
-        }
-        public Double getLon(){
-            return  this.Lon;
-        }
-        public Double getDistance(){
-            return this.Distance;
-        }
-        public void setDistance(Double D){
-            this.Distance = D;
-        }
-        public void setLat(Double L){
-            this.Lat = L;
-        }
-
     public String getProfileImg(){
         return this.ProfileImg;
     }
