@@ -185,7 +185,7 @@ public class signupActivity extends AppCompatActivity {
                         }
                     });
         }
-
+        finishAffinity();
         myStartActivity(MainActivity.class);
     }
 

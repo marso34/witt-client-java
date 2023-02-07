@@ -50,7 +50,9 @@ public class LoginActivity extends AppCompatActivity {
                    // myStartActivity(PasswordResetActivity.class);
                     break;
                 case R.id.btnSignUp:// 클릭된것이 패스워드 버튼일시
+                    finishAffinity();
                     myStartActivity(signupActivity.class);
+
                     break;
             }
         }

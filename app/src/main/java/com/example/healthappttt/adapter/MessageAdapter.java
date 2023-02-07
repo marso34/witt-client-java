@@ -37,6 +37,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     public static  final int MSG_TYPE_RIGHT = 1;
 
 
+
     public MessageAdapter(Context mContext, List<Message> messages){
         this.messages = messages;
         this.mContext = mContext;
@@ -56,12 +57,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-
-
-
         Message chat = messages.get(position);
-
-
         try {
             String date = getDate(chat.getTime());
            // Log.i(ContentValues.TAG,date);
@@ -95,13 +91,9 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     }
 
     public  class ViewHolder extends RecyclerView.ViewHolder{
-
-
         public TextView txt_message;
         public TextView txt_time;
         public TextView msg_time;
-
-
         public ViewHolder(View itemView) {
             super(itemView);
 

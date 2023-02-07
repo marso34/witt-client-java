@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -32,6 +33,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -55,6 +57,7 @@ public class ProfileActivity extends AppCompatActivity {
     private TextView Squat;
     private TextView Bench;
     private TextView Dead;
+    private ProgressBar mtprogresser;
 
     private Routine routine;
     private ArrayList<Exercise> exercises;
@@ -66,6 +69,8 @@ public class ProfileActivity extends AppCompatActivity {
     private DatabaseReference mDbRef;
     String time = "";
     Intent intent;
+    private int progress_percent;
+
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,12 +82,13 @@ public class ProfileActivity extends AppCompatActivity {
 
         ThisProfileName = findViewById(R.id.UserName);
         LocationName = findViewById(R.id.MyLocation);
-        ThisProfileTemperature = findViewById(R.id.MyTempreture);
+        ThisProfileTemperature = findViewById(R.id.MyTempreture2);
         Squat = findViewById(R.id.squat);
         Bench = findViewById(R.id.benchpress);
         Dead = findViewById(R.id.deadlift);
         wittBtn = findViewById(R.id.WittBtn);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        mtprogresser = findViewById(R.id.MTProgresser);
 
         intent = getIntent();
         firebaseFirestore = FirebaseFirestore.getInstance();
@@ -102,6 +108,87 @@ public class ProfileActivity extends AppCompatActivity {
         setExercises();
         Glide.with(this).load(f).into(ProImg);
         //준이가 짤 코드 요일 알아내서 루틴 테이블에서 운동들 가져와서 리사이클로뷰에 넣기.
+
+
+
+
+
+        //CollectionReference -> 파이어스토어의 컬랙션 참조하는 객체
+        DocumentReference productRef = firebaseFirestore.collection("users").document(U.getKey_());
+        //get()을 통해서 해당 컬랙션의 정보를 가져옴
+
+        //단일 문서의 내용 검색
+        productRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()){
+                    DocumentSnapshot document = task.getResult();
+                    if( document.exists()) { // 데이터가 존재할 경우
+//                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+
+                        ThisProfileTemperature.setText(document.getData().get("userTemperature").toString().concat("km"));
+                        ThisProfileName.setText(document.getData().get("userName").toString());
+                        Bench.setText(document.getData().get("bench").toString());
+                        Dead.setText(document.getData().get("deadlift").toString());
+                        Squat.setText(document.getData().get("squat").toString());
+                        LocationName.setText(document.getData().get("locationName").toString());
+
+
+//                      TODO 아직 미완성 단계
+
+//                      Glide.with(getView()).load(document.getData().get("profileImg")).fitCenter().into(userImg);
+
+//                      document.getData().get().toString();
+//                      document.getData().get("GoodTime").toString();
+
+
+                        progress_percent = 0;
+                        String dcutempre =document.getData().get("userTemperature").toString();
+                        new Thread(){
+                            public void run() {
+                                while (true) {
+                                    try {
+                                        while(!Thread.currentThread().isInterrupted()) {
+                                            progress_percent += 1;
+                                            Thread.sleep(5);
+                                            Log.d("test","progress_percent" + progress_percent);
+                                            mtprogresser.setProgress(progress_percent);
+                                            // TODO 유저온도가 소수일 경우도 처리 가능해야함
+                                            if(progress_percent >= Double.parseDouble(dcutempre)){
+                                                currentThread().interrupt();
+                                            }
+                                        }
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+                        }.start();
+
+
+                    }else {
+                        Log.d(TAG, "No such document!");
+                    }
+                }else {
+                    Log.d(TAG, "get failed with",task.getException());
+                }
+            }
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         ProImg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,6 +217,8 @@ public class ProfileActivity extends AppCompatActivity {
                                             .setValue(messageObject);
                                 }
                             });
+                    myStartActivity(ChatActivity.class,U);
+
                 }
                 else
                     return;
@@ -235,5 +324,11 @@ public class ProfileActivity extends AppCompatActivity {
 
         return getTime;
     }
-
+    private void myStartActivity(Class c,User u) {// loginactivity페이지에서 mainactivity페이지로 넘기는 코드
+        Intent intent = new Intent(this, c);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra("userId",u.getKey_());
+        intent.putExtra("username",u.getUserName());
+        startActivity(intent);
+    }
 }

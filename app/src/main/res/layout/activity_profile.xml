@@ -12,7 +12,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-           >
+            >
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -35,8 +35,8 @@
                     android:textStyle="bold"
                     android:textSize="16sp"
                     android:letterSpacing="-0.06"
-                    android:lineSpacingExtra="5sp"/>
-<!--                    android:fontFamily="@font/spoqa_han_sans_neo"-->
+                    android:lineSpacingExtra="5sp"
+                    android:fontFamily="@font/spoqa_han_sans_neo"/>
 
                 <TextView
                     android:id="@+id/UserNum"
@@ -49,8 +49,8 @@
                     android:textSize="12sp"
                     android:textColor="#aaaaaa"
                     android:letterSpacing="0.03"
-                    android:lineSpacingExtra="3sp"/>
-<!--                    android:fontFamily="@font/spoqa_han_sans_neo"-->
+                    android:lineSpacingExtra="3sp"
+                    android:fontFamily="@font/spoqa_han_sans_neo"/>
 
 
             </LinearLayout>
@@ -76,14 +76,27 @@
                     android:id="@+id/MyLocation"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="부안군 부안읍ㆍMK헬스장"
-                    android:textStyle="normal"
-                    android:textSize="14sp"
-                    android:textColor="#111111"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/spoqa_han_sans_neo"
                     android:letterSpacing="-0.06"
                     android:lineSpacingExtra="4sp"
-                    android:layout_gravity="center"/>
-<!--                    android:fontFamily="@font/spoqa_han_sans_neo"-->
+                    android:text="부안군 부안읍"
+                    android:textColor="#111111"
+                    android:textSize="14sp"
+                    android:textStyle="normal" />
+
+                <TextView
+                    android:id="@+id/MyHealthPlace"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/spoqa_han_sans_neo"
+                    android:letterSpacing="-0.06"
+                    android:lineSpacingExtra="4sp"
+                    android:text="ㆍMK헬스장"
+                    android:textColor="#111111"
+                    android:textSize="14sp"
+                    android:textStyle="normal" />
 
 
             </LinearLayout>
@@ -94,17 +107,25 @@
                 android:orientation="horizontal"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="10dp">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="위트온도"
-                    android:textStyle="bold"
-                    android:textSize="12sp"
-                    android:textColor="#111111"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/spoqa_han_sans_neo"
                     android:letterSpacing="-0.06"
                     android:lineSpacingExtra="3sp"
-                    />
-<!--                    android:fontFamily="@font/spoqa_han_sans_neo"-->
+                    android:text="위트거리"
+                    android:textColor="#111111"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="4dp"
+                    android:background="@drawable/ic_baseline_info_24" />
 
 
                 <ImageView
@@ -113,39 +134,37 @@
                     android:layout_gravity="center"
                     android:layout_marginLeft="4dp"
                     />
-<!--                    android:background="@drawable/ic_baseline_info_24"-->
 
 
             </LinearLayout>
 
 
             <TextView
-                android:id="@+id/MyTempreture"
+                android:id="@+id/MyTempreture2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="36.4°C"
-                android:textStyle="bold"
-                android:textSize="16sp"
-                android:textColor="#111111"
+                android:layout_gravity="right"
+                android:layout_marginRight="25dp"
+                android:fontFamily="@font/spoqa_han_sans_neo"
                 android:letterSpacing="-0.06"
                 android:lineSpacingExtra="5sp"
-                android:layout_gravity="right"
-                android:layout_marginRight="25dp"/>
-<!--                android:fontFamily="@font/spoqa_han_sans_neo"-->
+                android:text=""
+                android:textColor="#111111"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
 
             <ProgressBar
                 android:id="@+id/MTProgresser"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="4dp"
                 android:max="100"
-                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                android:progress="0"
                 android:progressDrawable="@drawable/progressbar_exercise1"
-                android:progress="41"
-                android:secondaryProgress="36"
-                />
+                android:secondaryProgress="36" />
 
             <!--재운동 희망률과 응답률 큰 레이아웃-->
             <!--레이아웃 반반 비율로 맞춰야함.. marginright 임시로 해놓음-->
@@ -170,37 +189,37 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="재운동희망률"
-                            android:textStyle="normal"
-                            android:textSize="12sp"
-                            android:textColor="#111111"
+                            android:fontFamily="@font/spoqa_han_sans_neo"
                             android:letterSpacing="-0.06"
-                            android:lineSpacingExtra="3sp"/>
+                            android:lineSpacingExtra="3sp"
+                            android:text="재운동희망률"
+                            android:textColor="#111111"
+                            android:textSize="12sp"
+                            android:textStyle="normal" />
 
-<!--                        android:fontFamily="@font/spoqa_han_sans_neo-->
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="100%"
-                            android:textStyle="bold"
-                            android:textSize="12sp"
-                            android:textColor="#111111"
+                            android:fontFamily="@font/spoqa_han_sans_neo"
                             android:letterSpacing="0.03"
-                            android:lineSpacingExtra="3sp"/>
-<!--                        android:fontFamily="@font/spoqa_han_sans_neo"-->
+                            android:lineSpacingExtra="3sp"
+                            android:text="100%"
+                            android:textColor="#111111"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+
                     </LinearLayout>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="15명중 15명이 만족"
-
-                        android:textStyle="normal"
-                        android:textSize="10sp"
-                        android:textColor="#aaaaaa"
+                        android:fontFamily="@font/spoqa_han_sans_neo"
                         android:letterSpacing="0.03"
-                        android:lineSpacingExtra="3sp"/>
-<!--                    android:fontFamily="@font/spoqa_han_sans_neo"-->
+                        android:lineSpacingExtra="3sp"
+                        android:text="15명중 15명이 만족"
+                        android:textColor="#aaaaaa"
+                        android:textSize="10sp"
+                        android:textStyle="normal" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -216,36 +235,37 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="응답률"
-
-                            android:textStyle="normal"
-                            android:textSize="12sp"
-                            android:textColor="#111111"
+                            android:fontFamily="@font/spoqa_han_sans_neo"
                             android:letterSpacing="-0.06"
-                            android:lineSpacingExtra="3sp"/>
+                            android:lineSpacingExtra="3sp"
+                            android:text="응답률"
+                            android:textColor="#111111"
+                            android:textSize="12sp"
+                            android:textStyle="normal" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="-%"
-
-                            android:textStyle="bold"
-                            android:textSize="12sp"
-                            android:textColor="#111111"
+                            android:fontFamily="@font/spoqa_han_sans_neo"
                             android:letterSpacing="0.03"
-                            android:lineSpacingExtra="3sp"/>
+                            android:lineSpacingExtra="3sp"
+                            android:text="-%"
+                            android:textColor="#111111"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
 
                     </LinearLayout>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="표시될 만큼 충분히 채팅하지 않았아요."
-                        android:textStyle="normal"
-                        android:textSize="10sp"
-                        android:textColor="#aaaaaa"
+                        android:fontFamily="@font/spoqa_han_sans_neo"
                         android:letterSpacing="0.03"
-                        android:lineSpacingExtra="3sp"/>
+                        android:lineSpacingExtra="3sp"
+                        android:text="표시될 만큼 충분히 채팅하지 않았아요."
+                        android:textColor="#aaaaaa"
+                        android:textSize="10sp"
+                        android:textStyle="normal" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -269,36 +289,38 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="3대 측정"
-                android:textStyle="bold"
-                android:textSize="14sp"
-                android:textColor="#111111"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/spoqa_han_sans_neo"
                 android:letterSpacing="-0.06"
                 android:lineSpacingExtra="4sp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="10dp"/>
+                android:text="3대 측정"
+                android:textColor="#111111"
+                android:textSize="14sp"
+                android:textStyle="bold" />
 
             <!--3대 측정 레이아웃-->
             <LinearLayout
                 android:layout_width="288dp"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:layout_gravity="center"
                 android:layout_marginHorizontal="36dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginBottom="24dp"
-                android:layout_gravity="center">
+                android:orientation="horizontal">
 
                 <LinearLayout
                     android:layout_width="80dp"
                     android:layout_height="80dp"
-                    android:orientation="vertical"
-                    android:background="@drawable/circle">
+                    android:background="@drawable/circle"
+                    android:orientation="vertical">
 
                     <TextView
-                        android:layout_width="26dp"
+                        android:layout_width="44dp"
                         android:layout_height="13dp"
-                        android:layout_marginTop="23dp"
                         android:layout_marginHorizontal="27dp"
+                        android:layout_marginTop="23dp"
+                        android:fontFamily="@font/spoqa_han_sans_neo"
                         android:letterSpacing="-0.06"
                         android:lineSpacingExtra="3sp"
                         android:text="스쿼트"
@@ -308,34 +330,37 @@
 
                     <TextView
                         android:id="@+id/squat"
-                        android:layout_width="wrap_content"
+                        android:layout_width="26dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="25dp"
-                        android:text="130"
-                        android:textStyle="bold"
-                        android:textSize="15sp"
-                        android:textColor="#ffffff"
+                        android:layout_marginHorizontal="27dp"
+                        android:fontFamily="@font/spoqa_han_sans_neo"
                         android:letterSpacing="0.03"
-                        android:lineSpacingExtra="5sp"/>
+                        android:lineSpacingExtra="5sp"
+                        android:text=""
+                        android:textAlignment="center"
+                        android:textColor="#ffffff"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
 
                 </LinearLayout>
 
                 <View
                     android:layout_width="24dp"
-                    android:layout_height="80dp"/>
+                    android:layout_height="80dp" />
 
 
                 <LinearLayout
                     android:layout_width="80dp"
                     android:layout_height="80dp"
-                    android:orientation="vertical"
-                    android:background="@drawable/circle">
+                    android:background="@drawable/circle"
+                    android:orientation="vertical">
 
                     <TextView
                         android:layout_width="44dp"
                         android:layout_height="13dp"
                         android:layout_marginHorizontal="18dp"
                         android:layout_marginTop="23dp"
+                        android:fontFamily="@font/spoqa_han_sans_neo"
                         android:letterSpacing="-0.06"
                         android:lineSpacingExtra="3sp"
                         android:text="벤치프레스"
@@ -345,34 +370,37 @@
 
                     <TextView
                         android:id="@+id/benchpress"
-                        android:layout_width="wrap_content"
+                        android:layout_width="26dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="25dp"
+                        android:layout_marginHorizontal="27dp"
                         android:layout_marginBottom="23dp"
+                        android:fontFamily="@font/spoqa_han_sans_neo"
                         android:letterSpacing="0.03"
                         android:lineSpacingExtra="5sp"
-                        android:text="100"
+                        android:text=""
+                        android:textAlignment="center"
                         android:textColor="#ffffff"
-                        android:textSize="15sp"
+                        android:textSize="13sp"
                         android:textStyle="bold" />
 
                 </LinearLayout>
 
                 <View
                     android:layout_width="24dp"
-                    android:layout_height="80dp"/>
+                    android:layout_height="80dp" />
 
                 <LinearLayout
                     android:layout_width="80dp"
                     android:layout_height="80dp"
-                    android:orientation="vertical"
-                    android:background="@drawable/circle">
+                    android:background="@drawable/circle"
+                    android:orientation="vertical">
 
                     <TextView
                         android:layout_width="44dp"
                         android:layout_height="13dp"
                         android:layout_marginHorizontal="18dp"
                         android:layout_marginTop="23dp"
+                        android:fontFamily="@font/spoqa_han_sans_neo"
                         android:letterSpacing="-0.06"
                         android:lineSpacingExtra="3sp"
                         android:text="데드리프트"
@@ -382,14 +410,16 @@
 
                     <TextView
                         android:id="@+id/deadlift"
-                        android:layout_width="wrap_content"
+                        android:layout_width="26dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="25dp"
+                        android:layout_marginHorizontal="27dp"
+                        android:fontFamily="@font/spoqa_han_sans_neo"
                         android:letterSpacing="0.03"
                         android:lineSpacingExtra="5sp"
-                        android:text="200"
+                        android:text=""
+                        android:textAlignment="center"
                         android:textColor="#ffffff"
-                        android:textSize="15sp"
+                        android:textSize="13sp"
                         android:textStyle="bold" />
 
                 </LinearLayout>
@@ -405,142 +435,152 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:layout_marginHorizontal="16dp"
-                android:layout_marginVertical="24dp">
+                android:layout_marginVertical="24dp"
+                android:orientation="vertical">
 
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="받은 후기"
-                    android:textStyle="bold"
-                    android:textSize="14sp"
-                    android:textColor="#111111"
                     android:letterSpacing="-0.06"
-                    android:lineSpacingExtra="4sp" />
+                    android:lineSpacingExtra="4sp"
+                    android:text="받은 후기"
+                    android:textColor="#111111"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/rectangle"
-                    android:orientation="vertical"
-                    android:padding="5dp"
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="12dp"
-                    android:layout_marginBottom="100dp">
+                    android:layout_marginBottom="24dp"
+                    android:background="@drawable/rectangle"
+                    android:orientation="vertical"
+                    android:padding="5dp">
 
 
                     <LinearLayout
                         android:id="@+id/review1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
                         android:layout_marginVertical="8dp"
+                        android:orientation="horizontal"
                         android:paddingHorizontal="50dp">
+
                         <ImageButton
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/ic_baseline_check_24"
-                            android:layout_marginRight="10dp"/>
+                            android:layout_marginRight="10dp"
+                            android:background="@drawable/ic_baseline_check_24" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center"
                             android:layout_marginRight="10dp"
-                            android:text="15"
-                            android:textStyle="bold"
-                            android:textSize="14sp"
-                            android:textColor="#05c78c"
+                            android:fontFamily="@font/spoqa_han_sans_neo"
                             android:letterSpacing="-0.06"
                             android:lineSpacingExtra="10sp"
-                            android:layout_gravity="center"/>
+                            android:text="15"
+                            android:textColor="#05c78c"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="친절하고 매너가 좋아요"
-                            android:textStyle="normal"
-                            android:textSize="14sp"
-                            android:textColor="#111111"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/spoqa_han_sans_neo"
                             android:letterSpacing="-0.06"
                             android:lineSpacingExtra="10sp"
-                            android:layout_gravity="center"/>
+                            android:text="친절하고 매너가 좋아요"
+                            android:textColor="#111111"
+                            android:textSize="14sp"
+                            android:textStyle="normal" />
 
                     </LinearLayout>
+
                     <LinearLayout
                         android:id="@+id/review2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
                         android:layout_marginVertical="8dp"
+                        android:orientation="horizontal"
                         android:paddingHorizontal="50dp">
 
                         <ImageButton
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/ic_baseline_check_24"
-                            android:layout_marginRight="10dp"/>
+                            android:layout_marginRight="10dp"
+                            android:background="@drawable/ic_baseline_check_24" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center"
                             android:layout_marginRight="10dp"
-                            android:text="3"
-                            android:textStyle="bold"
-                            android:textSize="14sp"
-                            android:textColor="#05c78c"
+                            android:fontFamily="@font/spoqa_han_sans_neo"
                             android:letterSpacing="-0.06"
                             android:lineSpacingExtra="10sp"
-                            android:layout_gravity="center"/>
+                            android:text="3"
+                            android:textColor="#05c78c"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="시간 약속을 잘 지켜요"
-                            android:textStyle="normal"
-                            android:textSize="14sp"
-                            android:textColor="#111111"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/spoqa_han_sans_neo"
                             android:letterSpacing="-0.06"
                             android:lineSpacingExtra="10sp"
-                            android:layout_gravity="center"/>
+                            android:text="시간 약속을 잘 지켜요"
+                            android:textColor="#111111"
+                            android:textSize="14sp"
+                            android:textStyle="normal" />
 
                     </LinearLayout>
+
                     <LinearLayout
                         android:id="@+id/review3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
                         android:layout_marginVertical="8dp"
+                        android:orientation="horizontal"
                         android:paddingHorizontal="50dp">
 
                         <ImageButton
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/ic_baseline_check_24"
-                            android:layout_marginRight="10dp"/>
+                            android:layout_marginRight="10dp"
+                            android:background="@drawable/ic_baseline_check_24" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center"
                             android:layout_marginRight="10dp"
-                            android:text="102"
-                            android:textStyle="bold"
-                            android:textSize="14sp"
-                            android:textColor="#05c78c"
+                            android:fontFamily="@font/spoqa_han_sans_neo"
                             android:letterSpacing="-0.06"
                             android:lineSpacingExtra="10sp"
-                            android:layout_gravity="center"/>
+                            android:text="102"
+                            android:textColor="#05c78c"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="응답이 빨라요"
-                            android:textStyle="normal"
-                            android:textSize="14sp"
-                            android:textColor="#111111"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/spoqa_han_sans_neo"
                             android:letterSpacing="-0.06"
                             android:lineSpacingExtra="10sp"
-                            android:layout_gravity="center"/>
+                            android:text="응답이 빨라요"
+                            android:textColor="#111111"
+                            android:textSize="14sp"
+                            android:textStyle="normal" />
 
                     </LinearLayout>
 
@@ -548,38 +588,40 @@
                         android:id="@+id/review4"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
                         android:layout_marginVertical="8dp"
+                        android:orientation="horizontal"
                         android:paddingHorizontal="50dp">
 
                         <ImageButton
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/ic_baseline_check_24"
-                            android:layout_marginRight="10dp"/>
+                            android:layout_marginRight="10dp"
+                            android:background="@drawable/ic_baseline_check_24" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center"
                             android:layout_marginRight="10dp"
-                            android:text="1"
-                            android:textStyle="bold"
-                            android:textSize="14sp"
-                            android:textColor="#05c78c"
+                            android:fontFamily="@font/spoqa_han_sans_neo"
                             android:letterSpacing="-0.06"
                             android:lineSpacingExtra="10sp"
-                            android:layout_gravity="center"/>
+                            android:text="1"
+                            android:textColor="#05c78c"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="운동을 잘 알려줘요"
-                            android:textStyle="normal"
-                            android:textSize="14sp"
-                            android:textColor="#111111"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/spoqa_han_sans_neo"
                             android:letterSpacing="-0.06"
                             android:lineSpacingExtra="10sp"
-                            android:layout_gravity="center"/>
+                            android:text="운동을 잘 알려줘요"
+                            android:textColor="#111111"
+                            android:textSize="14sp"
+                            android:textStyle="normal" />
 
                     </LinearLayout>
                 </LinearLayout>
@@ -594,9 +636,11 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:background="#d3d3d3"
+                    android:layout_height="50dp"
+                    android:background="#FFFFFF"
                     android:layout_margin="5dp" />
+
+
 
             </LinearLayout>
         </LinearLayout>

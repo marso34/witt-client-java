@@ -132,13 +132,10 @@ public class UserListAdapter  extends RecyclerView.Adapter<UserListAdapter.MainV
 
         public MainViewHolder(@NonNull View itemView) {
             super(itemView);
-
             username = itemView.findViewById(R.id.txt_name);
             photoImageVIew = itemView.findViewById(R.id.img_rv_photo);
             last_msg = itemView.findViewById(R.id.last_msg);
             time_msg = itemView.findViewById(R.id.messagetime);
-
-
         }
     }
     private void lastMessage(final String userid, final TextView last_msg, final TextView time_msg){
