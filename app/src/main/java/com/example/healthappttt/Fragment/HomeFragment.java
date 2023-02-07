@@ -207,7 +207,7 @@ public class HomeFragment extends Fragment {
                         User currentUser = null;
                         if (task.isSuccessful()) {
                             if(clear){
-                                //userList.clear();
+                                userList.clear();
                             }
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                // Log.d(TAG, document.getId() + " &&&&+&=> " + document.getData().get("userName").toString());
