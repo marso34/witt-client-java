@@ -192,7 +192,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
                 // Local temp file has been created
-                Glide.with(getActivity()).load(finalProfilefile).into(userImg);
+                Glide.with(getContext()).load(finalProfilefile).into(userImg);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

@@ -120,6 +120,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
                     if (task.isSuccessful()) {
                         holder.ExerciseNames.clear();
                         DocumentSnapshot document = task.getResult();
+                        holder.PreferredTime.setText(document.get("startTime").toString() +" ~ "+document.get("endTime").toString());
                         Integer exerciseCat = Integer.parseInt(document.get("exerciseCategories").toString());
                             Log.d(TAG, "Document exists!");
                             if ((exerciseCat & 0x1) == 0x1) {
@@ -192,8 +193,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
 
       //  Log.d(TAG, "onBindViewHolder: "+ userInfo.getUserName().toString());
         holder.Name.setText(userInfo.getUserName().toString());
-        holder.LocaName.setText(userInfo.getDistance().toString());
-        holder.PreferredTime.setText("11~13");
+        holder.LocaName.setText(userInfo.getDistance().toString() + "Km");
+       ;
     }
     public void getCurrentWeek() {
         Date currentDate = new Date();

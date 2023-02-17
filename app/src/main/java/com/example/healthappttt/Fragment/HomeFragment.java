@@ -214,6 +214,7 @@ public class HomeFragment extends Fragment {
                                // Log.d(TAG, document.getId() + " &&&&+&=> " + document.getData().get("userName").toString());
                                User a= new User(
                                        Double.parseDouble(document.getData().get("userTemperature").toString()),
+
                                         document.getData().get("key_").toString(),
                                         Double.parseDouble(document.getData().get("lat").toString()),
                                         Double.parseDouble(document.getData().get("lon").toString()),
@@ -231,16 +232,23 @@ public class HomeFragment extends Fragment {
                             }
                             //퀵정렬 편집해서 만드는건 가능한데 일단 보류 난이도가 높음.
                             //
-                            ArrayList<Double> distans = new ArrayList<Double>();
+                            ArrayList<Integer> distans = new ArrayList<Integer>();
                             for(int i=0;i<userList.size();++i){
                                 if(userList.get(i).getKey_() == currentUser.getKey_()) {
-                                    distans.add(0.0);
-                                    userList.get(i).setDistance(0.0);
+                                    distans.add(0);
+                                    userList.get(i).setDistance(0);
                                 }
                                 else {
+                                    int a = 0;
                                     Double dis = DistanceByDegreeAndroid(currentUser.getLat(),currentUser.getLon(),userList.get(i).getLat(),userList.get(i).getLon());
-                                    distans.add(dis);
-                                    userList.get(i).setDistance(dis);
+                                    if(dis > 0.0) {
+                                        a = (int)Math.round(dis/1000);
+                                    }
+
+
+                                        distans.add(a);
+
+                                    userList.get(i).setDistance(a);
                                 }
                             }
                             for(int i=0;i<userList.size();++i){

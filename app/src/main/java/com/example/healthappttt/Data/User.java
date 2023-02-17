@@ -20,7 +20,7 @@ public class User implements Serializable {
         private String Key_ ="";
         private Double Lat = 0.0;
         private Double Lon = 0.0;
-        private Double Distance = 0.0;
+        private Integer Distance = 0;
 
     //
 //        public User(User a){
@@ -91,10 +91,10 @@ public class User implements Serializable {
     public Double getLon(){
         return  this.Lon;
     }
-    public Double getDistance(){
+    public Integer getDistance(){
         return this.Distance;
     }
-    public void setDistance(Double D){
+    public void setDistance(Integer D){
         this.Distance = D;
     }
     public void setLat(Double L){

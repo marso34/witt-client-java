@@ -2,9 +2,9 @@ package com.example.healthappttt.Data;
 
 public class CompareUser implements Comparable<CompareUser>{
     private User U;
-    private double distance;
+    private Integer distance;
 
-    public CompareUser(User U, Double D){
+    public CompareUser(User U, Integer D){
         this.U = U;
         this.distance = D;
     }
@@ -20,7 +20,7 @@ public class CompareUser implements Comparable<CompareUser>{
         else return 0;
     }
 
-    public Double getDistance(){
+    public Integer getDistance(){
         return this.distance;
     }
     public User getUser(){
