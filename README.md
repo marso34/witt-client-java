@@ -212,13 +212,13 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 **Kim Seonbo**
 
-- GitHub: [@나중에 추가]()
+- GitHub: [@KimSeonBo](https://github.com/KimSeonBo)
 - SNS: [@SNS_name]()
 - Mail: <a href="mailto:kwoo6643@gmail.com">kwoo6643@gmail.com</a>
 
 **Kim Gunwoo**
 
-- GitHub: [@KimSeonBo](https://github.com/KimSeonBo)
+- GitHub: 
 - SNS: [@SNS_name]()
 - Mail: <a href="mailto:kimsunbo69@gmail.com">kimsunbo69@gmail.com</a>
 
