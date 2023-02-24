@@ -218,7 +218,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 **Kim Gunwoo**
 
-- GitHub: [@나중에 추가]()
+- GitHub: [@KimSeonBo](https://github.com/KimSeonBo)
 - SNS: [@SNS_name]()
 - Mail: <a href="mailto:kimsunbo69@gmail.com">kimsunbo69@gmail.com</a>
 
@@ -235,7 +235,7 @@ Project Link: [https://github.com/your_username/repo_name](https://github.com/ma
 Use this space to list resources you find helpful and would like to give credit to. I've included a few of my favorites to kick things off!
 
 
-<!-- PROJECT SHIELDS -->
+<!-- 나중에 수정-->
 
 <a href="https://github.com/badges/shields/graphs/contributors" alt="Contributors">
         <img src="https://img.shields.io/github/contributors/badges/shields" /></a>
