@@ -214,13 +214,13 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 - GitHub: [@KimSeonBo](https://github.com/KimSeonBo)
 - SNS: [@SNS_name]()
-- Mail: <a href="mailto:kwoo6643@gmail.com">kwoo6643@gmail.com</a>
+- Mail: <a href="mailto:kimsunbo69@gmail.com">kimsunbo69@gmail.com</a>
 
 **Kim Gunwoo**
 
 - GitHub: 
 - SNS: [@SNS_name]()
-- Mail: <a href="mailto:kimsunbo69@gmail.com">kimsunbo69@gmail.com</a>
+- Mail: <a href="mailto:kwoo6643@gmail.com">kwoo6643@gmail.com</a>
 
 
 Project Link: [https://github.com/your_username/repo_name](https://github.com/marso34/witt-client-java)
