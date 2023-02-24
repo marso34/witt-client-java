@@ -238,13 +238,6 @@ Use this space to list resources you find helpful and would like to give credit 
 <!-- 나중에 수정-->
 
 <a href="https://github.com/marso34/witt-client-java/graphs/contributors" alt="Contributors">
-        <img src="https://img.shields.io/github/contributors/badges/shields" /></a>
-    <a href="#backers" alt="Backers on Open Collective">
-        <img src="https://img.shields.io/opencollective/backers/shields" /></a>
-    <a href="#sponsors" alt="Sponsors on Open Collective">
-        <img src="https://img.shields.io/opencollective/sponsors/shields" /></a>
+        <img src="https://img.shields.io/github/contributors/marso34/witt-client-java" /></a>
     <a href="https://github.com/marso34/witt-client-java/pulse" alt="Activity">
         <img src="https://img.shields.io/github/commit-activity/m/marso34/witt-client-java" /></a>
-    <a href="https://coveralls.io/marso34/witt-client-java/shields">
-        <img src="https://img.shields.io/coveralls/github/badges/shields"
-            alt="coverage"></a>
