@@ -240,3 +240,10 @@ Use this space to list resources you find helpful and would like to give credit 
 [![Stargazers][stars-shield]][https://github.com/marso34/witt-client-java/stars]  
 [![Issues][issues-shield]][https://github.com/marso34/witt-client-java/issues]
 <!-- [![MIT License][license-shield]][license-url] -->
+
+[![Contributors][contributors-shield]][contributors-url]
+[![Forks][forks-shield]][forks-url]
+[![Stargazers][stars-shield]][stars-url]
+[![Issues][issues-shield]][issues-url]
+[![MIT License][license-shield]][license-url]
+[![LinkedIn][linkedin-shield]][linkedin-url]
