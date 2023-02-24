@@ -235,9 +235,8 @@ Project Link: [https://github.com/your_username/repo_name](https://github.com/ma
 Use this space to list resources you find helpful and would like to give credit to. I've included a few of my favorites to kick things off!
 
 
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
+[![Contributors][contributors-shield]][https://github.com/marso34/witt-client-java/contributors]
+[![Forks][forks-shield]][https://github.com/marso34/witt-client-java/forks]
+[![Stargazers][stars-shield]][https://github.com/marso34/witt-client-java/stars]  
+[![Issues][issues-shield]][https://github.com/marso34/witt-client-java/issues]
+<!-- [![MIT License][license-shield]][license-url] -->
