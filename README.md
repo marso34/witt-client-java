@@ -175,6 +175,14 @@ Don't forget to give the project a star! Thanks again!
 
 
 
+<!-- Libraries -->
+## Libraries
+
+...
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
 <!-- LICENSE -->
 ## License
 
@@ -190,8 +198,9 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 **Lee June**
 
 - GitHub: [@marso34](https://github.com/marso34)
-- SNS: 
+- SNS: Null
 - Mail: <a href="mailto:mars102aq@gmail.com">mars102aq@gmail.com</a>
+- Portfolio: [Notion](https://leejune.notion.site/Portfolio-70b846886e2e41368280f5a7e49f9e0d)
 
 **Kim Dohyun**
 
@@ -224,7 +233,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 - Mail: <a href="mailto:kwoo6643@gmail.com">kwoo6643@gmail.com</a>
 
 
-Project Link: [https://github.com/your_username/repo_name](https://github.com/marso34/witt-client-java)
+Project Link: [https://github.com/marso34/witt-client-java](https://github.com/marso34/witt-client-java)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -239,6 +248,6 @@ Use this space to list resources you find helpful and would like to give credit 
 <!-- 나중에 수정-->
 
 <a href="https://github.com/marso34/witt-client-java/graphs/contributors" alt="Contributors">
-        <img src="https://img.shields.io/github/contributors/marso34/witt-client-java" /></a>
-    <a href="https://github.com/marso34/witt-client-java/pulse" alt="Activity">
-        <img src="https://img.shields.io/github/commit-activity/m/marso34/witt-client-java" /></a>
+  <img src="https://img.shields.io/github/contributors/marso34/witt-client-java" /></a>
+<a href="https://github.com/marso34/witt-client-java/pulse" alt="Activity">
+  <img src="https://img.shields.io/github/commit-activity/m/marso34/witt-client-java" /></a>
