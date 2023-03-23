@@ -16,8 +16,8 @@
             android:id="@+id/titleBar"
             android:layout_width="match_parent"
             android:layout_height="74dp"
-            android:background="#ffffff"
-            android:elevation="5dp">
+            android:background="@drawable/rounded_bottom"
+            android:elevation="0dp">
 
             <TextView
                 android:id="@+id/viewName"
@@ -33,7 +33,14 @@
                 android:layout_height="30dp"
                 android:layout_gravity="right"
                 android:layout_margin="15dp"
-                android:src="@drawable/ic_baseline_notifications_none_24" />
+                android:src="@drawable/baseline_notifications_24" />
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="right"
+                android:src="@drawable/ic_baseline_person"
+                app:tint="@color/Background_3" />
 
         </androidx.appcompat.widget.Toolbar>
 
@@ -46,8 +53,7 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0"
-            android:background="@color/white">
+            app:layout_constraintVertical_bias="0.0" >
         </FrameLayout>
 
     </LinearLayout>
@@ -61,10 +67,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:background="@android:color/transparent"
-            app:itemBackground="@color/white"
+            android:background="@drawable/rounded_top"
+            app:itemBackground="@color/transparent"
             app:itemHorizontalTranslationEnabled="false"
+            app:itemIconTint="@drawable/menu_selector_color"
+            app:itemTextColor="@drawable/menu_selector_color"
             app:labelVisibilityMode="labeled"
+            app:elevation="0dp"
             app:menu="@menu/bottom_nav_menu" />
 
     </FrameLayout>
@@ -75,6 +84,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:clickable="true"
+        android:focusable="true"
         android:backgroundTint="#05c78c"
         android:src="@drawable/logo_test"
         app:maxImageSize="62dp"

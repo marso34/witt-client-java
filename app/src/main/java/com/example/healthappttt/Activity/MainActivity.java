@@ -126,13 +126,9 @@ public class MainActivity extends AppCompatActivity {
                     replaceFragment(new ChattingFragment());
                     break;
                 case R.id.profile:
-                    binding.viewName.setText("프로필");
-                    replaceFragment(new ProfileFragment());
+                    binding.viewName.setText("기록");
+//                    replaceFragment(new ProfileFragment()); // 운동 기록 프래그먼트로 연결
                     break;
-//                case R.id.alarm:
-//                    binding.viewName.setText("알림");
-//                    replaceFragment(new ProflieFragment());
-//                    break;
             }
             return true;
         });
