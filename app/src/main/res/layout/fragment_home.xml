@@ -7,64 +7,65 @@
     tools:context=".Fragment.HomeFragment">
 
     <!-- TODO: Update blank fragment layout -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:paddingTop="20dp"
+            android:orientation="horizontal"
+            android:background="@drawable/rounded_bottom"
+            >
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:orientation="horizontal"
-                android:background="@color/white"
-                >
-
-                <Button
-                    android:gravity="left|center"
-                    android:layout_width="70dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:text="루틴순"
-                    android:textStyle="bold"
-                    android:textSize="20dp"
-                    android:textColor="@color/black"
-                   android:background="#00ff0000"
-                    ></Button>
-                <Button
-                    android:textSize="20dp"
-                    android:gravity="left|center"
-                    android:layout_width="134dp"
-                    android:layout_height="wrap_content"
-                    android:text="같은 헬스장만"
-                    android:textStyle="bold"
-                    android:textColor="@color/gray"
-                    android:background="#00ff0000"
-                    ></Button>
-                <Button
-                    android:textSize="20dp"
-                    android:gravity="left|center"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="선호 시간순"
-                    android:textStyle="bold"
-                    android:textColor="@color/gray"
-                    android:background="#00ff0000"
-                    ></Button>
-                <com.google.android.material.tabs.TabLayout
-                    android:id="@+id/tabLayout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1.5dp"
-                android:background="#E2E2E2"
-                android:layout_gravity="center"/>
-            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-                android:id="@+id/swipe_layout"
-                android:layout_width="match_parent"
+            <Button
+                android:gravity="left|center"
+                android:layout_width="70dp"
                 android:layout_height="wrap_content"
-                >
+                android:layout_marginLeft="16dp"
+                android:text="루틴순"
+                android:textStyle="bold"
+                android:textSize="20dp"
+                android:textColor="@color/black"
+                android:background="#00ff0000"
+                ></Button>
+            <Button
+                android:textSize="20dp"
+                android:gravity="left|center"
+                android:layout_width="134dp"
+                android:layout_height="wrap_content"
+                android:text="같은 헬스장만"
+                android:textStyle="bold"
+                android:textColor="@color/gray"
+                android:background="#00ff0000"
+                ></Button>
+            <Button
+                android:textSize="20dp"
+                android:gravity="left|center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="선호 시간순"
+                android:textStyle="bold"
+                android:textColor="@color/gray"
+                android:background="#00ff0000"
+                ></Button>
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1.5dp"
+            android:background="#E2E2E2"
+            android:layout_gravity="center"/>
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
@@ -75,5 +76,5 @@
                 tools:listitem="@layout/adapter_user">
             </androidx.recyclerview.widget.RecyclerView>
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-        </LinearLayout>
+    </LinearLayout>
 </FrameLayout>
