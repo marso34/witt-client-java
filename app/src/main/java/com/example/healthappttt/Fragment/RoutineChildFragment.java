@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -17,7 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.healthappttt.Activity.SetExerciseActivity;
+import com.example.healthappttt.Activity.CreateRoutineActivity;
 import com.example.healthappttt.Data.Routine;
 import com.example.healthappttt.R;
 import com.example.healthappttt.adapter.RoutineAdapter;
@@ -37,6 +38,7 @@ import java.util.ArrayList;
  * create an instance of this fragment.
  */
 public class RoutineChildFragment extends Fragment {
+    private static final int REQUEST_CODE = 100;
 
     private RecyclerView recyclerView;
     private RoutineAdapter adapter;
@@ -167,44 +169,26 @@ public class RoutineChildFragment extends Fragment {
         setRecyclerView();
 
         addRoutineBtn.setOnClickListener(view1 -> {
-//            Intent intent = new Intent(getContext(), CreateRoutineActivity.class);
-//            Intent intent = new Intent(getContext(), SetExerciseActivity.class);
-//            startActivity(intent);
+            Intent intent = new Intent(getContext(), CreateRoutineActivity.class);
+            startActivityForResult(intent, REQUEST_CODE);
         });
-
-
-//        db.collection("routines").document(UserUid +"_" + dayOfWeek).
-//                get().
-//                addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//                    @SuppressLint("RestrictedApi")
-//                    @Override
-//                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//                        if (task.isSuccessful()) {
-//                            DocumentSnapshot document = task.getResult();
-//                            if (document.exists()) {
-//                                Log.d(TAG, "Document exists!");
-//                                Routine routine = new Routine(
-//                                        document.getData().get("title").toString(),
-//                                        Integer.parseInt(document.getData().get("exerciseCategories").toString()),
-//                                        document.getData().get("startTime").toString(),
-//                                        document.getData().get("endTime").toString()
-//                                );
-//                                routines.add(routine);
-//
-//
-//                            } else {
-//                                Log.d(TAG, "Document does not exist!");
-//                            }
-//                        } else {
-//                            Log.d(TAG, "Failed");
-//                        }
-//                    }
-//                });
-
 
         // Inflate the layout for this fragment
         return view;
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQUEST_CODE && data != null) {
+            String result = data.getStringExtra("result");
+            routines.add(new Routine());
+            adapter.notifyDataSetChanged();
+
+            Log.d("Test", result);
+        }
+    } // startActivityForResult로 실행한 액티비티의 반환값을 전달받는 메서드
 
     private void setRecyclerView() {
         adapter = new RoutineAdapter(routines, getContext()); // 나중에 routine
@@ -212,7 +196,7 @@ public class RoutineChildFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
 
-        if (adapter != null) {
+//        if (adapter != null) {
 //            adapter.setOnExerciseClickListener(new setExerciseAdapter.OnExerciseClick() {
 //                @Override
 //                public void onExerciseClick(int postion) {
@@ -223,6 +207,8 @@ public class RoutineChildFragment extends Fragment {
 ////                    saveRoutine(routine.getExercises().get(postion));
 //                }
 //            });
-        }
+//        }
     }
+
+
 }

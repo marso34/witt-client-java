@@ -22,21 +22,11 @@ import java.util.ArrayList;
 public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainViewHolder> {
     private Context context;
     private ArrayList<Routine> routines;
-    private int RoutinesSize;
 
-
-    private int exerciseCategories;
-
-    public RoutineAdapter() {
-    }
 
     public RoutineAdapter(ArrayList<Routine> routines, Context context) {
         this.routines = routines;
-        this.RoutinesSize = routines.size();
         this.context = context;
-
-        if (RoutinesSize == 0)
-            RoutinesSize = 1;
     }
 
     public static class MainViewHolder extends RecyclerView.ViewHolder {
@@ -74,6 +64,9 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
     @Override
     public void onBindViewHolder(@NonNull MainViewHolder holder, int position) {
         if (routines.size() > 0) {
+            holder.RoutineLayout.setVisibility(View.VISIBLE);
+            holder.NullLayout.setVisibility(View.GONE);
+
 //            routines에서 시간 정보 가져와서 오전 오후 시간 정보 분리하는 메서드 만들기
 //            holder.am_pm1.setText(routines.get(position).getStartTime());
 //            holder.time1.setText(routines.get(position).getStartTime());
@@ -87,7 +80,11 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
     }
 
     @Override
-    public int getItemCount() { return RoutinesSize; }
+    public int getItemCount() {
+        if (routines.size() == 0)   return 1;
+
+        return routines.size();
+    }
 
     private void setRecyclerView(RecyclerView recyclerView, ExerciseAdapter adapter, Routine routine) {
         adapter = new ExerciseAdapter(routine); // 나중에 routine

@@ -17,7 +17,17 @@ public class RoutinePagerAdapter extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-        addFragment(new RoutineChildFragment(position));
+        switch (position){
+            case 0:
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+            case 6: addFragment(new RoutineChildFragment(position)); break;
+            default:
+                return null;
+        }
 
         return mFragmentList.get(position);
     }
