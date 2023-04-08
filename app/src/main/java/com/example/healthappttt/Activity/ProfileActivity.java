@@ -283,7 +283,6 @@ public class ProfileActivity extends AppCompatActivity {
                             if (document.exists()) {
                                 Log.d(TAG, "Document exists!");
                                 routine = new Routine(
-                                        document.getData().get("title").toString(),
                                         Integer.parseInt(document.getData().get("exerciseCategories").toString()),
                                         document.getData().get("startTime").toString(),
                                         document.getData().get("endTime").toString()

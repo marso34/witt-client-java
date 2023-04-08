@@ -61,7 +61,7 @@ public class SetExerciseActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
-        routine = new Routine("", 0);
+        routine = new Routine(0);
         exercises = new ArrayList<>();
 
         getCurrentWeek();
@@ -101,7 +101,6 @@ public class SetExerciseActivity extends AppCompatActivity {
                             if (document.exists()) {
                                 Log.d(TAG, "Document exists!");
                                 routine = new Routine(
-                                        document.getData().get("title").toString(),
                                         Integer.parseInt(document.getData().get("exerciseCategories").toString()),
                                         document.getData().get("startTime").toString(),
                                         document.getData().get("endTime").toString()

@@ -1,19 +1,31 @@
 package com.example.healthappttt.Fragment;
 
+import static androidx.fragment.app.FragmentManager.TAG;
+
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.healthappttt.Activity.SetExerciseActivity;
 import com.example.healthappttt.Data.Routine;
 import com.example.healthappttt.R;
 import com.example.healthappttt.adapter.RoutineAdapter;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.checkerframework.checker.units.qual.A;
 
@@ -33,6 +45,14 @@ public class RoutineChildFragment extends Fragment {
 
     private ArrayList<Routine> routines;
     private static int day_of_week;
+
+
+
+    private FirebaseFirestore firebaseFirestore;
+    private FirebaseAuth mAuth;// 파이어베이스 유저관련 접속하기위한 변수
+    private FirebaseFirestore db;
+    private String UserUid;
+    private String dayOfWeek = "";
 
 
 
@@ -85,9 +105,101 @@ public class RoutineChildFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerView);
         addRoutineBtn = view.findViewById(R.id.addRoutine);
 
+//
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
+
+        UserUid = mAuth.getCurrentUser().getUid();
+//
+
+
         routines = new ArrayList<>();
 
+
+        switch (day_of_week) {
+            case 0:
+                dayOfWeek = "sun";
+                break;
+            case 1:
+                dayOfWeek = "mon";
+                routines.add(new Routine());
+            break;
+            case 2:
+                dayOfWeek = "tue";
+                routines.add(new Routine());
+                routines.add(new Routine());
+                break;
+            case 3:
+                dayOfWeek = "wed";
+                routines.add(new Routine());
+                routines.add(new Routine());
+                routines.add(new Routine());
+                break;
+            case 4:
+                dayOfWeek = "thu";
+                routines.add(new Routine());
+                routines.add(new Routine());
+                routines.add(new Routine());
+                routines.add(new Routine());
+                break;
+            case 5:
+                dayOfWeek = "fri";
+                routines.add(new Routine());
+                routines.add(new Routine());
+                routines.add(new Routine());
+                routines.add(new Routine());
+                routines.add(new Routine());
+                break;
+            case 6:
+                dayOfWeek = "sat";
+                routines.add(new Routine());
+                routines.add(new Routine());
+                routines.add(new Routine());
+                routines.add(new Routine());
+                routines.add(new Routine());
+                routines.add(new Routine());
+            break;
+        }
+
+        Log.d("test: ", dayOfWeek);
+
         setRecyclerView();
+
+        addRoutineBtn.setOnClickListener(view1 -> {
+//            Intent intent = new Intent(getContext(), CreateRoutineActivity.class);
+//            Intent intent = new Intent(getContext(), SetExerciseActivity.class);
+//            startActivity(intent);
+        });
+
+
+//        db.collection("routines").document(UserUid +"_" + dayOfWeek).
+//                get().
+//                addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//                    @SuppressLint("RestrictedApi")
+//                    @Override
+//                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                        if (task.isSuccessful()) {
+//                            DocumentSnapshot document = task.getResult();
+//                            if (document.exists()) {
+//                                Log.d(TAG, "Document exists!");
+//                                Routine routine = new Routine(
+//                                        document.getData().get("title").toString(),
+//                                        Integer.parseInt(document.getData().get("exerciseCategories").toString()),
+//                                        document.getData().get("startTime").toString(),
+//                                        document.getData().get("endTime").toString()
+//                                );
+//                                routines.add(routine);
+//
+//
+//                            } else {
+//                                Log.d(TAG, "Document does not exist!");
+//                            }
+//                        } else {
+//                            Log.d(TAG, "Failed");
+//                        }
+//                    }
+//                });
 
 
         // Inflate the layout for this fragment
@@ -95,7 +207,7 @@ public class RoutineChildFragment extends Fragment {
     }
 
     private void setRecyclerView() {
-        adapter = new RoutineAdapter(routines); // 나중에 routine
+        adapter = new RoutineAdapter(routines, getContext()); // 나중에 routine
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);

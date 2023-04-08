@@ -2,7 +2,6 @@ package com.example.healthappttt.Activity;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -188,7 +187,7 @@ public class ExerciseRecordActivity extends AppCompatActivity {
 
     public Routine getRecord() {
 
-        Routine record = new Routine(routine.getTitle(), routine.getExerciseCategories(), recordExercises);
+        Routine record = new Routine(routine.getExerciseCategories(), recordExercises);
         record.setStartTime(Long.toString(startTime));
         record.setEndTime(Long.toString(System.currentTimeMillis()));
         record.setRunTime(Long.toString(runTime));

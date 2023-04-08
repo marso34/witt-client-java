@@ -11,7 +11,7 @@
     app:cardCornerRadius="20dp">
 
     <LinearLayout
-        android:id="@+id/exerciseLayout"
+        android:id="@+id/routineLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"

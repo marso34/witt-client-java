@@ -104,6 +104,7 @@ public class RoutineFragment extends Fragment {
 
         tabLayout = view.findViewById(R.id.tab_layout);
         viewPager = view.findViewById(R.id.view_pager);
+
         pagerAdapter = new RoutinePagerAdapter(this);
         pagerAdapter.createFragment(0);
         pagerAdapter.createFragment(1);
@@ -119,11 +120,34 @@ public class RoutineFragment extends Fragment {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(currentDate);
 
-        viewPager.setCurrentItem(calendar.get(Calendar.DAY_OF_WEEK) - 1);
-
-        new TabLayoutMediator(tabLayout, viewPager,
-                (tab, position) -> tab.setText(setText(position))
+        new TabLayoutMediator(tabLayout, viewPager, new TabLayoutMediator.TabConfigurationStrategy() {
+            @Override
+            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
+                tab.setText(setText(position));
+            }
+        }
         ).attach();
+
+        viewPager.setCurrentItem(calendar.get(Calendar.DAY_OF_WEEK) - 1, false);
+
+//        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+//            @Override
+//            public void onTabSelected(TabLayout.Tab tab) {
+//                viewPager.setCurrentItem(tab.getPosition(), false);
+//            }
+//
+//            @Override
+//            public void onTabUnselected(TabLayout.Tab tab) {
+//
+//            }
+//
+//            @Override
+//            public void onTabReselected(TabLayout.Tab tab) {
+//
+//            }
+//        });
+//        애니메이션 삭제 코드, 애니메이션 삭제하면 너무 딱딱하게 느껴짐. 없으면 탭 클릭 시 애니메이션 과함
+
 
         return view;
     }

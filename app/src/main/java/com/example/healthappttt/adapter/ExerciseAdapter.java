@@ -19,18 +19,15 @@ import com.example.healthappttt.Data.Routine;
 import java.util.ArrayList;
 
 public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.MainViewHolder>  {
-    private String title;
     private ArrayList<Exercise> exercises;
 
     private OnExerciseClick onExerciseClick;
 
     public ExerciseAdapter(Routine routine) { // 일단 테스트
-        this.title = routine.getTitle();
         this.exercises = routine.getExercises();
     }
 
     public ExerciseAdapter(ArrayList<Exercise> exercises) {
-        this.title = "";
         this.exercises = exercises;
     }
 
