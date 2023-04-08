@@ -61,24 +61,7 @@ public class RoutineFragment extends Fragment {
     private TabLayout tabLayout;
     private ViewPager2 viewPager;
     private RoutinePagerAdapter pagerAdapter;
-
-    private Button[] weekBtn;
-    private TextView StartTime, EndTime;
-    private CardView addCard;
-
-    private RecyclerView recyclerView;
-    private setExerciseAdapter adapter;
-
-    private Routine routine;
-
-    private int exerciseCat = 0;
-    private String UserUid;
-//    private String dayOfWeek = "";
-
-    private FirebaseFirestore firebaseFirestore;
-    private FirebaseAuth mAuth;// 파이어베이스 유저관련 접속하기위한 변수
-    private FirebaseFirestore db;
-
+    
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER

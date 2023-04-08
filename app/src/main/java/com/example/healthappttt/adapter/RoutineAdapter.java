@@ -16,55 +16,55 @@ import com.example.healthappttt.R;
 import java.util.ArrayList;
 
 public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainViewHolder> {
-    private ArrayList<Exercise> exercises;
+
+    private ArrayList<Routine> routines;
+
+
     private int exerciseCategories;
     private int exerciseCnt;
 
     public RoutineAdapter() {
     }
 
-    public RoutineAdapter(Routine routine) {
-        this.exercises = routine.getExercises();
-        this.exerciseCategories = routine.getExerciseCategories();
-        this.exerciseCnt = exercises.size();
+    public RoutineAdapter(ArrayList<Routine> routines) {
+        this.routines = routines;
+
 
     }
 
     public static class MainViewHolder extends RecyclerView.ViewHolder {
-        public LinearLayout AerobicLayout, countLayout;
-        public TextView eName;
+        public TextView am_pm1, am_pm2, time1, time2;
+        public TextView Edit;
 
         public MainViewHolder(View view) {
             super(view);
 
-            this.AerobicLayout = (LinearLayout) view.findViewById(R.id.cardioLayout);
-            this.countLayout = (LinearLayout) view.findViewById(R.id.countLayout);
-            this.eName = (TextView) view.findViewById(R.id.exerciseName);
-
+            this.am_pm1 = (TextView) view.findViewById(R.id.am_pm1);
+            this.am_pm2 = (TextView) view.findViewById(R.id.am_pm2);
+            this.time1 = (TextView) view.findViewById(R.id.time1);
+            this.time2 = (TextView) view.findViewById(R.id.time2);
+            this.Edit = (TextView) view.findViewById(R.id.Edit);
         }
     }
 
     @NonNull
     @Override
     public MainViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_exercise, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_routine, parent, false);
         final MainViewHolder mainViewHolder = new MainViewHolder(view);
-
 
         return mainViewHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull MainViewHolder holder, int position) {
-        holder.AerobicLayout.setVisibility(View.GONE);
-        holder.countLayout.setVisibility(View.GONE);
-
-        holder.eName.setText(exercises.get(position).getTitle());
+//        holder.AerobicLayout.setVisibility(View.GONE);
+//        holder.countLayout.setVisibility(View.GONE);
+//        holder.am_pm1.setVisibility();
+//
+//        holder.eName.setText(exercises.get(position).getTitle());
     }
 
     @Override
     public int getItemCount() { return exerciseCnt; }
-
-
-
 }

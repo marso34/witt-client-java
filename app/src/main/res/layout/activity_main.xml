@@ -92,6 +92,7 @@
         app:fabCustomSize="62dp"
         app:elevation="0dp"
         app:layout_anchor="@id/bottomNav"
-        app:layout_anchorGravity="center_horizontal|center" />
+        app:layout_anchorGravity="center_horizontal|center"
+        tools:ignore="SpeakableTextPresentCheck"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

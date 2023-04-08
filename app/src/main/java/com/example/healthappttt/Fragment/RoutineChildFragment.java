@@ -2,14 +2,22 @@ package com.example.healthappttt.Fragment;
 
 import android.os.Bundle;
 
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
+import com.example.healthappttt.Data.Routine;
 import com.example.healthappttt.R;
+import com.example.healthappttt.adapter.RoutineAdapter;
+
+import org.checkerframework.checker.units.qual.A;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -17,9 +25,16 @@ import com.example.healthappttt.R;
  * create an instance of this fragment.
  */
 public class RoutineChildFragment extends Fragment {
+
+    private RecyclerView recyclerView;
+    private RoutineAdapter adapter;
+    private CardView addRoutineBtn;
+
+
+    private ArrayList<Routine> routines;
     private static int day_of_week;
 
-    private TextView testText;
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -66,10 +81,36 @@ public class RoutineChildFragment extends Fragment {
                              Bundle savedInstanceState) {
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_routine_child, container, false);
 
-//        testText = view.findViewById(R.id.testSSS);
-//        testText.setText(day_of_week + " 프래그먼트 test");
+
+        recyclerView = view.findViewById(R.id.recyclerView);
+        addRoutineBtn = view.findViewById(R.id.addRoutine);
+
+        routines = new ArrayList<>();
+
+        setRecyclerView();
+
 
         // Inflate the layout for this fragment
         return view;
+    }
+
+    private void setRecyclerView() {
+        adapter = new RoutineAdapter(routines); // 나중에 routine
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(adapter);
+
+        if (adapter != null) {
+//            adapter.setOnExerciseClickListener(new setExerciseAdapter.OnExerciseClick() {
+//                @Override
+//                public void onExerciseClick(int postion) {
+//                    deleteExercise(postion);
+//                    adapter.removeItem(postion);
+//                    adapter.notifyDataSetChanged();
+//
+////                    saveRoutine(routine.getExercises().get(postion));
+//                }
+//            });
+        }
     }
 }
