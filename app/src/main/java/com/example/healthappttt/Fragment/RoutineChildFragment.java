@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.healthappttt.Activity.CreateRoutineActivity;
+import com.example.healthappttt.Data.Exercise;
 import com.example.healthappttt.Data.Routine;
 import com.example.healthappttt.R;
 import com.example.healthappttt.adapter.RoutineAdapter;
@@ -117,6 +118,12 @@ public class RoutineChildFragment extends Fragment {
 
 
         routines = new ArrayList<>();
+        ArrayList<Exercise> exercises = new ArrayList<>();
+        exercises.add(new Exercise("팔굽혀펴기", "가슴", 3,3));
+        exercises.add(new Exercise("턱걸이", "등", 3,3));
+        exercises.add(new Exercise("스쿼트", "하체", 3,3));
+        exercises.add(new Exercise("플랭크", "복근", 3,3));
+
 
 
         switch (day_of_week) {
@@ -125,46 +132,35 @@ public class RoutineChildFragment extends Fragment {
                 break;
             case 1:
                 dayOfWeek = "mon";
-                routines.add(new Routine());
+                routines.add(new Routine(0, exercises));
             break;
             case 2:
                 dayOfWeek = "tue";
-                routines.add(new Routine());
-                routines.add(new Routine());
+                routines.add(new Routine(0, exercises));
+                routines.add(new Routine(0, exercises));
                 break;
             case 3:
                 dayOfWeek = "wed";
-                routines.add(new Routine());
-                routines.add(new Routine());
-                routines.add(new Routine());
+                routines.add(new Routine(0, exercises));
+                routines.add(new Routine(0, exercises));
+                routines.add(new Routine(0, exercises));
                 break;
             case 4:
                 dayOfWeek = "thu";
-                routines.add(new Routine());
-                routines.add(new Routine());
-                routines.add(new Routine());
-                routines.add(new Routine());
+                routines.add(new Routine(0, exercises));
+                routines.add(new Routine(0, exercises));
                 break;
             case 5:
                 dayOfWeek = "fri";
-                routines.add(new Routine());
-                routines.add(new Routine());
-                routines.add(new Routine());
-                routines.add(new Routine());
-                routines.add(new Routine());
+                routines.add(new Routine(0, exercises));
+                routines.add(new Routine(0, exercises));
                 break;
             case 6:
                 dayOfWeek = "sat";
-                routines.add(new Routine());
-                routines.add(new Routine());
-                routines.add(new Routine());
-                routines.add(new Routine());
-                routines.add(new Routine());
-                routines.add(new Routine());
+                routines.add(new Routine(0, exercises));
+                routines.add(new Routine(0, exercises));
             break;
         }
-
-        Log.d("test: ", dayOfWeek);
 
         setRecyclerView();
 

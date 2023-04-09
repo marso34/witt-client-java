@@ -113,20 +113,16 @@ public class RoutineFragment extends Fragment {
         pagerAdapter.createFragment(4);
         pagerAdapter.createFragment(5);
         pagerAdapter.createFragment(6);
+
         viewPager.setAdapter(pagerAdapter);
 
-        Date currentDate = new Date();
+        new TabLayoutMediator(tabLayout, viewPager,
+                (tab, position) -> tab.setText(setText(position))
+        ).attach();
 
+        Date currentDate = new Date();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(currentDate);
-
-        new TabLayoutMediator(tabLayout, viewPager, new TabLayoutMediator.TabConfigurationStrategy() {
-            @Override
-            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-                tab.setText(setText(position));
-            }
-        }
-        ).attach();
 
         viewPager.setCurrentItem(calendar.get(Calendar.DAY_OF_WEEK) - 1, false);
 
@@ -147,7 +143,6 @@ public class RoutineFragment extends Fragment {
 //            }
 //        });
 //        애니메이션 삭제 코드, 애니메이션 삭제하면 너무 딱딱하게 느껴짐. 없으면 탭 클릭 시 애니메이션 과함
-
 
         return view;
     }

@@ -38,6 +38,6 @@ public class RoutinePagerAdapter extends FragmentStateAdapter {
 
     @Override
     public int getItemCount() {
-        return mFragmentList.size();
+        return 7;
     }
 }

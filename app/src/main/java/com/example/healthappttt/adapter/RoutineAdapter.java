@@ -72,7 +72,7 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
 //            holder.time1.setText(routines.get(position).getStartTime());
 //            holder.am_pm2.setText(routines.get(position).getStartTime());
 //            holder.time2.setText(routines.get(position).getStartTime());
-//            setRecyclerView(holder.recyclerView, holder.adapter, routines.get(position));
+            setRecyclerView(holder.recyclerView, holder.adapter, routines.get(position));
         } else {
             holder.RoutineLayout.setVisibility(View.GONE);
             holder.NullLayout.setVisibility(View.VISIBLE);
@@ -87,7 +87,7 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
     }
 
     private void setRecyclerView(RecyclerView recyclerView, ExerciseAdapter adapter, Routine routine) {
-        adapter = new ExerciseAdapter(routine); // 나중에 routine
+        adapter = new ExerciseAdapter(routine.getExercises()); // 나중에 routine
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setAdapter(adapter);
