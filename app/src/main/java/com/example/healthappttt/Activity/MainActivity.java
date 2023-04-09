@@ -38,6 +38,9 @@ public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
+
+    private int tempItemID;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         final LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -110,26 +113,36 @@ public class MainActivity extends AppCompatActivity {
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        tempItemID = R.id.home;
         replaceFragment(new HomeFragment());
+
+
         binding.bottomNav.setOnItemSelectedListener(item -> {
-            switch (item.getItemId()) {
-                case R.id.home:
-                    binding.viewName.setText("홈");
-                    replaceFragment(new HomeFragment());
-                    break;
-                case R.id.routine:
-                    binding.viewName.setText("루틴");
-                    replaceFragment(new RoutineFragment());
-                    break;
-                case R.id.chatting:
-                    binding.viewName.setText("채팅");
-                    replaceFragment(new ChattingFragment());
-                    break;
-                case R.id.profile:
-                    binding.viewName.setText("기록");
-//                    replaceFragment(new ProfileFragment()); // 운동 기록 프래그먼트로 연결
-                    break;
+            int ItemId = item.getItemId();
+
+            if (tempItemID != ItemId) {
+                tempItemID = ItemId;
+
+                switch (ItemId) {
+                    case R.id.home:
+                        binding.viewName.setText("홈");
+                        replaceFragment(new HomeFragment());
+                        break;
+                    case R.id.routine:
+                        binding.viewName.setText("루틴");
+                        replaceFragment(new RoutineFragment());
+                        break;
+                    case R.id.chatting:
+                        binding.viewName.setText("채팅");
+                        replaceFragment(new ChattingFragment());
+                        break;
+                    case R.id.profile:
+                        binding.viewName.setText("기록");
+                        replaceFragment(new ProfileFragment()); // 운동 기록 프래그먼트로 나중에 수정
+                        break;
+                }
             }
+
             return true;
         });
 

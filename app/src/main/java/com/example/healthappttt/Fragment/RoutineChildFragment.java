@@ -132,33 +132,39 @@ public class RoutineChildFragment extends Fragment {
                 break;
             case 1:
                 dayOfWeek = "mon";
-                routines.add(new Routine(0, exercises));
+                routines.add(new Routine());
             break;
             case 2:
                 dayOfWeek = "tue";
-                routines.add(new Routine(0, exercises));
-                routines.add(new Routine(0, exercises));
+                routines.add(new Routine());
+                routines.add(new Routine());
                 break;
             case 3:
                 dayOfWeek = "wed";
-                routines.add(new Routine(0, exercises));
-                routines.add(new Routine(0, exercises));
-                routines.add(new Routine(0, exercises));
+                routines.add(new Routine());
+                routines.add(new Routine());
+                routines.add(new Routine());
                 break;
             case 4:
                 dayOfWeek = "thu";
-                routines.add(new Routine(0, exercises));
-                routines.add(new Routine(0, exercises));
+                routines.add(new Routine());
+                routines.add(new Routine());
+                routines.add(new Routine());
+                routines.add(new Routine());
                 break;
             case 5:
                 dayOfWeek = "fri";
-                routines.add(new Routine(0, exercises));
-                routines.add(new Routine(0, exercises));
+                routines.add(new Routine());
+                routines.add(new Routine());
+                routines.add(new Routine());
+                routines.add(new Routine());
                 break;
             case 6:
                 dayOfWeek = "sat";
-                routines.add(new Routine(0, exercises));
-                routines.add(new Routine(0, exercises));
+                routines.add(new Routine());
+                routines.add(new Routine());
+                routines.add(new Routine());
+                routines.add(new Routine());
             break;
         }
 

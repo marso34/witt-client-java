@@ -87,7 +87,14 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
     }
 
     private void setRecyclerView(RecyclerView recyclerView, ExerciseAdapter adapter, Routine routine) {
-        adapter = new ExerciseAdapter(routine.getExercises()); // 나중에 routine
+        ArrayList<Exercise> exercises = new ArrayList<>();
+        exercises.add(new Exercise("팔굽혀펴기", "가슴", 3,3));
+        exercises.add(new Exercise("턱걸이", "등", 3,3));
+        exercises.add(new Exercise("스쿼트", "하체", 3,3));
+        exercises.add(new Exercise("플랭크", "복근", 3,3));
+
+
+        adapter = new ExerciseAdapter(exercises); // 나중에 routine
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setAdapter(adapter);
