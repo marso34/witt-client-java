@@ -2,9 +2,6 @@ package com.example.healthappttt.Fragment;
 
 import static android.content.ContentValues.TAG;
 
-import android.app.Activity;
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,11 +11,8 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.healthappttt.Activity.MainActivity;
-import com.example.healthappttt.Data.User;
 import com.example.healthappttt.R;
 
 import com.google.android.gms.tasks.OnCompleteListener;

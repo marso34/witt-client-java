@@ -12,11 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CompoundButton;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,29 +22,21 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.healthappttt.Activity.MainActivity;
 import com.example.healthappttt.Data.Exercise;
 import com.example.healthappttt.Data.ExerciseName;
 import com.example.healthappttt.Data.Routine;
-import com.example.healthappttt.Data.User;
 import com.example.healthappttt.R;
-import com.example.healthappttt.adapter.ExerciseAdapter;
 import com.example.healthappttt.adapter.setExerciseAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import org.checkerframework.checker.units.qual.A;
-
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
