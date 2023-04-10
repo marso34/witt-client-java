@@ -1,23 +1,23 @@
 package com.example.healthappttt.Activity;
 
+import android.util.Log;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.healthappttt.ApiService;
-import com.example.healthappttt.Data.User;
 import com.example.healthappttt.Data.UserKey;
+import com.example.healthappttt.Activity.UserKeyResponse;
 
-import java.io.IOException;
-import java.util.List;
-
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.GET;
 
-public class MainActivity2  {
+
+public class MainActivity2 {
+
     private static final String URL = "ip-172-31-7-123.ap-northeast-2.compute.internal";
 
     Retrofit retrofit = new Retrofit.Builder()
@@ -28,11 +28,34 @@ public class MainActivity2  {
     ApiService apiService = retrofit.create(ApiService.class); // create메서드로 api서비스 인터페이스의 구현제 생성
 
     //api 요청 메서드 호출하기
-    Call<UserKey> call = apiService.getUsers();
-    call.enqueue
+    // Call<UserKey> call = apiService.getUsers(UserKey);  파라미터로 userkey에 대응하는 어떤 데이터를 보내서 요청하고 그에 대한 응답을 받아야한다.
+
+    //userkey 요청 매서드 호출
+    private void getuserkey(UserKey data) {
+        apiService.getUsers(data).enqueue(new Callback<UserKeyResponse>() {
+            @Override
+            public void onResponse(Call<UserKeyResponse> call, Response<UserKeyResponse> response) {
+                UserKeyResponse result = response.body();
+                Toast.makeText(MainActivity2.this, result.getUserkey(),Toast.LENGTH_SHORT).show();
+                Log.d("Response","userkey:");
+                if (result.getUserkey() == "293") {
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserKeyResponse> call, Throwable t) {
+                Toast.makeText(MainActivity2.this, "유저키 받기 에러발생",Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+
+
+
 
 }
-
 
 
 
