@@ -118,53 +118,22 @@ public class RoutineChildFragment extends Fragment {
 
 
         routines = new ArrayList<>();
-        ArrayList<Exercise> exercises = new ArrayList<>();
-        exercises.add(new Exercise("팔굽혀펴기", "가슴", 3,3));
-        exercises.add(new Exercise("턱걸이", "등", 3,3));
-        exercises.add(new Exercise("스쿼트", "하체", 3,3));
-        exercises.add(new Exercise("플랭크", "복근", 3,3));
-
-
 
         switch (day_of_week) {
             case 0:
                 dayOfWeek = "sun";
                 break;
-            case 1:
-                dayOfWeek = "mon";
-                routines.add(new Routine());
-            break;
-            case 2:
-                dayOfWeek = "tue";
-                routines.add(new Routine());
-                routines.add(new Routine());
-                break;
-            case 3:
-                dayOfWeek = "wed";
-                routines.add(new Routine());
-                routines.add(new Routine());
-                routines.add(new Routine());
-                break;
+            case 1: dayOfWeek = "mon"; break;
+            case 2: dayOfWeek = "tue"; break;
+            case 3: dayOfWeek = "wed"; break;
             case 4:
                 dayOfWeek = "thu";
-                routines.add(new Routine());
-                routines.add(new Routine());
-                routines.add(new Routine());
-                routines.add(new Routine());
                 break;
             case 5:
                 dayOfWeek = "fri";
-                routines.add(new Routine());
-                routines.add(new Routine());
-                routines.add(new Routine());
-                routines.add(new Routine());
                 break;
             case 6:
                 dayOfWeek = "sat";
-                routines.add(new Routine());
-                routines.add(new Routine());
-                routines.add(new Routine());
-                routines.add(new Routine());
             break;
         }
 
@@ -184,6 +153,7 @@ public class RoutineChildFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == REQUEST_CODE && data != null) {
+//            Routine r = data.getSerializableExtra("result");
             String result = data.getStringExtra("result");
             routines.add(new Routine());
             adapter.notifyDataSetChanged();
