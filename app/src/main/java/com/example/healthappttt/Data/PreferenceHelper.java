@@ -1,6 +1,10 @@
 package com.example.healthappttt.Data;
+import static android.content.Context.MODE_PRIVATE;
+
 import android.content.Context;
 import android.content.SharedPreferences;
+
+import java.io.File;
 
 public class PreferenceHelper
 {
@@ -10,11 +14,23 @@ public class PreferenceHelper
     private SharedPreferences app_prefs;
     private Context context;
 
+    //getsh
+
     public PreferenceHelper(Context context)
     {
-        app_prefs = context.getSharedPreferences("shared", 0);
+        File dir = new File(getSharedPreferencesPath(context), "mydir1");
+        if (!dir.exists()) {
+            dir.mkdir();
+        }
+
+        File app_prefs = new File(getSharedPreferencesPath(context),"mydir2");
         this.context = context;
     }
+
+    private String getSharedPreferencesPath(Context context) {
+        return context.getFilesDir().getParentFile().getPath() + "/shared_prefs";
+    }
+
 
     public void putIsLogin(boolean loginOrOut)
     {
