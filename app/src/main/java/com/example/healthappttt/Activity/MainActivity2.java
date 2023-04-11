@@ -1,7 +1,11 @@
 package com.example.healthappttt.Activity;
 
+import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.healthappttt.ApiService;
 
@@ -10,12 +14,24 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class MainActivity2 {
-
-    //api 요청 인터페이스 가져오기
-    ApiService apiService = RetrofitClient.getClient().create(ApiService.class); // create메서드로 api서비스 인터페이스의 구현제 생성
+public class MainActivity2 extends AppCompatActivity {
+    private ApiService apiService;
 
 
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        //api 요청 인터페이스 가져오기
+        apiService = RetrofitClient.getClient().create(ApiService.class); // create메서드로 api서비스 인터페이스의 구현제 생성
+        //파라미터 넣어서 보내줘야하는데 뭘 보내야하지
+        //getuserkey(); 
+                        //로그인했을때 넘겨받는 정보를 파라미터로 넣는다.  email or phone_num 비교해서 해당하는 유저의 키를 받아온다.
+                        //유저의 pk를 그대로 받을수있으면 필요가 없음 다른방향( 다른유저의 키를 가져오는 느낌)으로 가야함
+
+    }
+
+    
 
 
     //API 요청 매서드 호출
@@ -48,7 +64,6 @@ public class MainActivity2 {
 
         });
     }
-
 
 
 }
