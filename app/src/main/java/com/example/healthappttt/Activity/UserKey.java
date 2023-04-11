@@ -1,4 +1,4 @@
-package com.example.healthappttt.Data;
+package com.example.healthappttt.Activity;
 
 import com.google.gson.annotations.SerializedName;
 public class UserKey {

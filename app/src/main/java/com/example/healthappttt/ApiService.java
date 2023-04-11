@@ -1,26 +1,16 @@
 package com.example.healthappttt;
 
-import com.example.healthappttt.Data.User;
-import com.example.healthappttt.Data.UserKey;
+import com.example.healthappttt.Activity.UserKey;
+import com.example.healthappttt.Activity.UserKeyResponse;
 
-import java.util.List;
-
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
-import retrofit2.http.DELETE;
-import retrofit2.http.Field;
-import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
-import retrofit2.http.POST;
-import retrofit2.http.PUT;
-import retrofit2.http.Path;
-import retrofit2.http.Query;
 
 public interface ApiService {
 
     @GET("/Witt/getuserhw")
-    Call<UserKey> getUsers(@Body UserKey data); // 함수 확인 필요
+    Call<UserKeyResponse> getUsers(@Body UserKey data); // 함수 확인 필요
 
 }
 //
