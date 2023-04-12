@@ -8,7 +8,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import com.example.healthappttt.Fragment.ExerciseDetailFragment;
 import com.example.healthappttt.Fragment.RoutineChildFragment;
 import com.example.healthappttt.Fragment.SetRoutineTimeFragment;
-import com.example.healthappttt.Fragment.addExerciseFragment;
+import com.example.healthappttt.Fragment.AddExerciseFragment;
 
 import java.util.ArrayList;
 
@@ -24,7 +24,7 @@ public class CreateRoutinePagerAdapter extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
         switch (position) {
             case 0: addFragment(new SetRoutineTimeFragment()); break;
-            case 1: addFragment(new addExerciseFragment());    break;
+            case 1: addFragment(new AddExerciseFragment());    break;
             case 2: addFragment(new ExerciseDetailFragment()); break;
             default:
                 return null;

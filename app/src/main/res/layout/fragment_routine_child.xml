@@ -31,8 +31,6 @@
                     android:overScrollMode="never"
                     android:nestedScrollingEnabled="false"/>
 
-
-
                 <androidx.cardview.widget.CardView
                     android:id="@+id/addRoutine"
                     android:layout_width="77dp"
