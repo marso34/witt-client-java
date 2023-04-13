@@ -1,9 +1,13 @@
 package com.example.healthappttt.Fragment;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.media.Image;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
@@ -16,6 +20,8 @@ import android.widget.TextView;
 import com.example.healthappttt.R;
 
 import org.w3c.dom.Text;
+
+import java.sql.Time;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -30,6 +36,8 @@ public class SetRoutineTimeFragment extends Fragment {
     private CardView NextBtn;
     private TextView NextTxt;
 
+    private int runTime, startTime, endTime;
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -38,6 +46,24 @@ public class SetRoutineTimeFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private OnFragmentInteractionListener mListener;
+
+    public interface OnFragmentInteractionListener {
+        void onRoutineSetTime(int startTime, int endTime);
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+
+        if (context instanceof OnFragmentInteractionListener) {
+            mListener = (OnFragmentInteractionListener) context;
+        } else {
+            throw new ClassCastException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
 
     public SetRoutineTimeFragment() {
         // Required empty public constructor
@@ -89,31 +115,77 @@ public class SetRoutineTimeFragment extends Fragment {
         NextBtn = (CardView) view.findViewById(R.id.nextBtn);
         NextTxt = (TextView) view.findViewById(R.id.nextTxt);
 
+        init();
+
+
         StartTimeUP.setOnClickListener(v -> {
-            String str = setText((String) StartTime.getText(), 5);
-            StartTime.setText(str);
+            if (startTime < endTime) {
+                startTime += 5;
+                runTime = endTime - startTime;
+                StartTime.setText(TimeToString(startTime));
+                RunTime.setText(RuntimeToString(runTime));
+                setNextBtn();
+            }
         });
 
         StartTimeDown.setOnClickListener(v -> {
-            String str = setText((String) StartTime.getText(), -5);
-            StartTime.setText(str);
+            if (startTime > 0) {
+                startTime -= 5;
+                runTime = endTime - startTime;
+                StartTime.setText(TimeToString(startTime));
+                RunTime.setText(RuntimeToString(runTime));
+                setNextBtn();
+            }
         });
 
         EndTimeUP.setOnClickListener(v -> {
-            String str = setText((String) EndTime.getText(), 5);
-            EndTime.setText(str);
+            if (endTime < 240) {
+                endTime += 5;
+                runTime = endTime - startTime;
+                EndTime.setText(TimeToString(endTime));
+                RunTime.setText(RuntimeToString(runTime));
+                setNextBtn();
+            }
         });
 
         EndTimeDown.setOnClickListener(v -> {
-            String str = setText((String) EndTime.getText(), -5);
-            EndTime.setText(str);
+            if (endTime > startTime) {
+                endTime -= 5;
+                runTime = endTime - startTime;
+                EndTime.setText(TimeToString(endTime));
+                RunTime.setText(RuntimeToString(runTime));
+                setNextBtn();
+            }
         });
 
+        NextBtn.setOnClickListener(v -> {
+            if (runTime > 0) {
+                mListener.onRoutineSetTime(startTime, endTime);
+            }
+        });
 
         return view;
     }
 
-    private String setText(String Time, int num) { // 시작 시간 및 종료 시간을 전역으로 가지고 종료시간이 시작 시간보다 빠를 수 없도록 수정할 것
+    private void init() {
+        startTime = TimeToInt((String) StartTime.getText());
+        endTime = TimeToInt((String) StartTime.getText());
+
+        runTime = endTime - startTime;
+    }
+
+    private void setNextBtn() {
+        if (runTime > 0) {
+//            NextBtn = (CardView) view.findViewById(R.id.nextBtn);
+            NextTxt.setBackgroundColor(Color.parseColor("#05c78c"));
+            NextTxt.setTextColor(Color.parseColor("#ffffff"));
+        } else {
+            NextTxt.setBackgroundColor(Color.parseColor("#D1D8E2"));
+            NextTxt.setTextColor(Color.parseColor("#9AA5B8"));
+        }
+    }
+
+    private int TimeToInt(String Time) { // 시작 시간 및 종료 시간을 전역으로 가지고 종료시간이 시작 시간보다 빠를 수 없도록 수정할 것
         String am_pm = Time.substring(0, Time.lastIndexOf(" "));
         String temp = Time.substring(Time.lastIndexOf(" ")+1);
         String hour = temp.substring(0, temp.lastIndexOf(":"));
@@ -124,21 +196,39 @@ public class SetRoutineTimeFragment extends Fragment {
         if (am_pm.equals("오후")) T += 120;
         if (T == 120 || T == 125 || T == 240 || T == 245) T-= 120;
 
-        T += num;
+        return T;
+    }
 
-        if (T >= 240) T-= 240;
+    private String TimeToString(int Time) {
+        String am_pm = "";
 
-        if (T < 120) {
+        if (Time >= 240) Time-= 240;
+
+        if (Time < 120) {
             am_pm = "오전";
-            if (T < 10) T += 120;
-        }
-        else {
+            if (Time < 10) Time += 120;
+        } else {
             am_pm = "오후";
-            if (T >= 130) T-= 120;
+            if (Time >= 130) Time-= 120;
         }
 
-        @SuppressLint("DefaultLocale") String result = String.format("%02d:%02d", T/10, T % 10 * 6);
+        @SuppressLint("DefaultLocale") String result = String.format("%02d:%02d", Time/10, Time % 10 * 6);
 
         return am_pm + " " + result;
+    }
+
+    private String RuntimeToString(int Time) {
+        @SuppressLint("DefaultLocale") String result1 = String.format("%d분", Time % 10 * 6);
+        @SuppressLint("DefaultLocale") String result2 = String.format("%d시간", Time/10);
+        @SuppressLint("DefaultLocale") String result3 = String.format("%d시간 %d분", Time/10, Time % 10 * 6);
+
+
+        if (Time < 10)
+            return result1;
+
+        if (Time % 10 == 0)
+            return result2;
+
+        return result3;
     }
 }

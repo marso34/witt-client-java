@@ -1,14 +1,28 @@
 package com.example.healthappttt.Fragment;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.example.healthappttt.Data.Exercise;
 import com.example.healthappttt.R;
+import com.google.android.material.tabs.TabLayout;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -16,6 +30,18 @@ import com.example.healthappttt.R;
  * create an instance of this fragment.
  */
 public class AddExerciseFragment extends Fragment {
+    private static int dayOfWeek;
+
+    private TextView DirectInputBtn, ScheduleTxt;
+    private SearchView searchView;
+    private TabLayout tabLayout;
+    private RecyclerView recyclerView;
+    private CardView NextBtn;
+    private TextView NextTxt;
+
+    private int startTime;
+    private int endTime;
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,7 +52,26 @@ public class AddExerciseFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public AddExerciseFragment() {
+    private OnFragmentInteractionListener mListener;
+
+    public interface OnFragmentInteractionListener {
+        void onRoutineAddEx(ArrayList<Exercise> exercises);
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+
+        if (context instanceof OnFragmentInteractionListener) {
+            mListener = (OnFragmentInteractionListener) context;
+        } else {
+            throw new ClassCastException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    public AddExerciseFragment(int dayOfWeek) {
+        this.dayOfWeek = dayOfWeek;
         // Required empty public constructor
     }
 
@@ -40,7 +85,7 @@ public class AddExerciseFragment extends Fragment {
      */
     // TODO: Rename and change types and number of parameters
     public static AddExerciseFragment newInstance(String param1, String param2) {
-        AddExerciseFragment fragment = new AddExerciseFragment();
+        AddExerciseFragment fragment = new AddExerciseFragment(dayOfWeek);
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -63,6 +108,63 @@ public class AddExerciseFragment extends Fragment {
         // Inflate the layout for this fragment
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_add_exercise, container, false);
 
+        DirectInputBtn = view.findViewById(R.id.directInput);
+        ScheduleTxt = view.findViewById(R.id.schedule);
+
+        searchView = view.findViewById(R.id.search);
+        tabLayout = view.findViewById(R.id.tab_layout);
+        recyclerView = view.findViewById(R.id.recyclerView);
+
+        NextBtn = view.findViewById(R.id.nextBtn);
+        NextTxt = view.findViewById(R.id.nextTxt);
+
+        setRoutineTime(0, 0);
+
+
+        NextBtn.setOnClickListener(v -> {
+//            mListener.onRoutineAddEx();
+        });
+
         return view;
+    }
+
+    private void setRoutineTime(int startTime, int endTime) {
+
+        String DayOfWeek = "";
+
+        switch (dayOfWeek) {
+            case 0: DayOfWeek = "일요일"; break;
+            case 1: DayOfWeek = "월요일"; break;
+            case 2: DayOfWeek = "화요일"; break;
+            case 3: DayOfWeek = "수요일"; break;
+            case 4: DayOfWeek = "목요일"; break;
+            case 5: DayOfWeek = "금요일"; break;
+            case 6: DayOfWeek = "토요일"; break;
+        }
+
+        String StartTime = TimeToString(startTime);
+        String EndTime = TimeToString(endTime);
+        String result = DayOfWeek + " · " + StartTime + " - " + EndTime;
+
+
+        ScheduleTxt.setText(result);
+    }
+
+    private String TimeToString(int Time) {
+        String am_pm = "";
+
+        if (Time >= 240) Time-= 240;
+
+        if (Time < 120) {
+            am_pm = "오전";
+            if (Time < 10) Time += 120;
+        } else {
+            am_pm = "오후";
+            if (Time >= 130) Time-= 120;
+        }
+
+        @SuppressLint("DefaultLocale") String result = String.format("%02d:%02d", Time/10, Time % 10 * 6);
+
+        return am_pm + " " + result;
     }
 }

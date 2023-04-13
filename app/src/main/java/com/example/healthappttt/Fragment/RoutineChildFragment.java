@@ -141,6 +141,7 @@ public class RoutineChildFragment extends Fragment {
 
         addRoutineBtn.setOnClickListener(view1 -> {
             Intent intent = new Intent(getContext(), CreateRoutineActivity.class);
+            intent.putExtra("dayOfWeek", day_of_week);
             startActivityForResult(intent, REQUEST_CODE);
         });
 
@@ -154,7 +155,7 @@ public class RoutineChildFragment extends Fragment {
 
         if (requestCode == REQUEST_CODE && data != null) {
 //            Routine r = data.getSerializableExtra("result");
-            String result = data.getStringExtra("result");
+            String result = (String) data.getSerializableExtra("result");
             routines.add(new Routine());
             adapter.notifyDataSetChanged();
 
