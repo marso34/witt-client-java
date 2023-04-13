@@ -18,18 +18,41 @@ public class PreferenceHelper
 
     public PreferenceHelper(Context context)
     {
-        File dir = new File(getSharedPreferencesPath(context), "mydir1");
-        if (!dir.exists()) {
-            dir.mkdir();
+        //shared_prefs 디렉토리 안에 mydir1과 mydir2 디렉토리 생성( 중복 X )
+        File dir1 = new File(getSharedPreferencesPath(context), "mydir1");
+        if (!dir1.exists()) {
+            dir1.mkdir();
         }
 
-        File app_prefs = new File(getSharedPreferencesPath(context),"mydir2");
+        File dir2 = new File(getSharedPreferencesPath(context),"mydir2");
+        if (!dir2.exists()) {
+            dir2.mkdir();
+        }
         this.context = context;
     }
 
+    //SharedPreferences 경로 설정
     private String getSharedPreferencesPath(Context context) {
         return context.getFilesDir().getParentFile().getPath() + "/shared_prefs";
     }
+
+    //닉네임, 프로필이미지, 키, 몸무게, 헬스장, 운동 수행능력 서버에 저장 및 출력 가능 매소드들
+    public void putNickName(String nickname) {
+        //mydir1 디렉토리아래 UserInfo 파일 생성 후 NAME: nickname 형태로 저장
+        app_prefs = context.getSharedPreferences("mydir1/UserInfo", Context.MODE_PRIVATE);
+        SharedPreferences.Editor edit = app_prefs.edit();
+        edit.putString(NAME, nickname);
+        edit.apply();
+    }
+    public String getNickName() { return app_prefs.getString(NAME,"");}
+
+
+
+    //
+
+
+
+//----------------------------------------------------------------------
 
 
     public void putIsLogin(boolean loginOrOut)
