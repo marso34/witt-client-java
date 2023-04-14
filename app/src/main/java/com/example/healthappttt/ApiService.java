@@ -9,8 +9,8 @@ import retrofit2.http.GET;
 
 public interface ApiService {
 
-    @GET("/Witt/getuserhw")
-    Call<UserKeyResponse> getUsers(@Body UserKey data); // 함수 확인 필요
+    @GET("/Witt/getuserkey")
+    Call<UserKeyResponse> getUserkey(@Body UserKey data); // 함수 확인 필요
 
 }
 //
