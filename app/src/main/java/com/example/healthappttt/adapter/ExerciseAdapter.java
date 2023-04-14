@@ -60,7 +60,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.MainVi
             this.ExerciseLayout = (LinearLayout) view.findViewById(R.id.exerciseLayout);
             this.CardioLayout = (LinearLayout) view.findViewById(R.id.cardioLayout);
             this.CountLayout = (LinearLayout) view.findViewById(R.id.countLayout);
-            this.EndLayout = (LinearLayout) view.findViewById(R.id.end);
+//            this.EndLayout = (LinearLayout) view.findViewById(R.id.end);
 
             this.CatView = (TextView) view.findViewById(R.id.exerciseCat);
             this.NameView = (TextView) view.findViewById(R.id.exerciseName);

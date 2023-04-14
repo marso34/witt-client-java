@@ -34,7 +34,7 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
         public TextView am_pm1, am_pm2, time1, time2;
         public TextView Edit;
         private RecyclerView recyclerView;
-        private ExerciseAdapter adapter;
+        private ExerciseListAdapter adapter;
 
         public MainViewHolder(View view) {
             super(view);
@@ -86,7 +86,7 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
         return routines.size();
     }
 
-    private void setRecyclerView(RecyclerView recyclerView, ExerciseAdapter adapter, Routine routine) {
+    private void setRecyclerView(RecyclerView recyclerView, ExerciseListAdapter adapter, Routine routine) {
         ArrayList<Exercise> exercises = new ArrayList<>();
         exercises.add(new Exercise("팔굽혀펴기", "가슴", 3,3));
         exercises.add(new Exercise("턱걸이", "등", 3,3));
@@ -94,7 +94,7 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
         exercises.add(new Exercise("플랭크", "복근", 3,3));
 
 
-        adapter = new ExerciseAdapter(exercises); // 나중에 routine
+        adapter = new ExerciseListAdapter(exercises, true); // 나중에 routine
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setAdapter(adapter);

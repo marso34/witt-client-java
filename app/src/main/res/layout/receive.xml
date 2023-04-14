@@ -32,7 +32,7 @@
         <RelativeLayout
             android:id="@+id/txt_Layout"
             android:layout_width="wrap_content"
-            android:background="@drawable/round_button_gray"
+            android:background="@drawable/round_button_bg_1"
             android:layout_marginLeft="5dp"
             android:layout_marginTop="5dp"
             android:layout_height="wrap_content">

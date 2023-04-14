@@ -6,8 +6,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.healthappttt.Data.Exercise;
 import com.example.healthappttt.Data.ExerciseName;
 import com.example.healthappttt.R;
 
@@ -15,26 +22,42 @@ import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
-public class ExerciseListAdapter extends BaseAdapter {
+public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapter.MainViewHolder> {
+    private boolean t;
+    private ArrayList<ExerciseName> data;
+    private ArrayList<Exercise> exercises;
 
-    Context context = null;
-    android.view.LayoutInflater LayoutInflater = null;
-
-    ArrayList<ExerciseName> data;
-
-    public ExerciseListAdapter(Context context, ArrayList<ExerciseName> data) {
-        this.context = context;
-        LayoutInflater = android.view.LayoutInflater.from(context);
+    public ExerciseListAdapter(ArrayList<ExerciseName> data) {
         this.data = data;
+        this.t = false;
     }
+
+    public ExerciseListAdapter(ArrayList<Exercise> exercises, boolean t) {
+        this.exercises = exercises;
+        this.t = t;
+    }
+
+    public static class MainViewHolder extends RecyclerView.ViewHolder {
+
+        public MainViewHolder(View view) {
+            super(view);
+
+        }
+    }
+
+
+    @NonNull
     @Override
-    public int getCount() {
-        return data.size();
+    public MainViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_exercise_list, parent, false);
+        final MainViewHolder mainViewHolder = new MainViewHolder(view);
+
+        return mainViewHolder;
     }
 
     @Override
-    public ExerciseName getItem(int position) {
-        return data.get(position);
+    public void onBindViewHolder(@NonNull MainViewHolder holder, int position) {
+
     }
 
     @Override
@@ -43,14 +66,7 @@ public class ExerciseListAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View converView, ViewGroup parent) {
-        View view = LayoutInflater.inflate(R.layout.adapter_exercise_list, null);
-
-        TextView nameView = (TextView) view.findViewById(R.id.exerciseName);
-
-        nameView.setText(data.get(position).getName());
-
-
-        return view;
+    public int getItemCount() {
+        return 0;
     }
 }

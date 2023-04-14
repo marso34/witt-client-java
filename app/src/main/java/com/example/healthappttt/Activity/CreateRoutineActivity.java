@@ -1,31 +1,23 @@
 package com.example.healthappttt.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager2.widget.ViewPager2;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.Adapter;
-import android.widget.Button;
 
 import com.example.healthappttt.Data.Exercise;
-import com.example.healthappttt.Data.Routine;
 import com.example.healthappttt.Fragment.AddExerciseFragment;
 import com.example.healthappttt.Fragment.ExerciseDetailFragment;
 import com.example.healthappttt.Fragment.SetRoutineTimeFragment;
 import com.example.healthappttt.R;
-import com.example.healthappttt.adapter.CreateRoutinePagerAdapter;
-import com.example.healthappttt.adapter.RoutinePagerAdapter;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 public class CreateRoutineActivity extends AppCompatActivity implements SetRoutineTimeFragment.OnFragmentInteractionListener, AddExerciseFragment.OnFragmentInteractionListener, ExerciseDetailFragment.OnFragmentInteractionListener {
     private int dayOfWeek;
-
-    private ViewPager2 viewPager;
-    private CreateRoutinePagerAdapter pagerAdapter;
 
     private int startTime, endTime;
 
@@ -38,15 +30,7 @@ public class CreateRoutineActivity extends AppCompatActivity implements SetRouti
 
         dayOfWeek = (int) intent.getSerializableExtra("dayOfWeek");
 
-        viewPager = findViewById(R.id.view_pager);
-
-        pagerAdapter = new CreateRoutinePagerAdapter(this, dayOfWeek);
-        pagerAdapter.createFragment(0);
-        pagerAdapter.createFragment(1);
-        pagerAdapter.createFragment(2);
-
-        viewPager.setAdapter(pagerAdapter);
-        viewPager.setUserInputEnabled(false);
+        replaceFragment(new SetRoutineTimeFragment());
     }
 
     @Override
@@ -54,14 +38,22 @@ public class CreateRoutineActivity extends AppCompatActivity implements SetRouti
         this.startTime = startTime;
         this.endTime = endTime;
 
-        int position = viewPager.getCurrentItem();
-        viewPager.setCurrentItem(position + 1);
+        int[] schedule = new int[3];
+        schedule[0] = dayOfWeek;
+        schedule[1] = startTime;
+        schedule[2] = endTime;
+
+        Bundle bundle = new Bundle();
+        bundle.putIntArray("schedule", schedule);
+        replaceFragment(new AddExerciseFragment(), bundle);
     }
 
     @Override
     public void onRoutineAddEx(ArrayList<Exercise> exercises) {
-        int position = viewPager.getCurrentItem();
-        viewPager.setCurrentItem(position + 1);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("exercises", exercises);
+
+        replaceFragment(new ExerciseDetailFragment());
     }
 
     @Override
@@ -70,5 +62,34 @@ public class CreateRoutineActivity extends AppCompatActivity implements SetRouti
         intent.putExtra("result", "가나다라마바사");
         setResult(RESULT_OK, intent);
         finish();
+    }
+
+    private void replaceFragment (Fragment fragment){ //프래그먼트 설정
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        if( fragment.isAdded() )
+        {
+            // Fragment 가 이미 추가되어 있으면 삭제한 후, 새로운 Fragment 를 생성한다.
+            // 새로운 Fragment 를 생성하지 않으면 2번째 보여질 때에 Fragment 가 보여지지 않는 것 같습니다.
+            fragmentTransaction.remove( fragment );
+            fragment = new Fragment();
+        }
+        fragmentTransaction.replace(R.id.frame_layout, fragment);
+        fragmentTransaction.commit();
+    }
+
+    private void replaceFragment (Fragment fragment, Bundle bundle){ //프래그먼트 설정
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        if( fragment.isAdded() )
+        {
+            // Fragment 가 이미 추가되어 있으면 삭제한 후, 새로운 Fragment 를 생성한다.
+            // 새로운 Fragment 를 생성하지 않으면 2번째 보여질 때에 Fragment 가 보여지지 않는 것 같습니다.
+            fragmentTransaction.remove( fragment );
+            fragment = new Fragment();
+        }
+        fragment.setArguments(bundle);
+        fragmentTransaction.replace(R.id.frame_layout, fragment);
+        fragmentTransaction.commit();
     }
 }
