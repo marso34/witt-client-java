@@ -6,11 +6,12 @@ import com.example.healthappttt.Activity.UserKeyResponse;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Query;
 
 public interface ApiService {
 
     @GET("/Witt/getuserkey")
-    Call<UserKeyResponse> getUserkey(@Body UserKey data); // 함수 확인 필요
+    Call<UserKeyResponse> getuserkey(@Query("UserName") UserKey data); // 함수 확인 필요
 
 }
 //

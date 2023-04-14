@@ -8,7 +8,7 @@ public class UserKeyResponse {
     @SerializedName("userkey")
     private String userkey;
 
-    public String getUserkey() {
+    public String getUserName() {
         return userkey;
     }
 }
