@@ -129,12 +129,11 @@ public class RoutineFragment extends Fragment {
 //        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
 //            @Override
 //            public void onTabSelected(TabLayout.Tab tab) {
-//                viewPager.setCurrentItem(tab.getPosition(), false);
+////                viewPager.setCurrentItem(tab.getPosition(), false);
 //            }
 //
 //            @Override
 //            public void onTabUnselected(TabLayout.Tab tab) {
-//
 //            }
 //
 //            @Override

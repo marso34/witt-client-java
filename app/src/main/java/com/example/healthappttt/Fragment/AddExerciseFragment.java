@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -36,7 +37,7 @@ import java.util.ArrayList;
  */
 public class AddExerciseFragment extends Fragment {
     private TextView DirectInputBtn, ScheduleTxt;
-    private SearchView searchView;
+    private EditText searchView;
     private TabLayout tabLayout;
     private CardView NextBtn;
     private TextView NextTxt;
@@ -219,6 +220,9 @@ public class AddExerciseFragment extends Fragment {
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
+                int position = tabPosition[tab.getPosition()];
+
+                recyclerView.smoothScrollToPosition(position);
             }
         });
 

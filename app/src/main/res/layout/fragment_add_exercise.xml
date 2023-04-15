@@ -54,14 +54,34 @@
                 app:cardCornerRadius="16dp"
                 app:cardElevation="0dp">
 
-                <androidx.appcompat.widget.SearchView
-                    android:id="@+id/search"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="44dp"
-                    android:background="@color/Background_1"
-                    app:iconifiedByDefault="false"
-                    app:queryBackground="@color/transparent"
-                    app:queryHint="운동 검색"/>
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:background="@color/Background_1">
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_marginLeft="17dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/baseline_search_24"
+                        app:tint="@color/Background_3" />
+
+                    <EditText
+                        android:id="@+id/search"
+                        android:layout_width="match_parent"
+                        android:layout_height="44dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="17dp"
+                        android:background="@color/transparent"
+                        android:singleLine="true"
+                        android:scrollHorizontally="true"
+                        android:hint="운동 검색"
+                        android:textColorHint="@color/Background_3"
+                        android:textSize="16sp"/>
+
+                </LinearLayout>
 
             </androidx.cardview.widget.CardView>
 
@@ -70,14 +90,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="42dp"
                 android:layout_marginTop="24dp"
-                android:background="@drawable/rounded_bottom"
+                app:tabMode="scrollable"
                 app:tabGravity="fill"
                 app:tabIndicatorColor="@color/black"
                 app:tabIndicatorHeight="1.6dp"
-                app:tabMode="fixed"
                 app:tabSelectedTextColor="@color/black"
                 app:tabTextColor="@color/black"
-                tools:ignore="SpeakableTextPresentCheck" />
+                tools:ignore="SpeakableTextPresentCheck">
+
+
+
+            </com.google.android.material.tabs.TabLayout>
 
         </LinearLayout>
 
