@@ -1,113 +1,32 @@
 package com.example.healthappttt.Fragment;
 
-
-import android.content.ContentValues;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
-import android.Manifest;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
-import android.location.LocationManager;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.util.Log;
-import android.view.View;
-import android.view.WindowManager;
-import android.widget.Toast;
-
-import com.example.healthappttt.Activity.MainActivity;
-import com.example.healthappttt.R;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.LocationSettingsRequest;
-import com.google.android.gms.maps.CameraUpdate;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.material.snackbar.Snackbar;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.Locale;
-
-
-
-
-
-
 import android.content.Context;
-
-import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.viewpager2.widget.ViewPager2;
 
-import com.example.healthappttt.Activity.MainActivity;
-import com.example.healthappttt.Data.CompareUser;
-import com.example.healthappttt.Data.CompareUser;
-import com.example.healthappttt.Data.User;
 import com.example.healthappttt.R;
-import com.example.healthappttt.adapter.UserAdapter;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.storage.FirebaseStorage;
+import com.example.healthappttt.adapter.RoutinePagerAdapter;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
-import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link HomeFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class HomeFragment extends Fragment {
+    Context context;
 
-    private static boolean pivotList[] = null;
-    private static final String TAG = "HomeFragment";
-    private FirebaseAuth mAuth;
-    private FirebaseFirestore firebaseFirestore;
+    private TabLayout tabLayout;
+    private ViewPager2 viewPager;
+    private RoutinePagerAdapter pagerAdapter;
 
-    private UserAdapter userAdapter;
-    private ArrayList<User> userList;
-    private ArrayList<CompareUser> CompareuserList;
-    private boolean updating;
-    private boolean topScrolled;
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -117,21 +36,12 @@ public class HomeFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+
     public HomeFragment() {
-        // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * th-is fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment HomeFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static HomeFragment newInstance(String param1, String param2) {
-        HomeFragment fragment = new HomeFragment();
+    public static RoutineFragment newInstance(String param1, String param2) {
+        RoutineFragment fragment = new RoutineFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -148,174 +58,255 @@ public class HomeFragment extends Fragment {
         }
     }
 
+    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        //fragment_main에 인플레이션을 함
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_home, container, false);
-        firebaseFirestore = FirebaseFirestore.getInstance();
-        mAuth = FirebaseAuth.getInstance();// 파이어베이스의 auth기능의 접근 권한을 갖는변수
-        userList = new ArrayList<User>();
-        userAdapter = new UserAdapter(getActivity(), userList);
-        CompareuserList = new ArrayList<>();
-        final RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
-        recyclerView.addItemDecoration(new DividerItemDecoration(view.getContext(), 1));
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setAdapter(userAdapter);
 
-        SwipeRefreshLayout mSwipeRefreshLayout = view.findViewById(R.id.swipe_layout);
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                final Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
-                        int visibleItemCount = layoutManager.getChildCount();
-                        int totalItemCount = layoutManager.getItemCount();
-                        int firstVisibleItemPosition = ((LinearLayoutManager)layoutManager).findFirstVisibleItemPosition();
-                        int lastVisibleItemPosition = ((LinearLayoutManager)layoutManager).findLastVisibleItemPosition();
+        tabLayout = view.findViewById(R.id.tab_layout);
+        viewPager = view.findViewById(R.id.view_pager);
 
-                        if(totalItemCount - 3 <= lastVisibleItemPosition && !updating){
-                            postsUpdate(true);
-                        }
+        pagerAdapter = new RoutinePagerAdapter(this);
+        pagerAdapter.createFragment(0);
+        pagerAdapter.createFragment(1);
+        pagerAdapter.createFragment(2);
+        pagerAdapter.createFragment(3);
+        pagerAdapter.createFragment(4);
+        pagerAdapter.createFragment(5);
+        pagerAdapter.createFragment(6);
 
-                        if(0 < firstVisibleItemPosition){
-                            topScrolled = false;
-                        }
-                        mSwipeRefreshLayout.setRefreshing(false);
-                    }
-                }, 500);
+        viewPager.setAdapter(pagerAdapter);
 
-            }
-        });
-        postsUpdate(false);
+        new TabLayoutMediator(tabLayout, viewPager,
+                (tab, position) -> tab.setText(setText(position))
+        ).attach();
 
-        return view;
-
-    }
-
-    private void postsUpdate(final boolean clear) {
-        updating = true;
-        //Date date = userList.size() == 0 || clear ? new Date() : userList.get(userList.size() - 1).getCreatedAt();
-        CollectionReference collectionReference = firebaseFirestore.collection("users");
-        collectionReference.get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        User currentUser = null;
-                        if (task.isSuccessful()) {
-                            if(clear){
-                                userList.clear();
-                            }
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-
-                               // Log.d(TAG, document.getId() + " &&&&+&=> " + document.getData().get("userName").toString());
-                               User a= new User(
-                                       Double.parseDouble(document.getData().get("userTemperature").toString()),
-
-                                        document.getData().get("key_").toString(),
-                                        Double.parseDouble(document.getData().get("lat").toString()),
-                                        Double.parseDouble(document.getData().get("lon").toString()),
-                                        document.getData().get("GoodTime").toString(),
-                                        document.getData().get("userName").toString(),
-                                        document.getData().get("profileImg").toString(),
-                                        document.getData().get("bench").toString(),
-                                        document.getData().get("deadlift").toString(),
-                                        document.getData().get("squat").toString(),
-                                        document.getData().get("locationName").toString()
-                                );
-
-                                if(a.getKey_().equals(mAuth.getCurrentUser().getUid())) currentUser = a;
-                                else userList.add(a);
-                            }
-                            //퀵정렬 편집해서 만드는건 가능한데 일단 보류 난이도가 높음.
-                            //
-                            ArrayList<Integer> distans = new ArrayList<Integer>();
-                            for(int i=0;i<userList.size();++i){
-                                if(userList.get(i).getKey_() == currentUser.getKey_()) {
-                                    distans.add(0);
-                                    userList.get(i).setDistance(0);
-                                }
-                                else {
-                                    int a = 0;
-                                    Double dis = DistanceByDegreeAndroid(currentUser.getLat(),currentUser.getLon(),userList.get(i).getLat(),userList.get(i).getLon());
-                                    if(dis > 0.0) {
-                                        a = (int)Math.round(dis/1000);
-                                    }
-
-
-                                        distans.add(a);
-
-                                    userList.get(i).setDistance(a);
-                                }
-                            }
-                            for(int i=0;i<userList.size();++i){
-                                CompareuserList.add(new CompareUser(userList.get(i),distans.get(i)));
-                            }
-                            Collections.sort(CompareuserList);
-                            for(int i = 0; i < CompareuserList.size();++i)
-                                Log.d("list" , CompareuserList.get(i).getDistance().toString());
-                            userList.clear();
-                            for(int i=0;i<CompareuserList.size();++i){
-                                userList.add(CompareuserList.get(i).getUser());
-                            }
-                            CompareuserList.clear();
-                            userAdapter.notifyDataSetChanged();
-                        } else {
-                            //Log.d(TAG, "Error getting documents: ", task.getException());
-                        }
-                        updating = false;
-                    }
-                });
-    }
-
-    public static String getCurrentWeek() {
         Date currentDate = new Date();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(currentDate);
-        int dayOfWeekNumber = calendar.get(Calendar.DAY_OF_WEEK);
-        String day = null;
-        switch (dayOfWeekNumber) {
-            case 1 :
-                day = "일요일";
-                break;
-            case 2 :
-                day = "월요일";
-                break;
-            case 3 :
-                day = "화요일";
-                break;
-            case 4 :
-                day = "수요일";
-                break;
-            case 5 :
-                day = "목요일";
-                break;
-            case 6 :
-                day = "금요일";
-                break;
-            case 7 :
-                day = "토요일";
-                break;
+
+        viewPager.setCurrentItem(calendar.get(Calendar.DAY_OF_WEEK) - 1, false);
+
+//        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+//            @Override
+//            public void onTabSelected(TabLayout.Tab tab) {
+////                viewPager.setCurrentItem(tab.getPosition(), false);
+//            }
+//
+//            @Override
+//            public void onTabUnselected(TabLayout.Tab tab) {
+//            }
+//
+//            @Override
+//            public void onTabReselected(TabLayout.Tab tab) {
+//
+//            }
+//        });
+//        애니메이션 삭제 코드, 애니메이션 삭제하면 너무 딱딱하게 느껴짐. 없으면 탭 클릭 시 애니메이션 과함
+
+        return view;
+    }
+
+    public String setText(int position) {
+
+        String dayOfWeek = "";
+
+        switch (position) {
+            case 0: dayOfWeek = "일"; break;
+            case 1: dayOfWeek = "월"; break;
+            case 2: dayOfWeek = "화"; break;
+            case 3: dayOfWeek = "수"; break;
+            case 4: dayOfWeek = "목"; break;
+            case 5: dayOfWeek = "금"; break;
+            case 6: dayOfWeek = "토"; break;
         }
-        return day;
+
+        return dayOfWeek;
     }
 
-    public double DistanceByDegreeAndroid(double _latitude1, double _longitude1, double _latitude2, double _longitude2){
-        Location startPos = new Location("PointA");
-        Location endPos = new Location("PointB");
+//    private void setRoutine() {
+//        db.collection("routines").document(UserUid +"_" + dayOfWeek).
+//                get().
+//                addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                        if (task.isSuccessful()) {
+//                            DocumentSnapshot document = task.getResult();
+//                            if (document.exists()) {
+//                                Log.d(TAG, "Document exists!");
+//                                routine = new Routine(
+//                                        document.getData().get("title").toString(),
+//                                        Integer.parseInt(document.getData().get("exerciseCategories").toString()),
+//                                        document.getData().get("startTime").toString(),
+//                                        document.getData().get("endTime").toString()
+//                                );
+//
+//                                setExercises();
+//
+//                                StartTime.setText(routine.getStartTime());
+//                                EndTime.setText(routine.getEndTime());
+//                            } else {
+//                                Log.d(TAG, "Document does not exist!");
+//                            }
+//                        } else {
+//                            Log.d(TAG, "Failed with: ", task.getException());
+//                        }
+//                    }
+//                });
+//    }
+//
+//    private void setExercises() {
+//        db.collection("routines").document(mAuth.getCurrentUser().getUid() +"_" + dayOfWeek).
+//                collection("exercises").
+//                get().
+//                addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                        if (task.isSuccessful()) {
+//                            for (QueryDocumentSnapshot document : task.getResult()) {
+//                                routine.addExercise(new Exercise(
+//                                        document.getData().get("title").toString(),
+//                                        document.getData().get("state").toString(),
+//                                        Integer.parseInt(document.getData().get("count").toString()),
+//                                        Integer.parseInt(document.getData().get("volume").toString())
+//                                ));
+//                            }
+//
+//                            setRecyclerView();
+//
+//                        } else {
+//                        }
+//                    }
+//                });
+//    }
+//
+//    private void saveRoutine() {
+//        routine.setExerciseCategories(exerciseCat);
+//
+//        db.collection("routines").document(UserUid +"_" + dayOfWeek).
+//                set(routine).
+//                addOnSuccessListener(new OnSuccessListener<Void>() {
+//                    @Override
+//                    public void onSuccess(Void unused) {
+//                        Log.d(TAG, "DocumentSnapshot successfully written!");
+//                    }
+//                }).
+//                addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        Log.w(TAG, "Error writing document", e);
+//                    }
+//                });
+//    }
 
-        startPos.setLatitude(_latitude1);
-        startPos.setLongitude(_longitude1);
-        endPos.setLatitude(_latitude2);
-        endPos.setLongitude(_longitude2);
+//    private void saveExercise(Exercise exercise) {
+//        // 루틴을 DB에 저장, document 이름 다시 생각할 것 동일 운동 저장 못 함
+//        db.collection("routines").document(UserUid +"_" + dayOfWeek).
+//                collection("exercises").document(exercise.getTitle()).
+//                set(exercise).
+//                addOnSuccessListener(new OnSuccessListener<Void>() {
+//                    @Override
+//                    public void onSuccess(Void unused) {
+//                        Log.d(TAG, "DocumentSnapshot successfully written!");
+//                    }
+//                }).
+//                addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        Log.w(TAG, "Error writing document", e);
+//                    }
+//                });
+//    }
+//
+//    private void deleteExercise(int position) {
+//        // db에서 운동 삭제, document 이름 다시 생각할 것 동일 운동 저장 못 함
+//
+//
+//        String cat = routine.getExercises().get(position).getState();
+//        int cnt = 0, tCat = 0;
+//
+//        switch (cat) {
+//            case "가슴" : tCat = 0x1; break;
+//            case "등" : tCat = 0x2; break;
+//            case "어깨" : tCat = 0x4; break;
+//            case "하체" : tCat = 0x8; break;
+//            case "팔" : tCat = 0x10; break;
+//            case "복근" : tCat = 0x20; break;
+//            case "유산소" : tCat = 0x40; break;
+//        }
+//
+//
+//        for (Exercise e : routine.getExercises()) {
+//            if (e.getState().equals(cat))
+//                cnt++;
+//        }
+//
+//        if (cnt == 1)
+//            exerciseCat ^= tCat;
+//
+//        db.collection("routines").document(mAuth.getCurrentUser().getUid()+"_"+dayOfWeek).
+//                collection("exercises").document(routine.getExercises().get(position).getTitle())
+//                .delete()
+//                .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                    @Override
+//                    public void onSuccess(Void aVoid) {
+//                        Log.d(TAG, "DocumentSnapshot successfully deleted!");
+//                    }
+//                })
+//                .addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        Log.w(TAG, "Error deleting document", e);
+//                    }
+//                });
+//
+//        saveRoutine();
+//    }
 
-        double distance = startPos.distanceTo(endPos);
-
-        return distance;
-    }
-
-
+//    private void setRecyclerView() {
+//        adapter = new setExerciseAdapter(routine, true); // 나중에 routine
+//        recyclerView.setHasFixedSize(true);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+//        recyclerView.setAdapter(adapter);
+//
+//        if (adapter != null) {
+//            adapter.setOnExerciseClickListener(new setExerciseAdapter.OnExerciseClick() {
+//                @Override
+//                public void onExerciseClick(int postion) {
+//                    deleteExercise(postion);
+//                    adapter.removeItem(postion);
+//                    adapter.notifyDataSetChanged();
+//
+////                    saveRoutine(routine.getExercises().get(postion));
+//                }
+//            });
+//        }
+//    }
+//
+//    public void clickBtn(View v) {
+//        for (Button btn : weekBtn) {
+//            btn.setBackgroundResource(R.color.transparent);
+//            btn.setTextColor(Color.parseColor("#000000"));
+//        }
+//
+//        ((Button) v).setBackgroundResource(R.drawable.round_button_green);
+//        ((Button) v).setTextColor(Color.parseColor("#ffffff") );
+//
+//        Log.d("test", Integer.toString(v.getId()));
+//
+//        switch(((Button) v).getText().toString()) {
+//            case "일": dayOfWeek = "sun"; break; // 일
+//            case "월": dayOfWeek = "mon"; break; // 월
+//            case "화": dayOfWeek = "tue"; break; // 화
+//            case "수": dayOfWeek = "wed"; break; // 수
+//            case "목": dayOfWeek = "thu"; break; // 목
+//            case "금": dayOfWeek = "fri"; break; // 금
+//            case "토": dayOfWeek = "sat"; break; // 토
+//        }
+//
+//        setRoutine();
+//    }
 }
