@@ -164,7 +164,7 @@ public class ExerciseListFragment extends BottomSheetDialogFragment {
 
 
         listView = (ListView) view.findViewById(R.id.listView);
-        adapter = new ExerciseListAdapter(test);
+//        adapter = new ExerciseListAdapter(test);
 
 //        listView.setAdapter(adapter);
 

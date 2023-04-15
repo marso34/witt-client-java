@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -62,11 +62,11 @@
                     app:iconifiedByDefault="false"
                     app:queryBackground="@color/transparent"
                     app:queryHint="운동 검색"/>
-                <!--                텍스트 색 변경은 자바 코드르-->
+
             </androidx.cardview.widget.CardView>
 
             <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tab_layout"
+                android:id="@+id/tabLayout"
                 android:layout_width="match_parent"
                 android:layout_height="42dp"
                 android:layout_marginTop="24dp"
@@ -81,28 +81,20 @@
 
         </LinearLayout>
 
-        <androidx.core.widget.NestedScrollView
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="13dp"
-            android:fillViewport="true">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/chestRecyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:overScrollMode="never"
-                android:nestedScrollingEnabled="false"
-                tools:listitem="@layout/adapter_exercise_list"/>
-
-        </androidx.core.widget.NestedScrollView>
+            android:clipToPadding="false"
+            android:paddingBottom="200dp"
+            tools:listitem="@layout/adapter_exercise_list"/>
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="220dp"
-        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
         android:background="@drawable/bg_gradient">
 
         <androidx.cardview.widget.CardView
@@ -129,4 +121,4 @@
 
     </LinearLayout>
 
-</RelativeLayout>
+</FrameLayout>

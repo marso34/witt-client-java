@@ -7,8 +7,10 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.example.healthappttt.Data.Exercise;
+import com.example.healthappttt.Data.ExerciseName;
 import com.example.healthappttt.Fragment.AddExerciseFragment;
 import com.example.healthappttt.Fragment.ExerciseDetailFragment;
 import com.example.healthappttt.Fragment.SetRoutineTimeFragment;
@@ -20,15 +22,16 @@ public class CreateRoutineActivity extends AppCompatActivity implements SetRouti
     private int dayOfWeek;
 
     private int startTime, endTime;
+    private ArrayList<Exercise> selectExercises;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) { // 뷰페이저2 말고 다른 방식 사용할 것!!!!!!!!!!!!!!!!
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_routine);
 
         Intent intent = getIntent();
-
-        dayOfWeek = (int) intent.getSerializableExtra("dayOfWeek");
+        dayOfWeek = intent.getIntExtra("dayOfWeek", 0);
+        Log.d("요일 테스트", Integer.toString(dayOfWeek));
 
         replaceFragment(new SetRoutineTimeFragment());
     }
@@ -49,10 +52,11 @@ public class CreateRoutineActivity extends AppCompatActivity implements SetRouti
     }
 
     @Override
-    public void onRoutineAddEx(ArrayList<Exercise> exercises) {
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("exercises", exercises);
+    public void onRoutineAddEx(ArrayList<Exercise> selectExercises) {
+        this.selectExercises = selectExercises;
 
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("exercises", selectExercises);
         replaceFragment(new ExerciseDetailFragment());
     }
 

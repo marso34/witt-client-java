@@ -21,8 +21,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.healthappttt.Data.Exercise;
+import com.example.healthappttt.Data.ExerciseName;
 import com.example.healthappttt.R;
 import com.example.healthappttt.adapter.ExerciseAdapter;
+import com.example.healthappttt.adapter.ExerciseListAdapter;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
@@ -38,9 +40,14 @@ public class AddExerciseFragment extends Fragment {
     private TabLayout tabLayout;
     private CardView NextBtn;
     private TextView NextTxt;
-    private RecyclerView recyclerView;
-//    private
 
+    private RecyclerView recyclerView;
+    private ExerciseListAdapter adapter;
+
+    private ArrayList<Exercise> exercises;
+    private ArrayList<Exercise> selectExercises;
+
+    private int[] tabPosition;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -55,7 +62,7 @@ public class AddExerciseFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     public interface OnFragmentInteractionListener {
-        void onRoutineAddEx(ArrayList<Exercise> exercises);
+        void onRoutineAddEx(ArrayList<Exercise> selectExerciseNames);
     }
 
     @Override
@@ -111,19 +118,113 @@ public class AddExerciseFragment extends Fragment {
         ScheduleTxt = view.findViewById(R.id.schedule);
 
         searchView = view.findViewById(R.id.search);
-        tabLayout = view.findViewById(R.id.tab_layout);
+        tabLayout = view.findViewById(R.id.tabLayout);
         recyclerView = view.findViewById(R.id.recyclerView);
+
+        tabLayout.addTab(tabLayout.newTab().setText("가슴"));
+        tabLayout.addTab(tabLayout.newTab().setText("어깨"));
+        tabLayout.addTab(tabLayout.newTab().setText("등"));
+        tabLayout.addTab(tabLayout.newTab().setText("하체"));
+        tabLayout.addTab(tabLayout.newTab().setText("팔"));
+        tabLayout.addTab(tabLayout.newTab().setText("복근"));
+        tabLayout.addTab(tabLayout.newTab().setText("유산소"));
 
         NextBtn = view.findViewById(R.id.nextBtn);
         NextTxt = view.findViewById(R.id.nextTxt);
+
+        tabPosition = new int[7];
 
         if (getArguments() != null) {
             int[] schedule = getArguments().getIntArray("schedule");
             setRoutineTime(schedule[0], schedule[1], schedule[2]);
         }
 
+        ArrayList<Exercise> chestExercises = new ArrayList<>();
+        chestExercises.add(new Exercise("가슴",0x1));
+        chestExercises.add(new Exercise("벤치프레스",0x1));
+        chestExercises.add(new Exercise("인클라인 벤치 프레스",0x1));
+        chestExercises.add(new Exercise("케이블 크로스 오버",0x1));
+        chestExercises.add(new Exercise("펙덱 플라인 머신",0x1));
+        tabPosition[0] = 0;
+
+        ArrayList<Exercise> shoulderExercises = new ArrayList<>();
+        shoulderExercises.add(new Exercise("어깨",0x4));
+        shoulderExercises.add(new Exercise("사이드 레터럴 레이즈",0x4));
+        shoulderExercises.add(new Exercise("밀리터리 프레스",0x4));
+        shoulderExercises.add(new Exercise("벤트 오버 레터럴 레이즈",0x4));
+        tabPosition[1] = chestExercises.size();
+
+        ArrayList<Exercise> backExercises = new ArrayList<>();
+        backExercises.add(new Exercise("등",0x2));
+        backExercises.add(new Exercise("렛 풀 다운",0x2));
+        backExercises.add(new Exercise("케이블 시티드 로우",0x2));
+        backExercises.add(new Exercise("풀 업",0x2));
+        backExercises.add(new Exercise("원 암 덤벨 로우",0x2));
+        tabPosition[2] = tabPosition[1] + shoulderExercises.size();
+
+        ArrayList<Exercise> lowbodyExercises = new ArrayList<>();
+        lowbodyExercises.add(new Exercise("하체",0x8));
+        lowbodyExercises.add(new Exercise("레그 프레스",0x8));
+        lowbodyExercises.add(new Exercise("루마니안 데드리프트",0x8));
+        lowbodyExercises.add(new Exercise("바벨 스쿼트",0x8));
+        lowbodyExercises.add(new Exercise("덤벨 스쿼트",0x8));
+        tabPosition[3] = tabPosition[2] + lowbodyExercises.size();
+
+        ArrayList<Exercise> armExercises = new ArrayList<>();
+        armExercises.add(new Exercise("팔",0x10));
+        armExercises.add(new Exercise("바벨 컬",0x10));
+        armExercises.add(new Exercise("덤벨 컬",0x10));
+        armExercises.add(new Exercise("트레이셉스 프레스 다운 케이블",0x10));
+        tabPosition[4] = tabPosition[3] + armExercises.size();
+
+        ArrayList<Exercise> absExercises = new ArrayList<>();
+        absExercises.add(new Exercise("복근",0x20));
+        absExercises.add(new Exercise("싯 업",0x20));
+        absExercises.add(new Exercise("크런치",0x20));
+        tabPosition[5] = tabPosition[4] + absExercises.size();
+
+        ArrayList<Exercise> cardioExercises = new ArrayList<>();
+        cardioExercises.add(new Exercise("유산소",0x40));
+        cardioExercises.add(new Exercise("사이클",0x40));
+        cardioExercises.add(new Exercise("트레드 밀",0x40));
+        cardioExercises.add(new Exercise("인클라인 트레드 밀",0x40));
+        tabPosition[6] = tabPosition[5] + cardioExercises.size();
+
+//        ArrayList<ExerciseName> Exercises = new ArrayList<>();
+
+        exercises = new ArrayList<>();
+        exercises.addAll(chestExercises);
+        exercises.addAll(shoulderExercises);
+        exercises.addAll(backExercises);
+        exercises.addAll(lowbodyExercises);
+        exercises.addAll(armExercises);
+        exercises.addAll(absExercises);
+        exercises.addAll(cardioExercises);
+
+
+        setRecyclerView();
+
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                int position = tabPosition[tab.getPosition()];
+
+                recyclerView.smoothScrollToPosition(position);
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+            }
+        });
+
         NextBtn.setOnClickListener(v -> {
-//            mListener.onRoutineAddEx();
+//            if (selectExercises.size() > 0)
+//                mListener.onRoutineAddEx(selectExercises);
         });
 
         return view;
@@ -147,7 +248,6 @@ public class AddExerciseFragment extends Fragment {
         String EndTime = TimeToString(endTime);
         String result = DayOfWeek + " · " + StartTime + " - " + EndTime;
 
-
         ScheduleTxt.setText(result);
     }
 
@@ -170,10 +270,10 @@ public class AddExerciseFragment extends Fragment {
     }
 
     private void setRecyclerView() {
-//        adapter = new Adapter();
-//        recyclerView.setHasFixedSize(true);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-//        recyclerView.setAdapter(adapter);
+        adapter = new ExerciseListAdapter(exercises);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(adapter);
 
 //        if (adapter != null) {
 //            adapter.setOnExerciseClickListener(new ExerciseAdapter.OnExerciseClick() { // 어댑터 데이터를 전송 받기 위한 인터페이스 콜백

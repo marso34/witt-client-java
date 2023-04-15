@@ -8,6 +8,7 @@ import java.util.Map;
 public class Exercise implements Serializable {
     private String title;
     private String state;  // 운동 부위 결정 (시간인지 무게, 세트인지)
+    private String textColor;
     private String color;
     private int count;  // 세트 or 시간 (유산소일 때만 시간)
     private int volume; // 무게 or 속도 (유산소일 때만 속도) // 나중에 수정
@@ -24,13 +25,31 @@ public class Exercise implements Serializable {
         this.endTime = "";
 
         switch (state) {
-            case "가슴" : this.color = "#f257af"; break; // 색은 일단 다 임시
-            case "등"   : this.color = "#e26e5b"; break;
-            case "하체" : this.color = "#05c78c"; break;
-            case "어깨" : this.color = "#8c5adb"; break;
-            case "복근" : this.color = "#ffcc00"; break;
-            case "팔"   : this.color = "#4cd964"; break;
-            case "유산소" : this.color = "#579ef2"; this.count = 3; this.volume = 8; break;
+            case "가슴" : this.color = "#eee6fa"; this.textColor = "#8C5ADB"; break; // 색은 일단 다 임시
+            case "등"   : this.color = "#d9f7ee"; this.textColor = "#05C78C"; break;
+            case "하체" : this.color = "#ffefeb"; this.textColor = "#FC673F"; break;
+            case "어깨" : this.color = "#fde6f3"; this.textColor = "#F257AF"; break;
+            case "복근" : this.color = "#f9e6eb"; this.textColor = "#C71040"; break;
+            case "팔"   : this.color = "#fef8ee"; this.textColor = "#F2BB57"; break;
+            case "유산소" : this.color = "#e6f1fd"; this.textColor = "#579EF2"; this.count = 3; this.volume = 8; break;
+        }
+    }
+
+    public Exercise(String title, int state) {
+        this.title = title;
+        this.count = 5;      // 세트 카운트 or 시간(유산소)
+        this.volume = 10;    // 무게 or 속도 (유산소)
+        this.startTime = "";
+        this.endTime = "";
+
+        switch (state) {
+            case 0x1:  this.state = "가슴"; this.color = "#eee6fa"; this.textColor = "#8C5ADB"; break;
+            case 0x2:  this.state = "등"; this.color = "#d9f7ee"; this.textColor = "#05C78C"; break;
+            case 0x4:  this.state = "어깨"; this.color = "#fde6f3"; this.textColor = "#F257AF"; break;
+            case 0x8:  this.state = "하체"; this.color = "#ffefeb"; this.textColor = "#FC673F"; break;
+            case 0x10: this.state = "팔"; this.color = "#fef8ee"; this.textColor = "#F2BB57"; break;
+            case 0x20: this.state = "복근"; this.color = "#f9e6eb"; this.textColor = "#C71040"; break;
+            case 0x40: this.state = "유산소"; this.color = "#e6f1fd"; this.textColor = "#579EF2"; this.count = 3; this.volume = 8; break;
         }
     }
 
@@ -41,13 +60,13 @@ public class Exercise implements Serializable {
         this.volume = volume;
 
         switch (state) {
-            case "가슴" : this.color = "#f257af"; break; // 색은 일단 다 임시
-            case "등"   : this.color = "#e26e5b"; break;
-            case "하체" : this.color = "#05c78c"; break;
-            case "어깨" : this.color = "#8c5adb"; break;
-            case "복근" : this.color = "#ffcc00"; break;
-            case "팔"   : this.color = "#4cd964"; break;
-            case "유산소" : this.color = "#579ef2"; break;
+            case "가슴" : this.color = "#eee6fa"; this.textColor = "#8C5ADB"; break; // 색은 일단 다 임시
+            case "등"   : this.color = "#d9f7ee"; this.textColor = "#05C78C"; break;
+            case "하체" : this.color = "#ffefeb"; this.textColor = "#FC673F"; break;
+            case "어깨" : this.color = "#fde6f3"; this.textColor = "#F257AF"; break;
+            case "복근" : this.color = "#f9e6eb"; this.textColor = "#C71040"; break;
+            case "팔"   : this.color = "#fef8ee"; this.textColor = "#F2BB57"; break;
+            case "유산소" : this.color = "#e6f1fd"; this.textColor = "#579EF2"; break;
         }
     }
 
@@ -64,6 +83,7 @@ public class Exercise implements Serializable {
     public String getTitle()                    { return this.title; }
     public String getState()                    { return this.state; }
     public String getColor()                    { return this.color; }
+    public String getTextColor()                    { return this.textColor; }
     public int getCount()                       { return this.count; }
     public int getVolume()                      { return this.volume; }
     public String getStartTime()                { return this.startTime; }

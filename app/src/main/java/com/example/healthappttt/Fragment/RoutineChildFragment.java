@@ -47,7 +47,7 @@ public class RoutineChildFragment extends Fragment {
 
 
     private ArrayList<Routine> routines;
-    private static int day_of_week;
+    private int day_of_week;
 
 
 
@@ -68,6 +68,8 @@ public class RoutineChildFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    public RoutineChildFragment() {}
+    
     public RoutineChildFragment(int day_of_week) {
         this.day_of_week = day_of_week;
     }
@@ -82,7 +84,7 @@ public class RoutineChildFragment extends Fragment {
      */
     // TODO: Rename and change types and number of parameters
     public static RoutineChildFragment newInstance(String param1, String param2) {
-        RoutineChildFragment fragment = new RoutineChildFragment(day_of_week);
+        RoutineChildFragment fragment = new RoutineChildFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -116,25 +118,16 @@ public class RoutineChildFragment extends Fragment {
         UserUid = mAuth.getCurrentUser().getUid();
 //
 
-
         routines = new ArrayList<>();
 
         switch (day_of_week) {
-            case 0:
-                dayOfWeek = "sun";
-                break;
-            case 1: dayOfWeek = "mon"; break;
-            case 2: dayOfWeek = "tue"; break;
-            case 3: dayOfWeek = "wed"; break;
-            case 4:
-                dayOfWeek = "thu";
-                break;
-            case 5:
-                dayOfWeek = "fri";
-                break;
-            case 6:
-                dayOfWeek = "sat";
-            break;
+            case 0: dayOfWeek = "sun"; break;
+            case 1: dayOfWeek = "mon"; routines.add(new Routine()); break;
+            case 2: dayOfWeek = "tue"; routines.add(new Routine()); routines.add(new Routine()); break;
+            case 3: dayOfWeek = "wed"; routines.add(new Routine()); routines.add(new Routine()); routines.add(new Routine()); break;
+            case 4: dayOfWeek = "thu"; routines.add(new Routine()); routines.add(new Routine()); routines.add(new Routine()); routines.add(new Routine()); break;
+            case 5: dayOfWeek = "fri"; routines.add(new Routine()); routines.add(new Routine()); routines.add(new Routine()); routines.add(new Routine()); routines.add(new Routine()); break;
+            case 6: dayOfWeek = "sat"; routines.add(new Routine()); routines.add(new Routine()); routines.add(new Routine()); routines.add(new Routine()); routines.add(new Routine()); routines.add(new Routine()); break;
         }
 
         setRecyclerView();
