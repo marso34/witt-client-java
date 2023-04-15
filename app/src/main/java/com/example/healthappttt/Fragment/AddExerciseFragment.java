@@ -2,6 +2,7 @@ package com.example.healthappttt.Fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -134,11 +135,15 @@ public class AddExerciseFragment extends Fragment {
         NextTxt = view.findViewById(R.id.nextTxt);
 
         tabPosition = new int[7];
+        exercises = new ArrayList<>();
+        selectExercises = new ArrayList<>();
 
         if (getArguments() != null) {
             int[] schedule = getArguments().getIntArray("schedule");
             setRoutineTime(schedule[0], schedule[1], schedule[2]);
         }
+
+
 
         ArrayList<Exercise> chestExercises = new ArrayList<>();
         chestExercises.add(new Exercise("가슴",0x1));
@@ -191,9 +196,6 @@ public class AddExerciseFragment extends Fragment {
         cardioExercises.add(new Exercise("인클라인 트레드 밀",0x40));
         tabPosition[6] = tabPosition[5] + cardioExercises.size();
 
-//        ArrayList<ExerciseName> Exercises = new ArrayList<>();
-
-        exercises = new ArrayList<>();
         exercises.addAll(chestExercises);
         exercises.addAll(shoulderExercises);
         exercises.addAll(backExercises);
@@ -201,6 +203,7 @@ public class AddExerciseFragment extends Fragment {
         exercises.addAll(armExercises);
         exercises.addAll(absExercises);
         exercises.addAll(cardioExercises);
+
 
 
         setRecyclerView();
@@ -220,15 +223,12 @@ public class AddExerciseFragment extends Fragment {
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-                int position = tabPosition[tab.getPosition()];
-
-                recyclerView.smoothScrollToPosition(position);
             }
         });
 
         NextBtn.setOnClickListener(v -> {
-//            if (selectExercises.size() > 0)
-//                mListener.onRoutineAddEx(selectExercises);
+            if (selectExercises.size() > 0)
+                mListener.onRoutineAddEx(selectExercises);
         });
 
         return view;
@@ -279,36 +279,22 @@ public class AddExerciseFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
 
-//        if (adapter != null) {
-//            adapter.setOnExerciseClickListener(new ExerciseAdapter.OnExerciseClick() { // 어댑터 데이터를 전송 받기 위한 인터페이스 콜백
-//                @Override
-//                public void onExerciseClick(int position, TextView CountView, TextView CardioTxtView, ProgressBar CardioBar) { // 운동 기록과 운동 메모를 전달 받아
-//                    if (isRunning) {
-//                        Exercise e = routine.getExercises().get(position);
-//                        String cat = e.getState();
-//                        int count = e.getCount();
-//                        int SetCnt = recordExercises.get(position).getCount();
-//
-//                        if (cat.equals("유산소")) {
-//                            if (AdapterCardioBar == null) {
-//                                AdapterCardioBar = CardioBar;
-//                                AdapterCardioBar.setProgressDrawable(getDrawable(R.drawable.progressbar_exercise1));
-//                                AdapterCardioTxtView = CardioTxtView;
-//                            } else if (AdapterCardioBar == CardioBar) {
-//                                AdapterCardioBar.setProgressDrawable(getDrawable(R.drawable.progressbar_exercise2));
-//                                AdapterCardioBar = null;
-//                                AdapterCardioTxtView = null;
-//                            }
-//                        } else {
-//                            if (SetCnt < count)
-//                                SetCnt++;
-//
-//                            recordExercises.get(position).setCount(SetCnt);
-//                            CountView.setText(Integer.toString(SetCnt) + "/" + Integer.toString(count));
-//                        }
-//                    }
-//                }
-//            });
-//        }
-    } // 리사이클러 뷰 생성 -> 추후 수정 필요
+        if (adapter != null) {
+            adapter.setOnSelectExerciseListener(new ExerciseListAdapter.OnSelectExercise() {
+                @Override
+                public void onSelectExercise(Exercise exercise, boolean add) {
+                    if (add)    selectExercises.add(exercise);
+                    else        selectExercises.remove(exercise);
+
+                    if(selectExercises.size() > 0) {
+                        NextTxt.setBackgroundColor(Color.parseColor("#05c78c"));
+                        NextTxt.setTextColor(Color.parseColor("#ffffff"));
+                    } else {
+                        NextTxt.setBackgroundColor(Color.parseColor("#D1D8E2"));
+                        NextTxt.setTextColor(Color.parseColor("#9AA5B8"));
+                    }
+                }
+            });
+        }
+    }
 }

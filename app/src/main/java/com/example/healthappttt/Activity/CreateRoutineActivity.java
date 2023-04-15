@@ -55,9 +55,15 @@ public class CreateRoutineActivity extends AppCompatActivity implements SetRouti
     public void onRoutineAddEx(ArrayList<Exercise> selectExercises) {
         this.selectExercises = selectExercises;
 
+        int[] schedule = new int[3];
+        schedule[0] = dayOfWeek;
+        schedule[1] = startTime;
+        schedule[2] = endTime;
+
         Bundle bundle = new Bundle();
         bundle.putSerializable("exercises", selectExercises);
-        replaceFragment(new ExerciseDetailFragment());
+        bundle.putIntArray("schedule", schedule);
+        replaceFragment(new ExerciseDetailFragment(), bundle);
     }
 
     @Override

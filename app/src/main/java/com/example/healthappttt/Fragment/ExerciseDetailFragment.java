@@ -1,16 +1,28 @@
 package com.example.healthappttt.Fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.TextView;
 
+import com.example.healthappttt.Data.Exercise;
 import com.example.healthappttt.R;
+import com.example.healthappttt.adapter.ExerciseListAdapter;
+import com.google.android.material.tabs.TabLayout;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -18,6 +30,16 @@ import com.example.healthappttt.R;
  * create an instance of this fragment.
  */
 public class ExerciseDetailFragment extends Fragment {
+    private TextView ResetBtn, ScheduleTxt;
+    private CardView NextBtn;
+    private TextView NextTxt;
+
+    private RecyclerView recyclerView;
+//    private ExerciseListAdapter adapter;
+
+    private ArrayList<Exercise> exercises;
+
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -83,7 +105,68 @@ public class ExerciseDetailFragment extends Fragment {
         // Inflate the layout for this fragment
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_exercise_detail, container, false);
 
+        ResetBtn = view.findViewById(R.id.reset);
+        ScheduleTxt = view.findViewById(R.id.schedule);
+
+        recyclerView = view.findViewById(R.id.recyclerView);
+
+        if (getArguments() != null) {
+            exercises = (ArrayList<Exercise>) getArguments().getSerializable("exercises");
+            int[] schedule = getArguments().getIntArray("schedule");
+            setRoutineTime(schedule[0], schedule[1], schedule[2]);
+        }
+
 
         return view;
     }
+
+    private void setRoutineTime(int dayOfWeek, int startTime, int endTime) {
+
+        String DayOfWeek = "";
+
+        switch (dayOfWeek) {
+            case 0: DayOfWeek = "일요일"; break;
+            case 1: DayOfWeek = "월요일"; break;
+            case 2: DayOfWeek = "화요일"; break;
+            case 3: DayOfWeek = "수요일"; break;
+            case 4: DayOfWeek = "목요일"; break;
+            case 5: DayOfWeek = "금요일"; break;
+            case 6: DayOfWeek = "토요일"; break;
+        }
+
+        String StartTime = TimeToString(startTime);
+        String EndTime = TimeToString(endTime);
+        String result = DayOfWeek + " · " + StartTime + " - " + EndTime;
+
+        ScheduleTxt.setText(result);
+    }
+
+    private String TimeToString(int Time) {
+        String am_pm = "";
+
+        if (Time >= 240) Time-= 240;
+
+        if (Time < 120) {
+            am_pm = "오전";
+            if (Time < 10) Time += 120;
+        } else {
+            am_pm = "오후";
+            if (Time >= 130) Time-= 120;
+        }
+
+        @SuppressLint("DefaultLocale") String result = String.format("%02d:%02d", Time/10, Time % 10 * 6);
+
+        return am_pm + " " + result;
+    }
+
+    private void setRecyclerView() {
+//        adapter = new ExerciseListAdapter(exercises);
+//        recyclerView.setHasFixedSize(true);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+//        recyclerView.setAdapter(adapter);
+//
+//        if (adapter != null) {
+//
+//        }
+    } // 리사이클러 뷰 생성 -> 추후 수정 필요
 }

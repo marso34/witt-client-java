@@ -27,14 +27,16 @@ import java.util.ArrayList;
 
 public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapter.MainViewHolder> {
     private ArrayList<Exercise> exercises;
-    private boolean isRoutine;
+    private boolean isRoutine; // false면 루틴 생성할 때, true면 확인할 때
 
-    public ExerciseListAdapter(ArrayList<Exercise> exercises) { // 루틴 생성할 때 리스트
+    private OnSelectExercise onSelectExercise;
+
+    public ExerciseListAdapter(ArrayList<Exercise> exercises) {
         this.exercises = exercises;
         this.isRoutine = false;
     }
 
-    public ExerciseListAdapter(ArrayList<Exercise> exercises, boolean isRoutine) { // 루틴 확인할 때 리스트
+    public ExerciseListAdapter(ArrayList<Exercise> exercises, boolean isRoutine) {
         this.exercises = exercises;
         this.isRoutine = isRoutine;
     }
@@ -48,6 +50,8 @@ public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapte
         public TextView CatView, NameView, DetailView;
         public LinearLayout CheckBoxLayout;
         public ImageView CheckedImg;
+
+        public boolean checked;
 
         public MainViewHolder(View view) {
             super(view);
@@ -63,6 +67,8 @@ public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapte
             this.DetailView = view.findViewById(R.id.exerciseDetail);
             this.CheckBoxLayout = view.findViewById(R.id.checkbox);
             this.CheckedImg = view.findViewById(R.id.checked);
+
+            this.checked = false;
         }
     }
 
@@ -71,6 +77,25 @@ public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapte
     public MainViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_exercise_list, parent, false);
         final MainViewHolder mainViewHolder = new MainViewHolder(view);
+
+        view.setOnClickListener(v -> {
+            int position = mainViewHolder.getAdapterPosition();
+
+            if (isRoutine) { // 루틴 확인용
+
+            } else { // 루틴 생성용
+                mainViewHolder.checked = !mainViewHolder.checked;
+
+                if (mainViewHolder.checked) {
+                    mainViewHolder.CheckedImg.setVisibility(View.VISIBLE);
+                    onSelectExercise.onSelectExercise(this.exercises.get(position), true);
+                } else {
+                    mainViewHolder.CheckedImg.setVisibility(View.GONE);
+                    onSelectExercise.onSelectExercise(this.exercises.get(position), false);
+                }
+
+            }
+        });
 
         return mainViewHolder;
     }
@@ -108,4 +133,12 @@ public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapte
     public int getItemCount() {
         return exercises.size();
     }
+
+    public void setOnSelectExerciseListener(OnSelectExercise onSelectExerciseListener) {
+        this.onSelectExercise = onSelectExerciseListener;
+    } // 액티비티에서 콜백 메서드를 set
+
+    public interface OnSelectExercise {
+        void onSelectExercise(Exercise exercise, boolean add);
+    } // 운동 클릭했을 때, 엑티비티에 값 전달을 위한 인터페이스
 }
