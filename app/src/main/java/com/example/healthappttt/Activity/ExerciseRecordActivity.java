@@ -84,11 +84,11 @@ public class ExerciseRecordActivity extends AppCompatActivity {
         isRunning = false;
 
         recordExercises = new ArrayList<Exercise>();
-        ArrayList<Exercise> exer = routine.getExercises();
-
-        for (Exercise i : exer) {
-            recordExercises.add(new Exercise(i.getTitle(), i.getState(), 0, i.getVolume()));
-        }
+//        ArrayList<Exercise> exer = routine.getExercises();
+//
+//        for (Exercise i : exer) {
+//            recordExercises.add(new Exercise(i.getTitle(), i.getState(), 0, i.getVolume()));
+//        }
     }
 
     private void _start(View v) {
@@ -147,7 +147,8 @@ public class ExerciseRecordActivity extends AppCompatActivity {
     } // 종료 버튼 눌렀을 때. 지금은 운동 시작 안 하면 종료 불가 -> 추후 수정 필요
 
     private void setExerciseRecyclerView() {
-        adapter = new ExerciseAdapter(routine);
+//        adapter = new ExerciseAdapter(routine);
+        adapter = new ExerciseAdapter(new ArrayList<Exercise>());
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
@@ -157,28 +158,28 @@ public class ExerciseRecordActivity extends AppCompatActivity {
                 @Override
                 public void onExerciseClick(int position, TextView CountView, TextView CardioTxtView, ProgressBar CardioBar) { // 운동 기록과 운동 메모를 전달 받아
                     if (isRunning) {
-                        Exercise e = routine.getExercises().get(position);
-                        String cat = e.getState();
-                        int count = e.getCount();
-                        int SetCnt = recordExercises.get(position).getCount();
-
-                        if (cat.equals("유산소")) {
-                            if (AdapterCardioBar == null) {
-                                AdapterCardioBar = CardioBar;
-                                AdapterCardioBar.setProgressDrawable(getDrawable(R.drawable.progressbar_exercise1));
-                                AdapterCardioTxtView = CardioTxtView;
-                            } else if (AdapterCardioBar == CardioBar) {
-                                AdapterCardioBar.setProgressDrawable(getDrawable(R.drawable.progressbar_exercise2));
-                                AdapterCardioBar = null;
-                                AdapterCardioTxtView = null;
-                            }
-                        } else {
-                            if (SetCnt < count)
-                                SetCnt++;
-
-                            recordExercises.get(position).setCount(SetCnt);
-                            CountView.setText(Integer.toString(SetCnt) + "/" + Integer.toString(count));
-                        }
+//                        Exercise e = routine.getExercises().get(position);
+//                        String cat = e.getState();
+//                        int count = e.getCount();
+//                        int SetCnt = recordExercises.get(position).getCount();
+//
+//                        if (cat.equals("유산소")) {
+//                            if (AdapterCardioBar == null) {
+//                                AdapterCardioBar = CardioBar;
+//                                AdapterCardioBar.setProgressDrawable(getDrawable(R.drawable.progressbar_exercise1));
+//                                AdapterCardioTxtView = CardioTxtView;
+//                            } else if (AdapterCardioBar == CardioBar) {
+//                                AdapterCardioBar.setProgressDrawable(getDrawable(R.drawable.progressbar_exercise2));
+//                                AdapterCardioBar = null;
+//                                AdapterCardioTxtView = null;
+//                            }
+//                        } else {
+//                            if (SetCnt < count)
+//                                SetCnt++;
+//
+//                            recordExercises.get(position).setCount(SetCnt);
+//                            CountView.setText(Integer.toString(SetCnt) + "/" + Integer.toString(count));
+//                        }
                     }
                 }
             });
@@ -187,18 +188,18 @@ public class ExerciseRecordActivity extends AppCompatActivity {
 
     public Routine getRecord() {
 
-        Routine record = new Routine(routine.getExerciseCategories(), recordExercises);
-        record.setStartTime(Long.toString(startTime));
-        record.setEndTime(Long.toString(System.currentTimeMillis()));
-        record.setRunTime(Long.toString(runTime));
-
-        return record;
+//        Routine record = new Routine(routine.getExerciseCategories(), recordExercises);
+//        record.setStartTime(Long.toString(startTime));
+//        record.setEndTime(Long.toString(System.currentTimeMillis()));
+//        record.setRunTime(Long.toString(runTime));
+//
+//        return record;
 
 //        routine.setStartTime(Long.toString(startTime));
 //        routine.setEndTime(Long.toString(System.currentTimeMillis()));
 //        routine.setRunTime(Long.toString(runTime));
 //
-//        return routine;
+        return routine;
     } // 운동 기록을 토대로 루틴 객체를 만드는 메서드
 
     private void someWork() {

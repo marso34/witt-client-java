@@ -46,7 +46,7 @@
             android:clipToPadding="false"
             android:paddingBottom="200dp"
             app:layout_constrainedHeight="true"
-            tools:listitem="@layout/adapter_set_exercise"></androidx.recyclerview.widget.RecyclerView>
+            tools:listitem="@layout/adapter_exercise_input"></androidx.recyclerview.widget.RecyclerView>
 
     </LinearLayout>
 

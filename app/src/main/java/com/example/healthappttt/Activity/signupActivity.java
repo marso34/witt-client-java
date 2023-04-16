@@ -171,7 +171,7 @@ public class signupActivity extends AppCompatActivity {
             }
 
             db.collection("routines").document(mAuth.getCurrentUser().getUid() +"_" + dayOfWeek).
-                    set(new Routine(0)).
+                    set(new Routine()).
                     addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {

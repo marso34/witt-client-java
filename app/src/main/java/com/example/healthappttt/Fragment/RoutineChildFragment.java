@@ -147,12 +147,9 @@ public class RoutineChildFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == REQUEST_CODE && data != null) {
-//            Routine r = data.getSerializableExtra("result");
-            String result = (String) data.getSerializableExtra("result");
-            routines.add(new Routine());
+            Routine r = (Routine) data.getSerializableExtra("routine");
+            routines.add(r);
             adapter.notifyDataSetChanged();
-
-            Log.d("Test", result);
         }
     } // startActivityForResult로 실행한 액티비티의 반환값을 전달받는 메서드
 

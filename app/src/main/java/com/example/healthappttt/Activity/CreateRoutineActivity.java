@@ -8,9 +8,11 @@ import androidx.fragment.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.healthappttt.Data.Exercise;
 import com.example.healthappttt.Data.ExerciseName;
+import com.example.healthappttt.Data.Routine;
 import com.example.healthappttt.Fragment.AddExerciseFragment;
 import com.example.healthappttt.Fragment.ExerciseDetailFragment;
 import com.example.healthappttt.Fragment.SetRoutineTimeFragment;
@@ -67,9 +69,14 @@ public class CreateRoutineActivity extends AppCompatActivity implements SetRouti
     }
 
     @Override
-    public void onRoutineExDetail(int startTime, int endTime) {
+    public void onRoutineExDetail(ArrayList<Exercise> exercises) {
+        this.selectExercises = exercises;
+
+        // 받은 운동 정보 토대로 DB에 루틴, 운동 생성하고
+        // 생성된 키 받아와서 로컬에 루틴, 운동 저장
+
         Intent intent = new Intent();
-        intent.putExtra("result", "가나다라마바사");
+        intent.putExtra("routines", new Routine(0, dayOfWeek, 0, startTime, endTime));
         setResult(RESULT_OK, intent);
         finish();
     }

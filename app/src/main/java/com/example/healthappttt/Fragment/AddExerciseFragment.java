@@ -123,6 +123,9 @@ public class AddExerciseFragment extends Fragment {
         tabLayout = view.findViewById(R.id.tabLayout);
         recyclerView = view.findViewById(R.id.recyclerView);
 
+        NextBtn = view.findViewById(R.id.nextBtn);
+        NextTxt = view.findViewById(R.id.nextTxt);
+
         tabLayout.addTab(tabLayout.newTab().setText("가슴"));
         tabLayout.addTab(tabLayout.newTab().setText("어깨"));
         tabLayout.addTab(tabLayout.newTab().setText("등"));
@@ -130,9 +133,6 @@ public class AddExerciseFragment extends Fragment {
         tabLayout.addTab(tabLayout.newTab().setText("팔"));
         tabLayout.addTab(tabLayout.newTab().setText("복근"));
         tabLayout.addTab(tabLayout.newTab().setText("유산소"));
-
-        NextBtn = view.findViewById(R.id.nextBtn);
-        NextTxt = view.findViewById(R.id.nextTxt);
 
         tabPosition = new int[7];
         exercises = new ArrayList<>();
@@ -203,8 +203,6 @@ public class AddExerciseFragment extends Fragment {
         exercises.addAll(armExercises);
         exercises.addAll(absExercises);
         exercises.addAll(cardioExercises);
-
-
 
         setRecyclerView();
 

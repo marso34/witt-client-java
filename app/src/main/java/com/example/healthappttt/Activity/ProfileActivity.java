@@ -24,7 +24,7 @@ import com.example.healthappttt.Data.Message;
 import com.example.healthappttt.Data.Routine;
 import com.example.healthappttt.Data.User;
 import com.example.healthappttt.R;
-import com.example.healthappttt.adapter.setExerciseAdapter;
+import com.example.healthappttt.adapter.ExerciseInputAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -61,7 +61,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     private Routine routine;
     private ArrayList<Exercise> exercises;
-    private setExerciseAdapter adapter;
+    private ExerciseInputAdapter adapter;
     private String dayOfWeek;
     private RecyclerView recyclerView;
     private FirebaseAuth mAuth;
@@ -70,6 +70,7 @@ public class ProfileActivity extends AppCompatActivity {
 
 
     //임시
+    private int t;
 
     private TextView UserNameR, Week, RTime;
 
@@ -259,6 +260,8 @@ public class ProfileActivity extends AppCompatActivity {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(currentDate);
 
+        t = calendar.get(Calendar.DAY_OF_WEEK);
+
         switch (calendar.get(Calendar.DAY_OF_WEEK)) {
             case 1: dayOfWeek = "sun"; break;
             case 2: dayOfWeek = "mon"; break;
@@ -283,9 +286,10 @@ public class ProfileActivity extends AppCompatActivity {
                             if (document.exists()) {
                                 Log.d(TAG, "Document exists!");
                                 routine = new Routine(
+                                        t,
                                         Integer.parseInt(document.getData().get("exerciseCategories").toString()),
-                                        document.getData().get("startTime").toString(),
-                                        document.getData().get("endTime").toString()
+                                        Integer.parseInt(document.getData().get("startTime").toString()),
+                                        Integer.parseInt(document.getData().get("endTime").toString())
                                 );
 
                                 setExercises();
@@ -312,9 +316,10 @@ public class ProfileActivity extends AppCompatActivity {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Exercise e = new Exercise(
                                         document.getData().get("title").toString(),
-                                        document.getData().get("state").toString(),
+                                        Integer.parseInt(document.getData().get("state").toString()),
                                         Integer.parseInt(document.getData().get("count").toString()),
-                                        Integer.parseInt(document.getData().get("volume").toString())
+                                        Integer.parseInt(document.getData().get("volume").toString()),
+                                        0
                                 );
 
                                 exercises.add(e);
@@ -330,7 +335,7 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void setRecyclerView() {
-        adapter = new setExerciseAdapter(exercises); // 나중에 routine
+        adapter = new ExerciseInputAdapter(exercises); // 나중에 routine
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);

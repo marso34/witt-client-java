@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.example.healthappttt.Data.Exercise;
 import com.example.healthappttt.R;
+import com.example.healthappttt.adapter.ExerciseInputAdapter;
 import com.example.healthappttt.adapter.ExerciseListAdapter;
 import com.google.android.material.tabs.TabLayout;
 
@@ -35,10 +36,9 @@ public class ExerciseDetailFragment extends Fragment {
     private TextView NextTxt;
 
     private RecyclerView recyclerView;
-//    private ExerciseListAdapter adapter;
+    private ExerciseInputAdapter adapter;
 
     private ArrayList<Exercise> exercises;
-
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -53,7 +53,7 @@ public class ExerciseDetailFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     public interface OnFragmentInteractionListener {
-        void onRoutineExDetail(int startTime, int endTime);
+        void onRoutineExDetail(ArrayList<Exercise> exercises);
     }
 
     @Override
@@ -107,8 +107,12 @@ public class ExerciseDetailFragment extends Fragment {
 
         ResetBtn = view.findViewById(R.id.reset);
         ScheduleTxt = view.findViewById(R.id.schedule);
-
         recyclerView = view.findViewById(R.id.recyclerView);
+
+        NextBtn = view.findViewById(R.id.nextBtn);
+        NextTxt = view.findViewById(R.id.nextTxt);
+
+        exercises = new ArrayList<>();
 
         if (getArguments() != null) {
             exercises = (ArrayList<Exercise>) getArguments().getSerializable("exercises");
@@ -116,6 +120,15 @@ public class ExerciseDetailFragment extends Fragment {
             setRoutineTime(schedule[0], schedule[1], schedule[2]);
         }
 
+        setRecyclerView();
+
+
+        NextTxt.setBackgroundColor(Color.parseColor("#05c78c"));
+        NextTxt.setTextColor(Color.parseColor("#ffffff"));
+
+        NextBtn.setOnClickListener(v -> {
+            mListener.onRoutineExDetail(exercises);
+        });
 
         return view;
     }
@@ -160,13 +173,18 @@ public class ExerciseDetailFragment extends Fragment {
     }
 
     private void setRecyclerView() {
-//        adapter = new ExerciseListAdapter(exercises);
-//        recyclerView.setHasFixedSize(true);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-//        recyclerView.setAdapter(adapter);
-//
-//        if (adapter != null) {
-//
-//        }
-    } // 리사이클러 뷰 생성 -> 추후 수정 필요
+        adapter = new ExerciseInputAdapter(exercises);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(adapter);
+
+        if (adapter != null) {
+            adapter.setinputExerciseListener(new ExerciseInputAdapter.InputExerciseDetail() {
+                @Override
+                public void inputExerciseDetail(ArrayList<Exercise> mExercises) {
+                    exercises = mExercises;
+                }
+            });
+        }
+    }
 }

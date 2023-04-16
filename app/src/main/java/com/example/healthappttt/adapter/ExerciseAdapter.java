@@ -25,12 +25,12 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.MainVi
     private OnExerciseClick onExerciseClick;
 
     public ExerciseAdapter(Routine routine) { // 일단 테스트
-        this.exercises = routine.getExercises();
+//        this.exercises = routine.getExercises();
         this.isCount = false;
     }
 
     public ExerciseAdapter(Routine routine, boolean isCount) { // 일단 테스트
-        this.exercises = routine.getExercises();
+//        this.exercises = routine.getExercises();
         this.isCount = isCount;
     }
 
@@ -109,7 +109,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.MainVi
         setTxt(holder); // DetailViewTxt, CountTxt 초기값 설정
 
         holder.CatView.setText(this.exercises.get(position).getState()); // 운동 부위
-        holder.CatView.setBackgroundColor(Color.parseColor(this.exercises.get(position).getColor()));
+        holder.CatView.setBackgroundColor(Color.parseColor(this.exercises.get(position).getColor())); // 부위 배경색
         holder.NameView.setText(this.exercises.get(position).getTitle()); // 운동 이름
         holder.DetailView.setText(holder.DetailViewTxt);    // 무게 및 세트수
 

@@ -34,7 +34,7 @@ import com.example.healthappttt.Data.User;
 import com.example.healthappttt.R;
 import com.example.healthappttt.adapter.ExerciseAdapter;
 import com.example.healthappttt.adapter.RoutinePagerAdapter;
-import com.example.healthappttt.adapter.setExerciseAdapter;
+import com.example.healthappttt.adapter.ExerciseInputAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;

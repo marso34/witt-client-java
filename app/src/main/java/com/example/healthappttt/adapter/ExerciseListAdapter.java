@@ -28,17 +28,20 @@ import java.util.ArrayList;
 public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapter.MainViewHolder> {
     private ArrayList<Exercise> exercises;
     private boolean isRoutine; // false면 루틴 생성할 때, true면 확인할 때
+    private boolean[] checked;
 
     private OnSelectExercise onSelectExercise;
 
     public ExerciseListAdapter(ArrayList<Exercise> exercises) {
         this.exercises = exercises;
         this.isRoutine = false;
+        this.checked = new boolean[exercises.size()];
     }
 
     public ExerciseListAdapter(ArrayList<Exercise> exercises, boolean isRoutine) {
         this.exercises = exercises;
         this.isRoutine = isRoutine;
+        this.checked = new boolean[exercises.size()];
     }
 
     public static class MainViewHolder extends RecyclerView.ViewHolder {
@@ -50,8 +53,6 @@ public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapte
         public TextView CatView, NameView, DetailView;
         public LinearLayout CheckBoxLayout;
         public ImageView CheckedImg;
-
-        public boolean checked;
 
         public MainViewHolder(View view) {
             super(view);
@@ -67,8 +68,6 @@ public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapte
             this.DetailView = view.findViewById(R.id.exerciseDetail);
             this.CheckBoxLayout = view.findViewById(R.id.checkbox);
             this.CheckedImg = view.findViewById(R.id.checked);
-
-            this.checked = false;
         }
     }
 
@@ -79,14 +78,14 @@ public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapte
         final MainViewHolder mainViewHolder = new MainViewHolder(view);
 
         view.setOnClickListener(v -> {
-            int position = mainViewHolder.getAdapterPosition();
+            int position = mainViewHolder.getAbsoluteAdapterPosition();
 
             if (isRoutine) { // 루틴 확인용
 
             } else { // 루틴 생성용
-                mainViewHolder.checked = !mainViewHolder.checked;
+                checked[position] = ! checked[position];
 
-                if (mainViewHolder.checked) {
+                if (checked[position]) {
                     mainViewHolder.CheckedImg.setVisibility(View.VISIBLE);
                     onSelectExercise.onSelectExercise(this.exercises.get(position), true);
                 } else {
@@ -126,6 +125,11 @@ public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapte
         } else { // 루틴 생성할 때 -> data
             holder.DetailView.setVisibility(View.GONE); // 운동 디테일(세트 수 등) 표시X
             holder.CheckBoxLayout.setVisibility(View.VISIBLE); // 선택칸 표시
+
+            if (checked[position])
+                holder.CheckedImg.setVisibility(View.VISIBLE);
+            else
+                holder.CheckedImg.setVisibility(View.GONE);
         }
     }
 
