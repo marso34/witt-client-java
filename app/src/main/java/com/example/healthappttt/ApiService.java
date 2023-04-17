@@ -10,8 +10,9 @@ import retrofit2.http.Query;
 
 public interface ApiService {
 
-    @GET("/Witt/getuserkey")
-    Call<UserKeyResponse> getuserkey(@Query("UserName") UserKey data); // 함수 확인 필요
+    @GET("/Witt/getuserkey.js")
+    Call<String> getuserkey(@Query("UserName") UserKey data); // 함수 확인 필요
+    //Call<UserKeyResponse> XXXXXXX -> String 형식으로 바꿈 (어차피 UserKeyResponse도 String으로 받는거라서)
 
 }
 //

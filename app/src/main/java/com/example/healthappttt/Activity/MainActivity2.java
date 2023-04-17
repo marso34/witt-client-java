@@ -39,12 +39,12 @@ public class MainActivity2 extends AppCompatActivity {
 
     //API 요청 매서드 호출
     private void getusername(UserKey data) {
-        apiService.getuserkey(data).enqueue(new Callback<UserKeyResponse>() {
+        apiService.getuserkey(data).enqueue(new Callback<String>() {
             @Override
-            public void onResponse(Call<UserKeyResponse> call, Response<UserKeyResponse> response) {
+            public void onResponse(Call<String> call, Response<String> response) {
                 // 서버에서 받은 응답을 처리하는 코드를 작성합니다.
                 if ( response.isSuccessful() ) {
-                    UserKeyResponse result = response.body();
+                    String result = response.body();
 
                     if(result != null) {
                         //서버에서 반환된 값이 null이 아닌 경우 처리할 코드
@@ -62,7 +62,7 @@ public class MainActivity2 extends AppCompatActivity {
                 }
             }
             @Override
-            public void onFailure(Call<UserKeyResponse> call, Throwable t) {
+            public void onFailure(Call<String> call, Throwable t) {
                 // API 호출에 실패한 경우 처리합니다.
                 Log.d("MainActivity2", "API호출 실패:");
                 Log.e("API_CALL", "API call failed: " + t.getMessage());
