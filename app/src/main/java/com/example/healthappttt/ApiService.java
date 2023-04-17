@@ -1,17 +1,13 @@
 package com.example.healthappttt;
 
-import com.example.healthappttt.Activity.UserKey;
-import com.example.healthappttt.Activity.UserKeyResponse;
-
 import retrofit2.Call;
-import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
 public interface ApiService {
 
-    @GET("/Witt/getuserkey.js")
-    Call<String> getuserkey(@Query("UserName") UserKey data); // 함수 확인 필요
+    @GET("/Witt/getuserkey")
+    Call<String> getuserkey(@Query("userkey") String userkey); // 함수 확인 필요
     //Call<UserKeyResponse> XXXXXXX -> String 형식으로 바꿈 (어차피 UserKeyResponse도 String으로 받는거라서)
 
 }
