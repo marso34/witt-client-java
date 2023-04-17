@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.healthappttt.R;
-import com.example.healthappttt.adapter.RoutinePagerAdapter;
+import com.example.healthappttt.adapter.UserPagerAdapter;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -24,7 +24,7 @@ public class HomeFragment extends Fragment {
 
     private TabLayout tabLayout;
     private ViewPager2 viewPager;
-    private RoutinePagerAdapter pagerAdapter;
+    private UserPagerAdapter pagerAdapter;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -69,7 +69,7 @@ public class HomeFragment extends Fragment {
         tabLayout = view.findViewById(R.id.tab_layout);
         viewPager = view.findViewById(R.id.view_pager);
 
-        pagerAdapter = new RoutinePagerAdapter(this);
+        pagerAdapter = new UserPagerAdapter(this);
         pagerAdapter.createFragment(0);
         pagerAdapter.createFragment(1);
         pagerAdapter.createFragment(2);

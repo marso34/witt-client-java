@@ -6,6 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.healthappttt.Data.User;
 import com.example.healthappttt.R;
 import com.example.healthappttt.adapter.UserListAdapter;
@@ -21,11 +26,6 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
@@ -70,7 +70,7 @@ public class ChattingFragment extends Fragment {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 //Log.d(TAG, document.getId() + " &&&&+&=> " + document.getData().get("userName").toString());
                                 User a = new User(
-                                        Double.parseDouble(document.getData().get("userTemperature").toString()),
+                                        (int) Double.parseDouble(document.getData().get("userTemperature").toString()),
                                         document.getData().get("key_").toString(),
                                         Double.parseDouble(document.getData().get("lat").toString()),
                                         Double.parseDouble(document.getData().get("lon").toString()),

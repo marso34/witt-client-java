@@ -1,7 +1,12 @@
 package com.example.healthappttt.Fragment;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,15 +16,26 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.example.healthappttt.Activity.CreateRoutineActivity;
-import com.example.healthappttt.Data.Routine;
+import com.example.healthappttt.Data.CompareUser;
+import com.example.healthappttt.Data.User;
 import com.example.healthappttt.R;
-import com.example.healthappttt.adapter.RoutineAdapter;
+import com.example.healthappttt.adapter.UserAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -30,13 +46,15 @@ public class HomeChildFragment extends Fragment {
     private static final int REQUEST_CODE = 100;
 
     private RecyclerView recyclerView;
-    private RoutineAdapter adapter;
+    private UserAdapter adapter;
     private CardView addRoutineBtn;
 
-
-    private ArrayList<Routine> routines;
+    private boolean topScrolled;
+    private ArrayList<CompareUser> CompareuserList;
+    private ArrayList<User> UserList;
     private int day_of_week;
-
+    private boolean updating;
+    private User CurrentUser;
 
 
     private FirebaseFirestore firebaseFirestore;
@@ -93,20 +111,14 @@ public class HomeChildFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_home_child, container, false);
-
-
-        recyclerView = view.findViewById(R.id.recyclerView);
+        recyclerView = view.findViewById(R.id.recyclerView2);
         addRoutineBtn = view.findViewById(R.id.addRoutine);
-
-//
         firebaseFirestore = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
-
         UserUid = mAuth.getCurrentUser().getUid();
-//
 
-       // routines = new ArrayList<>();
+        UserList = new ArrayList<>();
 
         switch (day_of_week) {
             case 0: dayOfWeek = "sun"; break;
@@ -117,15 +129,35 @@ public class HomeChildFragment extends Fragment {
             case 5: dayOfWeek = "fri"; break;
             case 6: dayOfWeek = "sat"; break;
         }
+
         setRecyclerView();
+        SwipeRefreshLayout mSwipeRefreshLayout = view.findViewById(R.id.swipe_layout);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
+                        int visibleItemCount = layoutManager.getChildCount();
+                        int totalItemCount = layoutManager.getItemCount();
+                        int firstVisibleItemPosition = ((LinearLayoutManager)layoutManager).findFirstVisibleItemPosition();
+                        int lastVisibleItemPosition = ((LinearLayoutManager)layoutManager).findLastVisibleItemPosition();
 
-        addRoutineBtn.setOnClickListener(view1 -> {
-            Intent intent = new Intent(getContext(), CreateRoutineActivity.class);
-            intent.putExtra("dayOfWeek", day_of_week);
-            startActivityForResult(intent, REQUEST_CODE);
+                        if(totalItemCount - 3 <= lastVisibleItemPosition && !updating){
+                            postsUpdate(true);
+                        }
+
+                        if(0 < firstVisibleItemPosition){
+                            topScrolled = false;
+                        }
+                        mSwipeRefreshLayout.setRefreshing(false);
+                    }
+                }, 500);
+            }
         });
-
-        // Inflate the layout for this fragment
+        postsUpdate(false);
         return view;
     }
 
@@ -135,19 +167,19 @@ public class HomeChildFragment extends Fragment {
 
         if (requestCode == REQUEST_CODE && data != null) {
 //            Routine r = data.getSerializableExtra("result");
-//            String result = (String) data.getSerializableExtra("result");
-//            routines.add(new Routine());
-//            adapter.notifyDataSetChanged();
+            String result = (String) data.getSerializableExtra("result");
+            //유저 추가부분//UserList.add(new User());
+            adapter.notifyDataSetChanged();
 
-//            Log.d("Test", result);
+            Log.d("Test", result);
         }
     } // startActivityForResult로 실행한 액티비티의 반환값을 전달받는 메서드
 
     private void setRecyclerView() {
-        //adapter = new RoutineAdapter(routines, getContext()); // 나중에 routine
+        adapter = new UserAdapter(getContext(),UserList); // 나중에 routine
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        //recyclerView.setAdapter(adapter);
+        recyclerView.setAdapter(adapter);
 
 //        if (adapter != null) {
 //            adapter.setOnExerciseClickListener(new setExerciseAdapter.OnExerciseClick() {
@@ -163,5 +195,128 @@ public class HomeChildFragment extends Fragment {
 //        }
     }
 
+    private void GetUserData(){// 디비에서 유저들 정보 얻어오기
+        ApiInterface apiInterface = ApiClient.getRetrofit().create(ApiInterface.class);
+        Call<String> call = apiInterface.GetNearUsers();
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if (response.isSuccessful()) {
+                    Log.e(TAG, "성공 : " + response.body());
+                    parseJson(response.body());
+                    //parseJson(response.body());// 유저 리스트에 파싱
+                } else {
+                    try {
+                        Log.e(TAG, "실패 : " + response.errorBody().string());
+                    }   catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Log.e(TAG, "에러 : " + t.getMessage());
+            }
+        });
+    }
+
+    private void postsUpdate(final boolean clear) { // 스크롤되면 할 작업
+        updating = true;
+        //Date date = userList.size() == 0 || clear ? new Date() : userList.get(userList.size() - 1).getCreatedAt();
+        GetUserData();
+
+        //UserSolt(CurrentUser);
+        //퀵정렬 편집해서 만드는건 가능한데 일단 보류 난이도가 높음.
+        //
+        updating = false;
+        }
+
+
+
+        public void UserSolt(User currentUser){// 유저 거리순 정렬.
+            ArrayList<Integer> distans = new ArrayList<Integer>();
+            for(int i=0;i<UserList.size();++i){
+                if(UserList.get(i).getKey_() == currentUser.getKey_()) {
+                    distans.add(0);
+                    UserList.get(i).setDistance(0);
+                }
+                else {
+                    int a = 0;
+                    Double dis = DistanceByDegreeAndroid(currentUser.getLat(),currentUser.getLon(),UserList.get(i).getLat(),UserList.get(i).getLon());
+                    if(dis > 0.0) {
+                        a = (int)Math.round(dis/1000);
+                    }
+                    distans.add(a);
+
+                    UserList.get(i).setDistance(a);
+                }
+            }
+            for(int i=0;i<UserList.size();++i){
+                CompareuserList.add(new CompareUser(UserList.get(i),distans.get(i)));
+            }
+            Collections.sort(CompareuserList);
+            for(int i = 0; i < CompareuserList.size();++i)
+                Log.d("list" , CompareuserList.get(i).getDistance().toString());
+            UserList.clear();
+            for(int i=0;i<CompareuserList.size();++i){
+                UserList.add(CompareuserList.get(i).getUser());
+            }
+            CompareuserList.clear();
+            adapter.notifyDataSetChanged();
+        }
+
+    public double DistanceByDegreeAndroid(double _latitude1, double _longitude1, double _latitude2, double _longitude2){
+        Location startPos = new Location("PointA");
+        Location endPos = new Location("PointB");
+
+        startPos.setLatitude(_latitude1);
+        startPos.setLongitude(_longitude1);
+        endPos.setLatitude(_latitude2);
+        endPos.setLongitude(_longitude2);
+
+        double distance = startPos.distanceTo(endPos);
+
+        return distance;
+    }
+    private void parseJson(String json) { // 유저들 정보 js파일 userlist로 매핑 시키기.
+        JSONObject jsonObject;
+        try {
+            jsonObject = new JSONObject(json);
+            JSONArray UserArray = jsonObject.getJSONArray("UserInfo");
+            for(int i=0; i < UserArray.length(); ++i){
+                JSONObject OBJ = UserArray.getJSONObject(i);
+                String a = OBJ.getString("Reliability");
+                String b = OBJ.getString("Sincerity");
+                String c = OBJ.getString("Kindness");
+
+               int MannerScore = Integer.parseInt(a) +Integer.parseInt(b) + Integer.parseInt(c) ;
+                User U = new User(
+                        OBJ.getString("USER_PK"),OBJ.getString("USER_NM"), OBJ.getString("USER_IMG"), OBJ.getString("Bench"), OBJ.getString("Squat"), OBJ.getString("DeadLift"),OBJ.getString("GYM_NM"),MannerScore
+                );
+                UserList.add(U);
+                Log.d("mas",UserList.get(0).getUserName());
+            }
+//            if(a.getKey_().equals(mAuth.getCurrentUser().getUid())) currentUser = a;
+//            else userList.add(a);
+
+        }   catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+//        for (QueryDocumentSnapshot document : task.getResult()) {
+
+            // Log.d(TAG, document.getId() + " &&&&+&=> " + document.getData().get("userName").toString());
+//                User a= new User(
+//
+//                );
+
+//                if(a.getKey_().equals(mAuth.getCurrentUser().getUid())) currentUser = a;
+//                else UserList.add(a);
+//            }
+
+    }
 
 }
+
