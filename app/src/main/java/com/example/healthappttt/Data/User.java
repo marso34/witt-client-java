@@ -1,6 +1,7 @@
 package com.example.healthappttt.Data;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 public class User implements Serializable {
     private long UserKey;
@@ -13,6 +14,7 @@ public class User implements Serializable {
     private Date endTime;
     private String ProfileImg = "";
     private Integer Distance = 0;
+    private ArrayList<Exercise> exercises;
 
     public User(long userKey, String name, String gymName, double latitude, double longitude, int routineCategory, Date startTime, Date endTime, String profileImg, Integer distance) {
         UserKey = userKey;
