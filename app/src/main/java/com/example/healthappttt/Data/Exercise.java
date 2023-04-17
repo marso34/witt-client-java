@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class Exercise implements Serializable {
     private int ID;
-    private int routineID;
+    private int parentID;
     private String title;
     private int cat;  // 운동 부위 결정 (시간인지 무게, 세트인지)
     private int count;  // 세트 or 시간 (유산소일 때만 시간)
@@ -21,9 +21,9 @@ public class Exercise implements Serializable {
         this.volume = 10;    // 무게 or 속도 (유산소)
     }
 
-    public Exercise(int ID, int routineID, String title, int cat) {
+    public Exercise(int ID, int parentID, String title, int cat) {
         this.ID = ID;
-        this.routineID = routineID;
+        this.parentID = parentID;
         this.title = title;
         this.cat = cat;
         this.count = 5;      // 세트 카운트 or 시간(유산소)
@@ -38,9 +38,9 @@ public class Exercise implements Serializable {
         this.num = num;
     }
 
-    public Exercise(int ID, int routineID, String title, int cat, int count, int volume, int num) {
+    public Exercise(int ID, int parentID, String title, int cat, int count, int volume, int num) {
         this.ID = ID;
-        this.routineID = routineID;
+        this.parentID = parentID;
         this.title = title;
         this.cat = cat;
         this.count = count;
@@ -50,7 +50,7 @@ public class Exercise implements Serializable {
 
     public Exercise(Exercise e) {
         this.ID = e.ID;
-        this.routineID = e.routineID;
+        this.parentID = e.parentID;
         this.title = e.title;
         this.cat = e.cat;
         this.count = e.count;
@@ -59,23 +59,23 @@ public class Exercise implements Serializable {
     }
 
 
-    public int getID()                { return this.ID; }
-    public int getRoutineID()         { return this.routineID; }
-    public String getTitle()          { return this.title; }
-    public int getCat()               { return this.cat; }
-    public int getCount()             { return this.count; }
-    public int getVolume()            { return this.volume; }
-    public int getNum()               { return this.num; }
+    public int getID()                      { return this.ID; }
+    public int getParentID()               { return this.parentID; }
+    public String getTitle()                { return this.title; }
+    public int getCat()                     { return this.cat; }
+    public int getCount()                   { return this.count; }
+    public int getVolume()                  { return this.volume; }
+    public int getNum()                     { return this.num; }
 
-    public String getState() {
+    public String getState() { // 나중에 getStrCat으로 변경
         switch (this.cat) {
             case 0x1:  return "가슴";
-            case 0x2:  return "#등";
-            case 0x4:  return "#하체";
-            case 0x8:  return "#어깨";
-            case 0x10: return "#복근";
-            case 0x20: return "#팔";
-            case 0x40: return "#유산소";
+            case 0x2:  return "등";
+            case 0x4:  return "하체";
+            case 0x8:  return "어깨";
+            case 0x10: return "복근";
+            case 0x20: return "팔";
+            case 0x40: return "유산소";
         }
 
         return null;
@@ -107,7 +107,9 @@ public class Exercise implements Serializable {
         return null;
     }
 
-    public void setCount(int count)   { this.count = count; }
-    public void setVolume(int volume) { this.volume = volume; }
-    public void setNum(int num)       { this.num = num; }
+    public void setID(int ID)               { this.ID = ID; }
+    public void setParentID(int parentID) { this.parentID = parentID; }
+    public void setCount(int count)         { this.count = count; }
+    public void setVolume(int volume)       { this.volume = volume; }
+    public void setNum(int num)             { this.num = num; }
 }

@@ -19,11 +19,15 @@
         android:theme="@style/Theme.HealthAppTTT"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <service
+            android:name=".ServiceApi"
+            android:exported="false"></service>
+
         <activity
             android:name=".Activity.CreateRoutineActivity"
             android:exported="false"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".Activity.enlargementActivity"
             android:exported="false"
