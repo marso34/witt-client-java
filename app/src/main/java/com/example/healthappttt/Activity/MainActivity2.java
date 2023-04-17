@@ -3,12 +3,10 @@ package com.example.healthappttt.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.healthappttt.ApiService;
 import com.example.healthappttt.Data.PreferenceHelper;
 
 import retrofit2.Call;
@@ -39,18 +37,19 @@ public class MainActivity2 extends AppCompatActivity {
 
     //API 요청 매서드 호출
     private void getusername(String userkey) {
-        apiService.getuserkey(userkey).enqueue(new Callback<String>() {
+
+        apiService.getuserkey().enqueue(new Callback<UserKeyResponse>() {
             @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                // 서버에서 받은 응답을 처리하는 코드를 작성합니다.
+            public void onResponse(Call<UserKeyResponse> call, Response<UserKeyResponse> response) {
                 if ( response.isSuccessful() ) {
-                    String result = response.body();
+                    UserKeyResponse result = response.body();
+                    // 서버에서 받은 응답을 처리하는 코드를 작성합니다.
 
                     if(result != null) {
                         //서버에서 반환된 값이 null이 아닌 경우 처리할 코드
                         //Log.d("MainActivity2", "Userkey: " + result.getUserkey());
-                        prefhelper.putNickName(String.valueOf(result)); //로컬에 이름(닉네임) 저장
-                        Log.d("MainActivity2","user_name" + prefhelper.getName());
+                        //prefhelper.putNickName(String.valueOf(result)); //로컬에 이름(닉네임) 저장
+                        Log.d("MainActivity2",result.getUsercode());
                     } else {
                         //서버에서 반환된 값이 null인 경우 처리할 코드
                         Log.d("MainActivity2", "Response body is null");
@@ -61,13 +60,13 @@ public class MainActivity2 extends AppCompatActivity {
                     Log.d("MainActivity2","서버 응답 실패. 상태코드:" + response.code());
                 }
             }
+
             @Override
-            public void onFailure(Call<String> call, Throwable t) {
+            public void onFailure(Call<UserKeyResponse> call, Throwable t) {
                 // API 호출에 실패한 경우 처리합니다.
                 Log.d("MainActivity2", "API호출 실패:");
                 Log.e("API_CALL", "API call failed: " + t.getMessage());
             }
-
         });
     }
 
