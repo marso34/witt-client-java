@@ -10,9 +10,9 @@ import retrofit2.http.Body;
 import retrofit2.http.POST;
 
 public interface ServiceApi {
-    @POST("")
+    @POST("/CreateRoutine")
     Call<RoutineResponse> createRoutine(@Body RoutineData data);
 
-    @POST("")
+    @POST("/CreateExercise")
     Call<ExerciseResponse> createExercise(@Body RoutineExerciseData data);
 }

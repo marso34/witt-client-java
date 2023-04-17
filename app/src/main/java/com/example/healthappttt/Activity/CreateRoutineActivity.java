@@ -1,5 +1,7 @@
 package com.example.healthappttt.Activity;
 
+import static java.security.AccessController.getContext;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -11,19 +13,26 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.healthappttt.Data.Exercise;
-import com.example.healthappttt.Data.ExerciseName;
+import com.example.healthappttt.Data.RetrofitClient;
 import com.example.healthappttt.Data.Routine;
+import com.example.healthappttt.Data.RoutineData;
+import com.example.healthappttt.Data.RoutineResponse;
 import com.example.healthappttt.Fragment.AddExerciseFragment;
 import com.example.healthappttt.Fragment.ExerciseDetailFragment;
 import com.example.healthappttt.Fragment.SetRoutineTimeFragment;
 import com.example.healthappttt.R;
+import com.example.healthappttt.interface_.ServiceApi;
 
 import java.util.ArrayList;
 
-public class CreateRoutineActivity extends AppCompatActivity implements SetRoutineTimeFragment.OnFragmentInteractionListener, AddExerciseFragment.OnFragmentInteractionListener, ExerciseDetailFragment.OnFragmentInteractionListener {
-    private int dayOfWeek;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
-    private int startTime, endTime;
+public class CreateRoutineActivity extends AppCompatActivity implements SetRoutineTimeFragment.OnFragmentInteractionListener, AddExerciseFragment.OnFragmentInteractionListener, ExerciseDetailFragment.OnFragmentInteractionListener {
+    private ServiceApi service;
+
+    private int dayOfWeek, startTime, endTime;
     private ArrayList<Exercise> selectExercises;
 
     @Override
@@ -31,11 +40,29 @@ public class CreateRoutineActivity extends AppCompatActivity implements SetRouti
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_routine);
 
+        service = RetrofitClient.getClient().create(ServiceApi.class);
+        selectExercises = new ArrayList<>();
+
         Intent intent = getIntent();
         dayOfWeek = intent.getIntExtra("dayOfWeek", 0);
-        Log.d("요일 테스트", Integer.toString(dayOfWeek));
 
         replaceFragment(new SetRoutineTimeFragment());
+    }
+
+    private void InsertRoutine() {
+        RoutineData rData = new RoutineData(5, dayOfWeek,0, "00:00:00", "00:00:00");
+        service.createRoutine(rData).enqueue(new Callback<RoutineResponse>() {
+            @Override
+            public void onResponse(Call<RoutineResponse> call, Response<RoutineResponse> response) {
+                RoutineResponse result = response.body();
+                Log.d("성공", "키 " + result.getID());
+            }
+
+            @Override
+            public void onFailure(Call<RoutineResponse> call, Throwable t) {
+                Log.d("실패", "실패.....");
+            }
+        });
     }
 
     @Override
@@ -71,6 +98,8 @@ public class CreateRoutineActivity extends AppCompatActivity implements SetRouti
     @Override
     public void onRoutineExDetail(ArrayList<Exercise> exercises) {
         this.selectExercises = exercises;
+
+        InsertRoutine();
 
         // 받은 운동 정보 토대로 DB에 루틴, 운동 생성하고
         // 생성된 키 받아와서 로컬에 루틴, 운동 저장

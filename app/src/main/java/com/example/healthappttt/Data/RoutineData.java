@@ -13,12 +13,12 @@ public class RoutineData {
     private int cat;
 
     @SerializedName("startTime")
-    private int startTime;
+    private String startTime;
 
     @SerializedName("endTime")
-    private int endTime;
+    private String endTime;
 
-    public RoutineData(int userID, int dayOfWeek, int cat, int startTime, int endTime) {
+    public RoutineData(int userID, int dayOfWeek, int cat, String startTime, String endTime) {
         this.userID = userID;
         this.dayOfWeek = dayOfWeek;
         this.cat = cat;
