@@ -1,10 +1,7 @@
 package com.example.healthappttt.adapter;//package com.example.healthappttt.adapter;
 
-import static android.content.ContentValues.TAG;
-
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,22 +12,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.example.healthappttt.Activity.ProfileActivity;
 import com.example.healthappttt.Data.User;
 import com.example.healthappttt.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -98,86 +85,86 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
         holder.recyclerView.setAdapter(holder.Adapter);
         User userInfo = mDataset.get(position);
         getCurrentWeek();
-            db.collection("routines").document(userInfo.getKey_() +"_" + dayOfWeek).get().
-            addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    if (task.isSuccessful()) {
-                        holder.ExerciseNames.clear();
-                        DocumentSnapshot document = task.getResult();
-                        holder.PreferredTime.setText(document.get("startTime").toString() +" ~ "+document.get("endTime").toString());
-                        Integer exerciseCat = Integer.parseInt(document.get("exerciseCategories").toString());
-                            Log.d(TAG, "Document exists!");
-                            if ((exerciseCat & 0x1) == 0x1) {
-                                String a = "가슴";
-                                    holder.ExerciseNames.add(a);
-                            }
-                            if ((exerciseCat & 0x2) ==    0x2) {
-                                String a = "등";
-                                holder.ExerciseNames.add(a);
-                            }
-                            if ((exerciseCat & 0x4) == 0x4) {
-                                String a = "어깨";
-                                holder.ExerciseNames.add(a);
-                            }
-                            if ((exerciseCat & 0x8) == 0x8) {
-                                String a = "하체";
-                                holder.ExerciseNames.add(a);
-                            }
-                            if ((exerciseCat & 0x10) == 0x10) {
-                                String a = "팔";
-                                holder.ExerciseNames.add(a);
-                            }
-                            if ((exerciseCat & 0x20) == 0x20) {
-                                String a = "복근";
-                                holder.ExerciseNames.add(a);
-                            }
-                            if ((exerciseCat & 0x40) == 0x40) {
-                                String a = "유산소";
-                                holder.ExerciseNames.add(a);
-                            }
+//            db.collection("routines").document(userInfo.getKey_() +"_" + dayOfWeek).get().
+//            addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//                @Override
+//                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                    if (task.isSuccessful()) {
+//                        holder.ExerciseNames.clear();
+//                        DocumentSnapshot document = task.getResult();
+//                        holder.PreferredTime.setText(document.get("startTime").toString() +" ~ "+document.get("endTime").toString());
+//                        Integer exerciseCat = Integer.parseInt(document.get("exerciseCategories").toString());
+//                            Log.d(TAG, "Document exists!");
+//                            if ((exerciseCat & 0x1) == 0x1) {
+//                                String a = "가슴";
+//                                    holder.ExerciseNames.add(a);
+//                            }
+//                            if ((exerciseCat & 0x2) ==    0x2) {
+//                                String a = "등";
+//                                holder.ExerciseNames.add(a);
+//                            }
+//                            if ((exerciseCat & 0x4) == 0x4) {
+//                                String a = "어깨";
+//                                holder.ExerciseNames.add(a);
+//                            }
+//                            if ((exerciseCat & 0x8) == 0x8) {
+//                                String a = "하체";
+//                                holder.ExerciseNames.add(a);
+//                            }
+//                            if ((exerciseCat & 0x10) == 0x10) {
+//                                String a = "팔";
+//                                holder.ExerciseNames.add(a);
+//                            }
+//                            if ((exerciseCat & 0x20) == 0x20) {
+//                                String a = "복근";
+//                                holder.ExerciseNames.add(a);
+//                            }
+//                            if ((exerciseCat & 0x40) == 0x40) {
+//                                String a = "유산소";
+//                                holder.ExerciseNames.add(a);
+//                            }
+//
+//                    }
+//                    holder.Adapter.notifyDataSetChanged();
+//                }
 
-                    }
-                    holder.Adapter.notifyDataSetChanged();
-                }
-
-            });
-        String fileName = userInfo.getKey_();
-
-        File profilefile = null;
-
-        try {
-            profilefile = File.createTempFile("images","jpeg");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        StorageReference sref  = storage.getReference().child("article/photo").child(fileName);
-        File finalProfilefile = profilefile;
-        sref.getFile(profilefile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                    // Local temp file has been created
-                    Glide.with(mContext).load(finalProfilefile).into(holder.photoImageVIew);
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    // Handle any errors
-                }
-            });
+//            });
+//        String fileName = userInfo.getUserKey();
+//
+//        File profilefile = null;
+//
+//        try {
+//            profilefile = File.createTempFile("images","jpeg");
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//        StorageReference sref  = storage.getReference().child("article/photo").child(fileName);
+//        File finalProfilefile = profilefile;
+//        sref.getFile(profilefile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+//                @Override
+//                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+//                    // Local temp file has been created
+//                    Glide.with(mContext).load(finalProfilefile).into(holder.photoImageVIew);
+//                }
+//            }).addOnFailureListener(new OnFailureListener() {
+//                @Override
+//                public void onFailure(@NonNull Exception exception) {
+//                    // Handle any errors
+//                }
+//            });
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(mContext, ProfileActivity.class);
                 intent.putExtra("User",userInfo);
-                intent.putExtra("post",finalProfilefile);
+//                intent.putExtra("post",finalProfilefile);
                 mContext.startActivity(intent);
             }
         });
 
       //  Log.d(TAG, "onBindViewHolder: "+ userInfo.getUserName().toString());
-        holder.Name.setText(userInfo.getUserName().toString());
+        holder.Name.setText(userInfo.getName().toString());
         holder.LocaName.setText(userInfo.getDistance().toString() + "Km");
        ;
     }

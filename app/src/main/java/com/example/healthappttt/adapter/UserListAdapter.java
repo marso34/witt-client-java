@@ -1,9 +1,6 @@
 package com.example.healthappttt.adapter;
 
-import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,13 +9,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.example.healthappttt.Activity.ChatActivity;
 import com.example.healthappttt.Data.Message;
 import com.example.healthappttt.Data.User;
 import com.example.healthappttt.R;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -26,12 +19,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
-import java.io.File;
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -70,51 +59,51 @@ public class UserListAdapter  extends RecyclerView.Adapter<UserListAdapter.MainV
         fuser = FirebaseAuth.getInstance().getCurrentUser();
         holder.photoImageVIew = holder.itemView.findViewById(R.id.img_rv_photo);
 
-        holder.username.setText(user.getUserName());
+//        holder.username.setText(user.getUserName());
+//
+////        if (user.getProfileImg() != null){
+////            Glide.with(mContext).load(user.getProfileImg()).into(holder.photoImageVIew);
+////        } else {
+////            hold.photoImageVIew.setImageResource(R.drawable.profile);
+////        }
+//
+//        lastMessage(user.getKey_(), holder.last_msg, holder.time_msg);
+//
+//
+//        holder.itemView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(mContext, ChatActivity.class);
+//                intent.putExtra("userId",user.getKey_());
+//                intent.putExtra("username",user.getUserName());
+//                mContext.startActivity(intent);
+//            }
+//        });
 
-//        if (user.getProfileImg() != null){
-//            Glide.with(mContext).load(user.getProfileImg()).into(holder.photoImageVIew);
-//        } else {
-//            hold.photoImageVIew.setImageResource(R.drawable.profile);
+//        String fileName = user.getKey_();
+
+//        File profilefile = null;
+//
+//        try {
+//            profilefile = File.createTempFile("images","jpeg");
+//        } catch (IOException e) {
+//            e.printStackTrace();
 //        }
-
-        lastMessage(user.getKey_(), holder.last_msg, holder.time_msg);
-
-
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(mContext, ChatActivity.class);
-                intent.putExtra("userId",user.getKey_());
-                intent.putExtra("username",user.getUserName());
-                mContext.startActivity(intent);
-            }
-        });
-
-        String fileName = user.getKey_();
-
-        File profilefile = null;
-
-        try {
-            profilefile = File.createTempFile("images","jpeg");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        StorageReference sref  = storage.getReference().child("article/photo").child(fileName);
-        File finalProfilefile = profilefile;
-        sref.getFile(profilefile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                // Local temp file has been created
-                Glide.with(mContext).load(finalProfilefile).into(holder.photoImageVIew);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle any errors
-            }
-        });
+//
+//        StorageReference sref  = storage.getReference().child("article/photo").child(fileName);
+//        File finalProfilefile = profilefile;
+//        sref.getFile(profilefile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+//            @Override
+//            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+//                // Local temp file has been created
+//                Glide.with(mContext).load(finalProfilefile).into(holder.photoImageVIew);
+//            }
+//        }).addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(@NonNull Exception exception) {
+//                // Handle any errors
+//            }
+//        });
     }
 
     @Override

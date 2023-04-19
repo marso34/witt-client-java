@@ -237,13 +237,13 @@ public class HomeChildFragment extends Fragment {
         public void UserSolt(User currentUser){// 유저 거리순 정렬.
             ArrayList<Integer> distans = new ArrayList<Integer>();
             for(int i=0;i<UserList.size();++i){
-                if(UserList.get(i).getKey_() == currentUser.getKey_()) {
+                if(UserList.get(i).getUserKey() == currentUser.getUserKey()) {
                     distans.add(0);
                     UserList.get(i).setDistance(0);
                 }
                 else {
                     int a = 0;
-                    Double dis = DistanceByDegreeAndroid(currentUser.getLat(),currentUser.getLon(),UserList.get(i).getLat(),UserList.get(i).getLon());
+                    Double dis = DistanceByDegreeAndroid(currentUser.getLatitude(),currentUser.getLongitude(),UserList.get(i).getLatitude(),UserList.get(i).getLongitude());
                     if(dis > 0.0) {
                         a = (int)Math.round(dis/1000);
                     }
@@ -283,19 +283,23 @@ public class HomeChildFragment extends Fragment {
         JSONObject jsonObject;
         try {
             jsonObject = new JSONObject(json);
-            JSONArray UserArray = jsonObject.getJSONArray("UserInfo");
+            Log.d("qwerasdf", jsonObject.toString());
+            JSONArray UserArray = jsonObject.getJSONArray("UsersInfo");
             for(int i=0; i < UserArray.length(); ++i){
                 JSONObject OBJ = UserArray.getJSONObject(i);
-                String a = OBJ.getString("Reliability");
-                String b = OBJ.getString("Sincerity");
-                String c = OBJ.getString("Kindness");
-
-               int MannerScore = Integer.parseInt(a) +Integer.parseInt(b) + Integer.parseInt(c) ;
                 User U = new User(
-                        OBJ.getString("USER_PK"),OBJ.getString("USER_NM"), OBJ.getString("USER_IMG"), OBJ.getString("Bench"), OBJ.getString("Squat"), OBJ.getString("DeadLift"),OBJ.getString("GYM_NM"),MannerScore
+                        OBJ.getInt("USER_PK"),
+                        OBJ.getString("User_NM"),
+                        OBJ.getString("User_IMG"),
+                        OBJ.getString("GYM_NM"),
+                        OBJ.getDouble("User_Lat"),
+                        OBJ.getDouble("User_Lon"),
+                        OBJ.getString("Start_Time"),
+                        OBJ.getString("End_Time"),
+                        OBJ.getInt("CAT")
                 );
                 UserList.add(U);
-                Log.d("mas",UserList.get(0).getUserName());
+                Log.d("유저들 이름!!!!",UserList.get(i).getName());
             }
 //            if(a.getKey_().equals(mAuth.getCurrentUser().getUid())) currentUser = a;
 //            else userList.add(a);

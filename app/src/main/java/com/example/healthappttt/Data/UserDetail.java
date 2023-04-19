@@ -1,8 +1,8 @@
 package com.example.healthappttt.Data;
 
-import java.util.Date;
+import java.util.ArrayList;
 
-public class UserDetail extends User{
+public class UserDetail {
     private double benchPress;
     private double squat;
     private double deadlift;
@@ -11,18 +11,18 @@ public class UserDetail extends User{
     private int kindness;
     private double height;
     private double weight;
-
-    public UserDetail(long UserKey, String name, String gymName, double latitude, double longitude, int routineCategory, Date startTime, Date endTime, String ProfileImg, Integer Distance, double benchPress, double squat, double deadlift, int trustworthiness, int diligence, int kindness, double height, double weight) {
-        super(UserKey, name, gymName, latitude, longitude, routineCategory, startTime, endTime, ProfileImg, Distance);
-        this.benchPress = benchPress;
-        this.squat = squat;
-        this.deadlift = deadlift;
-        this.trustworthiness = trustworthiness;
-        this.diligence = diligence;
-        this.kindness = kindness;
-        this.height = height;
-        this.weight = weight;
-    }
+    private ArrayList<Exercise> exercises;
+//    public UserDetail(long UserKey, String name, String gymName, double latitude, double longitude, int routineCategory, Date startTime, Date endTime, String ProfileImg, Integer Distance, double benchPress, double squat, double deadlift, int trustworthiness, int diligence, int kindness, double height, double weight) {
+////        super(UserKey, name, gymName, latitude, longitude, routineCategory, startTime, endTime, ProfileImg, Distance);
+//        this.benchPress = benchPress;
+//        this.squat = squat;
+//        this.deadlift = deadlift;
+//        this.trustworthiness = trustworthiness;
+//        this.diligence = diligence;
+//        this.kindness = kindness;
+//        this.height = height;
+//        this.weight = weight;
+//    }
 
     public double getBenchPress() {
         return benchPress;

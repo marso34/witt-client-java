@@ -1,7 +1,8 @@
 package com.example.healthappttt.Data;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 public class User implements Serializable {
     private long UserKey;
@@ -12,21 +13,26 @@ public class User implements Serializable {
     private int routineCategory;
     private Date startTime;
     private Date endTime;
-    private String ProfileImg = "";
-    private Integer Distance = 0;
-    private ArrayList<Exercise> exercises;
 
-    public User(long userKey, String name, String gymName, double latitude, double longitude, int routineCategory, Date startTime, Date endTime, String profileImg, Integer distance) {
-        UserKey = userKey;
-        this.name = name;
-        this.gymName = gymName;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.routineCategory = routineCategory;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        ProfileImg = profileImg;
-        Distance = distance;
+    private String ProfileImg;
+
+    private Integer Distance = 0;
+
+    public User(int user_pk, String user_nm, String user_img, String gym_nm, double user_lat, double user_lon, String start_time, String end_time, int cat) {
+        this.UserKey = user_pk;
+        this.name = user_nm;
+        this.ProfileImg = user_img;
+        this.gymName = gym_nm;
+        this.latitude = user_lat;
+        this.longitude = user_lon;
+        this.routineCategory = cat;
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+        try {
+            this.startTime = sdf.parse(start_time);
+            this.endTime = sdf.parse(end_time);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     public long getUserKey() {

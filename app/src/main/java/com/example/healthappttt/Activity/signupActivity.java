@@ -18,7 +18,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.healthappttt.Data.Routine;
-import com.example.healthappttt.Data.User;
 import com.example.healthappttt.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -114,22 +113,22 @@ public class signupActivity extends AppCompatActivity {
                                     storage.getReference().child("article/photo").child(user.getUid())
                                             .putFile(downloadUri);
 
-                                db.collection("users").document(user.getUid())
-                                            .set(new User(user.getUid(),uName,downloadUri.toString(), BenchPower, DeadPower,SquatPower,LN,0))
-                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                @Override
-                                                public void onSuccess(Void aVoid) {
-                                                    Log.d(TAG, "DocumentSnapshot successfully written!");
-                                                    setRoutine();
-
-                                                }
-                                            })
-                                            .addOnFailureListener(new OnFailureListener() {
-                                                @Override
-                                                public void onFailure(@NonNull Exception e) {
-                                                    Log.w(TAG, "Error writing document", e);
-                                                }
-                                            });
+//                                db.collection("users").document(user.getUid())
+//                                            .set(new User(user.getUid(),uName,downloadUri.toString(), BenchPower, DeadPower,SquatPower,LN,0))
+//                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                                                @Override
+//                                                public void onSuccess(Void aVoid) {
+//                                                    Log.d(TAG, "DocumentSnapshot successfully written!");
+//                                                    setRoutine();
+//
+//                                                }
+//                                            })
+//                                            .addOnFailureListener(new OnFailureListener() {
+//                                                @Override
+//                                                public void onFailure(@NonNull Exception e) {
+//                                                    Log.w(TAG, "Error writing document", e);
+//                                                }
+//                                            });
                                 }
 
                         }
