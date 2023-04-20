@@ -122,12 +122,12 @@ public class RoutineChildFragment extends Fragment {
 
         switch (day_of_week) {
             case 0: dayOfWeek = "sun"; break;
-            case 1: dayOfWeek = "mon"; routines.add(new Routine()); break;
-            case 2: dayOfWeek = "tue"; routines.add(new Routine()); routines.add(new Routine()); break;
-            case 3: dayOfWeek = "wed"; routines.add(new Routine()); routines.add(new Routine()); routines.add(new Routine()); break;
-            case 4: dayOfWeek = "thu"; routines.add(new Routine()); routines.add(new Routine()); routines.add(new Routine()); routines.add(new Routine()); break;
-            case 5: dayOfWeek = "fri"; routines.add(new Routine()); routines.add(new Routine()); routines.add(new Routine()); routines.add(new Routine()); routines.add(new Routine()); break;
-            case 6: dayOfWeek = "sat"; routines.add(new Routine()); routines.add(new Routine()); routines.add(new Routine()); routines.add(new Routine()); routines.add(new Routine()); routines.add(new Routine()); break;
+            case 1: dayOfWeek = "mon"; break;
+            case 2: dayOfWeek = "tue"; break;
+            case 3: dayOfWeek = "wed"; break;
+            case 4: dayOfWeek = "thu"; break;
+            case 5: dayOfWeek = "fri"; break;
+            case 6: dayOfWeek = "sat"; break;
         }
 
         setRecyclerView();
@@ -154,24 +154,9 @@ public class RoutineChildFragment extends Fragment {
     } // startActivityForResult로 실행한 액티비티의 반환값을 전달받는 메서드
 
     private void setRecyclerView() {
-        adapter = new RoutineAdapter(routines, getContext()); // 나중에 routine
+        adapter = new RoutineAdapter(routines, getContext());  // 나중에 routine
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
-
-//        if (adapter != null) {
-//            adapter.setOnExerciseClickListener(new setExerciseAdapter.OnExerciseClick() {
-//                @Override
-//                public void onExerciseClick(int postion) {
-//                    deleteExercise(postion);
-//                    adapter.removeItem(postion);
-//                    adapter.notifyDataSetChanged();
-//
-////                    saveRoutine(routine.getExercises().get(postion));
-//                }
-//            });
-//        }
     }
-
-
 }

@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -49,8 +50,18 @@ public class CreateRoutineActivity extends AppCompatActivity implements SetRouti
         replaceFragment(new SetRoutineTimeFragment());
     }
 
+    private String TimeToString(int Time) {
+        String am_pm = "";
+
+        if (Time >= 240) Time-= 240;
+
+        @SuppressLint("DefaultLocale") String result = String.format("%2d:%02d:%02d", Time/10, Time % 10 * 6, 0);
+
+        return am_pm + " " + result;
+    }
+
     private void InsertRoutine() {
-        RoutineData rData = new RoutineData(5, dayOfWeek,0, "00:00:00", "00:00:00");
+        RoutineData rData = new RoutineData(5, dayOfWeek,0, TimeToString(startTime), TimeToString(endTime));
         service.createRoutine(rData).enqueue(new Callback<RoutineResponse>() {
             @Override
             public void onResponse(Call<RoutineResponse> call, Response<RoutineResponse> response) {

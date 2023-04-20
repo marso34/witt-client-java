@@ -222,7 +222,6 @@ public class SetRoutineTimeFragment extends Fragment {
         @SuppressLint("DefaultLocale") String result2 = String.format("%d시간", Time/10);
         @SuppressLint("DefaultLocale") String result3 = String.format("%d시간 %d분", Time/10, Time % 10 * 6);
 
-
         if (Time < 10)
             return result1;
 
