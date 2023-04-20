@@ -5,10 +5,10 @@ import java.io.Serializable;
 
 public class UserKeyResponse {
 
-    @SerializedName("code")
+    @SerializedName("message")
     private String userkey;
 
-    @SerializedName("message")
+    @SerializedName("code")
     private int code;
 
     public String getUserName() {
