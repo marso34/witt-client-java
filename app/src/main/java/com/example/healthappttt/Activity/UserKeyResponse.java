@@ -1,21 +1,31 @@
 package com.example.healthappttt.Activity;
 
 import com.google.gson.annotations.SerializedName;
-import java.io.Serializable;
+
+import java.util.List;
 
 public class UserKeyResponse {
 
     @SerializedName("code")
-    private String userkey;
-
-    @SerializedName("message")
     private int code;
 
-    public String getUserName() {
-        return userkey;
+    @SerializedName("message")
+    private int message;
+
+    public String getUsermessage() {
+        return Integer.toString(message);
     }
 
-    public String getUsercode() {
-        return Integer.toString(code);
+    public int getUsercode() {
+        return code;
     }
+
+    /*private class MyMessage {
+        @SerializedName("message")
+        private int message;
+
+        public int getMessage() {
+            return message;
+        }
+    }*/
 }

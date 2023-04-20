@@ -47,9 +47,9 @@ public class MainActivity2 extends AppCompatActivity {
 
                     if(result != null) {
                         //서버에서 반환된 값이 null이 아닌 경우 처리할 코드
-                        //Log.d("MainActivity2", "Userkey: " + result.getUserkey());
                         //prefhelper.putNickName(String.valueOf(result)); //로컬에 이름(닉네임) 저장
-                        Log.d("MainActivity2",result.getUsercode());
+                        Log.d("MainActivity2",result.getUsermessage());
+                        //Log.d("MainActivity2", String.valueOf(result.getUsercode()));
                     } else {
                         //서버에서 반환된 값이 null인 경우 처리할 코드
                         Log.d("MainActivity2", "Response body is null");
