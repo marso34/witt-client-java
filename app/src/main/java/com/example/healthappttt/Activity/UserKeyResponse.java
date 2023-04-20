@@ -6,6 +6,9 @@ import java.util.List;
 
 public class UserKeyResponse {
 
+    @SerializedName("message")
+    private String userkey;
+
     @SerializedName("code")
     private int code;
 
