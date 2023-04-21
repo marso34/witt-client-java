@@ -37,11 +37,8 @@ public class HomeFragment extends Fragment {
     private String mParam2;
 
 
-    public HomeFragment() {
-    }
-
-    public static RoutineFragment newInstance(String param1, String param2) {
-        RoutineFragment fragment = new RoutineFragment();
+    public static HomeFragment newInstance(String param1, String param2) {
+        HomeFragment fragment = new HomeFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);

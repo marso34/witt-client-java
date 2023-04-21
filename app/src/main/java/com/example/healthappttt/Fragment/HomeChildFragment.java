@@ -116,7 +116,6 @@ public class HomeChildFragment extends Fragment {
             case 5: dayOfWeek = "fri"; break;
             case 6: dayOfWeek = "sat"; break;
         }
-
         setRecyclerView();
         SwipeRefreshLayout mSwipeRefreshLayout = view.findViewById(R.id.swipe_layout);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -132,14 +131,15 @@ public class HomeChildFragment extends Fragment {
                         int firstVisibleItemPosition = ((LinearLayoutManager)layoutManager).findFirstVisibleItemPosition();
                         int lastVisibleItemPosition = ((LinearLayoutManager)layoutManager).findLastVisibleItemPosition();
 
-//                        if(totalItemCount - 3 <= lastVisibleItemPosition && !updating){
-//                            postsUpdate(true);
-//                        }
+                        if(totalItemCount - 3 <= lastVisibleItemPosition && !updating){
+                            postsUpdate(true);
+                        }
 //
-//                        if(0 < firstVisibleItemPosition){
-//                            topScrolled = false;
-//                        }
-//                        mSwipeRefreshLayout.setRefreshing(false);
+                        if(0 < firstVisibleItemPosition){
+                            topScrolled = false;
+                        }
+                        mSwipeRefreshLayout.setRefreshing(false);
+
                         postsUpdate(true);
                     }
                 }, 500);
@@ -161,12 +161,14 @@ public class HomeChildFragment extends Fragment {
 
     private void getUserData() {
         ApiInterface apiInterface = ApiClient.getRetrofit().create(ApiInterface.class);
-        NearUsersData NR = new NearUsersData(0,0);//현재 내 유저 정보 보내서 내껀 안나오게함.
+        Log.d("TAG", String.valueOf(day_of_week));
+        NearUsersData NR = new NearUsersData(day_of_week,0);//현재 내 유저 정보 보내서 내껀 안나오게함.
         Call<List<UserInfo>> call = apiInterface.GetNearUsers(NR);
         call.enqueue(new Callback<List<UserInfo>>() {
             @Override
             public void onResponse(Call<List<UserInfo>> call, Response<List<UserInfo>> response) {
                 if (response.isSuccessful()) {
+                    UserList.clear();
                     for (UserInfo value : response.body()) {
                         UserList.add(value);
                         Log.d("이름", value.getName());
@@ -219,7 +221,6 @@ public class HomeChildFragment extends Fragment {
                         a = (int)Math.round(dis/1000);
                     }
                     distans.add(a);
-
                     UserList.get(i).setDistance(a);
                 }
             }
@@ -240,12 +241,10 @@ public class HomeChildFragment extends Fragment {
     public double DistanceByDegreeAndroid(double _latitude1, double _longitude1, double _latitude2, double _longitude2){
         Location startPos = new Location("PointA");
         Location endPos = new Location("PointB");
-
         startPos.setLatitude(_latitude1);
         startPos.setLongitude(_longitude1);
         endPos.setLatitude(_latitude2);
         endPos.setLongitude(_longitude2);
-
         double distance = startPos.distanceTo(endPos);
 
         return distance;

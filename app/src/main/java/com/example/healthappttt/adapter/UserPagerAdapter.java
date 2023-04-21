@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class UserPagerAdapter extends FragmentStateAdapter {
     private final ArrayList<Fragment> mFragmentList = new ArrayList<>();
-
+    private int position;
     public UserPagerAdapter(@NonNull Fragment fragmentActivity) {
         super(fragmentActivity);
     }
@@ -19,6 +19,7 @@ public class UserPagerAdapter extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
+        this.position = position;
         switch (position){
             case 0:
             case 1:
@@ -40,5 +41,8 @@ public class UserPagerAdapter extends FragmentStateAdapter {
 
     @Override
     public int getItemCount() { return 7; }
+    public int getPosition(){
+        return position;
+    }
 }
 

@@ -79,8 +79,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull final MainViewHolder holder, int position) {
-        holder.recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
-        holder.recyclerView.setAdapter(holder.Adapter);
+
         UserInfo userInfo = mDataset.get(position);
         Log.d("유저 이름!", userInfo.getName());
 
@@ -100,8 +99,10 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
         holder.Name.setText(userInfo.getName().toString());
         holder.LocaName.setText(userInfo.getDistance().toString() + "Km");
         holder.PreferredTime.setText(userInfo.getStartTime()+" ~ "+userInfo.getEndTime());
-
+        holder.ExerciseNames.clear();
         holder.recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        holder.recyclerView.setAdapter(holder.Adapter);
+        holder.recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
         holder.recyclerView.setAdapter(holder.Adapter);
         Integer exerciseCat = userInfo.getRoutineCategory();
                             Log.d("rrr", "Document exists!");
