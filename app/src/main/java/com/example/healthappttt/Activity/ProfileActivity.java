@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.healthappttt.Data.Exercise;
 import com.example.healthappttt.Data.Routine;
-import com.example.healthappttt.Data.User;
+import com.example.healthappttt.Data.UserInfo;
 import com.example.healthappttt.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -86,7 +86,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         intent = getIntent();
         firebaseFirestore = FirebaseFirestore.getInstance();
-        User U = (User) getIntent().getSerializableExtra("User");//포스트인포 객체 만들어서 할당.;
+        UserInfo U = (UserInfo) getIntent().getSerializableExtra("UserInfo");//포스트인포 객체 만들어서 할당.;
         File f =  (File) getIntent().getSerializableExtra("post");
         ThisProfileUid = U.getUserKey();
         ThisProfileName.setText(U.getName());
@@ -184,21 +184,6 @@ public class ProfileActivity extends AppCompatActivity {
 //            }
 //        });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         ProImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -286,7 +271,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         return getTime;
     }
-    private void myStartActivity(Class c,User u) {// loginactivity페이지에서 mainactivity페이지로 넘기는 코드
+    private void myStartActivity(Class c,UserInfo u) {// loginactivity페이지에서 mainactivity페이지로 넘기는 코드
         Intent intent = new Intent(this, c);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 //        intent.putExtra("userId",u.getKey_());

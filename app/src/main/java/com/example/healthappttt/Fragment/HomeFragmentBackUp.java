@@ -17,7 +17,7 @@
 //import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 //
 //import com.example.healthappttt.Data.CompareUser;
-//import com.example.healthappttt.Data.User;
+//import com.example.healthappttt.Data.UserInfo;
 //import com.example.healthappttt.R;
 //import com.example.healthappttt.adapter.UserAdapter;
 //import com.google.android.gms.tasks.OnCompleteListener;
@@ -46,7 +46,7 @@
 //    private FirebaseFirestore firebaseFirestore;
 //
 //    private UserAdapter userAdapter;
-//    private ArrayList<User> userList;
+//    private ArrayList<UserInfo> userList;
 //    private ArrayList<CompareUser> CompareuserList;
 //    private boolean updating;
 //    private boolean topScrolled;
@@ -96,7 +96,7 @@
 //        ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_home, container, false);
 //        firebaseFirestore = FirebaseFirestore.getInstance();
 //        mAuth = FirebaseAuth.getInstance();// 파이어베이스의 auth기능의 접근 권한을 갖는변수
-//        userList = new ArrayList<User>();
+//        userList = new ArrayList<UserInfo>();
 //        userAdapter = new UserAdapter(getActivity(), userList);
 //        CompareuserList = new ArrayList<>();
 //        final RecyclerView recyclerView = view.findViewById(R.id.recyclerView2);
@@ -146,7 +146,7 @@
 //                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
 //                    @Override
 //                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                        User currentUser = null;
+//                        UserInfo currentUser = null;
 //                        if (task.isSuccessful()) {
 //                            if(clear){
 //                                userList.clear();
@@ -154,7 +154,7 @@
 //                            for (QueryDocumentSnapshot document : task.getResult()) {
 //
 //                                // Log.d(TAG, document.getId() + " &&&&+&=> " + document.getData().get("userName").toString());
-////                                User a= new User(
+////                                UserInfo a= new UserInfo(
 ////                                        (int) Double.parseDouble(document.getData().get("userTemperature").toString()),
 ////                                        document.getData().get("key_").toString(),
 ////                                        Double.parseDouble(document.getData().get("lat").toString()),

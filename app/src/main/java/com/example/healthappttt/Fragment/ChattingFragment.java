@@ -11,7 +11,7 @@
 //import androidx.recyclerview.widget.LinearLayoutManager;
 //import androidx.recyclerview.widget.RecyclerView;
 //
-//import com.example.healthappttt.Data.User;
+//import com.example.healthappttt.Data.UserInfo;
 //import com.example.healthappttt.R;
 //import com.example.healthappttt.adapter.UserListAdapter;
 //import com.google.android.gms.tasks.OnCompleteListener;
@@ -35,12 +35,12 @@
 //    int index;
 //    private static final String TAG = "chat";
 //    private UserListAdapter userListAdapter;
-//    private ArrayList<User> userList;
+//    private ArrayList<UserInfo> userList;
 //    private FirebaseFirestore firebaseFirestore;
 //    private DatabaseReference mDbRef;
 //    private FirebaseAuth mAuth;// 파이어베이스 유저관련 접속하기위한 변수
-//    private User CurrentUser;
-//    ArrayList<User> TuserList;
+//    private UserInfo CurrentUser;
+//    ArrayList<UserInfo> TuserList;
 //    private DataSnapshot dt;
 //    @Override
 //    public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -50,7 +50,7 @@
 //        mDbRef = FirebaseDatabase.getInstance().getReference();
 //        firebaseFirestore = FirebaseFirestore.getInstance();
 //        mAuth = FirebaseAuth.getInstance();
-//        userList = new ArrayList<User>();
+//        userList = new ArrayList<UserInfo>();
 //        recyclerView = view.findViewById(R.id.userlistRecyclerView);
 //        recyclerView.setHasFixedSize(true);
 //        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -69,7 +69,7 @@
 ////                            userList.clear();
 ////                            for (QueryDocumentSnapshot document : task.getResult()) {
 ////                                //Log.d(TAG, document.getId() + " &&&&+&=> " + document.getData().get("userName").toString());
-////                                User a = new User(
+////                                UserInfo a = new UserInfo(
 ////                                        (int) Double.parseDouble(document.getData().get("userTemperature").toString()),
 ////                                        document.getData().get("key_").toString(),
 ////                                        Double.parseDouble(document.getData().get("lat").toString()),
@@ -95,7 +95,7 @@
 //                                @Override
 //                                public void onDataChange(DataSnapshot dataSnapshot) {
 //
-//                                    for(User u :userList) {
+//                                    for(UserInfo u :userList) {
 //                                        String Skey = CurrentUser.getKey_() + u.getKey_();
 //                                        for (DataSnapshot d : dataSnapshot.getChildren()) {
 //                                            Log.d("d키", d.getKey());
@@ -107,7 +107,7 @@
 //                                        }
 //                                    }
 //                                    userList.clear();
-//                                    for(User q : TuserList) {
+//                                    for(UserInfo q : TuserList) {
 //                                        Log.d("최종tt 리스트", q.getUserName());
 //                                        userList.add(q);
 //                                    }

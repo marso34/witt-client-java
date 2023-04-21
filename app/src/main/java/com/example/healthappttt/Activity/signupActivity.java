@@ -114,7 +114,7 @@ public class signupActivity extends AppCompatActivity {
                                             .putFile(downloadUri);
 
 //                                db.collection("users").document(user.getUid())
-//                                            .set(new User(user.getUid(),uName,downloadUri.toString(), BenchPower, DeadPower,SquatPower,LN,0))
+//                                            .set(new UserInfo(user.getUid(),uName,downloadUri.toString(), BenchPower, DeadPower,SquatPower,LN,0))
 //                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
 //                                                @Override
 //                                                public void onSuccess(Void aVoid) {

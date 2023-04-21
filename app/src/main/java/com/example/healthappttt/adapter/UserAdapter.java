@@ -2,6 +2,7 @@ package com.example.healthappttt.adapter;//package com.example.healthappttt.adap
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.healthappttt.Activity.ProfileActivity;
-import com.example.healthappttt.Data.User;
+import com.example.healthappttt.Data.UserInfo;
 import com.example.healthappttt.R;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -21,13 +22,14 @@ import com.google.firebase.storage.FirebaseStorage;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder> {
-    private ArrayList<User> mDataset;
+    private List<UserInfo> mDataset;
     private FirebaseStorage storage;
-    private User userInfo;
+    private UserInfo userInfo;
     private Context mContext;
-    private User thisUser;
+    private UserInfo thisUser;
     private String dayOfWeek;
     FirebaseFirestore db;
 
@@ -53,7 +55,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
         }
     }
 
-    public UserAdapter(Context mContext, ArrayList<User> myDataset) {
+    public UserAdapter(Context mContext, List<UserInfo> myDataset) {
         this.mDataset = myDataset;
         this.mContext = mContext;
     }
@@ -79,85 +81,18 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull final MainViewHolder holder, int position) {
-        storage = FirebaseStorage.getInstance();
-        db= FirebaseFirestore.getInstance();
         holder.recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
         holder.recyclerView.setAdapter(holder.Adapter);
-        User userInfo = mDataset.get(position);
-        getCurrentWeek();
-//            db.collection("routines").document(userInfo.getKey_() +"_" + dayOfWeek).get().
-//            addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//                @Override
-//                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//                    if (task.isSuccessful()) {
-//                        holder.ExerciseNames.clear();
-//                        DocumentSnapshot document = task.getResult();
-//                        holder.PreferredTime.setText(document.get("startTime").toString() +" ~ "+document.get("endTime").toString());
-//                        Integer exerciseCat = Integer.parseInt(document.get("exerciseCategories").toString());
-//                            Log.d(TAG, "Document exists!");
-//                            if ((exerciseCat & 0x1) == 0x1) {
-//                                String a = "가슴";
-//                                    holder.ExerciseNames.add(a);
-//                            }
-//                            if ((exerciseCat & 0x2) ==    0x2) {
-//                                String a = "등";
-//                                holder.ExerciseNames.add(a);
-//                            }
-//                            if ((exerciseCat & 0x4) == 0x4) {
-//                                String a = "어깨";
-//                                holder.ExerciseNames.add(a);
-//                            }
-//                            if ((exerciseCat & 0x8) == 0x8) {
-//                                String a = "하체";
-//                                holder.ExerciseNames.add(a);
-//                            }
-//                            if ((exerciseCat & 0x10) == 0x10) {
-//                                String a = "팔";
-//                                holder.ExerciseNames.add(a);
-//                            }
-//                            if ((exerciseCat & 0x20) == 0x20) {
-//                                String a = "복근";
-//                                holder.ExerciseNames.add(a);
-//                            }
-//                            if ((exerciseCat & 0x40) == 0x40) {
-//                                String a = "유산소";
-//                                holder.ExerciseNames.add(a);
-//                            }
-//
-//                    }
-//                    holder.Adapter.notifyDataSetChanged();
-//                }
+        UserInfo userInfo = mDataset.get(position);
+        Log.d("유저 이름!", userInfo.getName());
 
-//            });
-//        String fileName = userInfo.getUserKey();
+        getCurrentWeek();
 //
-//        File profilefile = null;
-//
-//        try {
-//            profilefile = File.createTempFile("images","jpeg");
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//        StorageReference sref  = storage.getReference().child("article/photo").child(fileName);
-//        File finalProfilefile = profilefile;
-//        sref.getFile(profilefile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-//                @Override
-//                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-//                    // Local temp file has been created
-//                    Glide.with(mContext).load(finalProfilefile).into(holder.photoImageVIew);
-//                }
-//            }).addOnFailureListener(new OnFailureListener() {
-//                @Override
-//                public void onFailure(@NonNull Exception exception) {
-//                    // Handle any errors
-//                }
-//            });
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(mContext, ProfileActivity.class);
-                intent.putExtra("User",userInfo);
+                //intent.putExtra("UserInfo",userInfo);
 //                intent.putExtra("post",finalProfilefile);
                 mContext.startActivity(intent);
             }
@@ -166,8 +101,41 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
       //  Log.d(TAG, "onBindViewHolder: "+ userInfo.getUserName().toString());
         holder.Name.setText(userInfo.getName().toString());
         holder.LocaName.setText(userInfo.getDistance().toString() + "Km");
-       ;
+        holder.PreferredTime.setText(userInfo.getStartTime()+" ~ "+userInfo.getEndTime());
+        Integer exerciseCat = userInfo.getRoutineCategory();
+                            Log.d("rrr", "Document exists!");
+                            if ((exerciseCat & 0x1) == 0x1) {
+                                String a = "가슴";
+                                    holder.ExerciseNames.add(a);
+                            }
+                            if ((exerciseCat & 0x2) ==    0x2) {
+                                String a = "등";
+                                holder.ExerciseNames.add(a);
+                            }
+                            if ((exerciseCat & 0x4) == 0x4) {
+                                String a = "어깨";
+                                holder.ExerciseNames.add(a);
+                            }
+                            if ((exerciseCat & 0x8) == 0x8) {
+                                String a = "하체";
+                                holder.ExerciseNames.add(a);
+                            }
+                            if ((exerciseCat & 0x10) == 0x10) {
+                                String a = "팔";
+                                holder.ExerciseNames.add(a);
+                            }
+                            if ((exerciseCat & 0x20) == 0x20) {
+                                String a = "복근";
+                                holder.ExerciseNames.add(a);
+                            }
+                            if ((exerciseCat & 0x40) == 0x40) {
+                                String a = "유산소";
+                                holder.ExerciseNames.add(a);
+                            }
+                    holder.Adapter.notifyDataSetChanged();
+
     }
+
     public void getCurrentWeek() {
         Date currentDate = new Date();
 

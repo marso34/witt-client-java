@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.healthappttt.Data.Message;
-import com.example.healthappttt.Data.User;
+import com.example.healthappttt.Data.UserInfo;
 import com.example.healthappttt.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -32,14 +32,14 @@ public class UserListAdapter  extends RecyclerView.Adapter<UserListAdapter.MainV
 
     private FirebaseStorage storage;
     private Context mContext;
-    private ArrayList<User> userlist;
+    private ArrayList<UserInfo> userlist;
     FirebaseUser fuser;
     String theLastMessage ="";
     String messageTime ="";
     Integer num = 0;
     private CircleImageView photoImageVIew;
 
-    public UserListAdapter(Context context, ArrayList<User> userList ){
+    public UserListAdapter(Context context, ArrayList<UserInfo> userList ){
         this.mContext = context;
         this.userlist = userList;
     }
@@ -53,7 +53,7 @@ public class UserListAdapter  extends RecyclerView.Adapter<UserListAdapter.MainV
 
     @Override
     public void onBindViewHolder(@NonNull UserListAdapter.MainViewHolder holder, int position) {
-        final User user = userlist.get(position);
+        final UserInfo user = userlist.get(position);
         storage = FirebaseStorage.getInstance();
 
         fuser = FirebaseAuth.getInstance().getCurrentUser();

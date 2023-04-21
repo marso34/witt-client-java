@@ -1,8 +1,5 @@
 package com.example.healthappttt.Fragment;
 
-import static android.content.ContentValues.TAG;
-
-import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -19,19 +15,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.healthappttt.Data.CompareUser;
-import com.example.healthappttt.Data.User;
+import com.example.healthappttt.Data.NearUsersData;
+import com.example.healthappttt.Data.UserInfo;
 import com.example.healthappttt.R;
 import com.example.healthappttt.adapter.UserAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -51,10 +44,10 @@ public class HomeChildFragment extends Fragment {
 
     private boolean topScrolled;
     private ArrayList<CompareUser> CompareuserList;
-    private ArrayList<User> UserList;
+    private List<UserInfo> UserList;
     private int day_of_week;
     private boolean updating;
-    private User CurrentUser;
+    private UserInfo CurrentUser;
 
 
     private FirebaseFirestore firebaseFirestore;
@@ -112,12 +105,6 @@ public class HomeChildFragment extends Fragment {
                              Bundle savedInstanceState) {
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_home_child, container, false);
         recyclerView = view.findViewById(R.id.recyclerView2);
-        addRoutineBtn = view.findViewById(R.id.addRoutine);
-        firebaseFirestore = FirebaseFirestore.getInstance();
-        mAuth = FirebaseAuth.getInstance();
-        db = FirebaseFirestore.getInstance();
-        UserUid = mAuth.getCurrentUser().getUid();
-
         UserList = new ArrayList<>();
 
         switch (day_of_week) {
@@ -145,14 +132,15 @@ public class HomeChildFragment extends Fragment {
                         int firstVisibleItemPosition = ((LinearLayoutManager)layoutManager).findFirstVisibleItemPosition();
                         int lastVisibleItemPosition = ((LinearLayoutManager)layoutManager).findLastVisibleItemPosition();
 
-                        if(totalItemCount - 3 <= lastVisibleItemPosition && !updating){
-                            postsUpdate(true);
-                        }
-
-                        if(0 < firstVisibleItemPosition){
-                            topScrolled = false;
-                        }
-                        mSwipeRefreshLayout.setRefreshing(false);
+//                        if(totalItemCount - 3 <= lastVisibleItemPosition && !updating){
+//                            postsUpdate(true);
+//                        }
+//
+//                        if(0 < firstVisibleItemPosition){
+//                            topScrolled = false;
+//                        }
+//                        mSwipeRefreshLayout.setRefreshing(false);
+                        postsUpdate(true);
                     }
                 }, 500);
             }
@@ -161,19 +149,7 @@ public class HomeChildFragment extends Fragment {
         return view;
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == REQUEST_CODE && data != null) {
-//            Routine r = data.getSerializableExtra("result");
-            String result = (String) data.getSerializableExtra("result");
-            //유저 추가부분//UserList.add(new User());
-            adapter.notifyDataSetChanged();
-
-            Log.d("Test", result);
-        }
-    } // startActivityForResult로 실행한 액티비티의 반환값을 전달받는 메서드
 
     private void setRecyclerView() {
         adapter = new UserAdapter(getContext(),UserList); // 나중에 routine
@@ -181,51 +157,38 @@ public class HomeChildFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
 
-//        if (adapter != null) {
-//            adapter.setOnExerciseClickListener(new setExerciseAdapter.OnExerciseClick() {
-//                @Override
-//                public void onExerciseClick(int postion) {
-//                    deleteExercise(postion);
-//                    adapter.removeItem(postion);
-//                    adapter.notifyDataSetChanged();
-//
-////                    saveRoutine(routine.getExercises().get(postion));
-//                }
-//            });
-//        }
     }
 
-    private void GetUserData(){// 디비에서 유저들 정보 얻어오기
+    private void getUserData() {
         ApiInterface apiInterface = ApiClient.getRetrofit().create(ApiInterface.class);
-        Call<String> call = apiInterface.GetNearUsers();
-        call.enqueue(new Callback<String>() {
+        NearUsersData NR = new NearUsersData(0,0);//현재 내 유저 정보 보내서 내껀 안나오게함.
+        Call<List<UserInfo>> call = apiInterface.GetNearUsers(NR);
+        call.enqueue(new Callback<List<UserInfo>>() {
             @Override
-            public void onResponse(Call<String> call, Response<String> response) {
+            public void onResponse(Call<List<UserInfo>> call, Response<List<UserInfo>> response) {
                 if (response.isSuccessful()) {
-                    Log.e(TAG, "성공 : " + response.body());
-                    parseJson(response.body());
-                    //parseJson(response.body());// 유저 리스트에 파싱
+                    UserList = response.body();
+                    Log.d("ss", UserList.get(0).getName());
                 } else {
-                    try {
-                        Log.e(TAG, "실패 : " + response.errorBody().string());
-                    }   catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    Log.d("Response", "Unsuccessful");
                 }
             }
 
             @Override
-            public void onFailure(Call<String> call, Throwable t) {
-                Log.e(TAG, "에러 : " + t.getMessage());
+            public void onFailure(Call<List<UserInfo>> call, Throwable t) {
+                Log.d("Error", t.getMessage());
             }
         });
     }
 
     private void postsUpdate(final boolean clear) { // 스크롤되면 할 작업
         updating = true;
-        //Date date = userList.size() == 0 || clear ? new Date() : userList.get(userList.size() - 1).getCreatedAt();
-        GetUserData();
-
+        UserList.clear();
+        //Date date = userList
+        // .size() == 0 || clear ? new Date() : userList.get(userList.size() - 1).getCreatedAt();
+        getUserData();
+        adapter.notifyDataSetChanged();
+        //UserSolt(UserList);
         //UserSolt(CurrentUser);
         //퀵정렬 편집해서 만드는건 가능한데 일단 보류 난이도가 높음.
         //
@@ -234,7 +197,7 @@ public class HomeChildFragment extends Fragment {
 
 
 
-        public void UserSolt(User currentUser){// 유저 거리순 정렬.
+        public void UserSolt(UserInfo currentUser){// 유저 거리순 정렬.
             ArrayList<Integer> distans = new ArrayList<Integer>();
             for(int i=0;i<UserList.size();++i){
                 if(UserList.get(i).getUserKey() == currentUser.getUserKey()) {
@@ -279,48 +242,7 @@ public class HomeChildFragment extends Fragment {
 
         return distance;
     }
-    private void parseJson(String json) { // 유저들 정보 js파일 userlist로 매핑 시키기.
-        JSONObject jsonObject;
-        try {
-            jsonObject = new JSONObject(json);
-            Log.d("qwerasdf", jsonObject.toString());
-            JSONArray UserArray = jsonObject.getJSONArray("UsersInfo");
-            for(int i=0; i < UserArray.length(); ++i){
-                JSONObject OBJ = UserArray.getJSONObject(i);
-                User U = new User(
-                        OBJ.getInt("USER_PK"),
-                        OBJ.getString("User_NM"),
-                        OBJ.getString("User_IMG"),
-                        OBJ.getString("GYM_NM"),
-                        OBJ.getDouble("User_Lat"),
-                        OBJ.getDouble("User_Lon"),
-                        OBJ.getString("Start_Time"),
-                        OBJ.getString("End_Time"),
-                        OBJ.getInt("CAT")
-                );
-                UserList.add(U);
-                Log.d("유저들 이름!!!!",UserList.get(i).getName());
-            }
-//            if(a.getKey_().equals(mAuth.getCurrentUser().getUid())) currentUser = a;
-//            else userList.add(a);
 
-        }   catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-
-//        for (QueryDocumentSnapshot document : task.getResult()) {
-
-            // Log.d(TAG, document.getId() + " &&&&+&=> " + document.getData().get("userName").toString());
-//                User a= new User(
-//
-//                );
-
-//                if(a.getKey_().equals(mAuth.getCurrentUser().getUid())) currentUser = a;
-//                else UserList.add(a);
-//            }
-
-    }
 
 }
 
