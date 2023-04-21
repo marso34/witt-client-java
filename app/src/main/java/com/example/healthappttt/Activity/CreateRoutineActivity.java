@@ -17,6 +17,7 @@ import com.example.healthappttt.Data.Exercise;
 import com.example.healthappttt.Data.RetrofitClient;
 import com.example.healthappttt.Data.Routine;
 import com.example.healthappttt.Data.RoutineData;
+import com.example.healthappttt.Data.RoutineExerciseData;
 import com.example.healthappttt.Data.RoutineResponse;
 import com.example.healthappttt.Fragment.AddExerciseFragment;
 import com.example.healthappttt.Fragment.ExerciseDetailFragment;
@@ -25,6 +26,7 @@ import com.example.healthappttt.R;
 import com.example.healthappttt.interface_.ServiceApi;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -61,17 +63,32 @@ public class CreateRoutineActivity extends AppCompatActivity implements SetRouti
     }
 
     private void InsertRoutine() {
-        RoutineData rData = new RoutineData(5, dayOfWeek,0, TimeToString(startTime), TimeToString(endTime));
-        service.createRoutine(rData).enqueue(new Callback<RoutineResponse>() {
+        ArrayList<RoutineExerciseData> list = new ArrayList<>();
+
+        int index = 0;
+        for (Exercise e : selectExercises) {
+            list.add(new RoutineExerciseData(e.getTitle(), e.getCat(), e.getCount(), e.getVolume(), e.getNum(), index));
+            index++;
+        }
+
+        RoutineData rData = new RoutineData(5, dayOfWeek,0, TimeToString(startTime), TimeToString(endTime), list);
+        service.createRoutine(rData).enqueue(new Callback<List<RoutineResponse>>() {
             @Override
-            public void onResponse(Call<RoutineResponse> call, Response<RoutineResponse> response) {
-                RoutineResponse result = response.body();
-                Log.d("성공", "키 " + result.getID());
+            public void onResponse(Call<List<RoutineResponse>> call, Response<List<RoutineResponse>> response) {
+                if (response.isSuccessful()) {
+                    List<RoutineResponse> list = response.body();
+                    for (RoutineResponse rr : list) {
+                        String test = Integer.toString(rr.getID());
+                        Log.d("성공", "ID = " + test);
+                    }
+                } else {
+                    Log.d("실패", "respone 실패");
+                }
             }
 
             @Override
-            public void onFailure(Call<RoutineResponse> call, Throwable t) {
-                Log.d("실패", "실패.....");
+            public void onFailure(Call<List<RoutineResponse>> call, Throwable t) {
+                Log.d("실패", t.getMessage());
             }
         });
     }

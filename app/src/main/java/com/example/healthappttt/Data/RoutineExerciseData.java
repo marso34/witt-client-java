@@ -34,4 +34,13 @@ public class RoutineExerciseData {
         this.cntOrDis = cntOrDis;
         this.index = index;
     }
+
+    public RoutineExerciseData(String exerciseName, int cat, int setOrTime, int volume, int cntOrDis, int index) {
+        this.exerciseName = exerciseName;
+        this.cat = cat;
+        this.setOrTime = setOrTime;
+        this.volume = volume;
+        this.cntOrDis = cntOrDis;
+        this.index = index;
+    }
 }
