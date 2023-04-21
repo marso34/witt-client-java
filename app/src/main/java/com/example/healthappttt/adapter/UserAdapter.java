@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -22,15 +23,15 @@ import com.google.firebase.storage.FirebaseStorage;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder> {
-    private List<UserInfo> mDataset;
+    private ArrayList<UserInfo> mDataset;
     private FirebaseStorage storage;
     private UserInfo userInfo;
     private Context mContext;
     private UserInfo thisUser;
     private String dayOfWeek;
+    public ArrayList<String> ExerciseNames;
     FirebaseFirestore db;
 
     static class MainViewHolder extends RecyclerView.ViewHolder {
@@ -40,9 +41,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
         public ImageView photoImageVIew;
         public TextView PreferredTime;
         public RecyclerView recyclerView;
-
+        public LinearLayout UserLayout;
         public AreaAdapter Adapter;
-        public ArrayList<String> ExerciseNames;
+
         MainViewHolder(@NonNull View itemView) {
             super(itemView);
             Name =  itemView.findViewById(R.id.UNE);
@@ -50,12 +51,11 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
            photoImageVIew = itemView.findViewById(R.id.PRI);
             PreferredTime = itemView.findViewById(R.id.GoodTime);
             recyclerView = itemView.findViewById(R.id.recyclerView);
-            ExerciseNames = new ArrayList<String>();
-            Adapter = new AreaAdapter(mContext, ExerciseNames);
-        }
+
+           }
     }
 
-    public UserAdapter(Context mContext, List<UserInfo> myDataset) {
+    public UserAdapter(Context mContext, ArrayList<UserInfo> myDataset) {
         this.mDataset = myDataset;
         this.mContext = mContext;
     }
@@ -70,12 +70,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
     public UserAdapter.MainViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View cardView = (View) LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_user, parent, false);
         final MainViewHolder mainViewHolder = new MainViewHolder(cardView);
-        cardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //클릭됐을시 행동 여기에 적으면 돼네.....시벌...
-            }
-        });
+
         return mainViewHolder;
     }
 
@@ -102,35 +97,39 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
         holder.Name.setText(userInfo.getName().toString());
         holder.LocaName.setText(userInfo.getDistance().toString() + "Km");
         holder.PreferredTime.setText(userInfo.getStartTime()+" ~ "+userInfo.getEndTime());
+        ExerciseNames = new ArrayList<>();
+        holder.Adapter = new AreaAdapter(mContext,ExerciseNames);
+        holder.recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        holder.recyclerView.setAdapter(holder.Adapter);
         Integer exerciseCat = userInfo.getRoutineCategory();
                             Log.d("rrr", "Document exists!");
                             if ((exerciseCat & 0x1) == 0x1) {
                                 String a = "가슴";
-                                    holder.ExerciseNames.add(a);
+                                    ExerciseNames.add(a);
                             }
                             if ((exerciseCat & 0x2) ==    0x2) {
                                 String a = "등";
-                                holder.ExerciseNames.add(a);
+                                ExerciseNames.add(a);
                             }
                             if ((exerciseCat & 0x4) == 0x4) {
                                 String a = "어깨";
-                                holder.ExerciseNames.add(a);
+                                ExerciseNames.add(a);
                             }
                             if ((exerciseCat & 0x8) == 0x8) {
                                 String a = "하체";
-                                holder.ExerciseNames.add(a);
+                                ExerciseNames.add(a);
                             }
                             if ((exerciseCat & 0x10) == 0x10) {
                                 String a = "팔";
-                                holder.ExerciseNames.add(a);
+                                ExerciseNames.add(a);
                             }
                             if ((exerciseCat & 0x20) == 0x20) {
                                 String a = "복근";
-                                holder.ExerciseNames.add(a);
+                                ExerciseNames.add(a);
                             }
                             if ((exerciseCat & 0x40) == 0x40) {
                                 String a = "유산소";
-                                holder.ExerciseNames.add(a);
+                                ExerciseNames.add(a);
                             }
                     holder.Adapter.notifyDataSetChanged();
 

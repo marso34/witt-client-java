@@ -152,7 +152,7 @@ public class HomeChildFragment extends Fragment {
 
 
     private void setRecyclerView() {
-        adapter = new UserAdapter(getContext(),UserList); // 나중에 routine
+        adapter = new UserAdapter(getContext(), (ArrayList<UserInfo>) UserList); // 나중에 routine
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
@@ -167,8 +167,17 @@ public class HomeChildFragment extends Fragment {
             @Override
             public void onResponse(Call<List<UserInfo>> call, Response<List<UserInfo>> response) {
                 if (response.isSuccessful()) {
-                    UserList = response.body();
-                    Log.d("ss", UserList.get(0).getName());
+                    for (UserInfo value : response.body()) {
+                        UserList.add(value);
+                        Log.d("이름", value.getName());
+                        Log.d("엔드타임", value.getEndTime());
+                        Log.d("키", String.valueOf(value.getUserKey()));
+                        Log.d("시작타임", value.getStartTime());
+                        Log.d("헬스장", value.getGymName());
+                        Log.d("날짜", String.valueOf(value.getDayOfWeek()));
+                        Log.d("부위",String.valueOf(value.getRoutineCategory()));
+                    }
+                 adapter.notifyDataSetChanged();
                 } else {
                     Log.d("Response", "Unsuccessful");
                 }
@@ -187,7 +196,6 @@ public class HomeChildFragment extends Fragment {
         //Date date = userList
         // .size() == 0 || clear ? new Date() : userList.get(userList.size() - 1).getCreatedAt();
         getUserData();
-        adapter.notifyDataSetChanged();
         //UserSolt(UserList);
         //UserSolt(CurrentUser);
         //퀵정렬 편집해서 만드는건 가능한데 일단 보류 난이도가 높음.

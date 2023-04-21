@@ -1,10 +1,5 @@
 package com.example.healthappttt.Activity;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -18,10 +13,15 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.healthappttt.Data.Exercise;
-import com.example.healthappttt.adapter.ExerciseAdapter;
-import com.example.healthappttt.R;
 import com.example.healthappttt.Data.Routine;
+import com.example.healthappttt.R;
+import com.example.healthappttt.adapter.ExerciseAdapter;
 
 import java.util.ArrayList;
 import java.util.Timer;

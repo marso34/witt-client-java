@@ -1,9 +1,5 @@
 package com.example.healthappttt.adapter;
 
-import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,9 +8,13 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.healthappttt.Data.Exercise;
-import com.example.healthappttt.R;
 import com.example.healthappttt.Data.Routine;
+import com.example.healthappttt.R;
 
 import java.util.ArrayList;
 
@@ -39,9 +39,8 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.MainVi
         this.isCount = false;
     }
 
-    public ExerciseAdapter(ArrayList<Exercise> exercises, boolean isCount) {
-        this.exercises = exercises;
-        this.isCount = isCount;
+    public ExerciseAdapter(ArrayList<String> exercises, boolean isCount) {
+//        this.isCount = isCount;
     }
 
     public static class MainViewHolder extends RecyclerView.ViewHolder {
