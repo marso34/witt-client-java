@@ -31,7 +31,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
     private Context mContext;
     private UserInfo thisUser;
     private String dayOfWeek;
-    public ArrayList<String> ExerciseNames;
     FirebaseFirestore db;
 
     static class MainViewHolder extends RecyclerView.ViewHolder {
@@ -44,6 +43,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
         public LinearLayout UserLayout;
         public AreaAdapter Adapter;
 
+        public ArrayList<String> ExerciseNames;
+
         MainViewHolder(@NonNull View itemView) {
             super(itemView);
             Name =  itemView.findViewById(R.id.UNE);
@@ -51,7 +52,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
            photoImageVIew = itemView.findViewById(R.id.PRI);
             PreferredTime = itemView.findViewById(R.id.GoodTime);
             recyclerView = itemView.findViewById(R.id.recyclerView);
-
+            ExerciseNames = new ArrayList<>();
+            Adapter = new AreaAdapter(mContext,ExerciseNames);
+            
            }
     }
 
@@ -97,39 +100,38 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
         holder.Name.setText(userInfo.getName().toString());
         holder.LocaName.setText(userInfo.getDistance().toString() + "Km");
         holder.PreferredTime.setText(userInfo.getStartTime()+" ~ "+userInfo.getEndTime());
-        ExerciseNames = new ArrayList<>();
-        holder.Adapter = new AreaAdapter(mContext,ExerciseNames);
+
         holder.recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         holder.recyclerView.setAdapter(holder.Adapter);
         Integer exerciseCat = userInfo.getRoutineCategory();
                             Log.d("rrr", "Document exists!");
                             if ((exerciseCat & 0x1) == 0x1) {
                                 String a = "가슴";
-                                    ExerciseNames.add(a);
+                                    holder.ExerciseNames.add(a);
                             }
                             if ((exerciseCat & 0x2) ==    0x2) {
                                 String a = "등";
-                                ExerciseNames.add(a);
+                                holder.ExerciseNames.add(a);
                             }
                             if ((exerciseCat & 0x4) == 0x4) {
                                 String a = "어깨";
-                                ExerciseNames.add(a);
+                                holder.ExerciseNames.add(a);
                             }
                             if ((exerciseCat & 0x8) == 0x8) {
                                 String a = "하체";
-                                ExerciseNames.add(a);
+                                holder.ExerciseNames.add(a);
                             }
                             if ((exerciseCat & 0x10) == 0x10) {
                                 String a = "팔";
-                                ExerciseNames.add(a);
+                                holder.ExerciseNames.add(a);
                             }
                             if ((exerciseCat & 0x20) == 0x20) {
                                 String a = "복근";
-                                ExerciseNames.add(a);
+                                holder.ExerciseNames.add(a);
                             }
                             if ((exerciseCat & 0x40) == 0x40) {
                                 String a = "유산소";
-                                ExerciseNames.add(a);
+                                holder.ExerciseNames.add(a);
                             }
                     holder.Adapter.notifyDataSetChanged();
 
