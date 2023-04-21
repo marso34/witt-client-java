@@ -68,13 +68,15 @@ public class CreateRoutineActivity extends AppCompatActivity implements SetRouti
     private void SaveToDB() {
         ArrayList<RoutineExerciseData> list = new ArrayList<>();
 
-        int index = 0;
+        int index = 0, CAT = 0;
         for (Exercise e : selectExercises) {
             list.add(new RoutineExerciseData(e.getTitle(), e.getCat(), e.getCount(), e.getVolume(), e.getNum(), index));
+            CAT |= e.getCat();
             index++;
         }
 
-        RoutineData rData = new RoutineData(5, dayOfWeek,0, TimeToString(startTime), TimeToString(endTime), list);
+        int finalCAT = CAT;
+        RoutineData rData = new RoutineData(5, dayOfWeek, finalCAT, TimeToString(startTime), TimeToString(endTime), list);
         service.createRoutine(rData).enqueue(new Callback<List<Integer>>() {
             @Override
             public void onResponse(Call<List<Integer>> call, Response<List<Integer>> response) {
@@ -88,20 +90,20 @@ public class CreateRoutineActivity extends AppCompatActivity implements SetRouti
                     for (int resultID : list) {
                         if (i == 0) {
                             PID = resultID;
-                            routine = new Routine(resultID, dayOfWeek, 0, startTime, endTime);
+                            routine = new Routine(resultID, dayOfWeek, finalCAT, startTime, endTime);
                         } else {
                             selectExercises.get(i-1).setParentID(PID);
                             selectExercises.get(i-1).setID(resultID);
-                            Cat |= selectExercises.get(i-1).getCat();
                         }
                         i++;
                     }
-                    routine.setExerciseCategories(Cat);
 
                     SaveToDev();
+                    Terminate(true);
                 } else {
                     Toast.makeText(CreateRoutineActivity.this, "루틴 생성에 실패하였습니다.", Toast.LENGTH_SHORT).show();
                     Log.d("실패", "respone 실패");
+                    Terminate(false);
                 }
             }
 
@@ -109,12 +111,22 @@ public class CreateRoutineActivity extends AppCompatActivity implements SetRouti
             public void onFailure(Call<List<Integer>> call, Throwable t) {
                 Toast.makeText(CreateRoutineActivity.this, "서버 연결에 실패", Toast.LENGTH_SHORT).show();
                 Log.d("실패", t.getMessage());
+                Terminate(false);
             }
         });
     }
 
     private void SaveToDev() {
 
+    }
+
+    private void Terminate(boolean isSuccess) {
+        Intent intent = new Intent();
+
+        if (isSuccess)
+            intent.putExtra("routine", routine);
+        setResult(RESULT_OK, intent);
+        finish();
     }
 
     @Override
@@ -154,11 +166,6 @@ public class CreateRoutineActivity extends AppCompatActivity implements SetRouti
         SaveToDB();
         // 받은 운동 정보 토대로 DB에 루틴, 운동 생성하고
         // 생성된 키 받아와서 로컬에 루틴, 운동 저장
-
-        Intent intent = new Intent();
-        intent.putExtra("routines", routine);
-        setResult(RESULT_OK, intent);
-        finish();
     }
 
     private void replaceFragment (Fragment fragment){ //프래그먼트 설정

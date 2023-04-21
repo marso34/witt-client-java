@@ -61,7 +61,7 @@ public class Routine implements Serializable {
             if (Time >= 130) Time-= 120;
         }
 
-        @SuppressLint("DefaultLocale") String result = String.format("%02d:%02d", Time/10, Time % 10 * 6);
+        @SuppressLint("DefaultLocale") String result = String.format("%d:%02d", Time/10, Time % 10 * 6);
 
         return am_pm + " " + result;
     }

@@ -45,18 +45,8 @@ public class RoutineChildFragment extends Fragment {
     private RoutineAdapter adapter;
     private CardView addRoutineBtn;
 
-
     private ArrayList<Routine> routines;
-    private int day_of_week;
-
-
-
-    private FirebaseFirestore firebaseFirestore;
-    private FirebaseAuth mAuth;// 파이어베이스 유저관련 접속하기위한 변수
-    private FirebaseFirestore db;
-    private String UserUid;
-    private String dayOfWeek = "";
-
+    private int dayOfWeek;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -70,8 +60,8 @@ public class RoutineChildFragment extends Fragment {
 
     public RoutineChildFragment() {}
     
-    public RoutineChildFragment(int day_of_week) {
-        this.day_of_week = day_of_week;
+    public RoutineChildFragment(int dayOfWeek) {
+        this.dayOfWeek = dayOfWeek;
     }
 
     /**
@@ -106,35 +96,16 @@ public class RoutineChildFragment extends Fragment {
                              Bundle savedInstanceState) {
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_routine_child, container, false);
 
-
         recyclerView = view.findViewById(R.id.recyclerView);
         addRoutineBtn = view.findViewById(R.id.addRoutine);
 
-//
-        firebaseFirestore = FirebaseFirestore.getInstance();
-        mAuth = FirebaseAuth.getInstance();
-        db = FirebaseFirestore.getInstance();
-
-        UserUid = mAuth.getCurrentUser().getUid();
-//
-
         routines = new ArrayList<>();
-
-        switch (day_of_week) {
-            case 0: dayOfWeek = "sun"; break;
-            case 1: dayOfWeek = "mon"; break;
-            case 2: dayOfWeek = "tue"; break;
-            case 3: dayOfWeek = "wed"; break;
-            case 4: dayOfWeek = "thu"; break;
-            case 5: dayOfWeek = "fri"; break;
-            case 6: dayOfWeek = "sat"; break;
-        }
 
         setRecyclerView();
 
         addRoutineBtn.setOnClickListener(view1 -> {
             Intent intent = new Intent(getContext(), CreateRoutineActivity.class);
-            intent.putExtra("dayOfWeek", day_of_week);
+            intent.putExtra("dayOfWeek", dayOfWeek);
             startActivityForResult(intent, REQUEST_CODE);
         });
 

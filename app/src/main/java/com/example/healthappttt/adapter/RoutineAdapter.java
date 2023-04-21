@@ -2,6 +2,7 @@ package com.example.healthappttt.adapter;
 
 import static java.security.AccessController.getContext;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,7 +32,7 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
 
     public static class MainViewHolder extends RecyclerView.ViewHolder {
         public LinearLayout RoutineLayout, NullLayout;
-        public TextView am_pm1, am_pm2, time1, time2;
+        public TextView startTimeView, endTimeView;
         public TextView Edit;
         private RecyclerView recyclerView;
         private ExerciseListAdapter adapter;
@@ -42,10 +43,8 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
             this.RoutineLayout = (LinearLayout) view.findViewById(R.id.routineLayout);
             this.NullLayout = (LinearLayout) view.findViewById(R.id.nullLayout);
 
-            this.am_pm1 = (TextView) view.findViewById(R.id.am_pm1);
-            this.am_pm2 = (TextView) view.findViewById(R.id.am_pm2);
-            this.time1 = (TextView) view.findViewById(R.id.time1);
-            this.time2 = (TextView) view.findViewById(R.id.time2);
+            this.startTimeView = (TextView) view.findViewById(R.id.startTime);
+            this.endTimeView = (TextView) view.findViewById(R.id.endTime);
             this.Edit = (TextView) view.findViewById(R.id.Edit);
 
             this.recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
@@ -68,10 +67,8 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
             holder.NullLayout.setVisibility(View.GONE);
 
 //            routines에서 시간 정보 가져와서 오전 오후 시간 정보 분리하는 메서드 만들기
-//            holder.am_pm1.setText(routines.get(position).getStartTime());
-//            holder.time1.setText(routines.get(position).getStartTime());
-//            holder.am_pm2.setText(routines.get(position).getStartTime());
-//            holder.time2.setText(routines.get(position).getStartTime());
+            holder.startTimeView.setText(TimeToString(routines.get(position).getStartTime()));
+            holder.endTimeView.setText(TimeToString(routines.get(position).getEndTime()));
             setRecyclerView(holder.recyclerView, holder.adapter, routines.get(position));
         } else {
             holder.RoutineLayout.setVisibility(View.GONE);
@@ -84,6 +81,24 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
         if (routines.size() == 0)   return 1;
 
         return routines.size();
+    }
+
+    private String TimeToString(int Time) {
+        String am_pm = "";
+
+        if (Time >= 240) Time-= 240;
+
+        if (Time < 120) {
+            am_pm = "오전";
+            if (Time < 10) Time += 120;
+        } else {
+            am_pm = "오후";
+            if (Time >= 130) Time-= 120;
+        }
+
+        @SuppressLint("DefaultLocale") String result = String.format("%d:%02d", Time/10, Time % 10 * 6);
+
+        return am_pm + " " + result;
     }
 
     private void setRecyclerView(RecyclerView recyclerView, ExerciseListAdapter adapter, Routine routine) {
