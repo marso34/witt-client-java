@@ -13,7 +13,7 @@ import retrofit2.http.POST;
 
 public interface ServiceApi {
     @POST("/CreateRoutine")
-    Call<List<RoutineResponse>> createRoutine(@Body RoutineData data);
+    Call<List<Integer>> createRoutine(@Body RoutineData data);
 
     @POST("/CreateExercise")
     Call<List<ExerciseResponse>> createExercise(@Body List<RoutineExerciseData> data);

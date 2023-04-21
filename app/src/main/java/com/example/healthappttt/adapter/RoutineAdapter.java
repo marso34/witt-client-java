@@ -88,10 +88,10 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
 
     private void setRecyclerView(RecyclerView recyclerView, ExerciseListAdapter adapter, Routine routine) {
         ArrayList<Exercise> exercises = new ArrayList<>();
-        exercises.add(new Exercise("팔굽혀펴기", 0x1, 3,3, 3));
-        exercises.add(new Exercise("턱걸이", 0x2, 3,3, 3));
-        exercises.add(new Exercise("스쿼트", 0x4, 3,3, 3));
-        exercises.add(new Exercise("플랭크", 0x10, 3,3, 3));
+//        exercises.add(new Exercise("팔굽혀펴기", 0x1, 3,3, 3));
+//        exercises.add(new Exercise("턱걸이", 0x2, 3,3, 3));
+//        exercises.add(new Exercise("스쿼트", 0x4, 3,3, 3));
+//        exercises.add(new Exercise("플랭크", 0x10, 3,3, 3));
 
 
         adapter = new ExerciseListAdapter(exercises, true); // 나중에 routine

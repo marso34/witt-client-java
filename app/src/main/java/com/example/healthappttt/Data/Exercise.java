@@ -71,10 +71,10 @@ public class Exercise implements Serializable {
         switch (this.cat) {
             case 0x1:  return "가슴";
             case 0x2:  return "등";
-            case 0x4:  return "하체";
-            case 0x8:  return "어깨";
-            case 0x10: return "복근";
-            case 0x20: return "팔";
+            case 0x4:  return "어깨";
+            case 0x8:  return "하체";
+            case 0x10: return "팔";
+            case 0x20: return "복근";
             case 0x40: return "유산소";
         }
 

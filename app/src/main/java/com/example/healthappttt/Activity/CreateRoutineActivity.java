@@ -36,7 +36,9 @@ public class CreateRoutineActivity extends AppCompatActivity implements SetRouti
     private ServiceApi service;
 
     private int dayOfWeek, startTime, endTime;
+    private Routine routine;
     private ArrayList<Exercise> selectExercises;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +46,7 @@ public class CreateRoutineActivity extends AppCompatActivity implements SetRouti
         setContentView(R.layout.activity_create_routine);
 
         service = RetrofitClient.getClient().create(ServiceApi.class);
+        routine = new Routine();
         selectExercises = new ArrayList<>();
 
         Intent intent = getIntent();
@@ -62,7 +65,7 @@ public class CreateRoutineActivity extends AppCompatActivity implements SetRouti
         return am_pm + " " + result;
     }
 
-    private void InsertRoutine() {
+    private void SaveToDB() {
         ArrayList<RoutineExerciseData> list = new ArrayList<>();
 
         int index = 0;
@@ -72,25 +75,46 @@ public class CreateRoutineActivity extends AppCompatActivity implements SetRouti
         }
 
         RoutineData rData = new RoutineData(5, dayOfWeek,0, TimeToString(startTime), TimeToString(endTime), list);
-        service.createRoutine(rData).enqueue(new Callback<List<RoutineResponse>>() {
+        service.createRoutine(rData).enqueue(new Callback<List<Integer>>() {
             @Override
-            public void onResponse(Call<List<RoutineResponse>> call, Response<List<RoutineResponse>> response) {
+            public void onResponse(Call<List<Integer>> call, Response<List<Integer>> response) {
                 if (response.isSuccessful()) {
-                    List<RoutineResponse> list = response.body();
-                    for (RoutineResponse rr : list) {
-                        String test = Integer.toString(rr.getID());
-                        Log.d("성공", "ID = " + test);
+                    Toast.makeText(CreateRoutineActivity.this, "루틴 생성 성공!!!", Toast.LENGTH_SHORT).show();
+                    Log.d("성공", "루틴 생성 성공");
+
+                    List<Integer> list = response.body();
+                    int PID = 0, i = 0, Cat = 0;
+
+                    for (int resultID : list) {
+                        if (i == 0) {
+                            PID = resultID;
+                            routine = new Routine(resultID, dayOfWeek, 0, startTime, endTime);
+                        } else {
+                            selectExercises.get(i-1).setParentID(PID);
+                            selectExercises.get(i-1).setID(resultID);
+                            Cat |= selectExercises.get(i-1).getCat();
+                        }
+                        i++;
                     }
+                    routine.setExerciseCategories(Cat);
+
+                    SaveToDev();
                 } else {
+                    Toast.makeText(CreateRoutineActivity.this, "루틴 생성에 실패하였습니다.", Toast.LENGTH_SHORT).show();
                     Log.d("실패", "respone 실패");
                 }
             }
 
             @Override
-            public void onFailure(Call<List<RoutineResponse>> call, Throwable t) {
+            public void onFailure(Call<List<Integer>> call, Throwable t) {
+                Toast.makeText(CreateRoutineActivity.this, "서버 연결에 실패", Toast.LENGTH_SHORT).show();
                 Log.d("실패", t.getMessage());
             }
         });
+    }
+
+    private void SaveToDev() {
+
     }
 
     @Override
@@ -127,13 +151,12 @@ public class CreateRoutineActivity extends AppCompatActivity implements SetRouti
     public void onRoutineExDetail(ArrayList<Exercise> exercises) {
         this.selectExercises = exercises;
 
-        InsertRoutine();
-
+        SaveToDB();
         // 받은 운동 정보 토대로 DB에 루틴, 운동 생성하고
         // 생성된 키 받아와서 로컬에 루틴, 운동 저장
 
         Intent intent = new Intent();
-        intent.putExtra("routines", new Routine(0, dayOfWeek, 0, startTime, endTime));
+        intent.putExtra("routines", routine);
         setResult(RESULT_OK, intent);
         finish();
     }
