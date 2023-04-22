@@ -49,6 +49,17 @@
             android:textSize="14sp"
             android:textStyle="bold" />
 
+        <ImageView
+            android:id="@+id/removeBtn"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center"
+            android:background="@drawable/round_button_subtitle"
+            android:src="@drawable/baseline_close_24"
+            app:tint="@color/white"/>
+
+<!--        x 버튼 내부 사이즈를 알 수 없음 -->
+
     </LinearLayout>
 
     <LinearLayout
@@ -91,10 +102,11 @@
                         android:layout_marginLeft="16dp"
                         android:layout_marginRight="4dp"
                         android:background="@color/transparent"
+                        android:textColorHint="@color/Background_3"
+                        android:selectAllOnFocus="true"
                         android:inputType="number"
                         android:maxLength="4"
                         android:hint="무게"
-                        android:textColorHint="@color/Background_3"
                         android:textSize="16sp"/>
 
                     <TextView
@@ -146,10 +158,11 @@
                         android:layout_marginLeft="16dp"
                         android:layout_marginRight="4dp"
                         android:background="@color/transparent"
+                        android:textColorHint="@color/Background_3"
+                        android:selectAllOnFocus="true"
                         android:inputType="number"
                         android:maxLength="4"
                         android:hint="횟수"
-                        android:textColorHint="@color/Background_3"
                         android:textSize="16sp"/>
 
                     <TextView
@@ -200,10 +213,11 @@
                         android:layout_marginLeft="16dp"
                         android:layout_marginRight="4dp"
                         android:background="@color/transparent"
+                        android:textColorHint="@color/Background_3"
+                        android:selectAllOnFocus="true"
                         android:inputType="number"
                         android:maxLength="4"
                         android:hint="세트 수"
-                        android:textColorHint="@color/Background_3"
                         android:textSize="16sp"/>
 
                     <TextView

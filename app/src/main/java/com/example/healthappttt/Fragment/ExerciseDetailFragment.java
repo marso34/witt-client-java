@@ -122,12 +122,11 @@ public class ExerciseDetailFragment extends Fragment {
 
         setRecyclerView();
 
-
         NextTxt.setBackgroundColor(Color.parseColor("#05c78c"));
         NextTxt.setTextColor(Color.parseColor("#ffffff"));
 
         NextBtn.setOnClickListener(v -> {
-            mListener.onRoutineExDetail(exercises);
+            mListener.onRoutineExDetail(adapter.getInputData());
         });
 
         return view;
@@ -177,14 +176,5 @@ public class ExerciseDetailFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
-
-        if (adapter != null) {
-            adapter.setinputExerciseListener(new ExerciseInputAdapter.InputExerciseDetail() {
-                @Override
-                public void inputExerciseDetail(ArrayList<Exercise> mExercises) {
-                    exercises = mExercises;
-                }
-            });
-        }
     }
 }

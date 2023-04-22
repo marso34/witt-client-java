@@ -89,8 +89,8 @@ public class CreateRoutineActivity extends AppCompatActivity implements SetRouti
 
                     for (int resultID : list) {
                         if (i == 0) {
-                            PID = resultID;
-                            routine = new Routine(resultID, dayOfWeek, finalCAT, startTime, endTime);
+                            PID = resultID; // 루틴ID
+                            routine = new Routine(PID, dayOfWeek, finalCAT, startTime, endTime);
                         } else {
                             selectExercises.get(i-1).setParentID(PID);
                             selectExercises.get(i-1).setID(resultID);
@@ -99,11 +99,11 @@ public class CreateRoutineActivity extends AppCompatActivity implements SetRouti
                     }
 
                     SaveToDev();
-                    Terminate(true);
+                    Terminate(true); // 루틴 생성 액티비티 종료
                 } else {
                     Toast.makeText(CreateRoutineActivity.this, "루틴 생성에 실패하였습니다.", Toast.LENGTH_SHORT).show();
                     Log.d("실패", "respone 실패");
-                    Terminate(false);
+                    Terminate(false); // 루틴 생성 액티비티 종료
                 }
             }
 
@@ -111,7 +111,7 @@ public class CreateRoutineActivity extends AppCompatActivity implements SetRouti
             public void onFailure(Call<List<Integer>> call, Throwable t) {
                 Toast.makeText(CreateRoutineActivity.this, "서버 연결에 실패", Toast.LENGTH_SHORT).show();
                 Log.d("실패", t.getMessage());
-                Terminate(false);
+                Terminate(false); // 루틴 생성 액티비티 종료
             }
         });
     }

@@ -31,8 +31,6 @@ import java.util.Date;
 
 public class ExerciseInputAdapter extends RecyclerView.Adapter<ExerciseInputAdapter.MainViewHolder> {
     private ArrayList<Exercise> exercises;
-    private InputExerciseDetail inputExerciseDetail;
-
 
     public ExerciseInputAdapter(ArrayList<Exercise> exercises) {
         this.exercises = exercises;
@@ -41,6 +39,7 @@ public class ExerciseInputAdapter extends RecyclerView.Adapter<ExerciseInputAdap
     public static class MainViewHolder extends RecyclerView.ViewHolder {
         public TextView CatView, NameView;
         public EditText EditVolume, EditCount, EditSet;
+        public ImageView RemoveBtn;
 
         public MainViewHolder(View view) {
             super(view);
@@ -51,6 +50,8 @@ public class ExerciseInputAdapter extends RecyclerView.Adapter<ExerciseInputAdap
             this.EditVolume = (EditText) view.findViewById(R.id.inputWeight);
             this.EditCount = (EditText) view.findViewById(R.id.inputCount);
             this.EditSet = (EditText) view.findViewById(R.id.inputSet);
+
+            this.RemoveBtn = (ImageView) view.findViewById(R.id.removeBtn);
         }
     }
 
@@ -60,9 +61,10 @@ public class ExerciseInputAdapter extends RecyclerView.Adapter<ExerciseInputAdap
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_exercise_input, parent, false);
         final MainViewHolder mainViewHolder = new MainViewHolder(view);
 
-        view.setOnClickListener(new View.OnClickListener() {
+        mainViewHolder.RemoveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
+                // 인터페이스 구현해서 버튼 누르면 position 전달해서 프래그먼트 or 액티비티에서 removeItem 호출하고 adapter.notifyDataSetChanged() 실행
             }
         });
 
@@ -79,10 +81,10 @@ public class ExerciseInputAdapter extends RecyclerView.Adapter<ExerciseInputAdap
             public void afterTextChanged(Editable editable) {
                 String str = mainViewHolder.EditVolume.getText().toString();
 
-                if (str != null) {
+                if (str != null)
                     exercises.get(mainViewHolder.getAbsoluteAdapterPosition()).setVolume(Integer.parseInt(str));
-                    inputExerciseDetail.inputExerciseDetail(exercises);
-                }
+                else
+                    exercises.get(mainViewHolder.getAbsoluteAdapterPosition()).setVolume(0);
             }
         });
 
@@ -99,10 +101,10 @@ public class ExerciseInputAdapter extends RecyclerView.Adapter<ExerciseInputAdap
             public void afterTextChanged(Editable editable) {
                 String str = mainViewHolder.EditCount.getText().toString();
 
-                if (str != null) {
+                if (str != null)
                     exercises.get(mainViewHolder.getAbsoluteAdapterPosition()).setNum(Integer.parseInt(str));
-                    inputExerciseDetail.inputExerciseDetail(exercises);
-                }
+                else
+                    exercises.get(mainViewHolder.getAbsoluteAdapterPosition()).setNum(0);
             }
         });
 
@@ -119,10 +121,10 @@ public class ExerciseInputAdapter extends RecyclerView.Adapter<ExerciseInputAdap
             public void afterTextChanged(Editable editable) {
                 String str = mainViewHolder.EditSet.getText().toString();
 
-                if (str != null) {
+                if (str != null)
                     exercises.get(mainViewHolder.getAbsoluteAdapterPosition()).setCount(Integer.parseInt(str));
-                    inputExerciseDetail.inputExerciseDetail(exercises);
-                }
+                else
+                    exercises.get(mainViewHolder.getAbsoluteAdapterPosition()).setCount(0);
             }
         });
 
@@ -142,12 +144,5 @@ public class ExerciseInputAdapter extends RecyclerView.Adapter<ExerciseInputAdap
 
     public void removeItem(int position) { exercises.remove(position); }
 
-
-    public void setinputExerciseListener(InputExerciseDetail inputExerciseDetail) {
-        this.inputExerciseDetail = inputExerciseDetail;
-    } // 액티비티에서 콜백 메서드를 set
-
-    public interface InputExerciseDetail {
-        void inputExerciseDetail(ArrayList<Exercise> exercises);
-    } // 운동 클릭했을 때, 엑티비티에 값 전달을 위한 인터페이스
+    public ArrayList<Exercise> getInputData() { return exercises; }
 }
