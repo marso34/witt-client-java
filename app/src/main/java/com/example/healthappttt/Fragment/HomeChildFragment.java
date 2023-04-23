@@ -46,7 +46,7 @@ public class HomeChildFragment extends Fragment {
     private ArrayList<CompareUser> CompareuserList;
     private List<UserInfo> UserList;
     private int day_of_week;
-    private boolean updating;
+    private boolean updating = false;
     private UserInfo CurrentUser;
 
 
@@ -116,6 +116,7 @@ public class HomeChildFragment extends Fragment {
             case 5: dayOfWeek = "fri"; break;
             case 6: dayOfWeek = "sat"; break;
         }
+
         setRecyclerView();
         SwipeRefreshLayout mSwipeRefreshLayout = view.findViewById(R.id.swipe_layout);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -139,13 +140,20 @@ public class HomeChildFragment extends Fragment {
                             topScrolled = false;
                         }
                         mSwipeRefreshLayout.setRefreshing(false);
-
-                        postsUpdate(true);
                     }
                 }, 500);
             }
         });
-        postsUpdate(false);
+        {
+            RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
+            int visibleItemCount = layoutManager.getChildCount();
+            int totalItemCount = layoutManager.getItemCount();
+            int firstVisibleItemPosition = ((LinearLayoutManager)layoutManager).findFirstVisibleItemPosition();
+            int lastVisibleItemPosition = ((LinearLayoutManager)layoutManager).findLastVisibleItemPosition();
+            if(totalItemCount < 1 && !updating){
+                postsUpdate(false);
+            }
+        }
         return view;
     }
 
