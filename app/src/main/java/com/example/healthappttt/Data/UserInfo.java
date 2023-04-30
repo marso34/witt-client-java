@@ -23,6 +23,8 @@ public class UserInfo {
     @SerializedName("DayOfWeek")
     private int dayOfWeek;
 
+
+
     private Integer distance = 0;
 
     // Getters and Setters
@@ -35,7 +37,6 @@ public class UserInfo {
     public Integer getDistance(){
         return distance;
     }
-
 
     public void setUserKey(long userKey) {
         this.userKey = userKey;
@@ -99,4 +100,5 @@ public class UserInfo {
     public void setDayOfWeek(int dayOfWeek) {
         this.dayOfWeek = dayOfWeek;
     }
+
 }

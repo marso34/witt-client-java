@@ -36,12 +36,19 @@
                 android:src="@drawable/baseline_notifications_24" />
 
             <ImageView
+                android:id="@+id/my_information"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_gravity="right"
                 android:src="@drawable/ic_baseline_person"
                 app:tint="@color/Background_3" />
 
+            <Button
+                android:id="@+id/sign_out_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="로그아웃"
+                android:layout_gravity="end"/>
         </androidx.appcompat.widget.Toolbar>
 
         <FrameLayout
