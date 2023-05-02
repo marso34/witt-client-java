@@ -19,6 +19,7 @@ import com.example.healthappttt.Data.Routine;
 import com.example.healthappttt.Data.RoutineData;
 import com.example.healthappttt.Data.RoutineExerciseData;
 import com.example.healthappttt.Data.RoutineResponse;
+import com.example.healthappttt.Data.SQLiteUtil;
 import com.example.healthappttt.Fragment.AddExerciseFragment;
 import com.example.healthappttt.Fragment.ExerciseDetailFragment;
 import com.example.healthappttt.Fragment.SetRoutineTimeFragment;
@@ -34,6 +35,7 @@ import retrofit2.Response;
 
 public class CreateRoutineActivity extends AppCompatActivity implements SetRoutineTimeFragment.OnFragmentInteractionListener, AddExerciseFragment.OnFragmentInteractionListener, ExerciseDetailFragment.OnFragmentInteractionListener {
     private ServiceApi service;
+    private SQLiteUtil sqLiteUtil;
 
     private int dayOfWeek, startTime, endTime;
     private Routine routine;
@@ -46,6 +48,8 @@ public class CreateRoutineActivity extends AppCompatActivity implements SetRouti
         setContentView(R.layout.activity_create_routine);
 
         service = RetrofitClient.getClient().create(ServiceApi.class);
+        sqLiteUtil = SQLiteUtil.getInstance();
+
         routine = new Routine();
         selectExercises = new ArrayList<>();
 
@@ -60,9 +64,9 @@ public class CreateRoutineActivity extends AppCompatActivity implements SetRouti
 
         if (Time >= 240) Time-= 240;
 
-        @SuppressLint("DefaultLocale") String result = String.format("%2d:%02d:%02d", Time/10, Time % 10 * 6, 0);
+        @SuppressLint("DefaultLocale") String result = String.format("%02d:%02d:%02d", Time/10, Time % 10 * 6, 0);
 
-        return am_pm + " " + result;
+        return result;
     }
 
     private void SaveToDB() {
@@ -90,7 +94,7 @@ public class CreateRoutineActivity extends AppCompatActivity implements SetRouti
                     for (int resultID : list) {
                         if (i == 0) {
                             PID = resultID; // 루틴ID
-                            routine = new Routine(PID, dayOfWeek, finalCAT, startTime, endTime);
+                            routine = new Routine(PID, TimeToString(startTime), TimeToString(endTime), finalCAT, dayOfWeek);
                         } else {
                             selectExercises.get(i-1).setParentID(PID);
                             selectExercises.get(i-1).setID(resultID);
@@ -117,15 +121,21 @@ public class CreateRoutineActivity extends AppCompatActivity implements SetRouti
     }
 
     private void SaveToDev() {
-
+        sqLiteUtil.setInitView(this, "RT_TB");
+        sqLiteUtil.insert(routine);
+        for (Exercise e : selectExercises) {
+            sqLiteUtil.setInitView(this, "EX_TB");
+            sqLiteUtil.insert(e);
+        }
     }
 
     private void Terminate(boolean isSuccess) {
         Intent intent = new Intent();
 
-        if (isSuccess)
+        if (isSuccess) {
             intent.putExtra("routine", routine);
-        setResult(RESULT_OK, intent);
+            setResult(RESULT_OK, intent);
+        }
         finish();
     }
 

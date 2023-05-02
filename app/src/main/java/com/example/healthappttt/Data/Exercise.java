@@ -13,6 +13,7 @@ public class Exercise implements Serializable {
     private int count;  // 세트 or 시간 (유산소일 때만 시간)
     private int volume; // 무게 or 속도 (유산소일 때만 속도) // 나중에 수정
     private int num; // 횟수
+    private int index;
 
     public Exercise(String title, int cat) {
         this.title = title;
@@ -21,24 +22,26 @@ public class Exercise implements Serializable {
         this.volume = 10;    // 무게 or 속도 (유산소)
     }
 
-    public Exercise(int ID, int parentID, String title, int cat) {
+    public Exercise(int ID, int parentID, String title, int cat, int index) {
         this.ID = ID;
         this.parentID = parentID;
         this.title = title;
         this.cat = cat;
         this.count = 5;      // 세트 카운트 or 시간(유산소)
         this.volume = 10;    // 무게 or 속도 (유산소)
+        this.index = index;
     }
 
-    public Exercise(String title, int cat, int count, int volume, int num) {
+    public Exercise(String title, int cat, int count, int volume, int num, int index) {
         this.title = title;
         this.cat = cat;
         this.count = count;
         this.volume = volume;
         this.num = num;
+        this.index = index;
     }
 
-    public Exercise(int ID, int parentID, String title, int cat, int count, int volume, int num) {
+    public Exercise(int ID, int parentID, String title, int cat, int count, int volume, int num, int index) {
         this.ID = ID;
         this.parentID = parentID;
         this.title = title;
@@ -46,6 +49,7 @@ public class Exercise implements Serializable {
         this.count = count;
         this.volume = volume;
         this.num = num;
+        this.index = index;
     }
 
     public Exercise(Exercise e) {
@@ -56,6 +60,7 @@ public class Exercise implements Serializable {
         this.count = e.count;
         this.volume = e.volume;
         this.num = e.num;
+        this.index = e.index;
     }
 
 
@@ -66,6 +71,7 @@ public class Exercise implements Serializable {
     public int getCount()                   { return this.count; }
     public int getVolume()                  { return this.volume; }
     public int getNum()                     { return this.num; }
+    public int getIndex()                   { return this.index; }
 
     public String getState() { // 나중에 getStrCat으로 변경
         switch (this.cat) {
@@ -112,4 +118,5 @@ public class Exercise implements Serializable {
     public void setCount(int count)         { this.count = count; }
     public void setVolume(int volume)       { this.volume = volume; }
     public void setNum(int num)             { this.num = num; }
+    public void setIndex(int index)         { this.index = index; }
 }

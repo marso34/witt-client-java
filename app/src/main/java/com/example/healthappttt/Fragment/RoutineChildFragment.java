@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import com.example.healthappttt.Activity.CreateRoutineActivity;
 import com.example.healthappttt.Data.Exercise;
 import com.example.healthappttt.Data.Routine;
+import com.example.healthappttt.Data.SQLiteUtil;
 import com.example.healthappttt.R;
 import com.example.healthappttt.adapter.RoutineAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -45,6 +46,8 @@ public class RoutineChildFragment extends Fragment {
     private RoutineAdapter adapter;
     private CardView addRoutineBtn;
 
+
+    private SQLiteUtil sqLiteUtil;
     private ArrayList<Routine> routines;
     private int dayOfWeek;
 
@@ -99,7 +102,10 @@ public class RoutineChildFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerView);
         addRoutineBtn = view.findViewById(R.id.addRoutine);
 
-        routines = new ArrayList<>();
+        sqLiteUtil = SQLiteUtil.getInstance();
+        sqLiteUtil.setInitView(getContext(), "RT_TB");
+
+        routines = sqLiteUtil.SelectRoutine(dayOfWeek);
 
         setRecyclerView();
 

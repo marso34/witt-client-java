@@ -286,10 +286,10 @@ public class ProfileActivity extends AppCompatActivity {
                             if (document.exists()) {
                                 Log.d(TAG, "Document exists!");
                                 routine = new Routine(
-                                        t,
-                                        Integer.parseInt(document.getData().get("exerciseCategories").toString()),
-                                        Integer.parseInt(document.getData().get("startTime").toString()),
-                                        Integer.parseInt(document.getData().get("endTime").toString())
+//                                        t,
+//                                        Integer.parseInt(document.getData().get("exerciseCategories").toString()),
+//                                        Integer.parseInt(document.getData().get("startTime").toString()),
+//                                        Integer.parseInt(document.getData().get("endTime").toString())
                                 );
 
                                 setExercises();
@@ -314,15 +314,15 @@ public class ProfileActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                Exercise e = new Exercise(
-                                        document.getData().get("title").toString(),
-                                        Integer.parseInt(document.getData().get("state").toString()),
-                                        Integer.parseInt(document.getData().get("count").toString()),
-                                        Integer.parseInt(document.getData().get("volume").toString()),
-                                        0
-                                );
+//                                Exercise e = new Exercise(
+//                                        document.getData().get("title").toString(),
+//                                        Integer.parseInt(document.getData().get("state").toString()),
+//                                        Integer.parseInt(document.getData().get("count").toString()),
+//                                        Integer.parseInt(document.getData().get("volume").toString()),
+//                                        0
+//                                );
 
-                                exercises.add(e);
+//                                exercises.add(e);
                             }
 
                             setRecyclerView();

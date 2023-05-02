@@ -4,6 +4,7 @@ import static java.security.AccessController.getContext;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -83,22 +84,21 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
         return routines.size();
     }
 
-    private String TimeToString(int Time) {
+    private String TimeToString(String Time) {
+        String[] TimeSplit = Time.split(":");
         String am_pm = "";
 
-        if (Time >= 240) Time-= 240;
+        int hour = Integer.parseInt(TimeSplit[0]);
 
-        if (Time < 120) {
+        if (hour < 12) {
             am_pm = "오전";
-            if (Time < 10) Time += 120;
+            if (hour == 0) hour = 12;
         } else {
             am_pm = "오후";
-            if (Time >= 130) Time-= 120;
+            if (hour >= 13) hour-= 12;
         }
 
-        @SuppressLint("DefaultLocale") String result = String.format("%d:%02d", Time/10, Time % 10 * 6);
-
-        return am_pm + " " + result;
+        return am_pm + " " + hour + ":" + TimeSplit[1];
     }
 
     private void setRecyclerView(RecyclerView recyclerView, ExerciseListAdapter adapter, Routine routine) {

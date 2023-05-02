@@ -9,32 +9,31 @@ import java.util.Map;
 
 public class Routine implements Serializable {
     private int ID;
+    private String startTime;
+    private String endTime;
+    private String runTime;
+    private int cat;
     private int dayOfWeek;
-    private int exerciseCategories;
-    private int startTime;
-    private int endTime;
-    private int runTime;
-
 
     public Routine() {}
 
-    public Routine(int dayOfWeek, int exerciseCategories, int startTime, int endTime) {
+    public Routine(String startTime, String endTime, int cat, int dayOfWeek) {
         this.dayOfWeek = dayOfWeek;
-        this.exerciseCategories = exerciseCategories;
+        this.cat = cat;
         this.startTime = startTime;
         this.endTime = endTime;
     }
-    public Routine(int ID, int dayOfWeek, int exerciseCategories, int startTime, int endTime) {
+    public Routine(int ID, String startTime, String endTime, int cat, int dayOfWeek) {
         this.ID = ID;
         this.dayOfWeek = dayOfWeek;
-        this.exerciseCategories = exerciseCategories;
+        this.cat = cat;
         this.startTime = startTime;
         this.endTime = endTime;
     }
-    public Routine(int ID, int dayOfWeek, int exerciseCategories, int startTime, int endTime, int runTime) {
+    public Routine(int ID, String startTime, String endTime, String runTime, int cat, int dayOfWeek) {
         this.ID = ID;
         this.dayOfWeek = dayOfWeek;
-        this.exerciseCategories = exerciseCategories;
+        this.cat = cat;
         this.startTime = startTime;
         this.endTime = endTime;
         this.runTime = runTime;
@@ -42,7 +41,7 @@ public class Routine implements Serializable {
     public Routine(Routine r) {
         this.ID = r.ID;
         this.dayOfWeek = r.dayOfWeek;
-        this.exerciseCategories = r.exerciseCategories;
+        this.cat = r.cat;
         this.startTime = r.startTime;
         this.endTime = r.endTime;
         this.runTime = r.runTime;
@@ -69,13 +68,10 @@ public class Routine implements Serializable {
 
     public int getID()                                        { return this.ID; }
     public int getDayOfWeek()                                 { return this.dayOfWeek; }
-    public int getExerciseCategories()                        { return this.exerciseCategories; }
-    public int getStartTime()                                 { return this.startTime; }
-    public int getEndTime()                                   { return this.endTime;}
-    public int getRunTime()                                   { return this.runTime; }
-    public String getStringStartTime()                        { return TimeToString(this.startTime); }
-    public String getStringEndTime()                          { return TimeToString(this.endTime); }
-    public String getStringRunTime()                          { return TimeToString(this.runTime); }
+    public int getCat()                                       { return this.cat; }
+    public String getStartTime()                              { return this.startTime; }
+    public String getEndTime()                                { return this.endTime;}
+    public String getRunTime()                                { return this.runTime; }
     public String getStringDayOfWeek() {
         switch (this.dayOfWeek) {
             case 0: return "일요일";
@@ -92,10 +88,10 @@ public class Routine implements Serializable {
 
     public void setID(int ID)                                 { this.ID = ID; }
     public void setDayOfWeek(int dayOfWeek)                   { this.dayOfWeek = dayOfWeek; }
-    public void setExerciseCategories(int exerciseCategories) { this.exerciseCategories = exerciseCategories; }
-    public void setStartTime(int startTime)                   { this.startTime = startTime; }
-    public void setEndTime(int endTime)                       { this.endTime = endTime; }
-    public void setRunTime(int runTime)                       { this.runTime = runTime; }
+    public void setCat(int cat)                               { this.cat = cat; }
+    public void setStartTime(String startTime)                { this.startTime = startTime; }
+    public void setEndTime(String endTime)                    { this.endTime = endTime; }
+    public void setRunTime(String runTime)                    { this.runTime = runTime; }
 }
 
 
