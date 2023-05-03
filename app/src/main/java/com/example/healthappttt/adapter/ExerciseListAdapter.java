@@ -2,6 +2,7 @@ package com.example.healthappttt.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -112,9 +113,10 @@ public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapte
             holder.ListCatLayout.setVisibility(View.GONE);
             holder.ExerciseLayout.setVisibility(View.VISIBLE); // 다른 정보 다 켜기
 
-            holder.CatView.setText(cat); // 운동 부위
+            holder.CatView.setText(cat); // 운동
             holder.CatView.setTextColor(Color.parseColor(this.exercises.get(position).getTextColor())); // 부위 텍스트 색
             holder.CatView.setBackgroundColor(Color.parseColor(this.exercises.get(position).getColor())); // 부위 바탕 색
+
             holder.NameView.setText(name);
         }
 

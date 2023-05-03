@@ -44,7 +44,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 + "Volume SMALLINT,"
                 + "Cnt_Or_Dis MEDIUMINT,"
                 + "Sort_Index TINYINT,"
-                + "CAT TIME,"
+                + "CAT INT,"
                 + "FOREIGN KEY (RT_FK) REFERENCES RT_TB(PK),"
                 + "FOREIGN KEY (RECORD_FK) REFERENCES RECORD_TB(PK));";
 

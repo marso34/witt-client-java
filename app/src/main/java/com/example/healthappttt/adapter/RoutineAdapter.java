@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.healthappttt.Data.Exercise;
 import com.example.healthappttt.Data.Routine;
+import com.example.healthappttt.Data.SQLiteUtil;
 import com.example.healthappttt.R;
 
 import java.util.ArrayList;
@@ -24,11 +25,15 @@ import java.util.ArrayList;
 public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainViewHolder> {
     private Context context;
     private ArrayList<Routine> routines;
+    private SQLiteUtil sqLiteUtil;
 
 
-    public RoutineAdapter(ArrayList<Routine> routines, Context context) {
+    public RoutineAdapter( Context context, ArrayList<Routine> routines) {
         this.routines = routines;
         this.context = context;
+
+        sqLiteUtil = SQLiteUtil.getInstance();
+        sqLiteUtil.setInitView(context, "EX_TB");
     }
 
     public static class MainViewHolder extends RecyclerView.ViewHolder {
@@ -103,11 +108,7 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
 
     private void setRecyclerView(RecyclerView recyclerView, ExerciseListAdapter adapter, Routine routine) {
         ArrayList<Exercise> exercises = new ArrayList<>();
-//        exercises.add(new Exercise("팔굽혀펴기", 0x1, 3,3, 3));
-//        exercises.add(new Exercise("턱걸이", 0x2, 3,3, 3));
-//        exercises.add(new Exercise("스쿼트", 0x4, 3,3, 3));
-//        exercises.add(new Exercise("플랭크", 0x10, 3,3, 3));
-
+        exercises = sqLiteUtil.SelectExercise(routine.getID());
 
         adapter = new ExerciseListAdapter(exercises, true); // 나중에 routine
         recyclerView.setHasFixedSize(true);

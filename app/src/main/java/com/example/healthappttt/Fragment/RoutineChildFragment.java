@@ -131,7 +131,7 @@ public class RoutineChildFragment extends Fragment {
     } // startActivityForResult로 실행한 액티비티의 반환값을 전달받는 메서드
 
     private void setRecyclerView() {
-        adapter = new RoutineAdapter(routines, getContext());  // 나중에 routine
+        adapter = new RoutineAdapter(getContext(), routines);  // 나중에 routine
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);

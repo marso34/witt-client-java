@@ -101,6 +101,17 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
             values.put("Sort_Index", exercise.getIndex());
             values.put("CAT", exercise.getCat());
 
+            Log.d("운동 세부 정보", "" +
+                    " pk " + exercise.getID() +
+                    " 부모 " + exercise.getParentID() +
+                    " 이름" + exercise.getTitle() +
+                    " 세트 " + exercise.getCount() +
+                    " 무게 " + exercise.getVolume() +
+                    " 횟수 " + exercise.getNum() +
+                    " 순서 " + exercise.getIndex() +
+                    " 부위 " + exercise.getCat()
+            );
+
             long result = db.insert(table, null, values);
             Log.d(table, result + "성공");
         } else {
@@ -208,16 +219,18 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
             ArrayList<Exercise> exercises = new ArrayList<>();
 
             while(cursor.moveToNext()) {
-                exercises.add(new Exercise(
+                Exercise e = new Exercise( // 순서 잘 지킬 것, 나중에 수정
                         cursor.getInt(0),
                         cursor.getInt(1), // 루틴과 운동 기록을 구분할 수 있게 나중에 처리
                         cursor.getString(3),
+                        cursor.getInt(8),
                         cursor.getInt(4),
                         cursor.getInt(5),
                         cursor.getInt(6),
-                        cursor.getInt(7),
-                        cursor.getInt(8)
-                ));
+                        cursor.getInt(7)
+                );
+
+                exercises.add(e);
             }
 
             return exercises;
