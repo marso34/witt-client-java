@@ -123,8 +123,9 @@ public class CreateRoutineActivity extends AppCompatActivity implements SetRouti
     private void SaveToDev() {
         sqLiteUtil.setInitView(this, "RT_TB");
         sqLiteUtil.insert(routine);
+
+        sqLiteUtil.setInitView(this, "EX_TB");
         for (Exercise e : selectExercises) {
-            sqLiteUtil.setInitView(this, "EX_TB");
             sqLiteUtil.insert(e);
         }
     }

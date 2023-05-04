@@ -4,6 +4,7 @@ import static java.security.AccessController.getContext;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.healthappttt.Activity.CreateRoutineActivity;
+import com.example.healthappttt.Activity.EditRoutineActivity;
 import com.example.healthappttt.Data.Exercise;
 import com.example.healthappttt.Data.ExerciseComparator;
 import com.example.healthappttt.Data.Routine;
@@ -32,7 +35,7 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
     private SQLiteUtil sqLiteUtil;
 
 
-    public RoutineAdapter( Context context, ArrayList<Routine> routines) {
+    public RoutineAdapter(Context context, ArrayList<Routine> routines) {
         this.routines = routines;
         this.context = context;
 
@@ -43,7 +46,7 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
     public static class MainViewHolder extends RecyclerView.ViewHolder {
         public LinearLayout RoutineLayout, NullLayout;
         public TextView startTimeView, endTimeView;
-        public TextView Edit;
+        public TextView EditBtn;
         private RecyclerView recyclerView;
         private ExerciseListAdapter adapter;
 
@@ -55,7 +58,7 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
 
             this.startTimeView = (TextView) view.findViewById(R.id.startTime);
             this.endTimeView = (TextView) view.findViewById(R.id.endTime);
-            this.Edit = (TextView) view.findViewById(R.id.Edit);
+            this.EditBtn = (TextView) view.findViewById(R.id.editBtn);
 
             this.recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         }
@@ -66,6 +69,16 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
     public MainViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_routine, parent, false);
         final MainViewHolder mainViewHolder = new MainViewHolder(view);
+
+        mainViewHolder.EditBtn.setOnClickListener(v -> {
+            int position = mainViewHolder.getAbsoluteAdapterPosition();
+
+            int id = routines.get(position).getID();
+
+            Intent intent = new Intent(context, EditRoutineActivity.class);
+            intent.putExtra("routineID", id);
+            context.startActivity(intent);
+        });
 
         return mainViewHolder;
     }

@@ -220,14 +220,14 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
 
             while(cursor.moveToNext()) {
                 Exercise e = new Exercise( // 순서 잘 지킬 것, 나중에 수정
-                        cursor.getInt(0),
-                        cursor.getInt(1), // 루틴과 운동 기록을 구분할 수 있게 나중에 처리
-                        cursor.getString(3),
-                        cursor.getInt(8),
-                        cursor.getInt(4),
-                        cursor.getInt(5),
-                        cursor.getInt(6),
-                        cursor.getInt(7)
+                        cursor.getInt(0),   // PK,          ID
+                        cursor.getInt(1),   // RT FK,       parentID,
+                        cursor.getString(3),// Ex_NM,       title
+                        cursor.getInt(8),   // CAT,         cat
+                        cursor.getInt(4),   // Set_Or_Time, count:set
+                        cursor.getInt(5),   // Volume,      volume
+                        cursor.getInt(6),   // Cnt_Or_Dis,  num:Cnt
+                        cursor.getInt(7)    // Sort_Index,  index
                 );
 
                 exercises.add(e);

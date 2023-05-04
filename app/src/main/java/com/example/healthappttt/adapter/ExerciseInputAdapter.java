@@ -47,7 +47,7 @@ public class ExerciseInputAdapter extends RecyclerView.Adapter<ExerciseInputAdap
             this.CatView = (TextView) view.findViewById(R.id.exerciseCat);
             this.NameView = (TextView) view.findViewById(R.id.exerciseName);
 
-            this.EditVolume = (EditText) view.findViewById(R.id.inputWeight);
+            this.EditVolume = (EditText) view.findViewById(R.id.inputVoluem);
             this.EditCount = (EditText) view.findViewById(R.id.inputCount);
             this.EditSet = (EditText) view.findViewById(R.id.inputSet);
 
