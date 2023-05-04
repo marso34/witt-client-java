@@ -152,7 +152,7 @@ public class CreateRoutineActivity extends AppCompatActivity implements SetRouti
         Bundle bundle = new Bundle();
         bundle.putIntArray("schedule", schedule);
         replaceFragment(new AddExerciseFragment(), bundle);
-    }
+    }  // SetRoutineTime에서 호출하는 메서드
 
     @Override
     public void onRoutineAddEx(ArrayList<Exercise> selectExercises) {
@@ -167,7 +167,7 @@ public class CreateRoutineActivity extends AppCompatActivity implements SetRouti
         bundle.putSerializable("exercises", selectExercises);
         bundle.putIntArray("schedule", schedule);
         replaceFragment(new ExerciseDetailFragment(), bundle);
-    }
+    } // AddExerciseFragment에서 호출하는 메서드
 
     @Override
     public void onRoutineExDetail(ArrayList<Exercise> exercises) {
@@ -176,7 +176,7 @@ public class CreateRoutineActivity extends AppCompatActivity implements SetRouti
         SaveToDB();
         // 받은 운동 정보 토대로 DB에 루틴, 운동 생성하고
         // 생성된 키 받아와서 로컬에 루틴, 운동 저장
-    }
+    } // ExerciseDetailFragment에서 호출하는 메서드
 
     private void replaceFragment (Fragment fragment){ //프래그먼트 설정
         FragmentManager fragmentManager = getSupportFragmentManager();
