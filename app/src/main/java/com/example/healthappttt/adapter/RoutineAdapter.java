@@ -16,11 +16,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.healthappttt.Data.Exercise;
+import com.example.healthappttt.Data.ExerciseComparator;
 import com.example.healthappttt.Data.Routine;
+import com.example.healthappttt.Data.RoutineComparator;
 import com.example.healthappttt.Data.SQLiteUtil;
 import com.example.healthappttt.R;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainViewHolder> {
     private Context context;
@@ -71,8 +75,6 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
         if (routines.size() > 0) {
             holder.RoutineLayout.setVisibility(View.VISIBLE);
             holder.NullLayout.setVisibility(View.GONE);
-
-//            routines에서 시간 정보 가져와서 오전 오후 시간 정보 분리하는 메서드 만들기
             holder.startTimeView.setText(TimeToString(routines.get(position).getStartTime()));
             holder.endTimeView.setText(TimeToString(routines.get(position).getEndTime()));
             setRecyclerView(holder.recyclerView, holder.adapter, routines.get(position));
@@ -109,6 +111,7 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
     private void setRecyclerView(RecyclerView recyclerView, ExerciseListAdapter adapter, Routine routine) {
         ArrayList<Exercise> exercises = new ArrayList<>();
         exercises = sqLiteUtil.SelectExercise(routine.getID());
+        Collections.sort(exercises, new ExerciseComparator());
 
         adapter = new ExerciseListAdapter(exercises, true); // 나중에 routine
         recyclerView.setHasFixedSize(true);

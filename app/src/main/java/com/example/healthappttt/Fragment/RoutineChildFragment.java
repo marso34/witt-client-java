@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import com.example.healthappttt.Activity.CreateRoutineActivity;
 import com.example.healthappttt.Data.Exercise;
 import com.example.healthappttt.Data.Routine;
+import com.example.healthappttt.Data.RoutineComparator;
 import com.example.healthappttt.Data.SQLiteUtil;
 import com.example.healthappttt.R;
 import com.example.healthappttt.adapter.RoutineAdapter;
@@ -33,6 +34,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import org.checkerframework.checker.units.qual.A;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -106,6 +109,7 @@ public class RoutineChildFragment extends Fragment {
         sqLiteUtil.setInitView(getContext(), "RT_TB");
 
         routines = sqLiteUtil.SelectRoutine(dayOfWeek);
+        Collections.sort(routines, new RoutineComparator());
 
         setRecyclerView();
 
@@ -126,6 +130,7 @@ public class RoutineChildFragment extends Fragment {
         if (requestCode == REQUEST_CODE && data != null) {
             Routine r = (Routine) data.getSerializableExtra("routine");
             routines.add(r);
+            Collections.sort(routines, new RoutineComparator());
             adapter.notifyDataSetChanged();
         }
     } // startActivityForResult로 실행한 액티비티의 반환값을 전달받는 메서드
