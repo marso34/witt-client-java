@@ -99,7 +99,6 @@ public class SetRoutineTimeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_set_routine_time, container, false);
 
         RunTime = (TextView) view.findViewById(R.id.runTime);
@@ -115,8 +114,12 @@ public class SetRoutineTimeFragment extends Fragment {
         NextBtn = (CardView) view.findViewById(R.id.nextBtn);
         NextTxt = (TextView) view.findViewById(R.id.nextTxt);
 
-        init();
+        if (getArguments() != null) {
+            int[] schedule = getArguments().getIntArray("schedule");
+            // 프래그먼트 시작할 때 시작시간, 종료시간을 넘겨 받을 떄 동장 정의
+        }
 
+        init();
 
         StartTimeUP.setOnClickListener(v -> {
             if (startTime < endTime) {

@@ -2,12 +2,14 @@ package com.example.healthappttt.Activity;
 
 import static java.security.AccessController.getContext;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -40,7 +42,6 @@ public class CreateRoutineActivity extends AppCompatActivity implements SetRouti
     private int dayOfWeek, startTime, endTime;
     private Routine routine;
     private ArrayList<Exercise> selectExercises;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,12 +132,12 @@ public class CreateRoutineActivity extends AppCompatActivity implements SetRouti
     }
 
     private void Terminate(boolean isSuccess) {
-        Intent intent = new Intent();
-
         if (isSuccess) {
+            Intent intent = new Intent();
             intent.putExtra("routine", routine);
             setResult(RESULT_OK, intent);
         }
+
         finish();
     }
 
@@ -145,41 +146,24 @@ public class CreateRoutineActivity extends AppCompatActivity implements SetRouti
         this.startTime = startTime;
         this.endTime = endTime;
 
-        int[] schedule = new int[3];
-        schedule[0] = dayOfWeek;
-        schedule[1] = startTime;
-        schedule[2] = endTime;
-
-        Bundle bundle = new Bundle();
-        bundle.putIntArray("schedule", schedule);
-        replaceFragment(new AddExerciseFragment(), bundle);
+        fragmentToAddEx();
     }  // SetRoutineTime에서 호출하는 메서드
 
     @Override
     public void onRoutineAddEx(ArrayList<Exercise> selectExercises) {
         this.selectExercises = selectExercises;
 
-        int[] schedule = new int[3];
-        schedule[0] = dayOfWeek;
-        schedule[1] = startTime;
-        schedule[2] = endTime;
-
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("exercises", selectExercises);
-        bundle.putIntArray("schedule", schedule);
-        replaceFragment(new ExerciseDetailFragment(), bundle);
+        fragmentToExDetail();
     } // AddExerciseFragment에서 호출하는 메서드
 
     @Override
     public void onRoutineExDetail(ArrayList<Exercise> exercises) {
         this.selectExercises = exercises;
 
-        SaveToDB();
-        // 받은 운동 정보 토대로 DB에 루틴, 운동 생성하고
-        // 생성된 키 받아와서 로컬에 루틴, 운동 저장
+        SaveToDB(); // 받은 운동 정보 토대로 DB에 루틴, 운동 생성
     } // ExerciseDetailFragment에서 호출하는 메서드
 
-    private void replaceFragment (Fragment fragment){ //프래그먼트 설정
+    private void replaceFragment (Fragment fragment) { //프래그먼트 설정
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         if( fragment.isAdded() )
@@ -193,7 +177,7 @@ public class CreateRoutineActivity extends AppCompatActivity implements SetRouti
         fragmentTransaction.commit();
     }
 
-    private void replaceFragment (Fragment fragment, Bundle bundle){ //프래그먼트 설정
+    private void replaceFragment (Fragment fragment, Bundle bundle) { //프래그먼트 설정
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         if( fragment.isAdded() )
@@ -207,4 +191,61 @@ public class CreateRoutineActivity extends AppCompatActivity implements SetRouti
         fragmentTransaction.replace(R.id.frame_layout, fragment);
         fragmentTransaction.commit();
     }
+
+    private void fragmentToSetTime() {
+        int[] schedule = new int[3];
+        schedule[0] = dayOfWeek;
+        schedule[1] = startTime;
+        schedule[2] = endTime;
+
+        Bundle bundle = new Bundle();
+        bundle.putIntArray("schedule", schedule);
+        replaceFragment(new SetRoutineTimeFragment(), bundle);
+    }
+
+    private void fragmentToAddEx() {
+        int[] schedule = new int[3];
+        schedule[0] = dayOfWeek;
+        schedule[1] = startTime;
+        schedule[2] = endTime;
+
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("exercises", selectExercises);
+        bundle.putIntArray("schedule", schedule);
+        replaceFragment(new AddExerciseFragment(), bundle);
+    }
+
+    private void fragmentToExDetail() {
+        int[] schedule = new int[3];
+        schedule[0] = dayOfWeek;
+        schedule[1] = startTime;
+        schedule[2] = endTime;
+
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("exercises", selectExercises);
+        bundle.putIntArray("schedule", schedule);
+        replaceFragment(new ExerciseDetailFragment(), bundle);
+    }
+
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder alert_ex = new AlertDialog.Builder(this);
+        alert_ex.setMessage("루틴 추가를 취소할까요?");
+        alert_ex.setPositiveButton("예", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish(); // "예" 클릭시 종료
+            }
+        });
+        alert_ex.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                  // 아니오 누를 시 아무것도 안 함
+            }
+        });
+        alert_ex.setTitle("테스트");
+
+        AlertDialog alert = alert_ex.create();
+        alert.show();
+    } // 뒤로가기 버튼 눌렀을 때 루틴 입력을 취소할지, CreateRoutineActivity를 종료할 지 확인
 }
