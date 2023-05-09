@@ -1,17 +1,14 @@
 package com.example.healthappttt.Activity;
 
-import com.example.healthappttt.Activity.UserKeyResponse;
+import java.util.List;
 
 import retrofit2.Call;
-import retrofit2.http.GET;
 import retrofit2.http.POST;
-import retrofit2.http.Query;
 
 public interface ApiService {
 
     @POST("/getuserkey")
-    Call<UserKeyResponse> getuserkey(); // 함수 확인 필요
-    //Call<UserKeyResponse> XXXXXXX -> String 형식으로 바꿈 (어차피 UserKeyResponse도 String으로 받는거라서)
+    Call<List<UserProfile>> getuserprofile(); // 파라미터(User_PK)를 줘서 동적으로 변경 필요
 
 }
 //
