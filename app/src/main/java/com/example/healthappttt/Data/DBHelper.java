@@ -45,8 +45,10 @@ public class DBHelper extends SQLiteOpenHelper {
                 + "Cnt_Or_Dis MEDIUMINT,"
                 + "Sort_Index TINYINT,"
                 + "CAT INT,"
-                + "FOREIGN KEY (RT_FK) REFERENCES RT_TB(PK),"
-                + "FOREIGN KEY (RECORD_FK) REFERENCES RECORD_TB(PK));";
+                + "FOREIGN KEY (RT_FK) REFERENCES RT_TB(PK)"
+                + "ON UPDATE CASCADE ON DELETE CASCADE,"
+                + "FOREIGN KEY (RECORD_FK) REFERENCES RECORD_TB(PK)"
+                + "ON UPDATE CASCADE ON DELETE CASCADE);";
 
         db.execSQL(exerciseSql);
     }

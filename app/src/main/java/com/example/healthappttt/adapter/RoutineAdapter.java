@@ -25,6 +25,8 @@ import com.example.healthappttt.Data.RoutineComparator;
 import com.example.healthappttt.Data.SQLiteUtil;
 import com.example.healthappttt.R;
 
+import org.checkerframework.checker.units.qual.A;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -49,6 +51,7 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
         public TextView EditBtn;
         private RecyclerView recyclerView;
         private ExerciseListAdapter adapter;
+        private ArrayList<Exercise> exercises;
 
         public MainViewHolder(View view) {
             super(view);
@@ -61,6 +64,8 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
             this.EditBtn = (TextView) view.findViewById(R.id.editBtn);
 
             this.recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+
+            this.exercises = new ArrayList<>();
         }
     }
 
@@ -73,10 +78,9 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
         mainViewHolder.EditBtn.setOnClickListener(v -> {
             int position = mainViewHolder.getAbsoluteAdapterPosition();
 
-            int id = routines.get(position).getID();
-
             Intent intent = new Intent(context, EditRoutineActivity.class);
-            intent.putExtra("routineID", id);
+            intent.putExtra("routine", routines.get(position));
+            intent.putExtra("exercises", mainViewHolder.exercises);
             context.startActivity(intent);
         });
 
@@ -90,7 +94,10 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
             holder.NullLayout.setVisibility(View.GONE);
             holder.startTimeView.setText(TimeToString(routines.get(position).getStartTime()));
             holder.endTimeView.setText(TimeToString(routines.get(position).getEndTime()));
-            setRecyclerView(holder.recyclerView, holder.adapter, routines.get(position));
+
+            holder.exercises = sqLiteUtil.SelectExercise(routines.get(position).getID());
+            Collections.sort(holder.exercises, new ExerciseComparator());
+            setRecyclerView(holder.recyclerView, holder.adapter, holder.exercises);
         } else {
             holder.RoutineLayout.setVisibility(View.GONE);
             holder.NullLayout.setVisibility(View.VISIBLE);
@@ -121,11 +128,7 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
         return am_pm + " " + hour + ":" + TimeSplit[1];
     }
 
-    private void setRecyclerView(RecyclerView recyclerView, ExerciseListAdapter adapter, Routine routine) {
-        ArrayList<Exercise> exercises = new ArrayList<>();
-        exercises = sqLiteUtil.SelectExercise(routine.getID());
-        Collections.sort(exercises, new ExerciseComparator());
-
+    private void setRecyclerView(RecyclerView recyclerView, ExerciseListAdapter adapter, ArrayList<Exercise> exercises) {
         adapter = new ExerciseListAdapter(exercises, true); // 나중에 routine
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));

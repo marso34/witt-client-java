@@ -49,7 +49,6 @@ public class RoutineChildFragment extends Fragment {
     private RoutineAdapter adapter;
     private CardView addRoutineBtn;
 
-
     private SQLiteUtil sqLiteUtil;
     private ArrayList<Routine> routines;
     private int dayOfWeek;

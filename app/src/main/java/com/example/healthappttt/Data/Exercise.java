@@ -18,8 +18,9 @@ public class Exercise implements Serializable {
     public Exercise(String title, int cat) {
         this.title = title;
         this.cat = cat;
-        this.count = 5;      // 세트 카운트 or 시간(유산소)
-        this.volume = 10;    // 무게 or 속도 (유산소)
+        this.count = 0;      // 세트 카운트 or 시간(유산소)
+        this.volume = 0;    // 무게 or 속도 (유산소)
+        this.num = 0;
     }
 
     public Exercise(int ID, int parentID, String title, int cat, int index) {
@@ -27,8 +28,9 @@ public class Exercise implements Serializable {
         this.parentID = parentID;
         this.title = title;
         this.cat = cat;
-        this.count = 5;      // 세트 카운트 or 시간(유산소)
-        this.volume = 10;    // 무게 or 속도 (유산소)
+        this.count = 0;      // 세트 카운트 or 시간(유산소)
+        this.volume = 0; // 무게 or 속도 (유산소)
+        this.num = 0;
         this.index = index;
     }
 

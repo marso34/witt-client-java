@@ -17,4 +17,7 @@ public interface ServiceApi {
 
     @POST("/CreateExercise")
     Call<List<ExerciseResponse>> createExercise(@Body List<RoutineExerciseData> data);
+
+    @POST("/DeleteRoutine")
+    Call<Integer> deleteRoutine(@Body int data);
 }

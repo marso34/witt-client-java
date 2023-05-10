@@ -31,9 +31,16 @@ import java.util.Date;
 
 public class ExerciseInputAdapter extends RecyclerView.Adapter<ExerciseInputAdapter.MainViewHolder> {
     private ArrayList<Exercise> exercises;
+    private boolean isEdit;
 
     public ExerciseInputAdapter(ArrayList<Exercise> exercises) {
         this.exercises = exercises;
+        this.isEdit = false;
+    }
+
+    public ExerciseInputAdapter(ArrayList<Exercise> exercises, boolean isEdit) {
+        this.exercises = exercises;
+        this.isEdit = isEdit;
     }
 
     public static class MainViewHolder extends RecyclerView.ViewHolder {
@@ -137,6 +144,12 @@ public class ExerciseInputAdapter extends RecyclerView.Adapter<ExerciseInputAdap
         holder.CatView.setTextColor(Color.parseColor(this.exercises.get(position).getTextColor())); // 부위 텍스트 색
         holder.CatView.setBackgroundColor(Color.parseColor(this.exercises.get(position).getColor())); // 부위 바탕 색
         holder.NameView.setText(this.exercises.get(position).getTitle()); // 운동 이름
+
+        if (isEdit) {
+            holder.EditVolume.setText(Integer.toString(this.exercises.get(position).getVolume()));
+            holder.EditCount.setText(Integer.toString(this.exercises.get(position).getNum()));
+            holder.EditSet.setText(Integer.toString(this.exercises.get(position).getCount()));
+        }
     }
 
     @Override

@@ -91,6 +91,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:text="오전 12:00"
+                        android:textStyle="bold"
                         android:textColor="@color/Standard"
                         android:textSize="18sp" />
 
@@ -135,6 +136,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:text="오전 12:00"
+                        android:textStyle="bold"
                         android:textColor="@color/Standard"
                         android:textSize="18sp" />
 

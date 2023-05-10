@@ -91,10 +91,6 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".Activity.CreateExerciseActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".Activity.ExerciseRecordActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
