@@ -2,11 +2,15 @@ package com.example.healthappttt.Activity;
 
 import com.google.gson.annotations.SerializedName;
 public class UserKey {
-    @SerializedName("userkey")
-    String userkey;
+    @SerializedName("USER_PK")
+    int userPK;
 
-    public UserKey(String userkey) {
-        this.userkey = userkey;
+    public UserKey(int userPK) {
+        this.userPK = userPK;
+    }
+
+    public int getUserPK() {
+        return userPK;
     }
 
 

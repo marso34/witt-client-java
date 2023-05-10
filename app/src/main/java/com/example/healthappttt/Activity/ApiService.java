@@ -3,12 +3,13 @@ package com.example.healthappttt.Activity;
 import java.util.List;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.POST;
 
 public interface ApiService {
 
     @POST("/getuserkey")
-    Call<List<UserProfile>> getuserprofile(); // 파라미터(User_PK)를 줘서 동적으로 변경 필요
+    Call<List<UserProfile>> getuserprofile(@Body UserKey userKey); // 파라미터(User_PK)를 줘서 동적으로 변경 필요
 
 }
 //

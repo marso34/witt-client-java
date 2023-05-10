@@ -1,88 +1,97 @@
 package com.example.healthappttt.Data;
-import static android.content.Context.MODE_PRIVATE;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Base64;
 
-import java.io.File;
+import com.example.healthappttt.Activity.UserProfile;
 
 public class PreferenceHelper
 {
-    private final String INTRO = "intro";
     private final String NAME = "name";
-    private final String HOBBY = "hobby";
+
+
+
     private SharedPreferences app_prefs;
     private Context context;
+    private UserProfile upf = new UserProfile();
 
-    //getsh
-
-    public PreferenceHelper(Context context)
-    {
-        //shared_prefs 디렉토리 안에 mydir1과 mydir2 디렉토리 생성( 중복 X )
-        File dir1 = new File(getSharedPreferencesPath(context), "mydir1");
-        if (!dir1.exists()) {
-            dir1.mkdir();
-        }
-
-        File dir2 = new File(getSharedPreferencesPath(context),"mydir2");
-        if (!dir2.exists()) {
-            dir2.mkdir();
-        }
-        this.context = context;
+    public PreferenceHelper(Context context) {
+        app_prefs = context.getSharedPreferences("UserProfile", Context.MODE_PRIVATE);
     }
 
-    //SharedPreferences 경로 설정
-    private String getSharedPreferencesPath(Context context) {
-        return context.getFilesDir().getParentFile().getPath() + "/shared_prefs";
-    }
 
-    //닉네임, 프로필이미지, 키, 몸무게, 헬스장, 운동 수행능력 서버에 저장 및 출력 가능 매소드들
-    public void putNickName(String nickname) {
-        //mydir1 디렉토리아래 UserInfo 파일 생성 후 NAME: nickname 형태로 저장
-        app_prefs = context.getSharedPreferences("mydir1/UserInfo", Context.MODE_PRIVATE);
+    //PK,email,IP,Platform,Name,PW,Img 로컬 저장 매소드
+    public void putProfile(UserProfile upf) {
+
         SharedPreferences.Editor edit = app_prefs.edit();
-        edit.putString(NAME, nickname);
+        edit.putInt( "USER_PK", upf.getUSER_PK());
+        edit.putString("EMAIL", upf.getEMAIL());
+        edit.putInt("IP", upf.getIP());
+        edit.putInt("Platform", upf.getPlatform());
+        edit.putString("User_NM", upf.getUser_NM());
+        edit.putString("PW", upf.getPW());
+
+        // User_Img 는 byte[] 타입이므로 Base64로 인코딩하여 저장
+        if(upf.getUser_Img() != null) {
+            String encodedImage = Base64.encodeToString(upf.getUser_Img(), Base64.DEFAULT);
+            edit.putString("User_Img", encodedImage);
+        }
+
         edit.apply();
     }
-    public String getNickName() { return app_prefs.getString(NAME,"");}
 
+    public int getPK() {
+        return  app_prefs.getInt( "USER_PK", 00);
+    }
+    public String getEmail() {
+        return app_prefs.getString("EMAIL","__");
+    }
+    public int getIP() {
+        return  app_prefs.getInt( "IP", 00);
+    }
+    public int getPlatform() {
+        return  app_prefs.getInt( "Platform", 00);
+    }
+    public String getUser_NM() {
+        return app_prefs.getString("User_NM","__");
+    }
+    public String getPW() {
+        return app_prefs.getString("PW","__");
+    }
 
-
-    //
-
-
-
+}
 //----------------------------------------------------------------------
 
 
-    public void putIsLogin(boolean loginOrOut)
-    {
-        SharedPreferences.Editor edit = app_prefs.edit();
-        edit.putBoolean(INTRO, loginOrOut);
-        edit.apply();
-    }
+//    public void putIsLogin(boolean loginOrOut)
+//    {
+//        SharedPreferences.Editor edit = app_prefs.edit();
+//        edit.putBoolean(INTRO, loginOrOut);
+//        edit.apply();
+//    }
+//
+//    public void putName(String loginOrOut)
+//    {
+//        SharedPreferences.Editor edit = app_prefs.edit();
+//        edit.putString(NAME, loginOrOut);
+//        edit.apply();
+//    }
+//
+//    public String getName()
+//    {
+//        return app_prefs.getString(NAME, "");
+//    }
+//
+//    public void putHobby(String loginOrOut)
+//    {
+//        SharedPreferences.Editor edit = app_prefs.edit();
+//        edit.putString(HOBBY, loginOrOut);
+//        edit.apply();
+//    }
+//
+//    public String getHobby()
+//    {
+//        return app_prefs.getString(HOBBY, "");
+//    }
 
-    public void putName(String loginOrOut)
-    {
-        SharedPreferences.Editor edit = app_prefs.edit();
-        edit.putString(NAME, loginOrOut);
-        edit.apply();
-    }
-
-    public String getName()
-    {
-        return app_prefs.getString(NAME, "");
-    }
-
-    public void putHobby(String loginOrOut)
-    {
-        SharedPreferences.Editor edit = app_prefs.edit();
-        edit.putString(HOBBY, loginOrOut);
-        edit.apply();
-    }
-
-    public String getHobby()
-    {
-        return app_prefs.getString(HOBBY, "");
-    }
-}
