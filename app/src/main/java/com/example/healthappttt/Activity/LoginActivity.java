@@ -165,8 +165,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
 
-
-
                     Log.d(TAG, "sendTokenToServer success");
                 } else {
                     // 서버로 데이터 전송 실패

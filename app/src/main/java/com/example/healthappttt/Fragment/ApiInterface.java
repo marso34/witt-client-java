@@ -1,7 +1,9 @@
 package com.example.healthappttt.Fragment;
 
 import com.example.healthappttt.Data.GetUserInfo;
+import com.example.healthappttt.Data.Message;
 import com.example.healthappttt.Data.NearUsersData;
+import com.example.healthappttt.Data.User;
 import com.example.healthappttt.Data.UserData;
 import com.example.healthappttt.Data.UserInfo;
 
@@ -22,5 +24,12 @@ public interface ApiInterface {
 
     @GET("/getUserInfo/{useremail}")
     Call<GetUserInfo> getUserInfo(@Path("useremail") String useremail);
+
+    @GET("/users")
+    Call<List<User>> getUsers();
+
+    @POST("messages")
+    Call<Message> sendMessage(@Body Message message);
+
 
 }

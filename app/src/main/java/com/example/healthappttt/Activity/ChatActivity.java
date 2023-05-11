@@ -1,5 +1,7 @@
 package com.example.healthappttt.Activity;
 
+import static androidx.fragment.app.FragmentManager.TAG;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -10,15 +12,19 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.healthappttt.Data.Message;
 import com.example.healthappttt.Data.UserInfo;
+import com.example.healthappttt.Fragment.ApiClient;
+import com.example.healthappttt.Fragment.ApiInterface;
 import com.example.healthappttt.R;
-import com.example.healthappttt.adapter.MessageAdapter;
+import com.example.healthappttt.adapter.MessageListAdapter;
 import com.example.healthappttt.adapter.UserListAdapter;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,120 +38,109 @@ import com.google.firebase.database.ValueEventListener;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ChatActivity extends AppCompatActivity {
 
-    DatabaseReference mDbRef;
-    FirebaseAuth mAuth;
-    FirebaseUser fuser;
-    RecyclerView chatRecyclerView;
-    ArrayList<Message> messageList;
-    private EditText messageBox;
-    private ImageView sendButton;
-    private TextView toolbarName;
+    private RecyclerView messageRecyclerView;
+    private MessageListAdapter messageListAdapter;
+    private List<Message> messageList;
 
-    String receiverRoom;
-    String senderRoom;
+    private EditText messageEditText;
+    private ImageButton sendButton;
 
-    Intent intent;
-    String receiverUid;
-    String name;
-
-
-    String time = "";
-
-
-    MessageAdapter messageAdapter;
+    private String username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
-        intent = getIntent();
-        receiverUid = intent.getStringExtra("userId");
-        name = intent.getStringExtra("username");
-        fuser = FirebaseAuth.getInstance().getCurrentUser();
+        // 인텐트에서 유저 이름을 가져옵니다.
+        username = getIntent().getStringExtra("username");
 
+        // 레이아웃을 초기화합니다.
+        messageRecyclerView = findViewById(R.id.chatRecyclerView);
+        messageRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        messageEditText = findViewById(R.id.messageBox);
+        sendButton = findViewById(R.id.sendButton);
 
-        String senderUid = fuser.getUid(); //Firebase 인증 객체 초기화
-        mDbRef = FirebaseDatabase.getInstance().getReference(); //Firebase에 데이터를 추가하거나 조회하기 위한 코드, 정의
+        // 메시지 목록을 초기화합니다.
+        messageList = new ArrayList<>();
 
+        // 어댑터를 초기화하고 메시지 목록을 설정합니다.
+        messageListAdapter = new MessageListAdapter(messageList, username);
+        messageRecyclerView.setAdapter(messageListAdapter);
 
-        senderRoom = receiverUid + senderUid;
-        receiverRoom = senderUid + receiverUid;
+        // 서버로부터 메시지 목록을 가져와서 messageList에 저장합니다.
+        getMessagesFromServer();
 
-        chatRecyclerView = findViewById(R.id.chatRecyclerView);
-        messageBox = findViewById(R.id.messageBox);
-        sendButton = findViewById(R.id.sentButton);
-        toolbarName = findViewById(R.id.toolbarName);
-
-        toolbarName.setText(name);
-
-        mAuth = FirebaseAuth.getInstance();
-        messageList = new ArrayList<Message>();
-        chatRecyclerView.setHasFixedSize(true);
-        chatRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-
-        messageAdapter = new MessageAdapter(ChatActivity.this, messageList);
-        chatRecyclerView.setAdapter(messageAdapter);
-
-        mDbRef.child("chats").child(senderRoom).child("messages").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                messageList.clear();
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        Message message = snapshot.getValue(Message.class);
-                        messageList.add(message);
-                        chatRecyclerView.scrollToPosition(messageList.size()-1);
-                }
-                messageAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
+        // 보내기 버튼의 클릭 리스너를 설정합니다.
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                String message = messageBox.getText().toString();
-                if(!message.isEmpty()){
-                    time = getTime();
-                    Log.i(ContentValues.TAG,message);
-                    Message messageObject = new Message(message,senderUid,receiverUid,time);
-                    mDbRef.child("chats").child(senderRoom).child("messages").push()
-                            .setValue(messageObject).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void unused) {
-                             //       Message messageObject = new Message(message,receiverUid ,senderUid);
-                                    mDbRef.child("chats").child(receiverRoom).child("messages").push()
-                                            .setValue(messageObject);
-                                }
-                            });
-                    messageBox.setText("");
-                    chatRecyclerView.scrollToPosition(messageList.size()-1);
+            public void onClick(View v) {
+                String messageText = messageEditText.getText().toString();
+                if (!messageText.equals("")) {
+                    // 서버로 메시지를 보냅니다.
+                    sendMessageToServer(messageText);
+
+                    // 메시지를 추가하고 어댑터를 갱신합니다.
+                    Message newMessage = new Message(username, messageText, System.currentTimeMillis());
+                    messageList.add(newMessage);
+                    messageListAdapter.notifyDataSetChanged();
+
+                    // 메시지 입력 필드를 비웁니다.
+                    messageEditText.setText("");
                 }
-                else
-                    return;
             }
         });
-
-
-
     }
 
-    private String getTime() {
-        long now = System.currentTimeMillis();
-        Date date = new Date(now);
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yy/MM/dd HH:mm:ss");
-        String getTime = dateFormat.format(date);
-
-        return getTime;
+    // 서버에서 메시지 목록을 가져오는 메소드입니다.
+    private void getMessagesFromServer() {
+        // 서버로부터 메시지 목록을 가져와서 List<Message>로 반환합니다.
+        // TODO: 구현해야 함
     }
+
+    // 서버로 메시지를 보내는 메소드입니다.
+    private void sendMessageToServer(String messageText) {
+        ApiInterface apiService = ApiClient.getRetrofitInstance().create(ApiInterface.class);
+        Message newMessage = new Message(username, messageText, System.currentTimeMillis());
+        Call<Message> call = apiService.sendMessage(newMessage);
+        call.enqueue(new Callback<Message>() {
+            @Override
+            public void onResponse(Call<Message> call, Response<Message> response) {
+                // 메시지 전송이 성공한 경우
+                if (response.isSuccessful()) {
+                    Log.d("message", "Message sent successfully");
+                } else {
+                    Log.d("message", "Failed to send message");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Message> call, Throwable t) {
+                // 메시지 전송이 실패한 경우
+                Log.d("message", "Failed to send message", t);
+            }
+        });
+    }
+}
+
+
+//    private String getTime() {
+//        long now = System.currentTimeMillis();
+//        Date date = new Date(now);
+//        SimpleDateFormat dateFormat = new SimpleDateFormat("yy/MM/dd HH:mm:ss");
+//        String getTime = dateFormat.format(date);
+//
+//        return getTime;
+//    }
 
 //    public void onBackPressed() {
 ////        Intent intent = new Intent(Intent.ACTION_MAIN);
@@ -153,4 +148,3 @@ public class ChatActivity extends AppCompatActivity {
 ////        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 ////        startActivity(intent);
 //    }
-}

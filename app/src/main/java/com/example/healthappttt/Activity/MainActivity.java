@@ -32,6 +32,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.healthappttt.Data.GetUserInfo;
+import com.example.healthappttt.Fragment.ChattingFragment;
 import com.example.healthappttt.Fragment.HomeFragment;
 import com.example.healthappttt.Fragment.ProfileFragment;
 //import com.example.healthappttt.Fragment.ChattingFragment;
@@ -172,7 +173,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.chatting:
                         binding.viewName.setText("채팅");
-//                        replaceFragment(new ChattingFragment());
+                        replaceFragment(new ChattingFragment());
                         break;
                     case R.id.profile:
                         binding.viewName.setText("기록");
