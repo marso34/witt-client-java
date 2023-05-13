@@ -135,6 +135,7 @@ public class CreateRoutineActivity extends AppCompatActivity implements SetRouti
         if (isSuccess) {
             Intent intent = new Intent();
             intent.putExtra("routine", routine);
+            intent.putExtra("delete", false);
             setResult(RESULT_OK, intent);
         }
 

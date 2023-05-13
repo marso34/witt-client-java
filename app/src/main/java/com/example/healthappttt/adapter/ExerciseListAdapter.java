@@ -30,30 +30,28 @@ import java.util.ArrayList;
 public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapter.MainViewHolder> {
     private ArrayList<Exercise> exercises;
     private boolean isRoutine; // false면 루틴 생성할 때, true면 확인할 때
-    private boolean[][] checked;
 
     private OnSelectExercise onSelectExercise;
 
     public ExerciseListAdapter(ArrayList<Exercise> exercises) {
         this.exercises = exercises;
         this.isRoutine = false;
-        this.checked = new boolean[exercises.size()][2];
     }
 
     public ExerciseListAdapter(ArrayList<Exercise> exercises, boolean isRoutine) {
         this.exercises = exercises;
         this.isRoutine = isRoutine;
-        this.checked = new boolean[exercises.size()][2];
     }
 
     public static class MainViewHolder extends RecyclerView.ViewHolder {
         public CardView ExerciseCard;
-
         public LinearLayout ExerciseLayout, ListCatLayout;
         public TextView ListCatTxt;
         public TextView CatView, NameView, DetailView;
         public LinearLayout CheckBoxLayout;
         public ImageView CheckedImg;
+
+        public boolean isChecked;
 
         public MainViewHolder(View view) {
             super(view);
@@ -69,6 +67,8 @@ public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapte
             this.DetailView = view.findViewById(R.id.exerciseDetail);
             this.CheckBoxLayout = view.findViewById(R.id.checkbox);
             this.CheckedImg = view.findViewById(R.id.checked);
+
+            this.isChecked = false;
         }
     }
 
@@ -81,17 +81,16 @@ public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapte
         view.setOnClickListener(v -> {
             int position = mainViewHolder.getAbsoluteAdapterPosition();
 
-            if (!isRoutine && !checked[position][1]) { // 루틴 생성용
-                checked[position][0] = ! checked[position][0];
+            if (!isRoutine) { // 루틴 생성용
+                mainViewHolder.isChecked = !mainViewHolder.isChecked;
 
-                if (checked[position][0]) {
+                if (mainViewHolder.isChecked) {
                     mainViewHolder.CheckedImg.setVisibility(View.VISIBLE);
                     onSelectExercise.onSelectExercise(this.exercises.get(position), true);
                 } else {
                     mainViewHolder.CheckedImg.setVisibility(View.GONE);
                     onSelectExercise.onSelectExercise(this.exercises.get(position), false);
                 }
-
             } else { // 루틴 확인용
 
             }
@@ -105,34 +104,33 @@ public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapte
         String name = this.exercises.get(position).getTitle();
         String cat = this.exercises.get(position).getState();
 
-        if (name.equals(cat)) {
-            checked[position][1] = true;
-            holder.ListCatLayout.setVisibility(View.VISIBLE); // 부위 이름만 표시
-            holder.ExerciseLayout.setVisibility(View.GONE); // 다른 정보 다 끄기
-            holder.ListCatTxt.setText(name);
-        } else {
-            holder.ListCatLayout.setVisibility(View.GONE);
-            holder.ExerciseLayout.setVisibility(View.VISIBLE); // 다른 정보 다 켜기
-
-            holder.CatView.setText(cat); // 운동
-            holder.CatView.setTextColor(Color.parseColor(this.exercises.get(position).getTextColor())); // 부위 텍스트 색
-            holder.CatView.setBackgroundColor(Color.parseColor(this.exercises.get(position).getColor())); // 부위 바탕 색
-
-            holder.NameView.setText(name);
-        }
+        holder.CatView.setText(cat); // 운동
+        holder.CatView.setTextColor(Color.parseColor(this.exercises.get(position).getTextColor())); // 부위 텍스트 색
+        holder.CatView.setBackgroundColor(Color.parseColor(this.exercises.get(position).getColor())); // 부위 바탕 색
+        holder.NameView.setText(name);
 
         if (isRoutine) { // 루틴 확인할 때 -> exercises
-            holder.DetailView.setVisibility(View.VISIBLE); // 운동 디테일(세트 수 등) 표시
+            holder.DetailView.setVisibility(View.VISIBLE);  // 운동 디테일(세트 수 등) 표시
             holder.CheckBoxLayout.setVisibility(View.GONE); // 선택칸 표시X
             holder.DetailView.setText(setDetailViewTxt(position));
         } else { // 루틴 생성할 때 -> data
             holder.DetailView.setVisibility(View.GONE); // 운동 디테일(세트 수 등) 표시X
-            holder.CheckBoxLayout.setVisibility(View.VISIBLE); // 선택칸 표시
 
-            if (checked[position][0])
-                holder.CheckedImg.setVisibility(View.VISIBLE);
-            else
-                holder.CheckedImg.setVisibility(View.GONE);
+            if (name.equals(cat)) {
+                holder.ListCatLayout.setVisibility(View.VISIBLE); // 부위 이름만 표시
+                holder.ExerciseLayout.setVisibility(View.GONE);   // 다른 정보 다 끄기
+                holder.CheckBoxLayout.setVisibility(View.GONE);   // 선택칸 끄기
+                holder.ListCatTxt.setText(name);
+            } else {
+                holder.ListCatLayout.setVisibility(View.GONE);
+                holder.ExerciseLayout.setVisibility(View.VISIBLE); // 다른 정보 다 켜기
+                holder.CheckBoxLayout.setVisibility(View.VISIBLE); // 선택칸 표시
+
+                if (holder.isChecked)
+                    holder.CheckedImg.setVisibility(View.VISIBLE);
+                else
+                    holder.CheckedImg.setVisibility(View.GONE);
+            }
         }
     }
 

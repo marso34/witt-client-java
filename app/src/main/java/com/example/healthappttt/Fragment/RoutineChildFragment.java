@@ -3,9 +3,14 @@ package com.example.healthappttt.Fragment;
 import static androidx.fragment.app.FragmentManager.TAG;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
@@ -19,6 +24,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.healthappttt.Activity.CreateRoutineActivity;
+import com.example.healthappttt.Activity.EditRoutineActivity;
 import com.example.healthappttt.Data.Exercise;
 import com.example.healthappttt.Data.Routine;
 import com.example.healthappttt.Data.RoutineComparator;
@@ -43,8 +49,7 @@ import java.util.Comparator;
  * create an instance of this fragment.
  */
 public class RoutineChildFragment extends Fragment {
-    private static final int REQUEST_CODE = 100;
-
+    private ActivityResultLauncher<Intent> startActivityResult;
     private RecyclerView recyclerView;
     private RoutineAdapter adapter;
     private CardView addRoutineBtn;
@@ -101,6 +106,28 @@ public class RoutineChildFragment extends Fragment {
                              Bundle savedInstanceState) {
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_routine_child, container, false);
 
+        startActivityResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+            @Override
+            public void onActivityResult(ActivityResult data) {
+                Log.d("TAG", "data : " + data);
+
+                if (data.getResultCode() == Activity.RESULT_OK && data.getData() != null) {
+                    Intent intent = data.getData();
+                    Routine r = (Routine) intent.getSerializableExtra("routine");
+                    boolean isDeleted = intent.getBooleanExtra("delete", false);
+
+                    if (isDeleted) {
+                        adapter.removeItem(r.getID());
+                    }
+                    else
+                        routines.add(r);
+
+                    Collections.sort(routines, new RoutineComparator());
+                    adapter.notifyDataSetChanged();
+                }
+            }
+        });
+
         recyclerView = view.findViewById(R.id.recyclerView);
         addRoutineBtn = view.findViewById(R.id.addRoutine);
 
@@ -108,36 +135,37 @@ public class RoutineChildFragment extends Fragment {
         sqLiteUtil.setInitView(getContext(), "RT_TB");
 
         routines = sqLiteUtil.SelectRoutine(dayOfWeek);
-        Collections.sort(routines, new RoutineComparator());
 
-        setRecyclerView();
+        if (routines != null) {
+            Collections.sort(routines, new RoutineComparator());
+            setRecyclerView();
+        }
 
         addRoutineBtn.setOnClickListener(view1 -> {
             Intent intent = new Intent(getContext(), CreateRoutineActivity.class);
             intent.putExtra("dayOfWeek", dayOfWeek);
-            startActivityForResult(intent, REQUEST_CODE);
+            startActivityResult.launch(intent);
         });
 
-        // Inflate the layout for this fragment
         return view;
     }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == REQUEST_CODE && data != null) {
-            Routine r = (Routine) data.getSerializableExtra("routine");
-            routines.add(r);
-            Collections.sort(routines, new RoutineComparator());
-            adapter.notifyDataSetChanged();
-        }
-    } // startActivityForResult로 실행한 액티비티의 반환값을 전달받는 메서드
 
     private void setRecyclerView() {
         adapter = new RoutineAdapter(getContext(), routines);  // 나중에 routine
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
+
+        if (adapter != null) {
+            adapter.setOnClickDeleteListener(new RoutineAdapter.OnClickDelete() {
+                @Override
+                public void onClickDelete(Routine r, ArrayList<Exercise> e) {
+                    Intent intent = new Intent(getContext(), EditRoutineActivity.class);
+                    intent.putExtra("routine", r);
+                    intent.putExtra("exercises", e);
+                    startActivityResult.launch(intent);
+                }
+            });
+        }
     }
 }

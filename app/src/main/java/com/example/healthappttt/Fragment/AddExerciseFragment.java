@@ -219,7 +219,8 @@ public class AddExerciseFragment extends Fragment {
         exercises.addAll(absExercises);
         exercises.addAll(cardioExercises);
 
-        setRecyclerView();
+        if (exercises != null)
+            setRecyclerView();
 
         searchView.addTextChangedListener(new TextWatcher() {
             @Override

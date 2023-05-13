@@ -119,7 +119,8 @@ public class ExerciseDetailFragment extends Fragment {
             setRoutineTime(schedule[0], schedule[1], schedule[2]);
         }
 
-        setRecyclerView();
+        if (exercises != null)
+            setRecyclerView();
 
         NextTxt.setBackgroundColor(Color.parseColor("#05c78c"));
         NextTxt.setTextColor(Color.parseColor("#ffffff"));

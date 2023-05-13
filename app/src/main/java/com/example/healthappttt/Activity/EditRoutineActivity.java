@@ -19,6 +19,7 @@ import com.example.healthappttt.Data.Exercise;
 import com.example.healthappttt.Data.RetrofitClient;
 import com.example.healthappttt.Data.Routine;
 import com.example.healthappttt.Data.SQLiteUtil;
+import com.example.healthappttt.Data.pkData;
 import com.example.healthappttt.R;
 import com.example.healthappttt.adapter.ExerciseInputAdapter;
 import com.example.healthappttt.interface_.ServiceApi;
@@ -76,7 +77,9 @@ public class EditRoutineActivity extends AppCompatActivity {
         exercises = (ArrayList<Exercise>) intent.getSerializableExtra("exercises");
 
         init();
-        setRecyclerView();
+
+        if (exercises != null)
+            setRecyclerView();
 
         DeleteBtn.setOnClickListener(v -> {
             AlertDialog.Builder alert_ex = new AlertDialog.Builder(this);
@@ -200,7 +203,7 @@ public class EditRoutineActivity extends AppCompatActivity {
     }
 
     private void DeleteToDB() {
-        service.deleteRoutine(routine.getID()).enqueue(new Callback<Integer>() {
+        service.deleteRoutine(new pkData(routine.getID())).enqueue(new Callback<Integer>() {
             @Override
             public void onResponse(Call<Integer> call, Response<Integer> response) {
                 if(response.isSuccessful() && response.body() == 200) {
@@ -231,8 +234,10 @@ public class EditRoutineActivity extends AppCompatActivity {
 
     private void Terminate(boolean isSuccess) {
         if (isSuccess) {
-//            Intent intent = new Intent();
-//            setResult(RESULT_OK, intent);
+            Intent intent = new Intent();
+            intent.putExtra("routine", routine);
+            intent.putExtra("delete", true);
+            setResult(RESULT_OK, intent);
         }
 
         finish();

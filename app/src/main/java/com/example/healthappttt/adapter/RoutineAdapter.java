@@ -1,7 +1,5 @@
 package com.example.healthappttt.adapter;
 
-import static java.security.AccessController.getContext;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -12,16 +10,15 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.healthappttt.Activity.CreateRoutineActivity;
 import com.example.healthappttt.Activity.EditRoutineActivity;
 import com.example.healthappttt.Data.Exercise;
 import com.example.healthappttt.Data.ExerciseComparator;
 import com.example.healthappttt.Data.Routine;
-import com.example.healthappttt.Data.RoutineComparator;
 import com.example.healthappttt.Data.SQLiteUtil;
 import com.example.healthappttt.R;
 
@@ -29,13 +26,13 @@ import org.checkerframework.checker.units.qual.A;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 
 public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainViewHolder> {
     private Context context;
     private ArrayList<Routine> routines;
     private SQLiteUtil sqLiteUtil;
 
+    private OnClickDelete onClickDelete;
 
     public RoutineAdapter(Context context, ArrayList<Routine> routines) {
         this.routines = routines;
@@ -78,10 +75,7 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
         mainViewHolder.EditBtn.setOnClickListener(v -> {
             int position = mainViewHolder.getAbsoluteAdapterPosition();
 
-            Intent intent = new Intent(context, EditRoutineActivity.class);
-            intent.putExtra("routine", routines.get(position));
-            intent.putExtra("exercises", mainViewHolder.exercises);
-            context.startActivity(intent);
+            onClickDelete.onClickDelete(routines.get(position), mainViewHolder.exercises);
         });
 
         return mainViewHolder;
@@ -96,8 +90,11 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
             holder.endTimeView.setText(TimeToString(routines.get(position).getEndTime()));
 
             holder.exercises = sqLiteUtil.SelectExercise(routines.get(position).getID());
-            Collections.sort(holder.exercises, new ExerciseComparator());
-            setRecyclerView(holder.recyclerView, holder.adapter, holder.exercises);
+
+            if (holder.exercises != null) {
+                Collections.sort(holder.exercises, new ExerciseComparator());
+                setRecyclerView(holder.recyclerView, holder.adapter, holder.exercises);
+            }
         } else {
             holder.RoutineLayout.setVisibility(View.GONE);
             holder.NullLayout.setVisibility(View.VISIBLE);
@@ -109,6 +106,19 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
         if (routines.size() == 0)   return 1;
 
         return routines.size();
+    }
+
+    public void removeItem(int routineID) {
+        for (Routine r : routines) {
+            if (r.getID() == routineID) {
+                int position = routines.indexOf(r);
+                routines.remove(position);
+                notifyItemRemoved(position);
+
+//                recyclerView.setAdapter(null);
+                break;
+            }
+        }
     }
 
     private String TimeToString(String Time) {
@@ -134,4 +144,12 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setAdapter(adapter);
     }
+
+    public void setOnClickDeleteListener(OnClickDelete onClickDeleteListener) {
+        this.onClickDelete = onClickDeleteListener;
+    } // 액티비티에서 콜백 메서드를 set
+
+    public interface OnClickDelete {
+        void onClickDelete(Routine r, ArrayList<Exercise> e);
+    } // 운동 클릭했을 때, 엑티비티에 값 전달을 위한 인터페이스
 }

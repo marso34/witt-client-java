@@ -4,6 +4,7 @@ import com.example.healthappttt.Data.ExerciseResponse;
 import com.example.healthappttt.Data.RoutineData;
 import com.example.healthappttt.Data.RoutineExerciseData;
 import com.example.healthappttt.Data.RoutineResponse;
+import com.example.healthappttt.Data.pkData;
 
 import java.util.List;
 
@@ -19,5 +20,5 @@ public interface ServiceApi {
     Call<List<ExerciseResponse>> createExercise(@Body List<RoutineExerciseData> data);
 
     @POST("/DeleteRoutine")
-    Call<Integer> deleteRoutine(@Body int data);
+    Call<Integer> deleteRoutine(@Body pkData data);
 }

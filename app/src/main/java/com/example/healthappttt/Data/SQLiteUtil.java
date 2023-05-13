@@ -186,7 +186,7 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         if (table.equals("RT_TB")) {
             String sql = "SELECT * FROM " + table + " WHERE Day_Of_Week = " + DayOfWeek + ";";
 
-            Log.d("test", sql);
+            Log.d("SQLite SelectRoutine", sql);
 
             Cursor cursor = db.rawQuery(sql, null);
 
