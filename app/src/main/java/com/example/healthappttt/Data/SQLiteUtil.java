@@ -129,7 +129,6 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         ContentValues values = new ContentValues();
 
         if (table.equals("RT_TB")) {
-            values.put("PK", routine.getID());
             values.put("Start_Time", routine.getStartTime());
             values.put("End_Time", routine.getEndTime());
             values.put("CAT", routine.getCat());
@@ -166,14 +165,10 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         ContentValues values = new ContentValues();
 
         if (table.equals("EX_TB")) {
-            values.put("PK", exercise.getID());
-            values.put("RT_FK", exercise.getParentID());
-            values.put("Ex_NM", exercise.getTitle());
             values.put("Set_Or_Time", exercise.getCount());
             values.put("Volume", exercise.getVolume());
             values.put("Cnt_Or_Dis", exercise.getNum());
             values.put("Sort_Index", exercise.getIndex());
-            values.put("CAT", exercise.getCat());
 
             int result = db.update(table, values, "PK = ?", new String[]{String.valueOf(exercise.getID())});
             Log.d(table, result + "성공");

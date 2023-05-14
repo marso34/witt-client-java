@@ -114,13 +114,22 @@ public class RoutineChildFragment extends Fragment {
                 if (data.getResultCode() == Activity.RESULT_OK && data.getData() != null) {
                     Intent intent = data.getData();
                     Routine r = (Routine) intent.getSerializableExtra("routine");
-                    boolean isDeleted = intent.getBooleanExtra("delete", false);
+                    int check = intent.getIntExtra("check", 0);
 
-                    if (isDeleted) {
-                        adapter.removeItem(r.getID());
+                    if (check == 0) {
+                        for (int i = 0; i < routines.size(); i++) {
+                            if (routines.get(i).getID() == r.getID()) {
+                                routines.get(i).setStartTime(r.getStartTime());
+                                routines.get(i).setEndTime(r.getEndTime());
+                                routines.get(i).setCat(r.getCat());
+                                break;
+                            }
+                        }
                     }
-                    else
-                        routines.add(r);
+                    else if (check == 1)
+                        routines.add(r); // 루틴 추가
+                    else if (check == 2)
+                        adapter.removeItem(r.getID()); // 루틴 삭제
 
                     Collections.sort(routines, new RoutineComparator());
                     adapter.notifyDataSetChanged();

@@ -61,8 +61,6 @@ public class CreateRoutineActivity extends AppCompatActivity implements SetRouti
     }
 
     private String TimeToString(int Time) {
-        String am_pm = "";
-
         if (Time >= 240) Time-= 240;
 
         @SuppressLint("DefaultLocale") String result = String.format("%02d:%02d:%02d", Time/10, Time % 10 * 6, 0);
@@ -135,7 +133,7 @@ public class CreateRoutineActivity extends AppCompatActivity implements SetRouti
         if (isSuccess) {
             Intent intent = new Intent();
             intent.putExtra("routine", routine);
-            intent.putExtra("delete", false);
+            intent.putExtra("check", 1); // 루틴 추가를 의미
             setResult(RESULT_OK, intent);
         }
 

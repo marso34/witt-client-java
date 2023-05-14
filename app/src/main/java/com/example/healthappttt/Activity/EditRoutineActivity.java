@@ -12,12 +12,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.healthappttt.Data.Exercise;
 import com.example.healthappttt.Data.RetrofitClient;
 import com.example.healthappttt.Data.Routine;
+import com.example.healthappttt.Data.RoutineData;
+import com.example.healthappttt.Data.RoutineExerciseData;
 import com.example.healthappttt.Data.SQLiteUtil;
 import com.example.healthappttt.Data.pkData;
 import com.example.healthappttt.R;
@@ -25,12 +29,15 @@ import com.example.healthappttt.adapter.ExerciseInputAdapter;
 import com.example.healthappttt.interface_.ServiceApi;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class EditRoutineActivity extends AppCompatActivity {
+    private RadioGroup DayOfWeekGroup;
+    private RadioButton SunBtn, MonBtn, TueBtn, WedBtn, ThuBtn, FriBtn, SatBtn;
     private TextView RunTime, StartTime, EndTime, DeleteBtn;
     private ImageView StartTimeUP, StartTimeDown;
     private ImageView EndTimeUP, EndTimeDown;
@@ -38,8 +45,7 @@ public class EditRoutineActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private ExerciseInputAdapter adapter;
 
-    private CardView NextBtn;
-    private TextView NextTxt;
+    private CardView CompleteBtn;
 
     private ServiceApi service;
     private SQLiteUtil sqLiteUtil;
@@ -53,6 +59,15 @@ public class EditRoutineActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_routine);
 
+        DayOfWeekGroup = findViewById(R.id.dayOfWeek);
+        SunBtn = findViewById(R.id.sun);
+        MonBtn = findViewById(R.id.mon);
+        TueBtn = findViewById(R.id.tue);
+        WedBtn = findViewById(R.id.wed);
+        ThuBtn = findViewById(R.id.thu);
+        FriBtn = findViewById(R.id.fri);
+        SatBtn = findViewById(R.id.sat);
+
         RunTime = (TextView) findViewById(R.id.runTime);
         StartTime = (TextView) findViewById(R.id.startTime);
         EndTime = (TextView) findViewById(R.id.endTime);
@@ -65,8 +80,7 @@ public class EditRoutineActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recyclerView);
 
-        NextBtn = findViewById(R.id.nextBtn);
-        NextTxt = findViewById(R.id.nextTxt);
+        CompleteBtn = findViewById(R.id.completeBtn);
 
         service = RetrofitClient.getClient().create(ServiceApi.class);
         sqLiteUtil = SQLiteUtil.getInstance();
@@ -80,6 +94,21 @@ public class EditRoutineActivity extends AppCompatActivity {
 
         if (exercises != null)
             setRecyclerView();
+
+        DayOfWeekGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int checkedID) {
+                switch (checkedID) {
+                    case R.id.sun: routine.setDayOfWeek(0); break;
+                    case R.id.mon: routine.setDayOfWeek(1); break;
+                    case R.id.tue: routine.setDayOfWeek(2); break;
+                    case R.id.wed: routine.setDayOfWeek(3); break;
+                    case R.id.thu: routine.setDayOfWeek(4); break;
+                    case R.id.fri: routine.setDayOfWeek(5); break;
+                    case R.id.sat: routine.setDayOfWeek(6); break;
+                }
+            }
+        });
 
         DeleteBtn.setOnClickListener(v -> {
             AlertDialog.Builder alert_ex = new AlertDialog.Builder(this);
@@ -138,20 +167,39 @@ public class EditRoutineActivity extends AppCompatActivity {
             }
         });
 
-        NextBtn.setOnClickListener(v -> {
-
+        CompleteBtn.setOnClickListener(v -> {
+            if (runTime <= 0) {
+                Toast.makeText(this, "시간을 다시 설정해주세요", Toast.LENGTH_SHORT).show();
+            } else if (exercises.size() < 0) {
+                Toast.makeText(this, "운동이 없어요", Toast.LENGTH_SHORT).show();
+            } else {
+                routine.setStartTime(TimeToStringD(startTime));
+                routine.setEndTime(TimeToStringD(endTime));
+                UpdateToDB();
+            }
         });
     }
 
     private void init() {
-        startTime = TimeToString(routine.getStartTime());
-        endTime = TimeToString(routine.getEndTime());
-
-        runTime = endTime - startTime;
+        if (routine != null) {
+            startTime = TimeToString(routine.getStartTime());
+            endTime = TimeToString(routine.getEndTime());
+            runTime = endTime - startTime;
+        }
 
         StartTime.setText(TimeToString(startTime));
         EndTime.setText(TimeToString(endTime));
         RunTime.setText(RuntimeToString(runTime));
+
+        switch (routine.getDayOfWeek()) {
+            case 0: SunBtn.setChecked(true); break;
+            case 1: MonBtn.setChecked(true); break;
+            case 2: TueBtn.setChecked(true); break;
+            case 3: WedBtn.setChecked(true); break;
+            case 4: ThuBtn.setChecked(true); break;
+            case 5: FriBtn.setChecked(true); break;
+            case 6: SatBtn.setChecked(true); break;
+        }
     }
 
     private int TimeToString(String Time) {
@@ -195,6 +243,13 @@ public class EditRoutineActivity extends AppCompatActivity {
         return result3;
     }
 
+    private String TimeToStringD(int Time) {
+        if (Time >= 240) Time-= 240;
+        @SuppressLint("DefaultLocale") String result = String.format("%02d:%02d:%02d", Time/10, Time % 10 * 6, 0);
+
+        return result;
+    }
+
     private void setRecyclerView() {
         adapter = new ExerciseInputAdapter(exercises, true);
         recyclerView.setHasFixedSize(true);
@@ -210,7 +265,7 @@ public class EditRoutineActivity extends AppCompatActivity {
                     Toast.makeText(EditRoutineActivity.this, "루틴 삭제 성공!!!", Toast.LENGTH_SHORT).show();
                     Log.d("성공", "루틴 삭제 성공");
                     DeleteToDev();
-                    Terminate(true);
+                    Terminate(true, 2); // 루틴 삭제를 의미
                 } else {
                     Toast.makeText(EditRoutineActivity.this, "루틴 삭제 실패", Toast.LENGTH_SHORT).show();
                     Log.d("실패", "루틴 삭제 실패");
@@ -232,11 +287,64 @@ public class EditRoutineActivity extends AppCompatActivity {
         sqLiteUtil.delete(routine.getID());
     }
 
+    private void UpdateToDB() {
+        ArrayList<RoutineExerciseData> list = new ArrayList<>();
+        int CAT = 0;
+
+        for (Exercise e : exercises) {
+            list.add(new RoutineExerciseData(e.getID(), routine.getID(), e.getTitle(), e.getCat(), e.getCount(), e.getVolume(), e.getNum(), e.getIndex()));
+            CAT |= e.getCat();
+        }
+
+        RoutineData rData = new RoutineData(routine.getID(), 5, routine.getDayOfWeek(), CAT, routine.getStartTime(), routine.getEndTime(), list);
+
+        service.updateRoutine(rData).enqueue(new Callback<Integer>() {
+            @Override
+            public void onResponse(Call<Integer> call, Response<Integer> response) {
+                if (response.isSuccessful()) {
+                    UpdateToDev();
+                    Terminate(true, 0); // 루틴 수정을 의미
+                } else {
+                    Toast.makeText(EditRoutineActivity.this, "서버 연결에 실패", Toast.LENGTH_SHORT).show();
+                    Log.d("실패", "respone 실패");
+                    Terminate(false); // 루틴 수정 액티비티 종료
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Integer> call, Throwable t) {
+                Toast.makeText(EditRoutineActivity.this, "서버 연결에 실패", Toast.LENGTH_SHORT).show();
+                Log.d("실패", t.getMessage());
+                Terminate(false); // 루틴 수정 액티비티 종료
+            }
+        });
+    }
+
+    private void UpdateToDev() {
+        sqLiteUtil.setInitView(this, "RT_TB");
+        sqLiteUtil.Update(routine);
+        sqLiteUtil.setInitView(this, "EX_TB");
+
+        for (Exercise e: exercises)
+            sqLiteUtil.Update(e);
+    }
+
     private void Terminate(boolean isSuccess) {
         if (isSuccess) {
             Intent intent = new Intent();
             intent.putExtra("routine", routine);
-            intent.putExtra("delete", true);
+            intent.putExtra("check", 0);
+            setResult(RESULT_OK, intent);
+        }
+
+        finish();
+    }
+
+    private void Terminate(boolean isSuccess, int check) {
+        if (isSuccess) {
+            Intent intent = new Intent();
+            intent.putExtra("routine", routine);
+            intent.putExtra("check", check); // 2면 루틴 삭제
             setResult(RESULT_OK, intent);
         }
 

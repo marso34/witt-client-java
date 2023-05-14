@@ -21,4 +21,7 @@ public interface ServiceApi {
 
     @POST("/DeleteRoutine")
     Call<Integer> deleteRoutine(@Body pkData data);
+
+    @POST("/UpdateRoutine")
+    Call<Integer> updateRoutine(@Body RoutineData data);
 }

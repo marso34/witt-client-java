@@ -3,8 +3,10 @@ package com.example.healthappttt.Data;
 import com.google.gson.annotations.SerializedName;
 
 public class RoutineExerciseData {
-    @SerializedName("routineID")
-    private int routineID;
+    @SerializedName("ID")
+    private int ID;
+    @SerializedName("parentID")
+    private int parentID;
 
     @SerializedName("exerciseName")
     private String exerciseName;
@@ -25,8 +27,19 @@ public class RoutineExerciseData {
     private int index;
 
 
-    public RoutineExerciseData(int routineID, String exerciseName, int cat, int setOrTime, int volume, int cntOrDis, int index) {
-        this.routineID = routineID;
+    public RoutineExerciseData(int parentID, String exerciseName, int cat, int setOrTime, int volume, int cntOrDis, int index) {
+        this.parentID = parentID;
+        this.exerciseName = exerciseName;
+        this.cat = cat;
+        this.setOrTime = setOrTime;
+        this.volume = volume;
+        this.cntOrDis = cntOrDis;
+        this.index = index;
+    }
+
+    public RoutineExerciseData(int ID, int parentID, String exerciseName, int cat, int setOrTime, int volume, int cntOrDis, int index) {
+        this.ID = ID;
+        this.parentID = parentID;
         this.exerciseName = exerciseName;
         this.cat = cat;
         this.setOrTime = setOrTime;
