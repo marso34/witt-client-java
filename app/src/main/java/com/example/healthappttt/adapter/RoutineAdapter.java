@@ -115,7 +115,6 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
                 routines.remove(position);
                 notifyItemRemoved(position);
 
-//                recyclerView.setAdapter(null);
                 break;
             }
         }

@@ -71,7 +71,10 @@ public class ExerciseInputAdapter extends RecyclerView.Adapter<ExerciseInputAdap
         mainViewHolder.RemoveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                int position = mainViewHolder.getAbsoluteAdapterPosition();
+                exercises.get(position).setID(-1 * exercises.get(position).getID());
                 // 인터페이스 구현해서 버튼 누르면 position 전달해서 프래그먼트 or 액티비티에서 removeItem 호출하고 adapter.notifyDataSetChanged() 실행
+                removeItem(position);
             }
         });
 
@@ -149,13 +152,17 @@ public class ExerciseInputAdapter extends RecyclerView.Adapter<ExerciseInputAdap
             holder.EditVolume.setText(Integer.toString(this.exercises.get(position).getVolume()));
             holder.EditCount.setText(Integer.toString(this.exercises.get(position).getNum()));
             holder.EditSet.setText(Integer.toString(this.exercises.get(position).getCount()));
+            holder.RemoveBtn.setVisibility(View.VISIBLE);
         }
     }
 
     @Override
     public int getItemCount() { return exercises.size(); }
 
-    public void removeItem(int position) { exercises.remove(position); }
+    public void removeItem(int position) {
+        exercises.remove(position);
+        notifyItemRemoved(position);
+    }
 
     public ArrayList<Exercise> getInputData() { return exercises; }
 }

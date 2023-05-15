@@ -120,6 +120,8 @@ public class RoutineFragment extends Fragment {
                 (tab, position) -> tab.setText(setText(position))
         ).attach();
 
+
+
         Date currentDate = new Date();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(currentDate);
