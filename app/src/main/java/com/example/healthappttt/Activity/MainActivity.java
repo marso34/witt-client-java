@@ -12,6 +12,7 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -36,6 +37,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
+    private long backPressedTime = 0;
+
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
 
@@ -186,5 +189,18 @@ public class MainActivity extends AppCompatActivity {
         }
         fragmentTransaction.replace(R.id.frame_layout, fragment);
         fragmentTransaction.commit();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (System.currentTimeMillis() > backPressedTime + 2000) {
+            backPressedTime = System.currentTimeMillis();
+            Toast.makeText(this, "\'뒤로\' 버튼을 한번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (System.currentTimeMillis() <= backPressedTime + 2000) {
+            finish();
+        }
     }
 }
