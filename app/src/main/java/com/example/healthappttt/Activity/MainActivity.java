@@ -38,6 +38,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
     private long backPressedTime = 0;
+    private Toast toast;
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
@@ -195,12 +196,18 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         if (System.currentTimeMillis() > backPressedTime + 2000) {
             backPressedTime = System.currentTimeMillis();
-            Toast.makeText(this, "\'뒤로\' 버튼을 한번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT).show();
+            showGuide("\'뒤로\' 버튼을 한번 더 누르시면 종료됩니다.");
             return;
         }
 
         if (System.currentTimeMillis() <= backPressedTime + 2000) {
             finish();
+            toast.cancel();
         }
+    }
+
+    private void showGuide(String msg) {
+        toast = Toast.makeText(this, msg, Toast.LENGTH_SHORT);
+        toast.show();
     }
 }
