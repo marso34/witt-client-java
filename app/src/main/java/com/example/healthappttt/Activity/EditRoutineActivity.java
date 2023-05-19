@@ -302,6 +302,7 @@ public class EditRoutineActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Integer> call, Response<Integer> response) {
                 if (response.isSuccessful()) {
+                    Toast.makeText(EditRoutineActivity.this, "수정 성공", Toast.LENGTH_SHORT).show();
                     UpdateToDev();
                     Terminate(true, 0); // 루틴 수정을 의미
                 } else {

@@ -3,8 +3,6 @@ package com.example.healthappttt.Fragment;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.media.Image;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -19,16 +17,12 @@ import android.widget.TextView;
 
 import com.example.healthappttt.R;
 
-import org.w3c.dom.Text;
-
-import java.sql.Time;
-
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link SetRoutineTimeFragment#newInstance} factory method to
+ * Use the {@link CRSetTimeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SetRoutineTimeFragment extends Fragment {
+public class CRSetTimeFragment extends Fragment {
     private TextView RunTime, StartTime, EndTime, ResetBtn;
     private ImageView StartTimeUP, StartTimeDown;
     private ImageView EndTimeUP, EndTimeDown;
@@ -65,7 +59,7 @@ public class SetRoutineTimeFragment extends Fragment {
         }
     }
 
-    public SetRoutineTimeFragment() {
+    public CRSetTimeFragment() {
         // Required empty public constructor
     }
 
@@ -78,8 +72,8 @@ public class SetRoutineTimeFragment extends Fragment {
      * @return A new instance of fragment SetRoutineTimeFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static SetRoutineTimeFragment newInstance(String param1, String param2) {
-        SetRoutineTimeFragment fragment = new SetRoutineTimeFragment();
+    public static CRSetTimeFragment newInstance(String param1, String param2) {
+        CRSetTimeFragment fragment = new CRSetTimeFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -99,7 +93,7 @@ public class SetRoutineTimeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_set_routine_time, container, false);
+        ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_cr_set_time, container, false);
 
         RunTime = (TextView) view.findViewById(R.id.runTime);
         StartTime = (TextView) view.findViewById(R.id.startTime);

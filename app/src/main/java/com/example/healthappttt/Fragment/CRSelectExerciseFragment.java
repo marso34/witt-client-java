@@ -6,8 +6,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.SearchView;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -15,19 +13,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.healthappttt.Data.Exercise;
-import com.example.healthappttt.Data.ExerciseName;
 import com.example.healthappttt.R;
-import com.example.healthappttt.adapter.ExerciseAdapter;
 import com.example.healthappttt.adapter.ExerciseListAdapter;
 import com.google.android.material.tabs.TabLayout;
 
@@ -35,10 +29,10 @@ import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link AddExerciseFragment#newInstance} factory method to
+ * Use the {@link CRSelectExerciseFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AddExerciseFragment extends Fragment {
+public class CRSelectExerciseFragment extends Fragment {
     private TextView DirectInputBtn, ScheduleTxt;
     private EditText searchView;
     private ImageView removeTxtBtn;
@@ -90,7 +84,7 @@ public class AddExerciseFragment extends Fragment {
         }
     }
 
-    public AddExerciseFragment() {
+    public CRSelectExerciseFragment() {
         // Required empty public constructor
     }
 
@@ -103,8 +97,8 @@ public class AddExerciseFragment extends Fragment {
      * @return A new instance of fragment addExerciseFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static AddExerciseFragment newInstance(String param1, String param2) {
-        AddExerciseFragment fragment = new AddExerciseFragment();
+    public static CRSelectExerciseFragment newInstance(String param1, String param2) {
+        CRSelectExerciseFragment fragment = new CRSelectExerciseFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -124,7 +118,7 @@ public class AddExerciseFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_add_exercise, container, false);
+        ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_cr_select_exercise, container, false);
 
         DirectInputBtn = view.findViewById(R.id.directInput);
         ScheduleTxt = view.findViewById(R.id.schedule);

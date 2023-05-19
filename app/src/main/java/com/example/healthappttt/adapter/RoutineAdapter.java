@@ -32,11 +32,23 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
     private ArrayList<Routine> routines;
     private SQLiteUtil sqLiteUtil;
 
-    private OnClickDelete onClickDelete;
+    private boolean isRecoding;
+
+    private OnClickRoutine onClickRoutine;
 
     public RoutineAdapter(Context context, ArrayList<Routine> routines) {
         this.routines = routines;
         this.context = context;
+        this.isRecoding = false;
+
+        sqLiteUtil = SQLiteUtil.getInstance();
+        sqLiteUtil.setInitView(context, "EX_TB");
+    }
+
+    public RoutineAdapter(Context context, ArrayList<Routine> routines, boolean isRecoding) {
+        this.routines = routines;
+        this.context = context;
+        this.isRecoding = isRecoding;
 
         sqLiteUtil = SQLiteUtil.getInstance();
         sqLiteUtil.setInitView(context, "EX_TB");
@@ -72,10 +84,18 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_routine, parent, false);
         final MainViewHolder mainViewHolder = new MainViewHolder(view);
 
+        view.setOnClickListener(v -> {
+            if (isRecoding) {
+                int position = mainViewHolder.getAbsoluteAdapterPosition();
+
+                onClickRoutine.onClickRoutine(routines.get(position), mainViewHolder.exercises);
+            }
+        });
+
         mainViewHolder.EditBtn.setOnClickListener(v -> {
             int position = mainViewHolder.getAbsoluteAdapterPosition();
 
-            onClickDelete.onClickDelete(routines.get(position), mainViewHolder.exercises);
+            onClickRoutine.onClickRoutine(routines.get(position), mainViewHolder.exercises);
         });
 
         return mainViewHolder;
@@ -90,6 +110,9 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
             holder.endTimeView.setText(TimeToString(routines.get(position).getEndTime()));
 
             holder.exercises = sqLiteUtil.SelectExercise(routines.get(position).getID());
+
+            if (isRecoding)
+                holder.EditBtn.setVisibility(View.GONE);
 
             if (holder.exercises != null) {
                 Collections.sort(holder.exercises, new ExerciseComparator());
@@ -144,11 +167,11 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
         recyclerView.setAdapter(adapter);
     }
 
-    public void setOnClickDeleteListener(OnClickDelete onClickDeleteListener) {
-        this.onClickDelete = onClickDeleteListener;
+    public void setOnClickRoutineListener(OnClickRoutine onClickRoutineListener) {
+        this.onClickRoutine = onClickRoutineListener;
     } // 액티비티에서 콜백 메서드를 set
 
-    public interface OnClickDelete {
-        void onClickDelete(Routine r, ArrayList<Exercise> e);
+    public interface OnClickRoutine {
+        void onClickRoutine(Routine r, ArrayList<Exercise> e);
     } // 운동 클릭했을 때, 엑티비티에 값 전달을 위한 인터페이스
 }

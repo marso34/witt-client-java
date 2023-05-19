@@ -166,9 +166,9 @@ public class RoutineChildFragment extends Fragment {
         recyclerView.setAdapter(adapter);
 
         if (adapter != null) {
-            adapter.setOnClickDeleteListener(new RoutineAdapter.OnClickDelete() {
+            adapter.setOnClickRoutineListener(new RoutineAdapter.OnClickRoutine() {
                 @Override
-                public void onClickDelete(Routine r, ArrayList<Exercise> e) {
+                public void onClickRoutine(Routine r, ArrayList<Exercise> e) {
                     Intent intent = new Intent(getContext(), EditRoutineActivity.class);
                     intent.putExtra("routine", r);
                     intent.putExtra("exercises", e);

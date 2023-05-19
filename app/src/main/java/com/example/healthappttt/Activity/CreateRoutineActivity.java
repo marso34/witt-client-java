@@ -22,9 +22,9 @@ import com.example.healthappttt.Data.RoutineData;
 import com.example.healthappttt.Data.RoutineExerciseData;
 import com.example.healthappttt.Data.RoutineResponse;
 import com.example.healthappttt.Data.SQLiteUtil;
-import com.example.healthappttt.Fragment.AddExerciseFragment;
-import com.example.healthappttt.Fragment.ExerciseDetailFragment;
-import com.example.healthappttt.Fragment.SetRoutineTimeFragment;
+import com.example.healthappttt.Fragment.CRSelectExerciseFragment;
+import com.example.healthappttt.Fragment.CRInputDetailFragment;
+import com.example.healthappttt.Fragment.CRSetTimeFragment;
 import com.example.healthappttt.R;
 import com.example.healthappttt.interface_.ServiceApi;
 
@@ -35,7 +35,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class CreateRoutineActivity extends AppCompatActivity implements SetRoutineTimeFragment.OnFragmentInteractionListener, AddExerciseFragment.OnFragmentInteractionListener, ExerciseDetailFragment.OnFragmentInteractionListener {
+public class CreateRoutineActivity extends AppCompatActivity implements CRSetTimeFragment.OnFragmentInteractionListener, CRSelectExerciseFragment.OnFragmentInteractionListener, CRInputDetailFragment.OnFragmentInteractionListener {
     private ServiceApi service;
     private SQLiteUtil sqLiteUtil;
 
@@ -57,7 +57,7 @@ public class CreateRoutineActivity extends AppCompatActivity implements SetRouti
         Intent intent = getIntent();
         dayOfWeek = intent.getIntExtra("dayOfWeek", 0);
 
-        replaceFragment(new SetRoutineTimeFragment());
+        replaceFragment(new CRSetTimeFragment());
     }
 
     private String TimeToString(int Time) {
@@ -199,7 +199,7 @@ public class CreateRoutineActivity extends AppCompatActivity implements SetRouti
 
         Bundle bundle = new Bundle();
         bundle.putIntArray("schedule", schedule);
-        replaceFragment(new SetRoutineTimeFragment(), bundle);
+        replaceFragment(new CRSetTimeFragment(), bundle);
     }
 
     private void fragmentToAddEx() {
@@ -211,7 +211,7 @@ public class CreateRoutineActivity extends AppCompatActivity implements SetRouti
         Bundle bundle = new Bundle();
         bundle.putSerializable("exercises", selectExercises);
         bundle.putIntArray("schedule", schedule);
-        replaceFragment(new AddExerciseFragment(), bundle);
+        replaceFragment(new CRSelectExerciseFragment(), bundle);
     }
 
     private void fragmentToExDetail() {
@@ -223,7 +223,7 @@ public class CreateRoutineActivity extends AppCompatActivity implements SetRouti
         Bundle bundle = new Bundle();
         bundle.putSerializable("exercises", selectExercises);
         bundle.putIntArray("schedule", schedule);
-        replaceFragment(new ExerciseDetailFragment(), bundle);
+        replaceFragment(new CRInputDetailFragment(), bundle);
     }
 
     @Override
