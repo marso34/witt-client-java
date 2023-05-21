@@ -21,13 +21,12 @@ import com.example.healthappttt.interface_.ServiceApi;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class ExerciseRecordActivity extends AppCompatActivity implements ERSelectRoutineFragment.OnFragmentInteractionListener, ERSelectUserFragment.OnFragmentInteractionListener {
+public class ExerciseRecordActivity extends AppCompatActivity implements ERSelectRoutineFragment.OnFragmentInteractionListener, ERSelectUserFragment.OnFragmentInteractionListener, ERRecordingFragment.OnFragmentInteractionListener {
     private ServiceApi service;
     private SQLiteUtil sqLiteUtil;
 
     private int dayOfWeek;
     private ArrayList<Routine> routines;
-
     private Routine routine;
     private ArrayList<Exercise> exercises;
 
@@ -53,6 +52,14 @@ public class ExerciseRecordActivity extends AppCompatActivity implements ERSelec
         bundle.putInt("dayOfWeek", dayOfWeek);
 
         replaceFragment(new ERSelectRoutineFragment(), bundle);
+    }
+
+    private void SaveToDB() {
+
+    }
+
+    private void SaveToDev() {
+
     }
 
     private void replaceFragment (Fragment fragment) { //프래그먼트 설정
@@ -96,7 +103,6 @@ public class ExerciseRecordActivity extends AppCompatActivity implements ERSelec
     @Override
     public void onSelectUser() { // 나중에 유저 전달로 변경
         Bundle bundle = new Bundle();
-        bundle.putSerializable("routines", routines);
         bundle.putSerializable("exercises", exercises);
 
 //        if (user != null) {}
@@ -105,12 +111,20 @@ public class ExerciseRecordActivity extends AppCompatActivity implements ERSelec
     }
 
     @Override
-    public void onBackPressed() {
-        Intent intent = new Intent(Intent.ACTION_MAIN);
-        intent.addCategory(Intent.CATEGORY_HOME);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-    } // 뒤로가기 버튼 눌렀을 때 홈화면과 동일한 효과를 내도록, 일단 유지
+    public void onRecordExercises(long StartTime, long EndTime, int runTime) {
+        SaveToDB();
+        SaveToDev();
+
+        finish();
+    }
+
+//    @Override
+//    public void onBackPressed() {
+//        Intent intent = new Intent(Intent.ACTION_MAIN);
+//        intent.addCategory(Intent.CATEGORY_HOME);
+//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        startActivity(intent);
+//    } // 뒤로가기 버튼 눌렀을 때 홈화면과 동일한 효과를 내도록, 일단 유지
 
     // 나중에 뒤로가기 눌렀을 종료하시겠습니까? 저장 안 됩니다~ 뜨게 하고 종료하게 할지
     // 아니면 뒤로가고 다시 돌아왔을 때 운동 상택가 유지되게 할지 결정하고 수정

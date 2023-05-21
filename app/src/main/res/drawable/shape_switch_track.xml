@@ -6,8 +6,8 @@
 
     <!--  트랙의 width / height  -->
     <size
-        android:height="75dp"
-        android:width="75dp" />
+        android:height="328dp"
+        android:width="156dp" />
 
     <!--    배경색 -->
     <solid android:color="@color/Background_1" />

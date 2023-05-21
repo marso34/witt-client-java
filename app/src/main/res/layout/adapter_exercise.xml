@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/exerciseCard"
@@ -9,8 +10,8 @@
     app:cardElevation="0dp"
     app:cardCornerRadius="20dp">
 
+
     <LinearLayout
-        android:id="@+id/exerciseLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -51,7 +52,7 @@
                 android:layout_weight="1"
                 android:layout_marginLeft="16dp"
                 android:text="운동 이름"
-                android:textColor="@color/black"
+                android:textColor="@color/Standard"
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
@@ -70,21 +71,21 @@
                 android:layout_height="wrap_content" >
 
                 <TextView
-                    android:id="@+id/setCount"
+                    android:id="@+id/count"
                     android:layout_width="wrap_content"
                     android:layout_height="24dp"
-                    android:textColor="#000000"
+                    android:textColor="@color/Standard"
                     android:text="N"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/cardioM"
+                    android:id="@+id/countUnit"
                     android:layout_width="wrap_content"
                     android:layout_height="24dp"
                     android:layout_marginLeft="4dp"
-                    android:textColor="#000000"
-                    android:text="분"
+                    android:textColor="@color/Standard"
+                    android:text="회"
                     android:textSize="16sp"
                     android:textStyle="bold"/>
 
@@ -93,30 +94,28 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/cardioLayout"
+            android:id="@+id/progressLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="11dp"
+            android:layout_marginTop="14dp"
             android:gravity="center"
-            android:orientation="vertical"
-            android:visibility="gone">
+            android:orientation="vertical">
 
             <ProgressBar
-                android:id="@+id/cardioBar"
+                android:id="@+id/progressBar"
                 android:layout_width="match_parent"
                 android:layout_height="8dp"
                 style="?android:attr/progressBarStyleHorizontal"
-                android:progressDrawable="@drawable/progressbar_exercise2"
-                android:max="10"
+                android:progressDrawable="@drawable/progressbar_exercise1"
                 android:progress="0"/>
 
             <TextView
                 android:id="@+id/cardioTxt"
                 android:layout_width="wrap_content"
-                android:layout_height="13dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="00:00:00"
-                android:textSize="10sp"/>
+                android:textSize="16sp"/>
 
         </LinearLayout>
 

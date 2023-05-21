@@ -98,9 +98,7 @@ public class ERSelectUserFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerView);
         NextBtn = view.findViewById(R.id.nextBtn);
 
-        NextBtn.setOnClickListener(v -> {
-            mListener.onSelectUser();
-        });
+        NextBtn.setOnClickListener(v -> mListener.onSelectUser());
 
         return view;
     }
