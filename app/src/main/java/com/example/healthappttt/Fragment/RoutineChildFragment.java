@@ -1,26 +1,47 @@
 package com.example.healthappttt.Fragment;
 
+import static androidx.fragment.app.FragmentManager.TAG;
+
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
 import com.example.healthappttt.Activity.CreateRoutineActivity;
+import com.example.healthappttt.Activity.EditRoutineActivity;
+import com.example.healthappttt.Data.Exercise;
 import com.example.healthappttt.Data.Routine;
+import com.example.healthappttt.Data.RoutineComparator;
+import com.example.healthappttt.Data.SQLiteUtil;
 import com.example.healthappttt.R;
 import com.example.healthappttt.adapter.RoutineAdapter;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import org.checkerframework.checker.units.qual.A;
+
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,24 +49,14 @@ import java.util.ArrayList;
  * create an instance of this fragment.
  */
 public class RoutineChildFragment extends Fragment {
-    private static final int REQUEST_CODE = 100;
-
+    private ActivityResultLauncher<Intent> startActivityResult;
     private RecyclerView recyclerView;
     private RoutineAdapter adapter;
     private CardView addRoutineBtn;
 
-
+    private SQLiteUtil sqLiteUtil;
     private ArrayList<Routine> routines;
-    private int day_of_week;
-
-
-
-    private FirebaseFirestore firebaseFirestore;
-    private FirebaseAuth mAuth;// 파이어베이스 유저관련 접속하기위한 변수
-    private FirebaseFirestore db;
-    private String UserUid;
-    private String dayOfWeek = "";
-
+    private int dayOfWeek;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -59,8 +70,8 @@ public class RoutineChildFragment extends Fragment {
 
     public RoutineChildFragment() {}
     
-    public RoutineChildFragment(int day_of_week) {
-        this.day_of_week = day_of_week;
+    public RoutineChildFragment(int dayOfWeek) {
+        this.dayOfWeek = dayOfWeek;
     }
 
     /**
@@ -95,75 +106,75 @@ public class RoutineChildFragment extends Fragment {
                              Bundle savedInstanceState) {
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_routine_child, container, false);
 
+        startActivityResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+            @Override
+            public void onActivityResult(ActivityResult data) {
+                Log.d("TAG", "data : " + data);
+
+                if (data.getResultCode() == Activity.RESULT_OK && data.getData() != null) {
+                    Intent intent = data.getData();
+                    Routine r = (Routine) intent.getSerializableExtra("routine");
+                    int check = intent.getIntExtra("check", 0);
+
+                    if (check == 0) {
+                        for (int i = 0; i < routines.size(); i++) {
+                            if (routines.get(i).getID() == r.getID()) {
+                                routines.get(i).setStartTime(r.getStartTime());
+                                routines.get(i).setEndTime(r.getEndTime());
+                                routines.get(i).setCat(r.getCat());
+                                break;
+                            }
+                        }
+                    }
+                    else if (check == 1)
+                        routines.add(r); // 루틴 추가
+                    else if (check == 2)
+                        adapter.removeItem(r.getID()); // 루틴 삭제
+
+                    Collections.sort(routines, new RoutineComparator());
+                    adapter.notifyDataSetChanged();
+                }
+            }
+        });
 
         recyclerView = view.findViewById(R.id.recyclerView);
         addRoutineBtn = view.findViewById(R.id.addRoutine);
 
-//
-        firebaseFirestore = FirebaseFirestore.getInstance();
-        mAuth = FirebaseAuth.getInstance();
-        db = FirebaseFirestore.getInstance();
+        sqLiteUtil = SQLiteUtil.getInstance();
+        sqLiteUtil.setInitView(getContext(), "RT_TB");
 
-        UserUid = mAuth.getCurrentUser().getUid();
-//
+        routines = sqLiteUtil.SelectRoutine(dayOfWeek);
 
-        routines = new ArrayList<>();
-
-        switch (day_of_week) {
-            case 0: dayOfWeek = "sun"; break;
-            case 1: dayOfWeek = "mon"; routines.add(new Routine()); break;
-            case 2: dayOfWeek = "tue"; routines.add(new Routine()); routines.add(new Routine()); break;
-            case 3: dayOfWeek = "wed"; routines.add(new Routine()); routines.add(new Routine()); routines.add(new Routine()); break;
-            case 4: dayOfWeek = "thu"; routines.add(new Routine()); routines.add(new Routine()); routines.add(new Routine()); routines.add(new Routine()); break;
-            case 5: dayOfWeek = "fri"; routines.add(new Routine()); routines.add(new Routine()); routines.add(new Routine()); routines.add(new Routine()); routines.add(new Routine()); break;
-            case 6: dayOfWeek = "sat"; routines.add(new Routine()); routines.add(new Routine()); routines.add(new Routine()); routines.add(new Routine()); routines.add(new Routine()); routines.add(new Routine()); break;
+        if (routines != null) {
+            Collections.sort(routines, new RoutineComparator());
+            setRecyclerView();
         }
-
-        setRecyclerView();
 
         addRoutineBtn.setOnClickListener(view1 -> {
             Intent intent = new Intent(getContext(), CreateRoutineActivity.class);
-            intent.putExtra("dayOfWeek", day_of_week);
-            startActivityForResult(intent, REQUEST_CODE);
+            intent.putExtra("dayOfWeek", dayOfWeek);
+            startActivityResult.launch(intent);
         });
 
-        // Inflate the layout for this fragment
         return view;
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == REQUEST_CODE && data != null) {
-//            Routine r = data.getSerializableExtra("result");
-            String result = (String) data.getSerializableExtra("result");
-            routines.add(new Routine());
-            adapter.notifyDataSetChanged();
-
-            Log.d("Test", result);
-        }
-    } // startActivityForResult로 실행한 액티비티의 반환값을 전달받는 메서드
-
     private void setRecyclerView() {
-        adapter = new RoutineAdapter(routines, getContext()); // 나중에 routine
+        adapter = new RoutineAdapter(getContext(), routines);  // 나중에 routine
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
 
-//        if (adapter != null) {
-//            adapter.setOnExerciseClickListener(new setExerciseAdapter.OnExerciseClick() {
-//                @Override
-//                public void onExerciseClick(int postion) {
-//                    deleteExercise(postion);
-//                    adapter.removeItem(postion);
-//                    adapter.notifyDataSetChanged();
-//
-////                    saveRoutine(routine.getExercises().get(postion));
-//                }
-//            });
-//        }
+        if (adapter != null) {
+            adapter.setOnClickRoutineListener(new RoutineAdapter.OnClickRoutine() {
+                @Override
+                public void onClickRoutine(Routine r, ArrayList<Exercise> e) {
+                    Intent intent = new Intent(getContext(), EditRoutineActivity.class);
+                    intent.putExtra("routine", r);
+                    intent.putExtra("exercises", e);
+                    startActivityResult.launch(intent);
+                }
+            });
+        }
     }
-
-
 }

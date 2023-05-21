@@ -1,21 +1,57 @@
 package com.example.healthappttt.Fragment;
 
+import static android.content.ContentValues.TAG;
+
+import android.annotation.SuppressLint;
+import android.app.TimePickerDialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.TimePicker;
+import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.example.healthappttt.Activity.MainActivity;
+import com.example.healthappttt.Data.Exercise;
+import com.example.healthappttt.Data.ExerciseName;
+import com.example.healthappttt.Data.Routine;
+import com.example.healthappttt.Data.User;
 import com.example.healthappttt.R;
+import com.example.healthappttt.adapter.ExerciseAdapter;
 import com.example.healthappttt.adapter.RoutinePagerAdapter;
+import com.example.healthappttt.adapter.ExerciseInputAdapter;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
+import org.checkerframework.checker.units.qual.A;
+
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -83,6 +119,8 @@ public class RoutineFragment extends Fragment {
         new TabLayoutMediator(tabLayout, viewPager,
                 (tab, position) -> tab.setText(setText(position))
         ).attach();
+
+
 
         Date currentDate = new Date();
         Calendar calendar = Calendar.getInstance();
