@@ -1,17 +1,13 @@
 package com.example.healthappttt.Activity;
 
-import static android.content.ContentValues.TAG;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 
 import com.example.healthappttt.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -36,7 +32,7 @@ public class LoginActivity extends AppCompatActivity {
         //findViewById = >activity_login_layout에서 "gotoPasswordResetButton" id를 가진
         //컴포넌트를 찾음
 
-//        userIsLoggedIn(); //자동로그인
+        userIsLoggedIn(); //자동로그인
     }
 
     View.OnClickListener onClickListener = new View.OnClickListener() {// 클릭됐을시

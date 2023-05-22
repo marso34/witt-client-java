@@ -1,60 +1,33 @@
 package com.example.healthappttt.adapter;//package com.example.healthappttt.adapter;
 
-import static android.content.ContentValues.TAG;
-
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.view.menu.MenuView;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.example.healthappttt.Activity.ProfileActivity;
-import com.example.healthappttt.Data.Exercise;
-import com.example.healthappttt.Data.Routine;
-import com.example.healthappttt.Data.User;
+import com.example.healthappttt.Data.UserInfo;
 import com.example.healthappttt.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
-import org.checkerframework.checker.units.qual.Area;
-
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder> {
-    private ArrayList<User> mDataset;
+    private ArrayList<UserInfo> mDataset;
     private FirebaseStorage storage;
-    private User userInfo;
+    private UserInfo userInfo;
     private Context mContext;
-    private User thisUser;
+    private UserInfo thisUser;
     private String dayOfWeek;
     FirebaseFirestore db;
 
@@ -65,9 +38,11 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
         public ImageView photoImageVIew;
         public TextView PreferredTime;
         public RecyclerView recyclerView;
-
+        public LinearLayout UserLayout;
         public AreaAdapter Adapter;
+
         public ArrayList<String> ExerciseNames;
+
         MainViewHolder(@NonNull View itemView) {
             super(itemView);
             Name =  itemView.findViewById(R.id.UNE);
@@ -75,14 +50,15 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
            photoImageVIew = itemView.findViewById(R.id.PRI);
             PreferredTime = itemView.findViewById(R.id.GoodTime);
             recyclerView = itemView.findViewById(R.id.recyclerView);
-            ExerciseNames = new ArrayList<String>();
-            Adapter = new AreaAdapter(mContext, ExerciseNames);
-        }
+            ExerciseNames = new ArrayList<>();
+            Adapter = new AreaAdapter(mContext,ExerciseNames);
+
+           }
     }
 
-    public UserAdapter(Activity activity, ArrayList<User> myDataset) {
+    public UserAdapter(Context mContext, ArrayList<UserInfo> myDataset) {
         this.mDataset = myDataset;
-        this.mContext = activity;
+        this.mContext = mContext;
     }
 
     @Override
@@ -95,39 +71,44 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
     public UserAdapter.MainViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View cardView = (View) LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_user, parent, false);
         final MainViewHolder mainViewHolder = new MainViewHolder(cardView);
-        cardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //클릭됐을시 행동 여기에 적으면 돼네.....시벌...
-            }
-        });
 
         return mainViewHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull final MainViewHolder holder, int position) {
-        storage = FirebaseStorage.getInstance();
-        db= FirebaseFirestore.getInstance();
+
+        UserInfo userInfo = mDataset.get(position);
+        Log.d("유저 이름!", userInfo.getName());
+
+        getCurrentWeek();
+//
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Intent intent = new Intent(mContext, ProfileActivity.class);
+                //intent.putExtra("UserInfo",userInfo);
+//                intent.putExtra("post",finalProfilefile);
+                //mContext.startActivity(intent);
+            }
+        });
+
+      //  Log.d(TAG, "onBindViewHolder: "+ userInfo.getUserName().toString());
+        holder.Name.setText(userInfo.getName().toString());
+        holder.LocaName.setText(userInfo.getDistance().toString() + "Km");
+        holder.PreferredTime.setText(userInfo.getStartTime()+" ~ "+userInfo.getEndTime());
+        holder.ExerciseNames.clear();
+        holder.recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        holder.recyclerView.setAdapter(holder.Adapter);
         holder.recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
         holder.recyclerView.setAdapter(holder.Adapter);
-        User userInfo = mDataset.get(position);
-        getCurrentWeek();
-            db.collection("routines").document(userInfo.getKey_() +"_" + dayOfWeek).get().
-            addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    if (task.isSuccessful()) {
-                        holder.ExerciseNames.clear();
-                        DocumentSnapshot document = task.getResult();
-                        holder.PreferredTime.setText(document.get("startTime").toString() +" ~ "+document.get("endTime").toString());
-                        Integer exerciseCat = Integer.parseInt(document.get("exerciseCategories").toString());
-                            Log.d(TAG, "Document exists!");
+        Integer exerciseCat = userInfo.getRoutineCategory();
+                            Log.d("rrr", "Document exists!");
                             if ((exerciseCat & 0x1) == 0x1) {
                                 String a = "가슴";
                                     holder.ExerciseNames.add(a);
                             }
-                            if ((exerciseCat & 0x2) == 0x2) {
+                            if ((exerciseCat & 0x2) ==    0x2) {
                                 String a = "등";
                                 holder.ExerciseNames.add(a);
                             }
@@ -151,51 +132,10 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
                                 String a = "유산소";
                                 holder.ExerciseNames.add(a);
                             }
-
-                    }
                     holder.Adapter.notifyDataSetChanged();
-                }
 
-            });
-        String fileName = userInfo.getKey_();
-
-        File profilefile = null;
-
-        try {
-            profilefile = File.createTempFile("images","jpeg");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        StorageReference sref  = storage.getReference().child("article/photo").child(fileName);
-        File finalProfilefile = profilefile;
-        sref.getFile(profilefile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                    // Local temp file has been created
-                    Glide.with(mContext).load(finalProfilefile).into(holder.photoImageVIew);
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    // Handle any errors
-                }
-            });
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(mContext, ProfileActivity.class);
-                intent.putExtra("User",userInfo);
-                intent.putExtra("post",finalProfilefile);
-                mContext.startActivity(intent);
-            }
-        });
-
-      //  Log.d(TAG, "onBindViewHolder: "+ userInfo.getUserName().toString());
-        holder.Name.setText(userInfo.getUserName().toString());
-        holder.LocaName.setText(userInfo.getDistance().toString() + "Km");
-       ;
     }
+
     public void getCurrentWeek() {
         Date currentDate = new Date();
 

@@ -1,7 +1,6 @@
 package com.example.healthappttt.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
@@ -17,8 +16,6 @@ import java.util.Date;
 import com.example.healthappttt.R;
 import com.example.healthappttt.Data.Routine;
 import com.example.healthappttt.Data.Exercise;
-import com.example.healthappttt.adapter.ExerciseAdapter;
-import com.example.healthappttt.adapter.testAdapter;
 
 public class ExerciseResultActivity extends AppCompatActivity {
     private TextView title;
@@ -34,7 +31,7 @@ public class ExerciseResultActivity extends AppCompatActivity {
     private Button EndBtn;
 
     private RecyclerView recyclerView;
-    private testAdapter adapter;
+//    private testAdapter adapter;
 
     private Routine record;
     private ArrayList<Exercise> exercises;
@@ -60,12 +57,12 @@ public class ExerciseResultActivity extends AppCompatActivity {
 
         EndBtn = (Button) findViewById(R.id.endBtn);
 
-        StartTime.setText(DateConversion(record.getStartTime()));
-        EndTime.setText(DateConversion(record.getEndTime()));
-        RunTime.setText(time(record.getRunTime()));
-//        RestTime.setText();
-
-        exercises = record.getExercises();
+//        StartTime.setText(DateConversion(record.getStartTime()));
+//        EndTime.setText(DateConversion(record.getEndTime()));
+//        RunTime.setText(time(record.getRunTime()));
+////        RestTime.setText();
+//
+//        exercises = record.getExercises();
 
         int sum = 0;
         int min = 0;
@@ -151,9 +148,9 @@ public class ExerciseResultActivity extends AppCompatActivity {
         return d;
     }
     private void setRecyclerView() {
-        adapter = new testAdapter(record);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(adapter);
+//        adapter = new testAdapter(record);
+//        recyclerView.setHasFixedSize(true);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+//        recyclerView.setAdapter(adapter);
     }
 }

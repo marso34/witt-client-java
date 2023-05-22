@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.healthappttt.Data.Message;
-import com.example.healthappttt.Data.User;
+import com.example.healthappttt.Data.UserInfo;
 import com.example.healthappttt.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

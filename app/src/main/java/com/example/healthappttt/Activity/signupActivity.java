@@ -3,7 +3,6 @@ package com.example.healthappttt.Activity;
 
 import static android.content.ContentValues.TAG;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,12 +17,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.bumptech.glide.Glide;
-import com.example.healthappttt.Data.Exercise;
 import com.example.healthappttt.Data.Routine;
-import com.example.healthappttt.Data.User;
 import com.example.healthappttt.R;
-import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -31,21 +26,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserInfo;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.util.Util;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 
 public class signupActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
@@ -131,22 +113,22 @@ public class signupActivity extends AppCompatActivity {
                                     storage.getReference().child("article/photo").child(user.getUid())
                                             .putFile(downloadUri);
 
-                                db.collection("users").document(user.getUid())
-                                            .set(new User(user.getUid(),uName,downloadUri.toString(), BenchPower, DeadPower,SquatPower,LN))
-                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                @Override
-                                                public void onSuccess(Void aVoid) {
-                                                    Log.d(TAG, "DocumentSnapshot successfully written!");
-                                                    setRoutine();
-
-                                                }
-                                            })
-                                            .addOnFailureListener(new OnFailureListener() {
-                                                @Override
-                                                public void onFailure(@NonNull Exception e) {
-                                                    Log.w(TAG, "Error writing document", e);
-                                                }
-                                            });
+//                                db.collection("users").document(user.getUid())
+//                                            .set(new UserInfo(user.getUid(),uName,downloadUri.toString(), BenchPower, DeadPower,SquatPower,LN,0))
+//                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                                                @Override
+//                                                public void onSuccess(Void aVoid) {
+//                                                    Log.d(TAG, "DocumentSnapshot successfully written!");
+//                                                    setRoutine();
+//
+//                                                }
+//                                            })
+//                                            .addOnFailureListener(new OnFailureListener() {
+//                                                @Override
+//                                                public void onFailure(@NonNull Exception e) {
+//                                                    Log.w(TAG, "Error writing document", e);
+//                                                }
+//                                            });
                                 }
 
                         }
@@ -171,7 +153,7 @@ public class signupActivity extends AppCompatActivity {
             }
 
             db.collection("routines").document(mAuth.getCurrentUser().getUid() +"_" + dayOfWeek).
-                    set(new Routine(dayOfWeek,0)).
+                    set(new Routine()).
                     addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {

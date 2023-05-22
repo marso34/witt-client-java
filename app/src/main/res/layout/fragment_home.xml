@@ -1,79 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Fragment.HomeFragment">
 
     <!-- TODO: Update blank fragment layout -->
-        <LinearLayout
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_bottom"
+            app:tabGravity="fill"
+            app:tabIndicatorColor="@color/black"
+            app:tabIndicatorHeight="1.6dp"
+            app:tabMode="fixed"
+            app:tabSelectedTextColor="@color/black"
+            app:tabTextColor="@color/black"
+            tools:ignore="SpeakableTextPresentCheck" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:orientation="horizontal"
-                android:background="@color/white"
-                >
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
 
-                <Button
-                    android:gravity="left|center"
-                    android:layout_width="70dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:text="루틴순"
-                    android:textStyle="bold"
-                    android:textSize="20dp"
-                    android:textColor="@color/black"
-                   android:background="#00ff0000"
-                    ></Button>
-                <Button
-                    android:textSize="20dp"
-                    android:gravity="left|center"
-                    android:layout_width="134dp"
-                    android:layout_height="wrap_content"
-                    android:text="같은 헬스장만"
-                    android:textStyle="bold"
-                    android:textColor="@color/gray"
-                    android:background="#00ff0000"
-                    ></Button>
-                <Button
-                    android:textSize="20dp"
-                    android:gravity="left|center"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="선호 시간순"
-                    android:textStyle="bold"
-                    android:textColor="@color/gray"
-                    android:background="#00ff0000"
-                    ></Button>
-                <com.google.android.material.tabs.TabLayout
-                    android:id="@+id/tabLayout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1.5dp"
-                android:background="#E2E2E2"
-                android:layout_gravity="center"/>
-            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-                android:id="@+id/swipe_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                >
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layout_constrainedHeight="true"
-                android:paddingBottom="200dp"
-                android:clipToPadding="false"
-                tools:listitem="@layout/adapter_user">
-            </androidx.recyclerview.widget.RecyclerView>
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-        </LinearLayout>
+    </LinearLayout>
+
 </FrameLayout>
