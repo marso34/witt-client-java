@@ -69,7 +69,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.MainVi
 
                 onExerciseClick.onExerciseClick(position, mainViewHolder.CardioTxtView, mainViewHolder.progressBar);
 
-                if (mainViewHolder.progressBar.getProgress() == exercises.get(position).getCount()) {
+                if (mainViewHolder.progressBar.getProgress() == mainViewHolder.progressBar.getMax()) {
                     mainViewHolder.endView.setVisibility(View.VISIBLE);
                     mainViewHolder.CountLayout.setVisibility(View.GONE);
                 }
@@ -83,27 +83,30 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.MainVi
     public void onBindViewHolder(@NonNull MainViewHolder holder, int position) {
         String name = this.exercises.get(position).getTitle();
         String cat = this.exercises.get(position).getState();
-        int progressMaxValue = this.exercises.get(position).getCount();
         int progressCurrentValue = holder.progressBar.getProgress();
+        int progressMaxValue = this.exercises.get(position).getCount();
 
         holder.CatView.setTextColor(Color.parseColor(this.exercises.get(position).getTextColor())); // 부위 텍스트 색
         holder.CatView.setBackgroundColor(Color.parseColor(this.exercises.get(position).getColor())); // 부위 바탕 색
         holder.CatView.setText(cat);
         holder.NameView.setText(name);
-        holder.progressBar.setMax(progressMaxValue);
-        holder.progressBar.setProgress(progressCurrentValue);
+
 
         if (this.exercises.get(position).getCat() == 0x40) {// 유산소일 경우
             holder.CountView.setText(Integer.toString(progressMaxValue));
             holder.CountUnitView.setText("분");
             holder.CardioTxtView.setVisibility(View.VISIBLE);
             holder.CardioTxtView.setText(holder.CardioTxtView.getText());
-        }
-        else {
+
+            progressMaxValue = progressMaxValue * 60 * 100;
+        } else {
             holder.CountView.setText(Integer.toString(this.exercises.get(position).getNum()));
             holder.CountUnitView.setText("회");
             holder.CardioTxtView.setVisibility(View.GONE);
         }
+
+        holder.progressBar.setMax(progressMaxValue);
+        holder.progressBar.setProgress(progressCurrentValue);
 
         if (progressCurrentValue == progressMaxValue) { // 운동을 완료했을 경우
             holder.endView.setVisibility(View.VISIBLE);
