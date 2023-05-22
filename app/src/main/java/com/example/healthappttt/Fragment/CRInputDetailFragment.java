@@ -14,31 +14,28 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.healthappttt.Data.Exercise;
 import com.example.healthappttt.R;
-import com.example.healthappttt.adapter.ExerciseListAdapter;
-import com.google.android.material.tabs.TabLayout;
+import com.example.healthappttt.adapter.ExerciseInputAdapter;
 
 import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link ExerciseDetailFragment#newInstance} factory method to
+ * Use the {@link CRInputDetailFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ExerciseDetailFragment extends Fragment {
+public class CRInputDetailFragment extends Fragment {
     private TextView ResetBtn, ScheduleTxt;
     private CardView NextBtn;
     private TextView NextTxt;
 
     private RecyclerView recyclerView;
-//    private ExerciseListAdapter adapter;
+    private ExerciseInputAdapter adapter;
 
     private ArrayList<Exercise> exercises;
-
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -53,7 +50,7 @@ public class ExerciseDetailFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     public interface OnFragmentInteractionListener {
-        void onRoutineExDetail(int startTime, int endTime);
+        void onRoutineExDetail(ArrayList<Exercise> exercises);
     }
 
     @Override
@@ -68,7 +65,7 @@ public class ExerciseDetailFragment extends Fragment {
         }
     }
 
-    public ExerciseDetailFragment() {
+    public CRInputDetailFragment() {
         // Required empty public constructor
     }
 
@@ -81,8 +78,8 @@ public class ExerciseDetailFragment extends Fragment {
      * @return A new instance of fragment ExerciseDetailFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ExerciseDetailFragment newInstance(String param1, String param2) {
-        ExerciseDetailFragment fragment = new ExerciseDetailFragment();
+    public static CRInputDetailFragment newInstance(String param1, String param2) {
+        CRInputDetailFragment fragment = new CRInputDetailFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -102,13 +99,16 @@ public class ExerciseDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_exercise_detail, container, false);
+        ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_cr_input_detail, container, false);
 
         ResetBtn = view.findViewById(R.id.reset);
         ScheduleTxt = view.findViewById(R.id.schedule);
-
         recyclerView = view.findViewById(R.id.recyclerView);
+
+        NextBtn = view.findViewById(R.id.nextBtn);
+        NextTxt = view.findViewById(R.id.nextTxt);
+
+        exercises = new ArrayList<>();
 
         if (getArguments() != null) {
             exercises = (ArrayList<Exercise>) getArguments().getSerializable("exercises");
@@ -116,6 +116,15 @@ public class ExerciseDetailFragment extends Fragment {
             setRoutineTime(schedule[0], schedule[1], schedule[2]);
         }
 
+        if (exercises != null)
+            setRecyclerView();
+
+        NextTxt.setBackgroundColor(Color.parseColor("#05c78c"));
+        NextTxt.setTextColor(Color.parseColor("#ffffff"));
+
+        NextBtn.setOnClickListener(v -> {
+            mListener.onRoutineExDetail(adapter.getInputData());
+        });
 
         return view;
     }
@@ -160,13 +169,9 @@ public class ExerciseDetailFragment extends Fragment {
     }
 
     private void setRecyclerView() {
-//        adapter = new ExerciseListAdapter(exercises);
-//        recyclerView.setHasFixedSize(true);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-//        recyclerView.setAdapter(adapter);
-//
-//        if (adapter != null) {
-//
-//        }
-    } // 리사이클러 뷰 생성 -> 추후 수정 필요
+        adapter = new ExerciseInputAdapter(exercises);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(adapter);
+    }
 }

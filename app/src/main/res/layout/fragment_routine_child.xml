@@ -47,7 +47,8 @@
                         android:background="#E3E8EF"
                         android:text="+ 추가하기"
                         android:textSize="12sp"
-                        android:textColor="#4A5567"/>
+                        android:textColor="#4A5567"
+                        android:textStyle="bold"/>
 
                 </androidx.cardview.widget.CardView>
 

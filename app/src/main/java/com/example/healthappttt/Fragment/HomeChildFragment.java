@@ -49,14 +49,11 @@ public class HomeChildFragment extends Fragment {
     private boolean updating = false;
     private UserInfo CurrentUser;
 
-
     private FirebaseFirestore firebaseFirestore;
     private FirebaseAuth mAuth;// 파이어베이스 유저관련 접속하기위한 변수
     private FirebaseFirestore db;
     private String UserUid;
     private String dayOfWeek = "";
-
-
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -116,7 +113,6 @@ public class HomeChildFragment extends Fragment {
             case 5: dayOfWeek = "fri"; break;
             case 6: dayOfWeek = "sat"; break;
         }
-
         setRecyclerView();
         SwipeRefreshLayout mSwipeRefreshLayout = view.findViewById(R.id.swipe_layout);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {

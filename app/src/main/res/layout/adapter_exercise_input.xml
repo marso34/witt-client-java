@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/exerciseCard"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="18dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="12dp"
+        android:orientation="horizontal">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="36dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center"
+            app:cardElevation="0dp"
+            app:cardCornerRadius="25dp" >
+
+            <TextView
+                android:id="@+id/exerciseCat"
+                android:layout_height="20dp"
+                android:layout_width="36dp"
+                android:padding="3dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:background="#000000"
+                android:textColor="#ffffff"
+                android:text="부위"
+                android:textSize="11sp"
+                android:textStyle="bold" />
+
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/exerciseName"
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:layout_marginLeft="16dp"
+            android:text="운동 이름"
+            android:textColor="@color/Standard"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/removeBtn"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center"
+            android:background="@drawable/round_button_subtitle"
+            android:src="@drawable/baseline_close_24"
+            app:tint="@color/white"
+            android:visibility="gone"/>
+
+<!--        x 버튼 내부 사이즈를 알 수 없음 -->
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:text="무게"
+                android:textSize="12sp"
+                android:textColor="@color/Subtitle"/>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:background="@color/Background_1">
+
+                    <EditText
+                        android:id="@+id/inputVoluem"
+                        android:layout_width="wrap_content"
+                        android:layout_height="44dp"
+                        android:layout_weight="1"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="4dp"
+                        android:background="@color/transparent"
+                        android:textColorHint="@color/Background_3"
+                        android:selectAllOnFocus="true"
+                        android:inputType="number"
+                        android:maxLength="4"
+                        android:hint="무게"
+                        android:textSize="16sp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="16dp"
+                        android:text="kg"
+                        android:textColor="@color/Subtitle"
+                        android:textSize="16sp"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginHorizontal="8dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:text="횟수"
+                android:textSize="12sp"
+                android:textColor="@color/Subtitle"/>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:background="@color/Background_1">
+
+                    <EditText
+                        android:id="@+id/inputCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="44dp"
+                        android:layout_weight="1"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="4dp"
+                        android:background="@color/transparent"
+                        android:textColorHint="@color/Background_3"
+                        android:selectAllOnFocus="true"
+                        android:inputType="number"
+                        android:maxLength="4"
+                        android:hint="횟수"
+                        android:textSize="16sp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="16dp"
+                        android:text="회"
+                        android:textColor="@color/Subtitle"
+                        android:textSize="16sp"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:text="세트"
+                android:textSize="12sp"
+                android:textColor="@color/Subtitle"/>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:background="@color/Background_1">
+
+                    <EditText
+                        android:id="@+id/inputSet"
+                        android:layout_width="wrap_content"
+                        android:layout_height="44dp"
+                        android:layout_weight="1"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="4dp"
+                        android:background="@color/transparent"
+                        android:textColorHint="@color/Background_3"
+                        android:selectAllOnFocus="true"
+                        android:inputType="number"
+                        android:maxLength="4"
+                        android:hint="세트 수"
+                        android:textSize="16sp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="16dp"
+                        android:text="세트"
+                        android:textColor="@color/Subtitle"
+                        android:textSize="16sp"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -75,7 +75,7 @@
                     android:layout_gravity="center"
                     android:layout_marginLeft="16dp"
                     android:text="운동 이름"
-                    android:textColor="@color/black"
+                    android:textColor="@color/Standard"
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
