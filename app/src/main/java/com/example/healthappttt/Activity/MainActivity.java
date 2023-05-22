@@ -3,8 +3,12 @@ package com.example.healthappttt.Activity;
 import static android.content.ContentValues.TAG;
 
 import android.Manifest;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -12,9 +16,14 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -22,19 +31,31 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.healthappttt.Data.GetUserInfo;
+import com.example.healthappttt.Fragment.ChattingFragment;
 import com.example.healthappttt.Fragment.HomeFragment;
 import com.example.healthappttt.Fragment.ProfileFragment;
 //import com.example.healthappttt.Fragment.ChattingFragment;
 import com.example.healthappttt.Fragment.RoutineFragment;
 import com.example.healthappttt.R;
 import com.example.healthappttt.databinding.ActivityMainBinding;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -46,7 +67,12 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
 
+    private static final int RC_SIGN_IN = 123;
+    private GoogleSignInClient mGoogleSignInClient;
     private int tempItemID;
+    Button mGoogleSignOutButton;
+    private LoginActivity loginActivity;
+
     private int dayOfWeek;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +87,17 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
         db = FirebaseFirestore.getInstance();
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.google_sign_in_client_id))
+                .requestEmail()
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+        SharedPreferences sharedPref = getSharedPreferences("myPref", Context.MODE_PRIVATE);
+        String useremail = sharedPref.getString("useremail", "");
+
+
         if ( Build.VERSION.SDK_INT >= 23 &&
                 ContextCompat.checkSelfPermission( getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
             ActivityCompat.requestPermissions( MainActivity.this, new String[] {
@@ -147,13 +184,14 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.chatting:
                         binding.viewName.setText("채팅");
-//                        replaceFragment(new ChattingFragment());
+                        replaceFragment(new ChattingFragment());
                         break;
                     case R.id.profile:
                         binding.viewName.setText("기록");
                         replaceFragment(new ProfileFragment()); // 운동 기록 프래그먼트로 나중에 수정
                         break;
                 }
+
             }
 
             return true;
@@ -164,7 +202,15 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("dayOfWeek", dayOfWeek);
             startActivity(intent);
         });
+        binding.signOutButton.setOnClickListener(view -> {
+            signOut();
+        });
+        binding.myInformation.setOnClickListener(view -> {
+                showUserInfoPopup(useremail);
+        });
     }
+
+
 
 
     final LocationListener gpsLocationListener = new LocationListener() {
@@ -200,6 +246,101 @@ public class MainActivity extends AppCompatActivity {
         }
         fragmentTransaction.replace(R.id.frame_layout, fragment);
         fragmentTransaction.commit();
+    }
+
+    private void signOut() {
+        mGoogleSignInClient.signOut()
+                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        // Update UI after sign out
+                        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e("MainActivity", "Google sign out failed", e);
+                    }
+                });
+    }
+
+    private void showUserInfoPopup(String userEmail) {
+
+       // Toast.makeText(MainActivity.this, userEmail, Toast.LENGTH_SHORT).show();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View view = getLayoutInflater().inflate(R.layout.my_popup_layout, null);
+
+        GetUserInfo.getUserInfo(userEmail, new Callback<GetUserInfo>() {
+            @Override
+            public void onResponse(Call<GetUserInfo> call, Response<GetUserInfo> response) {
+                if (response.isSuccessful()) {
+                    GetUserInfo userInfo = response.body();
+
+
+
+                    TextView tvUserName = view.findViewById(R.id.tv_user_info_name);
+                    TextView tvUserEmail = view.findViewById(R.id.tv_user_info_email);
+                    Button btnClose = view.findViewById(R.id.btn_user_info_close);
+
+                    String userName = userInfo.getUserNm();
+                    String userEmail = userInfo.getEmail();
+
+                    tvUserName.setText(userName);
+                    tvUserEmail.setText(userEmail);
+
+                    builder.setView(view);
+                    AlertDialog dialog = builder.create();
+
+                    btnClose.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss(); // 팝업창 닫기
+                        }
+                    });
+                    dialog.show();
+
+
+                } else {
+                    // API 호출이 실패한 경우 처리
+                    // ...
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetUserInfo> call, Throwable t) {;
+            }
+        });
+
+
+    }
+
+
+
+    private void getUserInfo(String userEmail) {
+        GetUserInfo.getUserInfo(userEmail, new Callback<GetUserInfo>() {
+            @Override
+            public void onResponse(Call<GetUserInfo> call, Response<GetUserInfo> response) {
+                if (response.isSuccessful()) {
+                    GetUserInfo userInfo = response.body();
+                    int userPk = userInfo.getUserPk();
+                    String email = userInfo.getEmail();
+                    String userNm = userInfo.getUserNm();
+
+
+                } else {
+                    // API 호출이 실패한 경우 처리
+                    // ...
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetUserInfo> call, Throwable t) {;
+            }
+        });
     }
 
     @Override

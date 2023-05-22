@@ -21,6 +21,11 @@
         android:theme="@style/Theme.HealthAppTTT"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+
+        <meta-data
+            android:name="com.google.android.gms.auth.api.client.id"
+            android:value="@string/default_web_client_id" />
+
         <activity
             android:name=".Activity.EditRoutineActivity"
             android:exported="false"
