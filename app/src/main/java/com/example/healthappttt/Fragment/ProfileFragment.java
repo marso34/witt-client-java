@@ -4,6 +4,7 @@ import static android.content.ContentValues.TAG;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,7 +18,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.healthappttt.Activity.LoginActivity;
 import com.example.healthappttt.Activity.MainActivity;
+import com.example.healthappttt.Data.GetUserInfo;
 import com.example.healthappttt.Data.UserInfo;
 import com.example.healthappttt.R;
 
@@ -39,11 +42,11 @@ import androidx.fragment.app.Fragment;
 import java.io.File;
 import java.io.IOException;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ProfileFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class ProfileFragment extends Fragment {
     // 파이어스토어에 접근하기 위한 객체 생성
     private static final FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -54,51 +57,15 @@ public class ProfileFragment extends Fragment {
 //    private UserInfo mDataset;
 //    private Context mContext;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    ApiInterface apiService = ApiClient.getRetrofitInstance().create(ApiInterface.class);
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-
-
-    public ProfileFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ProfileFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ProfileFragment newInstance(String param1, String param2) {
-        ProfileFragment fragment = new ProfileFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        SharedPreferences sharedPref = getActivity().getSharedPreferences("myPref", Context.MODE_PRIVATE);
+        String useremail = sharedPref.getString("useremail", "");
         // Inflate the layout for this fragment
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_proflie, container, false);
         // 아이디 연결
@@ -123,9 +90,9 @@ public class ProfileFragment extends Fragment {
         productRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()){
+                if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
-                    if( document.exists()) { // 데이터가 존재할 경우
+                    if (document.exists()) { // 데이터가 존재할 경우
 //                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
 
                         mytempreture2.setText(document.getData().get("userTemperature").toString().concat("km"));
@@ -144,18 +111,18 @@ public class ProfileFragment extends Fragment {
 
 
                         progress_percent = 0;
-                        String dcutempre =document.getData().get("userTemperature").toString();
-                        new Thread(){
+                        String dcutempre = document.getData().get("userTemperature").toString();
+                        new Thread() {
                             public void run() {
                                 while (true) {
                                     try {
-                                        while(!Thread.currentThread().isInterrupted()) {
+                                        while (!Thread.currentThread().isInterrupted()) {
                                             progress_percent += 1;
                                             Thread.sleep(5);
-                                            Log.d("test","progress_percent" + progress_percent);
+                                            Log.d("test", "progress_percent" + progress_percent);
                                             mtprogresser.setProgress(progress_percent);
                                             // TODO 유저온도가 소수일 경우도 처리 가능해야함
-                                            if(progress_percent >= Double.parseDouble(dcutempre)){
+                                            if (progress_percent >= Double.parseDouble(dcutempre)) {
                                                 currentThread().interrupt();
                                             }
                                         }
@@ -167,11 +134,11 @@ public class ProfileFragment extends Fragment {
                         }.start();
 
 
-                    }else {
+                    } else {
                         Log.d(TAG, "No such document!");
                     }
-                }else {
-                    Log.d(TAG, "get failed with",task.getException());
+                } else {
+                    Log.d(TAG, "get failed with", task.getException());
                 }
             }
         });
@@ -181,12 +148,12 @@ public class ProfileFragment extends Fragment {
         File profilefile = null;
 
         try {
-            profilefile = File.createTempFile("images","jpeg");
+            profilefile = File.createTempFile("images", "jpeg");
         } catch (IOException e) {
             e.printStackTrace();
         }
         storage = FirebaseStorage.getInstance();
-        StorageReference sref  = storage.getReference().child("article/photo").child(fileName);
+        StorageReference sref = storage.getReference().child("article/photo").child(fileName);
         File finalProfilefile = profilefile;
         sref.getFile(profilefile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
             @Override
@@ -201,12 +168,8 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-
-
-
-
-
-
         return view;
     }
+
+
 }

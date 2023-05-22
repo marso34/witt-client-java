@@ -164,7 +164,7 @@ public class HomeChildFragment extends Fragment {
     }
 
     private void getUserData() {
-        ApiInterface apiInterface = ApiClient.getRetrofit().create(ApiInterface.class);
+        ApiInterface apiInterface = ApiClient.getRetrofitInstance().create(ApiInterface.class);
         Log.d("TAG", String.valueOf(day_of_week));
         NearUsersData NR = new NearUsersData(day_of_week,0);//현재 내 유저 정보 보내서 내껀 안나오게함.
         Call<List<UserInfo>> call = apiInterface.GetNearUsers(NR);
