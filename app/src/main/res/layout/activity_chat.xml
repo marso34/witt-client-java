@@ -87,7 +87,7 @@
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:layout_weight="75"
-            android:background="@drawable/round_button_gray"
+            android:background="@drawable/round_button_bg_1"
             android:hint="메세지 보내기"
             android:paddingLeft="10dp" />
         <!--전송 버튼-->

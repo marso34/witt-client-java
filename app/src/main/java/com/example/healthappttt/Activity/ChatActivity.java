@@ -16,7 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.healthappttt.Data.Message;
-import com.example.healthappttt.Data.User;
+import com.example.healthappttt.Data.UserInfo;
 import com.example.healthappttt.R;
 import com.example.healthappttt.adapter.MessageAdapter;
 import com.example.healthappttt.adapter.UserListAdapter;

@@ -18,7 +18,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.healthappttt.Activity.MainActivity;
-import com.example.healthappttt.Data.User;
+import com.example.healthappttt.Data.UserInfo;
 import com.example.healthappttt.R;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -51,7 +51,7 @@ public class ProfileFragment extends Fragment {
     private FirebaseStorage storage;
     private StorageReference sref;
     private static int progress_percent;
-//    private User mDataset;
+//    private UserInfo mDataset;
 //    private Context mContext;
 
     // TODO: Rename parameter arguments, choose names that match

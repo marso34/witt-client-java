@@ -321,7 +321,7 @@
                     android:layout_height="wrap_content"
                     android:overScrollMode="never"
                     android:nestedScrollingEnabled="false"
-                    tools:listitem="@layout/adapter_set_exercise"/>
+                    tools:listitem="@layout/adapter_exercise_input"/>
 
             </LinearLayout>
 

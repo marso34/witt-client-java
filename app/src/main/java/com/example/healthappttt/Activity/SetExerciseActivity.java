@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.healthappttt.Data.Exercise;
 import com.example.healthappttt.R;
 import com.example.healthappttt.Data.Routine;
-import com.example.healthappttt.adapter.setExerciseAdapter;
+import com.example.healthappttt.adapter.ExerciseInputAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -36,7 +36,7 @@ public class SetExerciseActivity extends AppCompatActivity {
     private TextView IntroduceTxt;
     private ImageView OptionBtn; // 옵션
     private RecyclerView recyclerView;
-    private setExerciseAdapter adapter;
+    private ExerciseInputAdapter adapter;
     private Button StartBtn;  // 시작 버튼
 
     private Routine routine;
@@ -61,7 +61,7 @@ public class SetExerciseActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
-        routine = new Routine("", 0);
+        routine = new Routine();
         exercises = new ArrayList<>();
 
         getCurrentWeek();
@@ -101,10 +101,9 @@ public class SetExerciseActivity extends AppCompatActivity {
                             if (document.exists()) {
                                 Log.d(TAG, "Document exists!");
                                 routine = new Routine(
-                                        document.getData().get("title").toString(),
-                                        Integer.parseInt(document.getData().get("exerciseCategories").toString()),
-                                        document.getData().get("startTime").toString(),
-                                        document.getData().get("endTime").toString()
+//                                        Integer.parseInt(document.getData().get("exerciseCategories").toString()),
+//                                        document.getData().get("startTime").toString(),
+//                                        document.getData().get("endTime").toString()
                                 );
 
                                 setExercises();
@@ -129,16 +128,16 @@ public class SetExerciseActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                routine.addExercise(new Exercise(
-                                        document.getData().get("title").toString(),
-                                        document.getData().get("state").toString(),
-                                        Integer.parseInt(document.getData().get("count").toString()),
-                                        Integer.parseInt(document.getData().get("volume").toString())
-                                ));
+//                                routine.addExercise(new Exercise(
+//                                        document.getData().get("title").toString(),
+//                                        document.getData().get("state").toString(),
+//                                        Integer.parseInt(document.getData().get("count").toString()),
+//                                        Integer.parseInt(document.getData().get("volume").toString())
+//                                ));
                             }
 
-                            if (routine.getExercises().size() == 0)
-                                IntroduceTxt.setText("오늘 루틴이 없어요");
+//                            if (routine.getExercises().size() == 0)
+//                                IntroduceTxt.setText("오늘 루틴이 없어요");
 
                             setRecyclerView();
 
@@ -163,22 +162,22 @@ public class SetExerciseActivity extends AppCompatActivity {
 
 
     private void setRecyclerView() {
-        adapter = new setExerciseAdapter(routine, true);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(adapter);
-
-        if (adapter != null) {
-            adapter.setOnExerciseClickListener(new setExerciseAdapter.OnExerciseClick() { // 어댑터 데이터를 전송 받기 위한 인터페이스 콜백
-                @Override
-                public void onExerciseClick(int postion) { // 운동 기록과 운동 메모를 전달 받아
-                    adapter.notifyDataSetChanged();
-                    adapter.removeItem(postion);
-
-                    if (routine.getExercises().size() == 0)
-                        IntroduceTxt.setText("오늘 루틴이 없어요");
-                }
-            });
-        }
+//        adapter = new setExerciseAdapter(routine, true);
+//        recyclerView.setHasFixedSize(true);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+//        recyclerView.setAdapter(adapter);
+//
+//        if (adapter != null) {
+//            adapter.setOnExerciseClickListener(new setExerciseAdapter.OnExerciseClick() { // 어댑터 데이터를 전송 받기 위한 인터페이스 콜백
+//                @Override
+//                public void onExerciseClick(int postion) { // 운동 기록과 운동 메모를 전달 받아
+//                    adapter.notifyDataSetChanged();
+//                    adapter.removeItem(postion);
+//
+//                    if (routine.getExercises().size() == 0)
+//                        IntroduceTxt.setText("오늘 루틴이 없어요");
+//                }
+//            });
+//        }
     }
 }
