@@ -99,10 +99,12 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == RC_SIGN_IN) {
+
             // The Task returned from this call is always completed, no need to attach
             // a listener.
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             handleSignInResult(task);
+
         }
     }
 
@@ -120,7 +122,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     }
 
     private void updateUI(@Nullable GoogleSignInAccount account) {
+
         if (account != null) {
+
             // Get Google ID token
             String token = account.getIdToken();
             String email = account.getEmail();
