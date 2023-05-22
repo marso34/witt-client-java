@@ -292,28 +292,25 @@ public class ERRecordingFragment extends Fragment {
             RestTimeView.setText(result2);
 
             if (AdapterProgressBar != null) { // 이 부분은 수정 필요
-//                int t = AdapterCardioBar.getProgress();
-//
-//                if (xRunTime < (runTime / 100) && t < AdapterCardioBar.getMax()) {
-//                    t++;
-////                    recordExercises.get(position).setCount(t / 600); // position 지정 방법 필요, 일단 600으로 나눈 정수(분 단위) 저장
-//                    AdapterCardioBar.setProgress(t);
-//                }
-//
-//                if (t == AdapterCardioBar.getMax()) {
-//                    AdapterCardioBar.setProgressDrawable(getDrawable(R.drawable.progressbar_exercise2));
-//                    AdapterCardioBar = null;
-//                }
-//
-//                int Asec  = (t / 10) % 60;
-//                int Amin  = (t / 10) / 60 % 60;
-//                int Ahour = (t / 10) / (60 * 60);
-//
-//                @SuppressLint("DefaultLocale") String resultT = String.format("%02d:%02d:%02d", Ahour, Amin, Asec);
-//                AdapterCardioTxtView.setText(resultT);
+                int progress = AdapterProgressBar.getProgress();
+
+                if (isRunning && progress < AdapterProgressBar.getMax()) {
+                    progress++; // 이 부분 수정 필요, 지금은 스레드를 활용하여 0.01초마다 1씩 추가하는 코드 -> 스레드를 활용하다보니 지연 가능성 있음
+                    int Asec  = (progress / 100) % 60;
+                    int Amin  = (progress / 100) / 60 % 60;
+                    int Ahour = (progress / 100) / (60 * 60);
+
+                    @SuppressLint("DefaultLocale") String resultT = String.format("%02d:%02d:%02d", Ahour, Amin, Asec);
+
+                    AdapterProgressBar.setProgress(progress);
+                    AdapterTxtView.setText(resultT);
+                }
+
+                if (progress == AdapterProgressBar.getMax()) {
+                    AdapterProgressBar = null;
+                    AdapterTxtView = null;
+                }
             }
-//
-//            xRunTime = runTime / 100;
         }
     };
 

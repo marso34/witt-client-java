@@ -65,7 +65,6 @@ public class Exercise implements Serializable {
         this.index = e.index;
     }
 
-
     public int getID()                      { return this.ID; }
     public int getParentID()               { return this.parentID; }
     public String getTitle()                { return this.title; }
