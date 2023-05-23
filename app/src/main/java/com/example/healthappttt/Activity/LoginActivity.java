@@ -18,8 +18,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.healthappttt.Data.GetUserInfo;
 import com.example.healthappttt.Data.UserData;
-import com.example.healthappttt.Fragment.ApiClient;
-import com.example.healthappttt.Fragment.ApiInterface;
+import com.example.healthappttt.Fragment.RetrofitClient;
+import com.example.healthappttt.Fragment.ServiceApi;
 
 import com.example.healthappttt.R;
 
@@ -160,7 +160,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
 
     private void sendTokenToServer(String email, String name) {
-        ApiInterface apiService = ApiClient.getRetrofitInstance().create(ApiInterface.class);
+        ServiceApi apiService = RetrofitClient.getRetrofitInstance().create(ServiceApi.class);
         UserData userData = new UserData(email, name);
         Call<ResponseBody> call = apiService.sendData(userData);
 

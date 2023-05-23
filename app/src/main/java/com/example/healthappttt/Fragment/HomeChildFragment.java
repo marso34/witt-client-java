@@ -16,9 +16,11 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.healthappttt.Data.CompareUser;
 import com.example.healthappttt.Data.NearUsersData;
+import com.example.healthappttt.Data.RetrofitClient;
 import com.example.healthappttt.Data.UserInfo;
 import com.example.healthappttt.R;
 import com.example.healthappttt.adapter.UserAdapter;
+import com.example.healthappttt.interface_.ServiceApi;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -164,7 +166,7 @@ public class HomeChildFragment extends Fragment {
     }
 
     private void getUserData() {
-        ApiInterface apiInterface = ApiClient.getRetrofitInstance().create(ApiInterface.class);
+        ServiceApi apiInterface = RetrofitClient.getRetrofitInstance().create(ServiceApi.class);
         Log.d("TAG", String.valueOf(day_of_week));
         NearUsersData NR = new NearUsersData(day_of_week,0);//현재 내 유저 정보 보내서 내껀 안나오게함.
         Call<List<UserInfo>> call = apiInterface.GetNearUsers(NR);

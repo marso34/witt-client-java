@@ -1,7 +1,7 @@
 package com.example.healthappttt.Data;
 
-import com.example.healthappttt.Fragment.ApiClient;
-import com.example.healthappttt.Fragment.ApiInterface;
+import com.example.healthappttt.Fragment.RetrofitClient;
+import com.example.healthappttt.Fragment.ServiceApi;
 import com.google.gson.annotations.SerializedName;
 
 import retrofit2.Call;
@@ -46,7 +46,7 @@ public class GetUserInfo {
     }
 
     public static void getUserInfo(String email, Callback<GetUserInfo> callback) {
-        ApiInterface apiInterface = ApiClient.getRetrofitInstance().create(ApiInterface.class);
+        ServiceApi apiInterface = RetrofitClient.getRetrofitInstance().create(ServiceApi.class);
         Call<GetUserInfo> call = apiInterface.getUserInfo(email);
         call.enqueue(callback);
     }

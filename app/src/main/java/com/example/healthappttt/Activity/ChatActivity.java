@@ -21,8 +21,8 @@ import android.widget.TextView;
 
 import com.example.healthappttt.Data.Message;
 import com.example.healthappttt.Data.UserInfo;
-import com.example.healthappttt.Fragment.ApiClient;
-import com.example.healthappttt.Fragment.ApiInterface;
+import com.example.healthappttt.Fragment.RetrofitClient;
+import com.example.healthappttt.Fragment.ServiceApi;
 import com.example.healthappttt.R;
 import com.example.healthappttt.adapter.MessageListAdapter;
 import com.example.healthappttt.adapter.UserListAdapter;
@@ -109,7 +109,7 @@ public class ChatActivity extends AppCompatActivity {
 
     // 서버로 메시지를 보내는 메소드입니다.
     private void sendMessageToServer(String messageText) {
-        ApiInterface apiService = ApiClient.getRetrofitInstance().create(ApiInterface.class);
+        ServiceApi apiService = RetrofitClient.getRetrofitInstance().create(ServiceApi.class);
         Message newMessage = new Message(username, messageText, System.currentTimeMillis());
         Call<Message> call = apiService.sendMessage(newMessage);
         call.enqueue(new Callback<Message>() {
