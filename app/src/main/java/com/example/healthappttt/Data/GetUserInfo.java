@@ -1,8 +1,7 @@
 package com.example.healthappttt.Data;
 
-import com.example.healthappttt.Fragment.RetrofitClient;
-import com.example.healthappttt.Fragment.ServiceApi;
-import com.google.gson.annotations.SerializedName;
+
+import com.example.healthappttt.interface_.ServiceApi;
 
 import retrofit2.Call;
 import retrofit2.Callback;

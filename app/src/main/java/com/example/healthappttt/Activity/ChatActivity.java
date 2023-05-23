@@ -1,43 +1,22 @@
 package com.example.healthappttt.Activity;
 
-import static androidx.fragment.app.FragmentManager.TAG;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageButton;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.ContentValues;
-import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-
 import com.example.healthappttt.Data.Message;
-import com.example.healthappttt.Data.UserInfo;
-import com.example.healthappttt.Fragment.RetrofitClient;
-import com.example.healthappttt.Fragment.ServiceApi;
+import com.example.healthappttt.Data.RetrofitClient;
 import com.example.healthappttt.R;
 import com.example.healthappttt.adapter.MessageListAdapter;
-import com.example.healthappttt.adapter.UserListAdapter;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.example.healthappttt.interface_.ServiceApi;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;

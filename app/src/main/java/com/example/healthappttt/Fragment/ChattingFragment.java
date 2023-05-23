@@ -13,11 +13,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.healthappttt.Activity.ChatActivity;
+import com.example.healthappttt.Data.RetrofitClient;
 import com.example.healthappttt.Data.User;
 import com.example.healthappttt.R;
 import com.example.healthappttt.adapter.UserListAdapter;
+import com.example.healthappttt.interface_.ServiceApi;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 

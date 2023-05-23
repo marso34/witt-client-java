@@ -2,10 +2,8 @@ package com.example.healthappttt.Fragment;
 
 import static android.content.ContentValues.TAG;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,15 +13,14 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
-import com.example.healthappttt.Activity.LoginActivity;
-import com.example.healthappttt.Activity.MainActivity;
-import com.example.healthappttt.Data.GetUserInfo;
-import com.example.healthappttt.Data.UserInfo;
+import com.example.healthappttt.Data.RetrofitClient;
 import com.example.healthappttt.R;
-
+import com.example.healthappttt.interface_.ServiceApi;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -36,16 +33,8 @@ import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
 import java.io.File;
 import java.io.IOException;
-
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class ProfileFragment extends Fragment {
     // 파이어스토어에 접근하기 위한 객체 생성

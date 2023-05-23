@@ -4,9 +4,13 @@ import com.example.healthappttt.Activity.UserKey;
 import com.example.healthappttt.Activity.UserProfile;
 import com.example.healthappttt.Data.ExerciseResponse;
 import com.example.healthappttt.Data.GetUserInfo;
+import com.example.healthappttt.Data.Message;
 import com.example.healthappttt.Data.NearUsersData;
 import com.example.healthappttt.Data.RoutineData;
 import com.example.healthappttt.Data.RoutineExerciseData;
+import com.example.healthappttt.Data.User;
+import com.example.healthappttt.Data.UserData;
+import com.example.healthappttt.Data.UserInfo;
 import com.example.healthappttt.Data.pkData;
 
 import java.util.List;
