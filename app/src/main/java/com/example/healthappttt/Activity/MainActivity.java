@@ -12,6 +12,7 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,7 +24,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.healthappttt.Fragment.HomeFragment;
 import com.example.healthappttt.Fragment.ProfileFragment;
-import com.example.healthappttt.Fragment.ChattingFragment;
+//import com.example.healthappttt.Fragment.ChattingFragment;
 import com.example.healthappttt.Fragment.RoutineFragment;
 import com.example.healthappttt.R;
 import com.example.healthappttt.databinding.ActivityMainBinding;
@@ -34,13 +35,28 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.Calendar;
+import java.util.Date;
+
 public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
+    private long backPressedTime = 0;
+    private Toast toast;
+
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
+
+    private int tempItemID;
+    private int dayOfWeek;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         final LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+        Date currentDate = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(currentDate);
+        dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK) - 1; // 현재 요일 정보
 
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
@@ -110,31 +126,42 @@ public class MainActivity extends AppCompatActivity {
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        tempItemID = R.id.home;
         replaceFragment(new HomeFragment());
+
+
         binding.bottomNav.setOnItemSelectedListener(item -> {
-            switch (item.getItemId()) {
-                case R.id.home:
-                    binding.viewName.setText("홈");
-                    replaceFragment(new HomeFragment());
-                    break;
-                case R.id.routine:
-                    binding.viewName.setText("루틴");
-                    replaceFragment(new RoutineFragment());
-                    break;
-                case R.id.chatting:
-                    binding.viewName.setText("채팅");
-                    replaceFragment(new ChattingFragment());
-                    break;
-                case R.id.profile:
-                    binding.viewName.setText("기록");
-//                    replaceFragment(new ProfileFragment()); // 운동 기록 프래그먼트로 연결
-                    break;
+            int ItemId = item.getItemId();
+
+            if (tempItemID != ItemId) {
+                tempItemID = ItemId;
+
+                switch (ItemId) {
+                    case R.id.home:
+                        binding.viewName.setText("홈");
+                        replaceFragment(new HomeFragment());
+                        break;
+                    case R.id.routine:
+                        binding.viewName.setText("루틴");
+                        replaceFragment(new RoutineFragment());
+                        break;
+                    case R.id.chatting:
+                        binding.viewName.setText("채팅");
+//                        replaceFragment(new ChattingFragment());
+                        break;
+                    case R.id.profile:
+                        binding.viewName.setText("기록");
+                        replaceFragment(new ProfileFragment()); // 운동 기록 프래그먼트로 나중에 수정
+                        break;
+                }
             }
+
             return true;
         });
 
         binding.fab.setOnClickListener(view -> {
-            Intent intent = new Intent(getApplicationContext(), SetExerciseActivity.class);
+            Intent intent = new Intent(getApplicationContext(), ExerciseRecordActivity.class);
+            intent.putExtra("dayOfWeek", dayOfWeek);
             startActivity(intent);
         });
     }
@@ -173,5 +200,24 @@ public class MainActivity extends AppCompatActivity {
         }
         fragmentTransaction.replace(R.id.frame_layout, fragment);
         fragmentTransaction.commit();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (System.currentTimeMillis() > backPressedTime + 2000) {
+            backPressedTime = System.currentTimeMillis();
+            showGuide("\'뒤로\' 버튼을 한번 더 누르시면 종료됩니다.");
+            return;
+        }
+
+        if (System.currentTimeMillis() <= backPressedTime + 2000) {
+            finish();
+            toast.cancel();
+        }
+    }
+
+    private void showGuide(String msg) {
+        toast = Toast.makeText(this, msg, Toast.LENGTH_SHORT);
+        toast.show();
     }
 }
