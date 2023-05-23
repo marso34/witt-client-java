@@ -166,7 +166,7 @@ public class HomeChildFragment extends Fragment {
     }
 
     private void getUserData() {
-        ServiceApi apiInterface = RetrofitClient.getRetrofitInstance().create(ServiceApi.class);
+        ServiceApi apiInterface = RetrofitClient.getClient().create(ServiceApi.class);
         Log.d("TAG", String.valueOf(day_of_week));
         NearUsersData NR = new NearUsersData(day_of_week,0);//현재 내 유저 정보 보내서 내껀 안나오게함.
         Call<List<UserInfo>> call = apiInterface.GetNearUsers(NR);

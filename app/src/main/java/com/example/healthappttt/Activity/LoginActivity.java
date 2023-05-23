@@ -160,7 +160,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
 
     private void sendTokenToServer(String email, String name) {
-        ServiceApi apiService = RetrofitClient.getRetrofitInstance().create(ServiceApi.class);
+        ServiceApi apiService = RetrofitClient.getClient().create(ServiceApi.class);
         UserData userData = new UserData(email, name);
         Call<ResponseBody> call = apiService.sendData(userData);
 

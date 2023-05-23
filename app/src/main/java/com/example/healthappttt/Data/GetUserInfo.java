@@ -46,7 +46,7 @@ public class GetUserInfo {
     }
 
     public static void getUserInfo(String email, Callback<GetUserInfo> callback) {
-        ServiceApi apiInterface = RetrofitClient.getRetrofitInstance().create(ServiceApi.class);
+        ServiceApi apiInterface = RetrofitClient.getClient().create(ServiceApi.class);
         Call<GetUserInfo> call = apiInterface.getUserInfo(email);
         call.enqueue(callback);
     }

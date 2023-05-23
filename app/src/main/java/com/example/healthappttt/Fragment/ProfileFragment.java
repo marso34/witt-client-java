@@ -57,7 +57,7 @@ public class ProfileFragment extends Fragment {
 //    private UserInfo mDataset;
 //    private Context mContext;
 
-    ServiceApi apiService = RetrofitClient.getRetrofitInstance().create(ServiceApi.class);
+    ServiceApi apiService = RetrofitClient.getClient().create(ServiceApi.class);
 
 
     @Override

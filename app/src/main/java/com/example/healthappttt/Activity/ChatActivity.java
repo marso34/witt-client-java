@@ -109,7 +109,7 @@ public class ChatActivity extends AppCompatActivity {
 
     // 서버로 메시지를 보내는 메소드입니다.
     private void sendMessageToServer(String messageText) {
-        ServiceApi apiService = RetrofitClient.getRetrofitInstance().create(ServiceApi.class);
+        ServiceApi apiService = RetrofitClient.getClient().create(ServiceApi.class);
         Message newMessage = new Message(username, messageText, System.currentTimeMillis());
         Call<Message> call = apiService.sendMessage(newMessage);
         call.enqueue(new Callback<Message>() {
