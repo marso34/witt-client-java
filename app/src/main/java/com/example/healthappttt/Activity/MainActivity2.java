@@ -7,6 +7,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.healthappttt.Data.PreferenceHelper;
+import com.example.healthappttt.Data.UserKey;
+import com.example.healthappttt.Data.UserProfile;
+import com.example.healthappttt.interface_.ServiceApi;
 
 import java.util.List;
 
@@ -16,7 +19,7 @@ import retrofit2.Response;
 
 
 public class MainActivity2 extends AppCompatActivity {
-    private ApiService apiService;
+    private ServiceApi apiService;
     private PreferenceHelper prefhelper;
     //유저키를 UserKey 자료형으로 받음 ( 유동적으로 로그인에서 넘겨준 pk값이 들어가야함 )
     UserKey userKey = new UserKey(1);
@@ -27,7 +30,7 @@ public class MainActivity2 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         //api 요청 인터페이스 가져오기
-        apiService = RetrofitClient.getClient().create(ApiService.class); // create메서드로 api서비스 인터페이스의 구현제 생성
+        apiService = RetrofitClient.getClient().create(ServiceApi.class); // create메서드로 api서비스 인터페이스의 구현제 생성
         prefhelper = new PreferenceHelper(this);
 
         getuserProfile(userKey); //유저키가 '1'

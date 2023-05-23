@@ -1,9 +1,10 @@
 package com.example.healthappttt.interface_;
 
+import com.example.healthappttt.Data.UserKey;
+import com.example.healthappttt.Data.UserProfile;
 import com.example.healthappttt.Data.ExerciseResponse;
 import com.example.healthappttt.Data.RoutineData;
 import com.example.healthappttt.Data.RoutineExerciseData;
-import com.example.healthappttt.Data.RoutineResponse;
 import com.example.healthappttt.Data.pkData;
 
 import java.util.List;
@@ -24,4 +25,7 @@ public interface ServiceApi {
 
     @POST("/UpdateRoutine")
     Call<Integer> updateRoutine(@Body RoutineData data);
+
+    @POST("/getuserkey")
+    Call<List<UserProfile>> getuserprofile(@Body UserKey userKey); // 파라미터(User_PK)를 줘서 동적으로 변경 필요
 }
