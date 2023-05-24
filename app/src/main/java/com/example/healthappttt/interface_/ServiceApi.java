@@ -26,16 +26,16 @@ public interface ServiceApi {
     @POST("/getuserkey")
     Call<List<UserProfile>> getuserprofile(@Body UserKey userKey); // 파라미터(User_PK)를 줘서 동적으로 변경 필요
 
-    @POST("/CreateRoutine")
+    @POST("/routine/CreateRoutine")
     Call<List<Integer>> createRoutine(@Body RoutineData data);
 
-    @POST("/CreateExercise")
-    Call<List<ExerciseResponse>> createExercise(@Body List<RoutineExerciseData> data);
+//    @POST("/routine/CreateExercise")
+//    Call<List<ExerciseResponse>> createExercise(@Body List<RoutineExerciseData> data);
 
-    @POST("/DeleteRoutine")
+    @POST("/routine/DeleteRoutine")
     Call<Integer> deleteRoutine(@Body pkData data);
 
-    @POST("/UpdateRoutine")
+    @POST("/routine/UpdateRoutine")
     Call<Integer> updateRoutine(@Body RoutineData data);
 
     @POST("/GetNearUsers")
