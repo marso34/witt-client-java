@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Base64;
 
-import com.example.healthappttt.Activity.UserProfile;
-
 public class PreferenceHelper
 {
     private final String NAME = "name";
