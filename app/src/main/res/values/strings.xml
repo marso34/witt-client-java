@@ -13,4 +13,10 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="google_sign_in_client_id">623808844486-25q1loc8j4lss4dl0k24kc0k6sapv3rm.apps.googleusercontent.com</string>
+    <style name="profile_style" parent="android:Widget.TextView">
+        <item name="android:fontFamily">@font/spoqa_han_sans_neo</item>
+        <item name="android:textColor">#111111</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">14sp</item>
+    </style>
 </resources>
