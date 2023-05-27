@@ -21,8 +21,6 @@ import com.example.healthappttt.Data.UserInfo;
 import com.example.healthappttt.R;
 import com.example.healthappttt.adapter.UserAdapter;
 import com.example.healthappttt.interface_.ServiceApi;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -50,10 +48,6 @@ public class HomeChildFragment extends Fragment {
     private int day_of_week;
     private boolean updating = false;
     private UserInfo CurrentUser;
-
-    private FirebaseFirestore firebaseFirestore;
-    private FirebaseAuth mAuth;// 파이어베이스 유저관련 접속하기위한 변수
-    private FirebaseFirestore db;
     private String UserUid;
     private String dayOfWeek = "";
 
@@ -162,7 +156,6 @@ public class HomeChildFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
-
     }
 
     private void getUserData() {
