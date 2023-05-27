@@ -7,6 +7,7 @@ import java.util.List;
 public class RoutineData {
     @SerializedName("ID")
     private int ID;
+
     @SerializedName("userID")
     private int userID;
 
@@ -23,9 +24,9 @@ public class RoutineData {
     private String endTime;
 
     @SerializedName("exercises")
-    private List<RoutineExerciseData> exercises;
+    private List<ExerciseData> exercises;
 
-    public RoutineData(int ID, int userID, int dayOfWeek, int cat, String startTime, String endTime, List<RoutineExerciseData> exercises) {
+    public RoutineData(int ID, int userID, int dayOfWeek, int cat, String startTime, String endTime, List<ExerciseData> exercises) {
         this.ID = ID;
         this.userID = userID;
         this.dayOfWeek = dayOfWeek;
@@ -35,7 +36,7 @@ public class RoutineData {
         this.exercises = exercises;
     }
 
-    public RoutineData(int userID, int dayOfWeek, int cat, String startTime, String endTime, List<RoutineExerciseData> exercises) {
+    public RoutineData(int userID, int dayOfWeek, int cat, String startTime, String endTime, List<ExerciseData> exercises) {
         this.userID = userID;
         this.dayOfWeek = dayOfWeek;
         this.cat = cat;

@@ -6,8 +6,10 @@ import com.example.healthappttt.Data.ExerciseResponse;
 import com.example.healthappttt.Data.GetUserInfo;
 import com.example.healthappttt.Data.Message;
 import com.example.healthappttt.Data.NearUsersData;
+import com.example.healthappttt.Data.RecordData;
+import com.example.healthappttt.Data.Routine;
 import com.example.healthappttt.Data.RoutineData;
-import com.example.healthappttt.Data.RoutineExerciseData;
+import com.example.healthappttt.Data.ExerciseData;
 import com.example.healthappttt.Data.User;
 import com.example.healthappttt.Data.UserData;
 import com.example.healthappttt.Data.UserInfo;
@@ -37,6 +39,9 @@ public interface ServiceApi {
 
     @POST("/routine/UpdateRoutine")
     Call<Integer> updateRoutine(@Body RoutineData data);
+
+    @POST("/record/RecordExercise")
+    Call<List<Integer>> recordExercise(@Body RecordData data);
 
     @POST("/GetNearUsers")
     Call<List<UserInfo>> GetNearUsers(@Body NearUsersData data);
