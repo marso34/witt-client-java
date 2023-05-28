@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".Activity.BlockActivity"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <TextView
+        style="@style/profile_style"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="25dp"
+        android:text="차단목록"
+        android:textSize="30dp"
+        android:layout_gravity="center"/>
+
+    <SearchView
+        android:id="@+id/search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/mainbackground"
+        android:backgroundTint="@color/lightgray"
+        app:iconifiedByDefault="false"
+        app:queryHint="이름(초성) 검색"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/blockrecycle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:listitem="@layout/adapter_blockuser" />
+
+
+</LinearLayout>

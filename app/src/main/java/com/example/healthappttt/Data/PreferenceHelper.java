@@ -12,7 +12,7 @@ public class PreferenceHelper
 
     private SharedPreferences app_prefs;
     private Context context;
-    private UserProfile upf = new UserProfile();
+//    private UserProfile upf = new UserProfile();
 
     public PreferenceHelper(Context context) {
         app_prefs = context.getSharedPreferences("UserProfile", Context.MODE_PRIVATE);

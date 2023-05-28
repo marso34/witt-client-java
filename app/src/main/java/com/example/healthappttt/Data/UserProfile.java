@@ -4,7 +4,8 @@ import com.google.gson.annotations.SerializedName;
 
 public class UserProfile {
 
-    public UserProfile() {
+    public UserProfile(String NM) {
+        this.User_NM = NM;
     }
     // 서버에서 제공하는 형식
     /*USER_PK: TB.USER_PK,
@@ -37,6 +38,8 @@ public class UserProfile {
     @SerializedName("PW")
     private  String PW;
 
+    @SerializedName("location")
+    private  String location;
 
     public int getUSER_PK() {
         return USER_PK;
@@ -90,4 +93,11 @@ public class UserProfile {
 
     public void setPW(String PW) { this.PW = PW;}
 
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
 }

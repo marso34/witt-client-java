@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -293,6 +291,14 @@
 
             </TableLayout>
 
+<!--            오늘 루틴 보여주는 UI-->
+<!--            <androidx.recyclerview.widget.RecyclerView-->
+<!--                android:id="@+id/recyclerView"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:overScrollMode="never"-->
+<!--                android:nestedScrollingEnabled="false"-->
+<!--                tools:listitem="@layout/adapter_exercise_input"/>-->
 
             <View
                 android:id="@+id/view0"
@@ -420,7 +426,7 @@
                         style="@style/profile_style"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="차단목록"
+                        android:text="루틴"
                         android:textStyle="bold" />
 
                     <View
@@ -445,7 +451,7 @@
                         style="@style/profile_style"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="설정"
+                        android:text="신고내역"
                         android:textStyle="bold" />
 
                     <View
