@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SubActivity"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="328dp"
+        android:layout_height="wrap_content"
+        android:text="안녕하세요!\n휴대폰번호로 가입해주세요."
+        android:textColor="@color/black"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        android:layout_marginTop="88dp"
+        android:layout_marginLeft="16dp">
+    </TextView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginLeft="16dp"
+        android:text="휴대폰번호는 안전하게 보관되며 다른 사람들에게 공개되지 않아요."
+        android:textSize="10dp"
+        tools:ignore="TextSizeCheck">
+    </TextView>
+
+    <EditText
+        android:layout_width="328dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="36dp"
+        android:hint="    휴대폰번호(-없이 숫자만 입력)"
+        android:textColorHint="#858181"
+        android:background="@drawable/circle3"
+        android:backgroundTint="#F2F5F9"
+        tools:ignore="SpeakableTextPresentCheck">
+    </EditText>
+
+    <android.widget.Button
+        android:onClick="btnClick1"
+        android:id="@+id/move1"
+        android:layout_width="328dp"
+        android:layout_height="44dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/circle2"
+        android:backgroundTint="#D1D8E2"
+        android:text="인증문자 받기"
+        android:textColor="#9AA5B8"
+        android:textSize="15dp"
+        android:textStyle="bold"
+        tools:ignore="TouchTargetSizeCheck">
+    </android.widget.Button>
+
+</LinearLayout>

@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SubActivity2"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="자신을 소개해주세요"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:textSize="20dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginLeft="20dp">
+            </TextView>
+
+            <ImageButton
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginLeft="130dp"
+                android:layout_marginTop="40dp"
+                android:background="@drawable/circle1"
+                tools:ignore="SpeakableTextPresentCheck">
+            </ImageButton>
+
+            <ImageButton
+                android:layout_width="36dp"
+                android:layout_height="20dp"
+                android:layout_marginLeft="162dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/img2"
+                tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck">
+            </ImageButton>
+
+            <TextView
+                android:layout_width="328dp"
+                android:layout_height="18dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginLeft="16dp"
+                android:text="헬스장">
+            </TextView>
+
+            <EditText
+                android:layout_width="328dp"
+                android:layout_height="44dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/circle5"
+                android:hint="    헬스장을 골라주세요"
+                android:textColorHint="#C8C2C2"
+                android:textSize="15dp"
+                tools:ignore="TextSizeCheck,TouchTargetSizeCheck">
+            </EditText>
+
+            <TextView
+                android:layout_width="328dp"
+                android:layout_height="18dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginLeft="16dp"
+                android:text="이름">
+            </TextView>
+
+            <EditText
+                android:layout_width="328dp"
+                android:layout_height="44dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/circle5"
+                android:hint="    이름을 적어주세요"
+                android:textColorHint="#C8C2C2"
+                android:textSize="15dp"
+                tools:ignore="TextSizeCheck,TouchTargetSizeCheck">
+            </EditText>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="160dp"
+                    android:layout_height="18dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="24dp"
+                    android:text="키">
+                </TextView>
+
+                <TextView
+                    android:layout_width="160dp"
+                    android:layout_height="18dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="24dp"
+                    android:text="몸무게">
+                </TextView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:layout_width="160dp"
+                    android:layout_height="44dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/circle5"
+                    android:hint="    키"
+                    android:textColorHint="#C8C2C2"
+                    android:textSize="15dp"
+                    tools:ignore="TextSizeCheck,TouchTargetSizeCheck">
+                </EditText>
+
+                <EditText
+                    android:layout_width="160dp"
+                    android:layout_height="44dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/circle5"
+                    android:hint="    몸무게"
+                    android:textColorHint="#C8C2C2"
+                    android:textSize="15dp"
+                    tools:ignore="TextSizeCheck,TouchTargetSizeCheck">
+                </EditText>
+
+            </LinearLayout>
+
+            <android.widget.Button
+                android:onClick="btnClick3"
+                android:id="@+id/move3"
+                android:layout_width="328dp"
+                android:layout_height="56dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="78dp"
+                android:layout_marginBottom="58dp"
+                android:text="설정하기"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:background="@drawable/circle2"
+                android:backgroundTint="#05C78C">
+            </android.widget.Button>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>
