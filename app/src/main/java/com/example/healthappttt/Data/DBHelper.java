@@ -51,6 +51,15 @@ public class DBHelper extends SQLiteOpenHelper {
                 + "ON UPDATE CASCADE ON DELETE CASCADE);";
 
         db.execSQL(exerciseSql);
+
+        String blacklistsql = "CREATE TABLE if not exists BLACK_LIST_TB("
+                + "BL_PK INT primary key,"
+                + "User_NM VARCHAR(20),"
+                + "OUser_FK INT,"
+                + "TS TIMESTAMP,"
+                + "User_Img BLOB);";
+
+        db.execSQL(blacklistsql);
     }
 
     @Override

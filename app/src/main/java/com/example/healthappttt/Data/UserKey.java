@@ -14,8 +14,4 @@ public class UserKey {
     }
 
 
-//    public String getKey() {
-//        return userkey;
-//    }
-
 }

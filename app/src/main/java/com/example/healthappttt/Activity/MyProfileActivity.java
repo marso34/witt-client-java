@@ -21,8 +21,11 @@ public class MyProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_myprofile);
 
         block_btn = findViewById(R.id.block_btn);
+        ViewChangeBlock(); // 차단하기 클릭시 화면전환 매서드
 
+    }
 
+    public void ViewChangeBlock() {
         block_btn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
@@ -30,9 +33,7 @@ public class MyProfileActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
     }
-
 
 
 }

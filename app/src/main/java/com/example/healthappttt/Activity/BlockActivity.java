@@ -41,9 +41,9 @@ public class BlockActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(BlockAdapter);
 
-        BlockList.add(new UserProfile("이형원")); //리스트에 추가 -> 매서드로 변경 필요
-        BlockList.add(new UserProfile("윤종훈"));
-        BlockList.add(new UserProfile("hwstar"));
+//        BlockList.add(new UserProfile("이형원")); //리스트에 추가 -> 매서드로 변경 필요
+//        BlockList.add(new UserProfile("윤종훈"));
+//        BlockList.add(new UserProfile("hwstar"));
         BlockAdapter.notifyDataSetChanged(); //변경점을 어뎁터에 알림
 
 

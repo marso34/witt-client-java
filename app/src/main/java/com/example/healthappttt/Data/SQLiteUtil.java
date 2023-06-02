@@ -43,6 +43,25 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         }
     }
 
+    //BLACK_LIST_TB 데이터 삽입 메서드
+    public void insert(BlackListData BlackList) {
+        ContentValues values  = new ContentValues();
+
+        if (table.equals("BLACK_LIST_TB")){
+            values.put("BL_PK", BlackList.getBL_PK());
+            values.put("User_NM", BlackList.getUser_NM());
+            values.put("OUser_FK", BlackList.getOUser_FK());
+            values.put("TS", BlackList.getTS());
+            values.put("User_Img",BlackList.getUser_Img());
+
+            long result = db.insert(table,null,values);
+            Log.d("blackTB",result + "성공");
+        } else  {
+            Log.d("Black_TB","매서드 형식 오류 ");
+        }
+    }
+
+
     /**
      * 이 메소드는 RT_TB 데이터를 삽입하는 메서드입니다.
      */
