@@ -45,14 +45,6 @@
                         android:textSize="14sp"
                         android:textStyle="bold" />
 
-                    <Chronometer
-                        android:id="@+id/runTime"
-                        android:layout_width="wrap_content"
-                        android:layout_height="35dp"
-                        android:textColor="@color/Background_3"
-                        android:textSize="24sp"
-                        android:textStyle="bold"/>
-
                     <TextView
                         android:id="@+id/runTimeView"
                         android:layout_width="wrap_content"

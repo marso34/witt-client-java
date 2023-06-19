@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Message;
 import android.view.LayoutInflater;
@@ -40,8 +41,6 @@ import java.util.TimerTask;
  */
 public class ERRecordingFragment extends Fragment {
     private LinearLayout StopWatch;           // 스톱워치, 타이머 레이아웃
-    private Chronometer Temp;
-    private int Temp2;
     private TextView RunTimeTxt, RunTimeView; // 운동 시간 보여주는 뷰
     private TextView RestTimeTxt, RestTimeView; // 휴식시간 보여주는 뷰
     private RecyclerView recyclerView;
@@ -138,11 +137,6 @@ public class ERRecordingFragment extends Fragment {
         StopBtn      = view.findViewById(R.id.stopBtn);  // 종료 버튼
         StopBtnTxt   = view.findViewById(R.id.stopTxt);
 
-//        Temp = view.findViewById(R.id.runTime); // test
-
-        Temp  = (Chronometer) view.findViewById(R.id.runTime);
-        Temp2 = 0;
-
         exercises = new ArrayList<>();
         recordExercises = new ArrayList<>();
 
@@ -211,28 +205,6 @@ public class ERRecordingFragment extends Fragment {
             RunTimeView.setTextColor(Color.parseColor("#1B202D"));
             RestTimeTxt.setTextColor(Color.parseColor("#9AA5B8"));
             RestTimeView.setTextColor(Color.parseColor("#9AA5B8"));
-
-
-            Temp.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener(){ // 테스트 코드
-                @Override
-                public void onChronometerTick(Chronometer cArg) {
-                    long time = SystemClock.elapsedRealtime() - cArg.getBase();
-                    int h   = (int)(time /3600000);
-                    int m = (int)(time - h*3600000)/60000;
-                    int s= (int)(time - h*3600000- m*60000)/1000 ;
-                    String hh = h < 10 ? "0"+h: h+"";
-                    String mm = m < 10 ? "0"+m: m+"";
-                    String ss = s < 10 ? "0"+s: s+"";
-                    cArg.setText(hh+":"+mm+":"+ss);
-
-
-                    long milliSec = SystemClock.elapsedRealtime() - Temp.getBase();
-                    RestTimeView.setText(String.valueOf((int) (milliSec - ((milliSec / 1000) * 1000))));
-                }
-            });
-            Temp.setBase(SystemClock.elapsedRealtime());
-            Temp.start();
-
 
             TimerCall = new Timer();
             timerTask = new TimerTask() {
@@ -317,7 +289,7 @@ public class ERRecordingFragment extends Fragment {
             @SuppressLint("DefaultLocale") String result2 = String.format("%02d:%02d:%02d", restHour, restMin, restSec);
 
             RunTimeView.setText(result);
-//            RestTimeView.setText(result2);
+            RestTimeView.setText(result2);
 
             if (AdapterProgressBar != null) { // 이 부분은 수정 필요
                 int progress = AdapterProgressBar.getProgress();
