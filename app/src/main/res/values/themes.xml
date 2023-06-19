@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.HealthAppTTT" parent='Theme.AppCompat.Light' >
+    <style name="Theme.HealthAppTTT" parent='Theme.AppCompat.Light'>
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/Signature</item>
         <item name="colorPrimaryVariant">@color/Signature</item>
@@ -21,15 +21,22 @@
         <item name="windowNoTitle">true</item>
 
     </style>
+
     <style name="Theme.HealthAppTTT.AppBarOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
     <style name="Theme.HealthAppTTT.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-    <style name="AppBottomSheetDialogTheme"
-        parent="Theme.Design.Light.BottomSheetDialog">
+
+    <style name="AppBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/AppModalStyle</item>
         <item name="android:windowIsFloating">false</item>
     </style>
-    <style name="AppModalStyle"
-            parent="Widget.Design.BottomSheet.Modal">
+
+    <style name="AppModalStyle" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@drawable/rounded_top</item>
+    </style>
+
+    <style name="ThemeOverlay.HealthAppTTT.FullscreenContainer" parent="">
+        <item name="fullscreenBackgroundColor">@color/light_blue_600</item>
+        <item name="fullscreenTextColor">@color/light_blue_A200</item>
     </style>
 </resources>

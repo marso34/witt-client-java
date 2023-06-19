@@ -2,9 +2,7 @@ package com.example.healthappttt.Data;
 
 import com.google.gson.annotations.SerializedName;
 
-public class UserData {
-    @SerializedName("email")
-    private String email;
+public class RegisterData {
     @SerializedName("squatValue")
     private int squatValue;
 
@@ -32,28 +30,18 @@ public class UserData {
     @SerializedName("loName")
     private String loName;
 
-    @SerializedName("ip")
-    private String ip;
-
-    public UserData(String email, String name,int squatValue, int benchValue, int deadliftValue, int height, int weight, double latitude, double longitude, String loName,) {
-        this.email = email;
-        this.name = name;
+    public RegisterData(int squatValue, int benchValue, int deadliftValue, int height, int weight, String name, double latitude, double longitude, String loName) {
         this.squatValue = squatValue;
         this.benchValue = benchValue;
         this.deadliftValue = deadliftValue;
         this.height = height;
         this.weight = weight;
-        this.ip = ip
+        this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
         this.loName = loName;
     }
-    public String getEmail() {
-        return email;
-    }
-    public void setEmail(String email){
-        this.email = email;
-    }
+
     // Getters and Setters
 
     public int getSquatValue() {
@@ -127,5 +115,5 @@ public class UserData {
     public void setLoName(String loName) {
         this.loName = loName;
     }
-
 }
+
