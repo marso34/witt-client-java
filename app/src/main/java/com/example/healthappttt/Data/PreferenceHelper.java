@@ -39,13 +39,13 @@ public class PreferenceHelper
 
         edit.apply();
     }
-
-    public void putBlackList( String name) {
-        SharedPreferences.Editor edit = app_prefs.edit();
-        edit.putString("BlackUser"+name,name);
-        Log.d("putblacklist에 저장:",getBlackUser(name));
-        edit.apply();
-    }
+//    차단목록 추가 매서드
+//    public void putBlackList( String name) {
+//        SharedPreferences.Editor edit = app_prefs.edit();
+//        edit.putString("BlackUser"+name,name);
+//        Log.d("putblacklist에 저장:",getBlackUser(name));
+//        edit.apply();
+//    }
 
     public int getPK() {
         return  app_prefs.getInt( "USER_PK", 00);
