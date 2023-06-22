@@ -4,9 +4,9 @@ import com.google.gson.annotations.SerializedName;
 
 public class UserProfile {
 
-//    public UserProfile(String NM) {
-//        this.User_NM = NM;
-//    }
+    public UserProfile(String NM) {
+        this.User_NM = NM;
+    }
     // 서버에서 제공하는 형식
     /*USER_PK: TB.USER_PK,
       EMAIL: TB.EMAIL,

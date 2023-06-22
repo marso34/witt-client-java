@@ -28,6 +28,9 @@ public interface ServiceApi {
     @POST("/getBlackList")
     Call<List<BlackListData>> getBlackList(@Body UserKey userKey);
 
+    @POST("/deleteFromServer")
+    Call<Integer> deleteFromServer(@Body pkData BL_PK);
+
     @POST("/routine/CreateRoutine")
     Call<List<Integer>> createRoutine(@Body RoutineData data);
 
