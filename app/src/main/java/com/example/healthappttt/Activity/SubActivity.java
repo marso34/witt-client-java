@@ -13,21 +13,22 @@ import com.example.healthappttt.R;
 
 public class SubActivity extends AppCompatActivity
 {
-    String email;
+    String email="jjj";
     String name;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
         if (intent != null) {
             email = intent.getStringExtra("email");
-
+            name = intent.getStringExtra("name");
         }
 
         setContentView(R.layout.activity_sub);
         subFragment fragment = subFragment.newInstance(email);
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, fragment)
+                .replace(R.id.ContentLayout, fragment)
                 .commit();
     }
 

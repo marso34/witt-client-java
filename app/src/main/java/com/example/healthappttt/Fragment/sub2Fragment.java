@@ -2,6 +2,7 @@ package com.example.healthappttt.Fragment;
 
 import static android.content.ContentValues.TAG;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,7 +14,13 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
+import com.example.healthappttt.Data.BodyInfo;
+import com.example.healthappttt.Data.ExPerfInfo;
+import com.example.healthappttt.Data.LocInfo;
+import com.example.healthappttt.Data.MannerInfo;
+import com.example.healthappttt.Data.PhoneInfo;
 import com.example.healthappttt.Data.RetrofitClient;
+import com.example.healthappttt.Data.UserClass;
 import com.example.healthappttt.Data.UserData;
 import com.example.healthappttt.R;
 import com.example.healthappttt.interface_.ServiceApi;
@@ -27,31 +34,39 @@ public class sub2Fragment extends Fragment {
 
     private static final String ARG_LATITUDE = "latitude";
     private static final String ARG_LONGITUDE = "longitude";
+    private static final String ARG_GYM_LATITUDE = "gymLatitude";
+    private static final String ARG_GYM_LONGITUDE = "gymLongitude";
     private static final String ARG_LO_NAME = "lo_name";
     private static final String ARG_HEIGHT = "height";
     private static final String ARG_WEIGHT = "weight";
     private static final String ARG_NAME = "name";
     private static final String ARG_EMAIL = "email";
+    private static final int Platform = 0;
 
     private String email;
-    private int squatValue = 0;
-    private int benchValue = 0;
-    private int deadliftValue = 0;
+    private int squatValue = 60;
+    private int benchValue = 60;
+    private int deadliftValue = 60;
     private int height = -1;
     private int weight = -1;
     private String name;
-    private double latitude ;
+    private double latitude;
     private double longitude;
+    private double gymLatitude;
+    private double gymLongitude;
     private String loName;
     private TextView squatTextView;
     private TextView benchTextView;
     private TextView deadliftTextView;
-
-    public static sub2Fragment newInstance(String email,double latitude, double longitude, String loName, int height, int weight, String name) {
+    private String phoneModel = Build.MODEL;
+    private String serialNumber = Build.SERIAL;
+    public static sub2Fragment newInstance(String email,double latitude, double longitude,double gymLatitude,double gymLongitude, String loName, int height, int weight, String name) {
         sub2Fragment fragment = new sub2Fragment();
         Bundle args = new Bundle();
         args.putDouble(ARG_LATITUDE, latitude);
         args.putDouble(ARG_LONGITUDE, longitude);
+        args.putDouble(ARG_GYM_LATITUDE, gymLatitude);
+        args.putDouble(ARG_GYM_LONGITUDE, gymLongitude);
         args.putString(ARG_LO_NAME, loName);
         args.putInt(ARG_HEIGHT, height);
         args.putInt(ARG_WEIGHT, weight);
@@ -64,10 +79,11 @@ public class sub2Fragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         if (getArguments() != null) {
             latitude = getArguments().getDouble(ARG_LATITUDE);
             longitude = getArguments().getDouble(ARG_LONGITUDE);
+            gymLatitude = getArguments().getDouble(ARG_GYM_LATITUDE);
+            gymLongitude = getArguments().getDouble(ARG_GYM_LONGITUDE);;
             height = getArguments().getInt(ARG_HEIGHT);
             weight = getArguments().getInt(ARG_WEIGHT);
             name = getArguments().getString(ARG_NAME);
@@ -103,7 +119,8 @@ public class sub2Fragment extends Fragment {
         squatDownButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                squatValue -= 5;
+                if(squatValue > 5)
+                    squatValue -= 5;
                 squatTextView.setText(String.valueOf(squatValue));
             }
         });
@@ -119,7 +136,9 @@ public class sub2Fragment extends Fragment {
         benchDownButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                benchValue -= 5;
+
+                if(benchValue > 5)
+                    benchValue -= 5;
                 benchTextView.setText(String.valueOf(benchValue));
             }
         });
@@ -135,7 +154,8 @@ public class sub2Fragment extends Fragment {
         deadliftDownButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                deadliftValue -= 5;
+                if(deadliftValue > 5)
+                    deadliftValue -= 5;
                 deadliftTextView.setText(String.valueOf(deadliftValue));
             }
         });
@@ -147,7 +167,9 @@ public class sub2Fragment extends Fragment {
                 // You can access the latitude, longitude, name, height, and weight variables here
                 // Example of using the received data
                 // You can replace this with your actual logic
-                String message = "Name: " + name + "\n" +
+                Log.d(TAG, "sub2f"+email);
+                sendTokenToServer(email,name);
+                String message = "Name: " + email + "\n" +
                         "Height: " + height + " cm\n" +
                         "Weight: " + weight + " kg\n" +
                         "Latitude: " + latitude + "\n" +
@@ -161,11 +183,29 @@ public class sub2Fragment extends Fragment {
 
         return view;
     }
+    private UserData getUserDT(){
+        return new UserData(email,Platform,name,"face");
+    }
+    private PhoneInfo getPhoneInfo(){
+        return new PhoneInfo("00000000000",phoneModel,serialNumber);
+    }
+    private MannerInfo getMannerInfo(){
+        return new MannerInfo(150,150,150);
+    }
+    private LocInfo getLocInfo(){
+        return new LocInfo(latitude,longitude,loName,gymLatitude,gymLongitude);
+    }
+    private ExPerfInfo getExPerInfo(){
+        return new ExPerfInfo(benchValue,squatValue,deadliftValue);
+    }
+    private BodyInfo getBodyInfo(){
+        return new BodyInfo("1999-12-27",0,height,weight);
+    }
+
     private void sendTokenToServer(String email, String name) {
         ServiceApi apiService = RetrofitClient.getClient().create(ServiceApi.class);
-        UserData userData = new UserData(email, name, squatValue, benchValue, deadliftValue, height, weight, latitude, longitude, loName);
 
-        Call<ResponseBody> call = apiService.sendData(userData);
+        Call<ResponseBody> call = apiService.sendData(new UserClass(getUserDT(),getPhoneInfo(),getMannerInfo(),getLocInfo(),getExPerInfo(),getBodyInfo()));
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
