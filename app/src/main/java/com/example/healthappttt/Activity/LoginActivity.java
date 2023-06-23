@@ -20,7 +20,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.healthappttt.Data.RetrofitClient;
-import com.example.healthappttt.Data.UserData;
+import com.example.healthappttt.Data.email;
 import com.example.healthappttt.R;
 import com.example.healthappttt.interface_.ServiceApi;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -32,6 +32,8 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.Task;
+
+import java.io.IOException;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -76,7 +78,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         mGoogleSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 signIn();
             }
         });
@@ -129,15 +130,42 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             SharedPreferences.Editor editor = sharedPref.edit();
             editor.putString("useremail", email);
             editor.apply();
-            // Send token to server for verification
-            sendTokenToServer(email,name);
 
-            // Launch MainActivity
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-            finish();
+            ServiceApi apiService = RetrofitClient.getClient().create(ServiceApi.class);
+            Call<ResponseBody> call = apiService.CheckUser(new email(email));
+
+            call.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    if (response.isSuccessful()) {
+                        try {
+                            String responseString = response.body().string();
+                            Log.d(TAG, "onResponse!!: " + responseString);
+                            if (responseString.equals("Success")) {
+                                GoMain();
+                            } else {
+                                sendData(email, name);
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        // 서버로 데이터 전송 실패
+                        Toast.makeText(LoginActivity.this, "로그인 실패", Toast.LENGTH_SHORT).show();
+                        Log.d(TAG, "sendTokenToServer fail");
+                    }
+                }
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Toast.makeText(LoginActivity.this, "서버로부터 응답이 없습니다.", Toast.LENGTH_SHORT).show();
+                    Log.e(TAG, "sendTokenToServer error: " + t.getMessage());
+                }
+            });
+
+            // Send token to server for verification
         }
     }
+
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
@@ -154,32 +182,21 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         Log.d(TAG, "onConnectionFailed: ");
     }
 
-
-    private void sendTokenToServer(String email, String name) {
-        ServiceApi apiService = RetrofitClient.getClient().create(ServiceApi.class);
-        UserData userData = new UserData(email, name);
-        Call<ResponseBody> call = apiService.sendData(userData);
-
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                if (response.isSuccessful()) {
-
-                    Log.d(TAG, "sendTokenToServer success");
-                } else {
-                    // 서버로 데이터 전송 실패
-                    Toast.makeText(LoginActivity.this, "로그인 실패", Toast.LENGTH_SHORT).show();
-                    Log.d(TAG, "sendTokenToServer fail");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Toast.makeText(LoginActivity.this, "서버로부터 응답이 없습니다.", Toast.LENGTH_SHORT).show();
-                Log.e(TAG, "sendTokenToServer error: " + t.getMessage());
-            }
-        });
+    private void sendData(String email,String name) {
+        Intent intent = new Intent(LoginActivity.this, SubActivity.class);
+        intent.putExtra("email", email);
+        Log.d(TAG, "adadad"+email);
+        intent.putExtra("name", name);
+        startActivity(intent);
+        finish();
+    }
+    private void GoMain(){
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 
-
 }
+
+
+

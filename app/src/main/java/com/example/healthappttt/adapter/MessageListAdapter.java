@@ -25,7 +25,6 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
 
         public MessageViewHolder(View itemView) {
             super(itemView);
-
             nameTextView = itemView.findViewById(R.id.nameTextView);
             messageTextView = itemView.findViewById(R.id.messageTextView);
             timeTextView = itemView.findViewById(R.id.timeTextView);
