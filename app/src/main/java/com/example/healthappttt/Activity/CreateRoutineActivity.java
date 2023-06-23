@@ -1,7 +1,5 @@
 package com.example.healthappttt.Activity;
 
-import static java.security.AccessController.getContext;
-
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -20,7 +18,6 @@ import com.example.healthappttt.Data.RetrofitClient;
 import com.example.healthappttt.Data.Routine;
 import com.example.healthappttt.Data.RoutineData;
 import com.example.healthappttt.Data.ExerciseData;
-import com.example.healthappttt.Data.RoutineResponse;
 import com.example.healthappttt.Data.SQLiteUtil;
 import com.example.healthappttt.Fragment.CRSelectExerciseFragment;
 import com.example.healthappttt.Fragment.CRInputDetailFragment;
