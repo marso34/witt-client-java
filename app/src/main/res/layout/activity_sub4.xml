@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activity.SubActivity4"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="328dp"
+        android:layout_height="wrap_content"
+        android:text="3대 측정을 알려주세요"
+        android:textColor="@color/black"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        android:layout_marginTop="88dp"
+        android:layout_marginLeft="16dp">
+    </TextView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginLeft="16dp"
+        android:text="3대 측정 기반으로 적절한 위트파트너를 소개해줘요"
+        android:textSize="10dp"
+        tools:ignore="TextSizeCheck">
+    </TextView>
+    <LinearLayout
+        android:layout_marginTop="40dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+        <TextView
+            android:layout_width="80dp"
+            android:layout_height="25dp"
+            android:textStyle="bold"
+            android:textSize="14dp"
+            android:text="총 3대 축정량"
+            android:textColor="@color/black"
+            android:layout_marginBottom="7dp"
+            ></TextView>
+        <TextView
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+            android:textSize="24dp"
+            android:textStyle="bold"
+            android:text="155kg"
+            android:textColor="@color/black"
+            ></TextView>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/ClickSpace"
+        android:layout_marginTop="40dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+        <LinearLayout
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="60dp"
+            android:orientation="vertical"
+            >
+            <FrameLayout
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+
+                >
+                <Button
+                    android:id="@+id/SquatUpBtn"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:background="@drawable/circle1"
+                    android:layout_gravity="center"
+
+                    >
+                </Button>
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_baseline_keyboard_arrow_up_"
+                    android:layout_gravity="center">
+                </ImageView>
+
+            </FrameLayout>
+            <TextView
+                android:layout_width="50dp"
+                android:layout_height="30dp"
+                android:textSize="14dp"
+                android:text="스쿼트"
+                android:gravity="center"></TextView>
+
+            <TextView
+                android:id="@+id/SquatValue"
+                android:layout_width="50dp"
+                android:layout_height="30dp"
+                android:textSize="14dp"
+                android:text="60"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:gravity="center"></TextView>
+            <FrameLayout
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+
+                >
+                <Button
+
+                    android:id="@+id/SquatDownBtn"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:background="@drawable/circle1"
+                    android:layout_gravity="center"
+                    >
+                </Button>
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_baseline_keyboard_arrow_up_"
+                    android:layout_gravity="center">
+                </ImageView>
+
+            </FrameLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+            <FrameLayout
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                >
+                <Button
+                    android:id="@+id/BenchUpBtn"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:background="@drawable/circle1"
+                    android:layout_gravity="center"
+                    >
+                </Button>
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_baseline_keyboard_arrow_up_"
+                    android:layout_gravity="center">
+                </ImageView>
+
+            </FrameLayout>
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="30dp"
+                android:textSize="14dp"
+                android:text="벤치 프레스"
+                android:gravity="center"></TextView>
+
+            <TextView
+                android:id="@+id/BebchValue"
+                android:layout_width="50dp"
+                android:layout_height="30dp"
+                android:textSize="14dp"
+                android:text="60"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:gravity="center"></TextView>
+            <FrameLayout
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+
+                >
+                <Button
+
+                    android:id="@+id/BenchDownBtn"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:background="@drawable/circle1"
+                    android:layout_gravity="center"
+                    >
+                </Button>
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_baseline_keyboard_arrow_up_"
+                    android:layout_gravity="center">
+                </ImageView>
+
+            </FrameLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginLeft="15dp"
+            android:orientation="vertical"
+            >
+            <FrameLayout
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                >
+                <Button
+                    android:id="@+id/DeadUpBtn"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:background="@drawable/circle1"
+                    android:layout_gravity="center"
+                    >
+                </Button>
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_baseline_keyboard_arrow_up_"
+                    android:layout_gravity="center">
+                </ImageView>
+            </FrameLayout>
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="30dp"
+                android:textSize="14dp"
+                android:text="데드 리프트"
+                android:gravity="center"></TextView>
+
+            <TextView
+                android:id="@+id/DeadValue"
+                android:layout_width="50dp"
+                android:layout_height="30dp"
+                android:textSize="14dp"
+                android:text="60"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:gravity="center"></TextView>
+            <FrameLayout
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+
+                >
+                <Button
+
+                    android:id="@+id/DeadDownBtn"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:background="@drawable/circle1"
+                    android:layout_gravity="center"
+                    >
+                </Button>
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_baseline_keyboard_arrow_up_"
+                    android:layout_gravity="center">
+                </ImageView>
+
+            </FrameLayout>
+        </LinearLayout>
+    </LinearLayout>
+    <android.widget.Button
+        android:id="@+id/Check"
+        android:layout_width="328dp"
+        android:layout_height="44dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="120dp"
+        android:background="@drawable/circle2"
+        android:backgroundTint="#D1D8E2"
+        android:text="설정하기"
+        android:textColor="#9AA5B8"
+        android:textSize="15dp"
+        android:textStyle="bold"
+        tools:ignore="TouchTargetSizeCheck">
+    </android.widget.Button>
+
+</LinearLayout>

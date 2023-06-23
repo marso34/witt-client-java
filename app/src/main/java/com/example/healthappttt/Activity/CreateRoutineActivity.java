@@ -19,7 +19,7 @@ import com.example.healthappttt.Data.Exercise;
 import com.example.healthappttt.Data.RetrofitClient;
 import com.example.healthappttt.Data.Routine;
 import com.example.healthappttt.Data.RoutineData;
-import com.example.healthappttt.Data.RoutineExerciseData;
+import com.example.healthappttt.Data.ExerciseData;
 import com.example.healthappttt.Data.RoutineResponse;
 import com.example.healthappttt.Data.SQLiteUtil;
 import com.example.healthappttt.Fragment.CRSelectExerciseFragment;
@@ -69,11 +69,11 @@ public class CreateRoutineActivity extends AppCompatActivity implements CRSetTim
     }
 
     private void SaveToDB() {
-        ArrayList<RoutineExerciseData> list = new ArrayList<>();
+        ArrayList<ExerciseData> list = new ArrayList<>();
 
         int index = 0, CAT = 0;
         for (Exercise e : selectExercises) {
-            list.add(new RoutineExerciseData(e.getTitle(), e.getCat(), e.getCount(), e.getVolume(), e.getNum(), index));
+            list.add(new ExerciseData(e.getTitle(), e.getCat(), e.getCount(), e.getVolume(), e.getNum(), index));
             CAT |= e.getCat();
             index++;
         }

@@ -1,22 +1,15 @@
 package com.example.healthappttt.adapter;
 
-import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.example.healthappttt.Data.Exercise;
-import com.example.healthappttt.Data.UserInfo;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.healthappttt.R;
-import com.example.healthappttt.Data.Routine;
 
 import java.util.ArrayList;
 

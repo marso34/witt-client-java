@@ -21,7 +21,7 @@ import com.example.healthappttt.Data.Exercise;
 import com.example.healthappttt.Data.RetrofitClient;
 import com.example.healthappttt.Data.Routine;
 import com.example.healthappttt.Data.RoutineData;
-import com.example.healthappttt.Data.RoutineExerciseData;
+import com.example.healthappttt.Data.ExerciseData;
 import com.example.healthappttt.Data.SQLiteUtil;
 import com.example.healthappttt.Data.pkData;
 import com.example.healthappttt.R;
@@ -288,11 +288,11 @@ public class EditRoutineActivity extends AppCompatActivity {
     }
 
     private void UpdateToDB() {
-        ArrayList<RoutineExerciseData> list = new ArrayList<>();
+        ArrayList<ExerciseData> list = new ArrayList<>();
         int CAT = 0;
 
         for (Exercise e : exercises) {
-            list.add(new RoutineExerciseData(e.getID(), routine.getID(), e.getTitle(), e.getCat(), e.getCount(), e.getVolume(), e.getNum(), e.getIndex()));
+            list.add(new ExerciseData(e.getID(), routine.getID(), e.getTitle(), e.getCat(), e.getCount(), e.getVolume(), e.getNum(), e.getIndex()));
             CAT |= e.getCat();
         }
 

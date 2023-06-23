@@ -2,7 +2,7 @@ package com.example.healthappttt.Data;
 
 import com.google.gson.annotations.SerializedName;
 
-public class RoutineExerciseData {
+public class ExerciseData {
     @SerializedName("ID")
     private int ID;
     @SerializedName("parentID")
@@ -27,7 +27,7 @@ public class RoutineExerciseData {
     private int index;
 
 
-    public RoutineExerciseData(int parentID, String exerciseName, int cat, int setOrTime, int volume, int cntOrDis, int index) {
+    public ExerciseData(int parentID, String exerciseName, int cat, int setOrTime, int volume, int cntOrDis, int index) {
         this.parentID = parentID;
         this.exerciseName = exerciseName;
         this.cat = cat;
@@ -37,7 +37,7 @@ public class RoutineExerciseData {
         this.index = index;
     }
 
-    public RoutineExerciseData(int ID, int parentID, String exerciseName, int cat, int setOrTime, int volume, int cntOrDis, int index) {
+    public ExerciseData(int ID, int parentID, String exerciseName, int cat, int setOrTime, int volume, int cntOrDis, int index) {
         this.ID = ID;
         this.parentID = parentID;
         this.exerciseName = exerciseName;
@@ -48,7 +48,7 @@ public class RoutineExerciseData {
         this.index = index;
     }
 
-    public RoutineExerciseData(String exerciseName, int cat, int setOrTime, int volume, int cntOrDis, int index) {
+    public ExerciseData(String exerciseName, int cat, int setOrTime, int volume, int cntOrDis, int index) {
         this.exerciseName = exerciseName;
         this.cat = cat;
         this.setOrTime = setOrTime;

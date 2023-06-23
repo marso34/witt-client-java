@@ -1,135 +1,110 @@
-//package com.example.healthappttt.Activity;
-//
-//import static android.content.ContentValues.TAG;
-//
-//import androidx.annotation.NonNull;
-//import androidx.appcompat.app.AppCompatActivity;
-//import androidx.recyclerview.widget.LinearLayoutManager;
-//import androidx.recyclerview.widget.RecyclerView;
-//
-//import android.annotation.SuppressLint;
-//import android.content.ContentValues;
-//import android.content.Intent;
-//import android.os.Bundle;
-//import android.util.Log;
-//import android.view.View;
-//import android.widget.Button;
-//import android.widget.ImageView;
-//import android.widget.ProgressBar;
-//import android.widget.TextView;
-//
-//import com.bumptech.glide.Glide;
-//import com.example.healthappttt.Data.Exercise;
-//import com.example.healthappttt.Data.Message;
-//import com.example.healthappttt.Data.Routine;
-//import com.example.healthappttt.Data.User;
-//import com.example.healthappttt.R;
-//import com.example.healthappttt.adapter.ExerciseInputAdapter;
-//import com.google.android.gms.tasks.OnCompleteListener;
-//import com.google.android.gms.tasks.OnSuccessListener;
-//import com.google.android.gms.tasks.Task;
-//import com.google.firebase.appindexing.builders.StickerBuilder;
-//import com.google.firebase.auth.FirebaseAuth;
-//import com.google.firebase.database.DatabaseReference;
-//import com.google.firebase.database.FirebaseDatabase;
-//import com.google.firebase.firestore.CollectionReference;
-//import com.google.firebase.firestore.DocumentReference;
-//import com.google.firebase.firestore.DocumentSnapshot;
-//import com.google.firebase.firestore.FirebaseFirestore;
-//import com.google.firebase.firestore.QueryDocumentSnapshot;
-//import com.google.firebase.firestore.QuerySnapshot;
-//
-//import org.checkerframework.checker.units.qual.Temperature;
-//
-//import java.util.ArrayList;
-//import java.io.File;
-//import java.text.SimpleDateFormat;
-//import java.util.Calendar;
-//import java.util.Date;
-//
-//public class ProfileActivity extends AppCompatActivity {
-//    private Button wittBtn;
-//    private ImageView ProImg;
-//    private String ThisProfileUid;
-//    private TextView ThisProfileName;
-//    private TextView LocationName;
-//    private TextView ThisProfileTemperature;
-//    private TextView Squat;
-//    private TextView Bench;
-//    private TextView Dead;
-//    private ProgressBar mtprogresser;
-//
-//    private Routine routine;
-//    private ArrayList<Exercise> exercises;
-//    private ExerciseInputAdapter adapter;
-//    private String dayOfWeek;
-//    private RecyclerView recyclerView;
-//    private FirebaseAuth mAuth;
-//    private FirebaseFirestore firebaseFirestore;
-//    private DatabaseReference mDbRef;
-//
-//
-//    //임시
-//    private int t;
-//
-//    private TextView UserNameR, Week, RTime;
-//
-//
-//    String time = "";
-//    Intent intent;
-//    private int progress_percent;
-//
-//    @SuppressLint("SetTextI18n")
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_profile);
-//        ProImg = findViewById(R.id.UserImg);
-//        mAuth = FirebaseAuth.getInstance();// 파이어베이스의 auth기능의 접근 권한을 갖는변수
-//        mDbRef = FirebaseDatabase.getInstance().getReference(); //Firebase에 데이터를 추가하거나 조회하기 위한 코드, 정의
-//
-//        ThisProfileName = findViewById(R.id.UserName);
-//        LocationName = findViewById(R.id.MyLocation);
-//        ThisProfileTemperature = findViewById(R.id.MyTempreture2);
-//        Squat = findViewById(R.id.squat);
-//        Bench = findViewById(R.id.benchpress);
-//        Dead = findViewById(R.id.deadlift);
-//        wittBtn = findViewById(R.id.WittBtn);
-//        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-//        mtprogresser = findViewById(R.id.MTProgresser);
-//
-//        // 임시
-//        UserNameR = (TextView) findViewById(R.id.UserName2);
-//        Week = (TextView) findViewById(R.id.week);
-//
-//        intent = getIntent();
-//        firebaseFirestore = FirebaseFirestore.getInstance();
-//        User U = (User) getIntent().getSerializableExtra("User");//포스트인포 객체 만들어서 할당.;
-//        File f =  (File) getIntent().getSerializableExtra("post");
-//        ThisProfileUid = U.getKey_();
-//        ThisProfileName.setText(U.getUserName());
-//        LocationName.setText(U.getLocationName());
-//        Integer A = U.getUserTemperature().intValue();
-//        ThisProfileTemperature.setText(A.toString());
-//        Squat.setText(U.getSquat());
-//        Bench.setText(U.getBench());
-//        Dead.setText(U.getDeadlift());
-//
-//        exercises = new ArrayList<>();
+package com.example.healthappttt.Activity;
+
+import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.os.Bundle;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
+import com.example.healthappttt.Data.Exercise;
+import com.example.healthappttt.Data.Routine;
+import com.example.healthappttt.Data.User;
+import com.example.healthappttt.R;
+import com.example.healthappttt.adapter.ExerciseInputAdapter;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.io.File;
+import java.util.ArrayList;
+
+public class ProfileActivity extends AppCompatActivity {
+    private Button wittBtn;
+    private ImageView ProImg;
+    private String ThisProfileUid;
+    private TextView ThisProfileName;
+    private TextView LocationName;
+    private TextView ThisProfileTemperature;
+    private TextView Squat;
+    private TextView Bench;
+    private TextView Dead;
+    private ProgressBar mtprogresser;
+
+    private Routine routine;
+    private ArrayList<Exercise> exercises;
+    private ExerciseInputAdapter adapter;
+    private String dayOfWeek;
+    private RecyclerView recyclerView;
+    private FirebaseAuth mAuth;
+    private FirebaseFirestore firebaseFirestore;
+    private DatabaseReference mDbRef;
+
+
+    //임시
+    private int t;
+
+    private TextView UserNameR, Week, RTime;
+
+
+    String time = "";
+    Intent intent;
+    private int progress_percent;
+
+    @SuppressLint("SetTextI18n")
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_profile);
+        ProImg = findViewById(R.id.UserImg);
+        mAuth = FirebaseAuth.getInstance();// 파이어베이스의 auth기능의 접근 권한을 갖는변수
+        mDbRef = FirebaseDatabase.getInstance().getReference(); //Firebase에 데이터를 추가하거나 조회하기 위한 코드, 정의
+
+        ThisProfileName = findViewById(R.id.UserName);
+        LocationName = findViewById(R.id.MyLocation);
+        ThisProfileTemperature = findViewById(R.id.MyTempreture2);
+        Squat = findViewById(R.id.squat);
+        Bench = findViewById(R.id.benchpress);
+        Dead = findViewById(R.id.deadlift);
+        wittBtn = findViewById(R.id.WittBtn);
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        mtprogresser = findViewById(R.id.MTProgresser);
+
+        // 임시
+        UserNameR = (TextView) findViewById(R.id.UserName2);
+        Week = (TextView) findViewById(R.id.week);
+
+        intent = getIntent();
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        User U = (User) getIntent().getSerializableExtra("User");//포스트인포 객체 만들어서 할당.;
+        File f = (File) getIntent().getSerializableExtra("post");
+    /*    ThisProfileUid = U.getKey_();
+        ThisProfileName.setText(U.getUserName());
+        LocationName.setText(U.getLocationName());
+        Integer A = U.getUserTemperature().intValue();
+        ThisProfileTemperature.setText(A.toString());
+        Squat.setText(U.getSquat());
+        Bench.setText(U.getBench());
+        Dead.setText(U.getDeadlift());
+*/
+        exercises = new ArrayList<>();
 //        getCurrentWeek(); // 요일
 //        setExercises();
-//        Glide.with(this).load(f).into(ProImg);
-//        //준이가 짤 코드 요일 알아내서 루틴 테이블에서 운동들 가져와서 리사이클로뷰에 넣기.
-//
-//
-//
-//
-//
-//        //CollectionReference -> 파이어스토어의 컬랙션 참조하는 객체
+        Glide.with(this).load(f).into(ProImg);
+        //준이가 짤 코드 요일 알아내서 루틴 테이블에서 운동들 가져와서 리사이클로뷰에 넣기.
+
+
+        //CollectionReference -> 파이어스토어의 컬랙션 참조하는 객체
 //        DocumentReference productRef = firebaseFirestore.collection("users").document(U.getKey_());
-//        //get()을 통해서 해당 컬랙션의 정보를 가져옴
-//
-//        //단일 문서의 내용 검색
+        //get()을 통해서 해당 컬랙션의 정보를 가져옴
+
+        //단일 문서의 내용 검색
 //        productRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
 //            @Override
 //            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -252,8 +227,8 @@
 //            }
 //        });
 //    }
-//
-//
+
+
 //    private void getCurrentWeek() {
 //        Date currentDate = new Date();
 //
@@ -362,4 +337,5 @@
 //        finish();
 //        startActivity(intent);
 //    }
-//}
+    }
+}

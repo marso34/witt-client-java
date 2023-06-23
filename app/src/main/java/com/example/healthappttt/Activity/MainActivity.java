@@ -131,35 +131,35 @@ public class MainActivity extends AppCompatActivity {
                         "경도 : " + latitude + "\n" +
                         "고도  : " + altitude);
 
-                DocumentReference washingtonRef = db.collection("users").document(user.getUid());
-                washingtonRef
-                        .update("lat", latitude)
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                Log.d(TAG, "DocumentSnapshot successfully updated!");
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.w(TAG, "Error updating document", e);
-                            }
-                        });
-                washingtonRef
-                        .update("lon", longitude)
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                Log.d(TAG, "DocumentSnapshot successfully updated!");
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.w(TAG, "Error updating document", e);
-                            }
-                        });
+//                DocumentReference washingtonRef = db.collection("users").document(user.getUid());
+//                washingtonRef
+//                        .update("lat", latitude)
+//                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                            @Override
+//                            public void onSuccess(Void aVoid) {
+//                                Log.d(TAG, "DocumentSnapshot successfully updated!");
+//                            }
+//                        })
+//                        .addOnFailureListener(new OnFailureListener() {
+//                            @Override
+//                            public void onFailure(@NonNull Exception e) {
+//                                Log.w(TAG, "Error updating document", e);
+//                            }
+//                        });
+//                washingtonRef
+//                        .update("lon", longitude)
+//                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                            @Override
+//                            public void onSuccess(Void aVoid) {
+//                                Log.d(TAG, "DocumentSnapshot successfully updated!");
+//                            }
+//                        })
+//                        .addOnFailureListener(new OnFailureListener() {
+//                            @Override
+//                            public void onFailure(@NonNull Exception e) {
+//                                Log.w(TAG, "Error updating document", e);
+//                            }
+//                        });
             }
             else {
                 Log.d("wwwwww","qeqeqeqeqe");
@@ -202,7 +202,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.profile:
                         binding.viewName.setText("기록");
-                        replaceFragment(new ProfileFragment()); // 운동 기록 프래그먼트로 나중에 수정
+//                        replaceFragment(new ProfileFragment()); // 운동 기록 프래그먼트로 나중에 수정
                         break;
                 }
 
