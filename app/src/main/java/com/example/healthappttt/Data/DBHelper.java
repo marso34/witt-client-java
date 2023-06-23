@@ -60,6 +60,16 @@ public class DBHelper extends SQLiteOpenHelper {
                 + "User_Img BLOB);";
 
         db.execSQL(blacklistsql);
+
+        String reviewrecdsql = "CREATE TABLE if not exists RREVIEW_TB("
+                + "Review_PK INT primary key,"
+                + "User_FK INT,"
+                + "RPT_User_FK INT,"
+                + "Text_Con VARCHAR(30),"
+                + "Check_Box SMALLINT,"
+                + "TS TIMESTAMP);";
+
+        db.execSQL(reviewrecdsql);
     }
 
     @Override

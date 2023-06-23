@@ -13,14 +13,16 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.healthappttt.Data.pkData;
-
 import com.example.healthappttt.Data.BlackListData;
 import com.example.healthappttt.Data.RetrofitClient;
+import com.example.healthappttt.Data.ReviewListData;
 import com.example.healthappttt.Data.SQLiteUtil;
+import com.example.healthappttt.Data.UserKey;
 import com.example.healthappttt.R;
 import com.example.healthappttt.interface_.ServiceApi;
+
 import java.util.ArrayList;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -29,15 +31,34 @@ public class BlockUserAdapter extends RecyclerView.Adapter<BlockUserAdapter.View
 
     private ServiceApi apiService = RetrofitClient.getClient().create(ServiceApi.class);
     ArrayList<BlackListData> BlockList;
+    ArrayList<ReviewListData> ReviewList;
     Activity activity;
-    SQLiteUtil database = SQLiteUtil.getInstance();
+    SQLiteUtil database;
 
 
-    public BlockUserAdapter(ArrayList<BlackListData> BlockList, Activity activity) {
-        this.BlockList = BlockList;
+//    public BlockUserAdapter(ArrayList<BlackListData> BlockList, Activity activity) {
+//        this.BlockList = BlockList;
+//        this.activity = activity;
+//    }
+//    public BlockUserAdapter(ArrayList<ReviewListData> ReviewList, Activity activity){
+//        this.ReviewList = ReviewList;
+//        this.activity = activity;
+//    }
+
+//생성자 둘이 구분을 못해서 합치고 어떤 datalist가 null인지에 따라 객체화가 달라진다.
+    public BlockUserAdapter(ArrayList<BlackListData> blockList, ArrayList<ReviewListData> reviewList, Activity activity) {
         this.activity = activity;
-    }
+        this.database = SQLiteUtil.getInstance();
 
+        if (blockList != null) {
+            this.BlockList = blockList;
+        } else if (reviewList != null) {
+            this.ReviewList = reviewList;
+        } else {
+            // 어떤 리스트도 주어지지 않은 경우 예외 처리 등을 수행\
+            Log.d("Adapter","DataList가 모두 null이다. ");
+        }
+    }
 
     @NonNull
     @Override
@@ -49,6 +70,9 @@ public class BlockUserAdapter extends RecyclerView.Adapter<BlockUserAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull BlockUserAdapter.ViewHolder holder, int position) {
+        TextView reviewText = holder.itemView.findViewById(R.id.Review_text);
+        reviewText.setVisibility(View.GONE);//리뷰텍스트 안보이게 처리
+
         BlackListData Ddata = BlockList.get(position);//삭제할 위치의 데이터
         int BL_PK = Ddata.getBL_PK();// 삭제할 데이터의 pk값
 
@@ -72,8 +96,7 @@ public class BlockUserAdapter extends RecyclerView.Adapter<BlockUserAdapter.View
                     notifyItemRemoved(position);//변경점을 알림
                     database.deleteFromBlackListTable(BL_PK);//로컬db에서 삭제
                     Log.d("sqldelete",BL_PK + " 로컬db에서 해당 PK 삭제완료!");
-                    //서버db에서도 삭제해야함
-                    deleteFromServer(BL_PK);
+                    deleteFromServer(BL_PK);//서버db에서 삭제
                 }
             }
         });
@@ -81,13 +104,13 @@ public class BlockUserAdapter extends RecyclerView.Adapter<BlockUserAdapter.View
     }
 
     private void deleteFromServer(Integer BL_PK) {
-        Call<Integer> call = apiService.deleteFromServer(new pkData(BL_PK));
+        Call<Integer> call = apiService.deleteFromServer(new UserKey(BL_PK)); //메모: 형식 원래 pkData에서 만들어놓고 했었음
         call.enqueue(new Callback<Integer>() {
             @Override
             public void onResponse(Call<Integer> call, Response<Integer> response) {
                 if(response.isSuccessful()) {
                     Integer PK = response.body();
-                    Log.d("BlockUserAdapter", "서버 응답 서공: " + PK);
+                    Log.d("BlockUserAdapter", "서버db에서 삭제 PK: " + PK);
                 }else {
                     // 서버 응답이 실패했을때
                     Log.d("BlockUserAdapter", "서버 응답 실패. 상태코드: " + response.code());

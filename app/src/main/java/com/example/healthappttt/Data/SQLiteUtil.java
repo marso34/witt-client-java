@@ -43,6 +43,30 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         }
     }
     /**
+     * 이 메소드는 RREVIEW_TB 데이터를 삽입하는 메서드입니다.
+     */
+    public void insert(ReviewListData reviewList) {
+        ContentValues values = new ContentValues();
+
+        if(table.equals("RREVIEW_TB")){
+            values.put("Review_PK",reviewList.getReview_PK());
+            values.put("User_FK",reviewList.getUser_FK());
+            values.put("RPT_User_FK",reviewList.getRPT_User_FK());
+            values.put("Text_Con",reviewList.getText_Con());
+            values.put("Check_Box",reviewList.getCheck_Box());
+            values.put("TS",reviewList.getTS());
+
+            long result = db.insert(table,null,values);
+            Log.d("ReviewTB",result+"성공");
+        }else {
+            Log.d("ReviewTB","매서드 형식 오류 ");
+        }
+
+    }
+
+
+
+    /**
      * 이 메소드는 BLACK_LIST_TB 데이터를 삽입하는 메서드입니다.
      */
     public void insert(BlackListData BlackList) {

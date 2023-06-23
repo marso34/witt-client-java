@@ -4,6 +4,7 @@ import com.example.healthappttt.Data.BlackListData;
 import com.example.healthappttt.Data.GetUserInfo;
 import com.example.healthappttt.Data.Message;
 import com.example.healthappttt.Data.NearUsersData;
+import com.example.healthappttt.Data.ReviewListData;
 import com.example.healthappttt.Data.RoutineData;
 import com.example.healthappttt.Data.User;
 import com.example.healthappttt.Data.UserData;
@@ -28,8 +29,11 @@ public interface ServiceApi {
     @POST("/getBlackList")
     Call<List<BlackListData>> getBlackList(@Body UserKey userKey);
 
+    @POST("/getReviewList")
+    Call<List<ReviewListData>> getReviewList(@Body UserKey userKey);
+
     @POST("/deleteFromServer")
-    Call<Integer> deleteFromServer(@Body pkData BL_PK);
+    Call<Integer> deleteFromServer(@Body UserKey BL_PK);
 
     @POST("/routine/CreateRoutine")
     Call<List<Integer>> createRoutine(@Body RoutineData data);

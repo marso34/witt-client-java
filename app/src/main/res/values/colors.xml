@@ -13,5 +13,8 @@
     <color name="teal_700">#00bfff</color>
     <color name="green">#665aa6</color>
     <color name="lightgray">#f1f1f1</color>
-    <color name="silver">#9a9a9a</color>
+    <color name="silver">#F2F5F9</color>
+    <color name="syment">#677489</color>
+    <color name="darksyment">#4A5567</color>
+    <color name="gender">#579EF2</color>
 </resources>

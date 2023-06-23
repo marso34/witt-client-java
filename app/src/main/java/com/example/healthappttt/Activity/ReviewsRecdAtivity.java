@@ -1,7 +1,7 @@
 package com.example.healthappttt.Activity;
 
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
@@ -16,40 +16,39 @@ import com.example.healthappttt.adapter.BlockUserAdapter;
 
 import java.util.ArrayList;
 
-public class BlockActivity extends AppCompatActivity {
+public class ReviewsRecdAtivity extends AppCompatActivity {
 
-    SQLiteDatabase db;
     SQLiteUtil sqLiteUtil;
 
     androidx.appcompat.widget.SearchView searchView;
-    ArrayList<BlackListData> BlackList, filteredList;
-    ArrayList<ReviewListData> ReviewList;
-    BlockUserAdapter BlackAdapter;
+    ArrayList<BlackListData> BlackList;
+    ArrayList<ReviewListData> ReviewList, filteredList;
+    BlockUserAdapter ReviewAdapter;
     RecyclerView recyclerView;
     LinearLayoutManager linearLayoutManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_block);
+        setContentView(R.layout.activity_reviews_recd);
 
-        searchView = findViewById(R.id.black_search);
-        recyclerView = findViewById(R.id.blockrecycle);
+
+        TextView textView = findViewById(R.id.listCnt);
+        searchView = findViewById(R.id.review_search);
+        recyclerView = findViewById(R.id.Review_recycle);
 
         filteredList = new ArrayList<>();
 
         sqLiteUtil = SQLiteUtil.getInstance(); // SQLiteUtil 객체 생성
         sqLiteUtil.setInitView(this,"BLACK_LIST_TB");//차단 목록 로컬 db
-        BlackList = sqLiteUtil.SelectBlackUser();//SELECT * FROM BLACK_LIST_TB
+        //BlackList = sqLiteUtil.SelectBlackUser();//SELECT * FROM BLACK_LIST_TB
 
-        BlackAdapter = new BlockUserAdapter(BlackList,ReviewList, this);//어뎁터에 차단 목록 생성
+        ReviewAdapter = new BlockUserAdapter(BlackList,ReviewList, this);//어뎁터에 차단 목록 생성
         linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setAdapter(BlackAdapter);
+        //recyclerView.setAdapter(BlackAdapter);
 
-       // BlockList.add(new UserProfile("이형원")); //리스트에 추가 -> 매서드로 변경 필요
-      //  BlockList.add(new UserProfile("dkh"));
-       // BlockList.add(new UserProfile("hwstar"));
-        BlackAdapter.notifyDataSetChanged(); //변경점을 어뎁터에 알림
+
+        //BlackAdapter.notifyDataSetChanged(); //변경점을 어뎁터에 알림
 
 
         //검색 관련 매서드
@@ -71,21 +70,17 @@ public class BlockActivity extends AppCompatActivity {
                 return false;
             }
         });
-
-
     }
 
     //검색창에서 텍스트가 바뀔때마다 해당 텍스트에 해당하는 요소를 보여주는 매서드
     public void searchFilter(String searchText) {
         filteredList.clear();
 
-        for(int i = 0; i < BlackList.size(); i++){
-            if(BlackList.get(i).getUser_NM().toLowerCase().contains(searchText.toLowerCase())) {
-                filteredList.add(BlackList.get(i));
+        for(int i = 0; i < ReviewList.size(); i++){
+            if(ReviewList.get(i).getUser_NM().toLowerCase().contains(searchText.toLowerCase())) {
+                filteredList.add(ReviewList.get(i));
             }
         }
-        BlackAdapter.filterList(filteredList);
+        //ReviewAdapter.filterList(filteredList);
     }
-
-
 }
