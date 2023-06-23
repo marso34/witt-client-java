@@ -42,6 +42,50 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
             Log.e(table, " 데이터 베이스를 열 수 없음");
         }
     }
+    /**
+     * 이 메소드는 RREVIEW_TB 데이터를 삽입하는 메서드입니다.
+     */
+    public void insert(ReviewListData reviewList) {
+        ContentValues values = new ContentValues();
+
+        if(table.equals("RREVIEW_TB")){
+            values.put("Review_PK",reviewList.getReview_PK());
+            values.put("User_FK",reviewList.getUser_FK());
+            values.put("RPT_User_FK",reviewList.getRPT_User_FK());
+            values.put("Text_Con",reviewList.getText_Con());
+            values.put("Check_Box",reviewList.getCheck_Box());
+            values.put("TS",reviewList.getTS());
+
+            long result = db.insert(table,null,values);
+            Log.d("ReviewTB",result+"성공");
+        }else {
+            Log.d("ReviewTB","매서드 형식 오류 ");
+        }
+
+    }
+
+
+
+    /**
+     * 이 메소드는 BLACK_LIST_TB 데이터를 삽입하는 메서드입니다.
+     */
+    public void insert(BlackListData BlackList) {
+        ContentValues values  = new ContentValues();
+
+        if (table.equals("BLACK_LIST_TB")){
+            values.put("BL_PK", BlackList.getBL_PK());
+            values.put("User_NM", BlackList.getUser_NM());
+            values.put("OUser_FK", BlackList.getOUser_FK());
+            values.put("TS", BlackList.getTS());
+            values.put("User_Img",BlackList.getUser_Img());
+
+            long result = db.insert(table,null,values);
+            Log.d("blackTB",result + "성공");
+        } else  {
+            Log.d("Black_TB","매서드 형식 오류 ");
+        }
+    }
+
 
     /**
      * 이 메소드는 RT_TB 데이터를 삽입하는 메서드입니다.
@@ -124,6 +168,12 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         int result = db.delete(table, selection, new String[]{String.valueOf(PK)});
         Log.i(table, +result + "개 row delete 성공");
     }
+
+    //로컬 db에서 해당 pk를 가진 행을 삭제하는 매서드
+    public void deleteFromBlackListTable(int pk) {
+        db.execSQL("DELETE FROM BLACK_LIST_TB WHERE BL_PK =" + pk);
+    }
+
 
     public void Update(Routine routine) {
         ContentValues values = new ContentValues();
@@ -235,4 +285,33 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
 
         return null;
     }
+
+    public ArrayList<BlackListData> SelectBlackUser() {
+        if (table.equals("BLACK_LIST_TB")) {
+            String sql = "SELECT * FROM BLACK_LIST_TB";
+
+            Cursor cursor = db.rawQuery(sql, null);
+
+            ArrayList<BlackListData> BlackListData = new ArrayList<>();
+
+            while(cursor.moveToNext()) {
+                BlackListData e = new BlackListData(        // 순서 잘 지킬 것, 나중에 수정
+                        cursor.getInt(0),        //BL_PK
+                        cursor.getString(1),     // User_NM,
+                        cursor.getInt(2),        //OUser_FK
+                        cursor.getString(3),     // TS
+                        cursor.getBlob(4)        //User_Img
+                );
+
+                BlackListData.add(e);
+            }
+
+            return BlackListData;
+        } else {
+            Log.d(table, " 잘못된 메서드 호출");
+        }
+        return null;
+    }
+
+
 }

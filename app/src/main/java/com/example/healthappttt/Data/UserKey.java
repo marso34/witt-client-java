@@ -4,18 +4,16 @@ import com.google.gson.annotations.SerializedName;
 public class UserKey {
     @SerializedName("USER_PK")
     int userPK;
+    @SerializedName("BL_PK")
+    private Integer BL_PK;
 
     public UserKey(int userPK) {
         this.userPK = userPK;
     }
 
-    public int getUserPK() {
-        return userPK;
+    public UserKey(Integer BL_PK){
+        this.BL_PK = BL_PK;
     }
 
-
-//    public String getKey() {
-//        return userkey;
-//    }
 
 }

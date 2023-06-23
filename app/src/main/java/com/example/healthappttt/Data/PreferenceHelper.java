@@ -3,6 +3,7 @@ package com.example.healthappttt.Data;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Base64;
+import android.util.Log;
 
 public class PreferenceHelper
 {
@@ -12,7 +13,7 @@ public class PreferenceHelper
 
     private SharedPreferences app_prefs;
     private Context context;
-    private UserProfile upf = new UserProfile();
+//    private UserProfile upf = new UserProfile();   테스트
 
     public PreferenceHelper(Context context) {
         app_prefs = context.getSharedPreferences("UserProfile", Context.MODE_PRIVATE);
@@ -38,6 +39,13 @@ public class PreferenceHelper
 
         edit.apply();
     }
+//    차단목록 추가 매서드
+//    public void putBlackList( String name) {
+//        SharedPreferences.Editor edit = app_prefs.edit();
+//        edit.putString("BlackUser"+name,name);
+//        Log.d("putblacklist에 저장:",getBlackUser(name));
+//        edit.apply();
+//    }
 
     public int getPK() {
         return  app_prefs.getInt( "USER_PK", 00);
@@ -57,7 +65,9 @@ public class PreferenceHelper
     public String getPW() {
         return app_prefs.getString("PW","__");
     }
-
+    public String getBlackUser(String name) {
+        return app_prefs.getString("BlackUser"+name,"__");
+    }
 }
 //----------------------------------------------------------------------
 
