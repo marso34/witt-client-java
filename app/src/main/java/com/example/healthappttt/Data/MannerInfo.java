@@ -18,7 +18,7 @@ public class MannerInfo {
         this.kindnessValue = kindnessValue;
     }
 
-    public double getReliabilityValue() {
+    public int getReliabilityValue() {
         return reliabilityValue;
     }
 
@@ -26,7 +26,7 @@ public class MannerInfo {
         this.reliabilityValue = reliabilityValue;
     }
 
-    public double getSincerityValue() {
+    public int getSincerityValue() {
         return sincerityValue;
     }
 
@@ -34,7 +34,7 @@ public class MannerInfo {
         this.sincerityValue = sincerityValue;
     }
 
-    public double getKindnessValue() {
+    public int getKindnessValue() {
         return kindnessValue;
     }
 

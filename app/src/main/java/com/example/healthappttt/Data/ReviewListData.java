@@ -22,15 +22,15 @@ public class ReviewListData {
     private byte[] User_Img;
 
     public ReviewListData(int Review_PK,int User_FK, int RPT_User_FK, String Text_Con, int Check_Box, String TS,String User_NM,byte[] User_Img) {
-        Review_PK = this.Review_PK;
-        User_FK = this.User_FK;
-        RPT_User_FK = this.RPT_User_FK;
-        Text_Con = this.Text_Con;
-        Check_Box = this.Check_Box;
-        TS = this.TS;
-        User_NM = this.User_NM;
-        User_Img = this.User_Img;
+        this.Review_PK = Review_PK;
+        this.User_FK = User_FK;
+        this.RPT_User_FK = RPT_User_FK;
+        this.Text_Con = Text_Con;
+        this.TS = TS;
+        this.User_NM = User_NM;
+        this.User_Img = User_Img;
     }
+
 
 
 

@@ -13,7 +13,7 @@ import com.example.healthappttt.R;
 
 public class MyProfileActivity extends AppCompatActivity {
 
-    ImageButton block_btn,Reviews_btn;
+    ImageButton block_btn,Reviews_btn,WittHistory_btn;
 
 
     @Override
@@ -23,6 +23,7 @@ public class MyProfileActivity extends AppCompatActivity {
 
         block_btn = findViewById(R.id.block_btn);
         Reviews_btn = findViewById(R.id.Reviews_Recd);
+        WittHistory_btn = findViewById(R.id.WittHistory);
         ViewChangeBlock(); // 차단하기 클릭시 화면전환 매서드
 
     }
@@ -32,7 +33,7 @@ public class MyProfileActivity extends AppCompatActivity {
         block_btn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MyProfileActivity.this, BlockActivity.class);
+                Intent intent = new Intent(MyProfileActivity.this, BlackActivity.class);
                 startActivity(intent);
             }
         });
@@ -41,6 +42,14 @@ public class MyProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MyProfileActivity.this, ReviewsRecdAtivity.class);
+                startActivity(intent);
+            }
+        });
+        //위트 내역
+        WittHistory_btn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MyProfileActivity.this, WittHistoryActivity.class);
                 startActivity(intent);
             }
         });

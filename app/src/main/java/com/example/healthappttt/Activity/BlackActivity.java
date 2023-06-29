@@ -1,6 +1,5 @@
 package com.example.healthappttt.Activity;
 
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,19 +10,20 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.healthappttt.Data.BlackListData;
 import com.example.healthappttt.Data.ReviewListData;
 import com.example.healthappttt.Data.SQLiteUtil;
+import com.example.healthappttt.Data.WittListData;
 import com.example.healthappttt.R;
 import com.example.healthappttt.adapter.BlockUserAdapter;
 
 import java.util.ArrayList;
 
-public class BlockActivity extends AppCompatActivity {
+public class BlackActivity extends AppCompatActivity {
 
-    SQLiteDatabase db;
     SQLiteUtil sqLiteUtil;
 
     androidx.appcompat.widget.SearchView searchView;
     ArrayList<BlackListData> BlackList, filteredList;
     ArrayList<ReviewListData> ReviewList;
+    ArrayList<WittListData> WittList;
     BlockUserAdapter BlackAdapter;
     RecyclerView recyclerView;
     LinearLayoutManager linearLayoutManager;
@@ -41,7 +41,7 @@ public class BlockActivity extends AppCompatActivity {
         sqLiteUtil.setInitView(this,"BLACK_LIST_TB");//차단 목록 로컬 db
         BlackList = sqLiteUtil.SelectBlackUser();//SELECT * FROM BLACK_LIST_TB
 
-        BlackAdapter = new BlockUserAdapter(BlackList,ReviewList, this);//어뎁터에 차단 목록 생성
+        BlackAdapter = new BlockUserAdapter(BlackList,ReviewList, WittList ,this);//어뎁터에 차단 목록 생성
         linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(BlackAdapter);
@@ -84,7 +84,7 @@ public class BlockActivity extends AppCompatActivity {
                 filteredList.add(BlackList.get(i));
             }
         }
-        BlackAdapter.filterList(filteredList);
+        BlackAdapter.filterBlackList(filteredList);
     }
 
 

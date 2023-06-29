@@ -9,9 +9,6 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
-    <!--    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>-->
-
-
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -24,7 +21,14 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".ReviewsAdapter"
+            android:name=".WHChildFragment"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".Activity.WittHistoryActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -32,13 +36,13 @@
         </activity>
         <activity
             android:name=".Activity.ReviewsRecdAtivity"
-            android:exported="true">
+            android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".Activity.BlockActivity"
+            android:name=".Activity.BlackActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

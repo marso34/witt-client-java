@@ -1,6 +1,7 @@
 package com.example.healthappttt.Activity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.healthappttt.Data.BlackListData;
 import com.example.healthappttt.Data.ReviewListData;
 import com.example.healthappttt.Data.SQLiteUtil;
+import com.example.healthappttt.Data.WittListData;
 import com.example.healthappttt.R;
 import com.example.healthappttt.adapter.BlockUserAdapter;
 
@@ -23,32 +25,41 @@ public class ReviewsRecdAtivity extends AppCompatActivity {
     androidx.appcompat.widget.SearchView searchView;
     ArrayList<BlackListData> BlackList;
     ArrayList<ReviewListData> ReviewList, filteredList;
+    ArrayList<WittListData> WittList;
     BlockUserAdapter ReviewAdapter;
     RecyclerView recyclerView;
     LinearLayoutManager linearLayoutManager;
+
+    String ReviewCnt;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reviews_recd);
 
 
-        TextView textView = findViewById(R.id.listCnt);
+        TextView listCnt = findViewById(R.id.listCnt);
         searchView = findViewById(R.id.review_search);
         recyclerView = findViewById(R.id.Review_recycle);
 
         filteredList = new ArrayList<>();
 
         sqLiteUtil = SQLiteUtil.getInstance(); // SQLiteUtil 객체 생성
-        sqLiteUtil.setInitView(this,"BLACK_LIST_TB");//차단 목록 로컬 db
-        //BlackList = sqLiteUtil.SelectBlackUser();//SELECT * FROM BLACK_LIST_TB
+        sqLiteUtil.setInitView(this,"REVIEW_TB");//리뷰 목록 로컬 db
+        ReviewList = sqLiteUtil.SelectReviewUser();//SELECT * FROM REVIEW_TB
+        Log.d("ReviewActivity첫번째 PK값: ", String.valueOf(ReviewList.get(0).getReview_PK()));
+        ReviewAdapter = new BlockUserAdapter(BlackList,ReviewList,WittList, this);//어뎁터에 차단 목록 생성
 
-        ReviewAdapter = new BlockUserAdapter(BlackList,ReviewList, this);//어뎁터에 차단 목록 생성
+        ReviewCnt = String.valueOf(ReviewList.size());//리뷰 리스트 개수 표시
+        Log.d("리뷰리스트 개수: ", ReviewCnt);
+        listCnt.setText(ReviewCnt);
+
         linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(linearLayoutManager);
-        //recyclerView.setAdapter(BlackAdapter);
+        recyclerView.setAdapter(ReviewAdapter);
 
 
-        //BlackAdapter.notifyDataSetChanged(); //변경점을 어뎁터에 알림
+        ReviewAdapter.notifyDataSetChanged(); //변경점을 어뎁터에 알림
 
 
         //검색 관련 매서드
@@ -81,6 +92,6 @@ public class ReviewsRecdAtivity extends AppCompatActivity {
                 filteredList.add(ReviewList.get(i));
             }
         }
-        //ReviewAdapter.filterList(filteredList);
+        ReviewAdapter.filterReviewList(filteredList);
     }
 }
