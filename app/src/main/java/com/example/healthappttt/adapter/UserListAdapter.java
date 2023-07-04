@@ -1,6 +1,10 @@
 package com.example.healthappttt.adapter;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,35 +13,24 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.example.healthappttt.Data.Message;
-import com.example.healthappttt.Data.User;
-import com.example.healthappttt.Data.UserInfo;
+import com.example.healthappttt.Activity.ChatActivity;
+import com.example.healthappttt.Data.SocketSingleton;
+import com.example.healthappttt.Data.UserChat;
 import com.example.healthappttt.R;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserListViewHolder> {
 
-    private List<User> userList;
+    private List<UserChat> userList;
     private OnItemClickListener listener;
-
-    public UserListAdapter(List<User> userList) {
+    private io.socket.client.Socket mSocket;
+    private SocketSingleton socketSingleton;
+    private Context context;
+    private  UserChat user;
+    public UserListAdapter(Context context, List<UserChat> userList) {
         this.userList = userList;
+        this.context = context;
     }
 
     @NonNull
@@ -49,8 +42,10 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserLi
 
     @Override
     public void onBindViewHolder(@NonNull UserListViewHolder holder, int position) {
-        User user = userList.get(position);
-        holder.userName.setText(user.getUser_NM());
+        user = userList.get(position);
+
+        holder.userName.setText(user.getUserNM());
+        socketSingleton = SocketSingleton.getInstance();
     }
 
     @Override
@@ -72,19 +67,24 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserLi
         public UserListViewHolder(@NonNull View itemView) {
             super(itemView);
             userName = itemView.findViewById(R.id.txt_name);
-
+            String name = (String) userName.getText();
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (listener != null) {
-                        int position = getAdapterPosition();
-                        if (position != RecyclerView.NO_POSITION) {
-                            listener.onItemClick(position);
-                        }
-                    }
+                   //chat activity호출 및 키 주기.
+                    StartChatActivity();
+
                 }
             });
         }
+    }
+    public void StartChatActivity(){
+        Log.d(TAG, "StartChatActivity: "+user.getOtherUserKey());
+        Intent intent = new Intent(context, ChatActivity.class);
+        intent.putExtra("otherUserName",user.getUserNM());
+        intent.putExtra("ChatRoomId",user.getChatRoomId());
+        intent.putExtra("otherUserKey",user.getOtherUserKey());
+        context.startActivity(intent);
     }
 
 

@@ -1,6 +1,7 @@
 package com.example.healthappttt.Fragment;
 
-import android.content.Intent;
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,9 +13,10 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.healthappttt.Activity.ChatActivity;
+import com.example.healthappttt.Data.PreferenceHelper;
 import com.example.healthappttt.Data.RetrofitClient;
-import com.example.healthappttt.Data.User;
+import com.example.healthappttt.Data.UserChat;
+import com.example.healthappttt.Data.UserKey;
 import com.example.healthappttt.R;
 import com.example.healthappttt.adapter.UserListAdapter;
 import com.example.healthappttt.interface_.ServiceApi;
@@ -26,43 +28,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-//package com.example.healthappttt.Fragment;
-//
-//import android.os.Bundle;
-//import android.util.Log;
-//import android.view.LayoutInflater;
-//import android.view.View;
-//import android.view.ViewGroup;
-//
-//import androidx.annotation.NonNull;
-//import androidx.fragment.app.Fragment;
-//import androidx.recyclerview.widget.LinearLayoutManager;
-//import androidx.recyclerview.widget.RecyclerView;
-//
-//import com.example.healthappttt.Data.UserInfo;
-//import com.example.healthappttt.R;
-//import com.example.healthappttt.adapter.UserListAdapter;
-//import com.google.android.gms.tasks.OnCompleteListener;
-//import com.google.android.gms.tasks.Task;
-//import com.google.firebase.auth.FirebaseAuth;
-//import com.google.firebase.database.DataSnapshot;
-//import com.google.firebase.database.DatabaseError;
-//import com.google.firebase.database.DatabaseReference;
-//import com.google.firebase.database.FirebaseDatabase;
-//import com.google.firebase.database.ValueEventListener;
-//import com.google.firebase.firestore.CollectionReference;
-//import com.google.firebase.firestore.FirebaseFirestore;
-//import com.google.firebase.firestore.QueryDocumentSnapshot;
-//import com.google.firebase.firestore.QuerySnapshot;
-//
-//import java.util.ArrayList;
-//
-//
 public class ChattingFragment extends Fragment {
     private RecyclerView userlistRecyclerView;
     private UserListAdapter userListAdapter;
-    private List<User> userList;
-
+    private List<UserChat> userList;
+    private PreferenceHelper prefhelper;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -78,20 +48,11 @@ public class ChattingFragment extends Fragment {
         // 유저 목록을 가져와서 userList에 저장합니다.
 
         // 어댑터를 초기화하고 userList를 설정합니다.
-        userListAdapter = new UserListAdapter(userList);
+        userListAdapter = new UserListAdapter(getContext(),userList);
         userlistRecyclerView.setAdapter(userListAdapter);
 
         // 어댑터의 아이템 클릭 리스너를 설정합니다.
-        userListAdapter.setOnItemClickListener(new UserListAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                // 클릭된 유저의 정보를 얻어와서 ChatActivity로 전달합니다.
-                User clickedUser = userList.get(position);
-                Intent intent = new Intent(getContext(), ChatActivity.class);
-                intent.putExtra("username", clickedUser.getUser_NM());
-                startActivity(intent);
-            }
-        });
+       
 
 
 
@@ -100,19 +61,21 @@ public class ChattingFragment extends Fragment {
 
     // 서버에서 유저 목록을 가져오는 메소드입니다.
     private void getUsersFromServer() {
-        // 서버로부터 유저 목록을 가져와서 List<User>로 반환합니다.
+        prefhelper = new PreferenceHelper(getContext());
+        // 서버로부터 유저 목록을 가져와서 List<UserChat>로 반환합니다.
         ServiceApi apiService = RetrofitClient.getClient().create(ServiceApi.class);
-        Call<List<User>> call = apiService.getUsers();
-        call.enqueue(new Callback<List<User>>() {
+        Log.d(TAG, "getUsersFromServer: "+String.valueOf(prefhelper.getPK()));
+        Call<List<UserChat>> call = apiService.getUsers(new UserKey(prefhelper.getPK())); // 유저키 얻어와서 넣기
+        call.enqueue(new Callback<List<UserChat>>() {
             @Override
-            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+            public void onResponse(Call<List<UserChat>> call, Response<List<UserChat>> response) {
                 if (response.isSuccessful()) {
-                    List<User> users = response.body();
+                    List<UserChat> users = response.body();
                     userList.clear();
-                    for (User user : users) {
-                        User newUser = new User(user.getUser_NM());
+                    for (UserChat user : users) {
+                        UserChat newUser = new UserChat(user.getUserNM(), user.getOtherUserKey(), user.getChatRoomId());
                         userList.add(newUser);
-                        Log.d("chat", newUser.getUser_NM());
+                        Log.d("chatUSERLIST", newUser.getUserNM());
                     }
                     userListAdapter.notifyDataSetChanged();
                 } else {
@@ -121,9 +84,10 @@ public class ChattingFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<List<User>> call, Throwable t) {
+            public void onFailure(Call<List<UserChat>> call, Throwable t) {
                 Toast.makeText(getContext(), "Failed to retrieve user list", Toast.LENGTH_SHORT).show();
             }
         });
+
     }
 }

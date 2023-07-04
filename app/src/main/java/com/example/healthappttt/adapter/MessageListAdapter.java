@@ -18,6 +18,7 @@ import io.reactivex.rxjava3.annotations.NonNull;
 public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.MessageViewHolder> {
     private List<Message> messageList;
     private String username;
+
     public class MessageViewHolder extends RecyclerView.ViewHolder {
         public TextView nameTextView;
         public TextView messageTextView;
