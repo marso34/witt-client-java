@@ -246,7 +246,6 @@ public class MainActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     List<UserProfile> profileList = response.body();
                     // 서버에서 받은 응답을 처리하는 코드를 작성합니다.
-
                     if (profileList != null) {   //서버에서 반환된 값이 null이 아닌 경우 처리할 코드
                         UserProfile userProfile = profileList.get(0); // 첫번째 UserProfile 객체를 가져온다.
                         prefhelper.putProfile(userProfile); // 로컬에 UserProfile 객체를 저장한다.
