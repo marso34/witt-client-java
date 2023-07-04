@@ -255,7 +255,7 @@ public class MainActivity extends AppCompatActivity {
 
                     } else {
                         //서버에서 반환된 값이 null인 경우 처리할 코드
-                        Log.d("MainActivity", "Response body is null");
+                        Log.d("MainActivity", "Response body is null"+response.body());
                     }
 
                 } else {
