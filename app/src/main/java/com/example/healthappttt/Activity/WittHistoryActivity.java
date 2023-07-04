@@ -36,6 +36,9 @@ public class WittHistoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_witt_history);
 
+        /**
+         * 검색 매서드 WHClildFragment 관련해서 살려야함
+         */
 
         //searchView = findViewById(R.id.black_search);
         //recyclerView = findViewById(R.id.WittHistoryRecycle);
