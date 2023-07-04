@@ -17,8 +17,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.healthappttt.Data.Exercise;
-import com.example.healthappttt.Data.Routine;
+import com.example.healthappttt.Data.ExerciseData;
 import com.example.healthappttt.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -30,15 +29,15 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class ExerciseInputAdapter extends RecyclerView.Adapter<ExerciseInputAdapter.MainViewHolder> {
-    private ArrayList<Exercise> exercises;
+    private ArrayList<ExerciseData> exercises;
     private boolean isEdit;
 
-    public ExerciseInputAdapter(ArrayList<Exercise> exercises) {
+    public ExerciseInputAdapter(ArrayList<ExerciseData> exercises) {
         this.exercises = exercises;
         this.isEdit = false;
     }
 
-    public ExerciseInputAdapter(ArrayList<Exercise> exercises, boolean isEdit) {
+    public ExerciseInputAdapter(ArrayList<ExerciseData> exercises, boolean isEdit) {
         this.exercises = exercises;
         this.isEdit = isEdit;
     }
@@ -112,9 +111,9 @@ public class ExerciseInputAdapter extends RecyclerView.Adapter<ExerciseInputAdap
                 String str = mainViewHolder.EditCount.getText().toString();
 
                 if (str != null)
-                    exercises.get(mainViewHolder.getAbsoluteAdapterPosition()).setNum(Integer.parseInt(str));
+                    exercises.get(mainViewHolder.getAbsoluteAdapterPosition()).setCntOrDis(Integer.parseInt(str));
                 else
-                    exercises.get(mainViewHolder.getAbsoluteAdapterPosition()).setNum(0);
+                    exercises.get(mainViewHolder.getAbsoluteAdapterPosition()).setCntOrDis(0);
             }
         });
 
@@ -132,9 +131,9 @@ public class ExerciseInputAdapter extends RecyclerView.Adapter<ExerciseInputAdap
                 String str = mainViewHolder.EditSet.getText().toString();
 
                 if (str != null)
-                    exercises.get(mainViewHolder.getAbsoluteAdapterPosition()).setCount(Integer.parseInt(str));
+                    exercises.get(mainViewHolder.getAbsoluteAdapterPosition()).setSetOrTime(Integer.parseInt(str));
                 else
-                    exercises.get(mainViewHolder.getAbsoluteAdapterPosition()).setCount(0);
+                    exercises.get(mainViewHolder.getAbsoluteAdapterPosition()).setSetOrTime(0);
             }
         });
 
@@ -146,12 +145,12 @@ public class ExerciseInputAdapter extends RecyclerView.Adapter<ExerciseInputAdap
         holder.CatView.setText(this.exercises.get(position).getState()); // 운동 부위
         holder.CatView.setTextColor(Color.parseColor(this.exercises.get(position).getTextColor())); // 부위 텍스트 색
         holder.CatView.setBackgroundColor(Color.parseColor(this.exercises.get(position).getColor())); // 부위 바탕 색
-        holder.NameView.setText(this.exercises.get(position).getTitle()); // 운동 이름
+        holder.NameView.setText(this.exercises.get(position).getExerciseName()); // 운동 이름
 
         if (isEdit) {
             holder.EditVolume.setText(Integer.toString(this.exercises.get(position).getVolume()));
-            holder.EditCount.setText(Integer.toString(this.exercises.get(position).getNum()));
-            holder.EditSet.setText(Integer.toString(this.exercises.get(position).getCount()));
+            holder.EditCount.setText(Integer.toString(this.exercises.get(position).getCntOrDis()));
+            holder.EditSet.setText(Integer.toString(this.exercises.get(position).getSetOrTime()));
             holder.RemoveBtn.setVisibility(View.VISIBLE);
         }
     }
@@ -164,5 +163,5 @@ public class ExerciseInputAdapter extends RecyclerView.Adapter<ExerciseInputAdap
         notifyItemRemoved(position);
     }
 
-    public ArrayList<Exercise> getInputData() { return exercises; }
+    public ArrayList<ExerciseData> getInputData() { return exercises; }
 }

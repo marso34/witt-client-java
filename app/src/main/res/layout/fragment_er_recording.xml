@@ -97,7 +97,7 @@
             android:paddingTop="6dp"
             android:paddingHorizontal="16dp"
             android:paddingBottom="200dp"
-            tools:listitem="@layout/adapter_exercise"/>
+            tools:listitem="@layout/adapter_exercise_record"/>
 
     </LinearLayout>
 

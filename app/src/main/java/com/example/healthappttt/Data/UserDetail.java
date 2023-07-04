@@ -11,7 +11,7 @@ public class UserDetail {
     private int kindness;
     private double height;
     private double weight;
-    private ArrayList<Exercise> exercises;
+    private ArrayList<ExerciseData> exercises;
 //    public UserDetail(long UserKey, String name, String gymName, double latitude, double longitude, int routineCategory, Date startTime, Date endTime, String ProfileImg, Integer Distance, double benchPress, double squat, double deadlift, int trustworthiness, int diligence, int kindness, double height, double weight) {
 ////        super(UserKey, name, gymName, latitude, longitude, routineCategory, startTime, endTime, ProfileImg, Distance);
 //        this.benchPress = benchPress;

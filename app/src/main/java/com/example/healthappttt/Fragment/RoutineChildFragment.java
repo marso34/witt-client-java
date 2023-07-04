@@ -25,8 +25,8 @@ import android.view.ViewGroup;
 
 import com.example.healthappttt.Activity.CreateRoutineActivity;
 import com.example.healthappttt.Activity.EditRoutineActivity;
-import com.example.healthappttt.Data.Exercise;
-import com.example.healthappttt.Data.Routine;
+import com.example.healthappttt.Data.ExerciseData;
+import com.example.healthappttt.Data.RoutineData;
 import com.example.healthappttt.Data.RoutineComparator;
 import com.example.healthappttt.Data.SQLiteUtil;
 import com.example.healthappttt.R;
@@ -55,7 +55,7 @@ public class RoutineChildFragment extends Fragment {
     private CardView addRoutineBtn;
 
     private SQLiteUtil sqLiteUtil;
-    private ArrayList<Routine> routines;
+    private ArrayList<RoutineData> routines;
     private int dayOfWeek;
 
 
@@ -113,7 +113,7 @@ public class RoutineChildFragment extends Fragment {
 
                 if (data.getResultCode() == Activity.RESULT_OK && data.getData() != null) {
                     Intent intent = data.getData();
-                    Routine r = (Routine) intent.getSerializableExtra("routine");
+                    RoutineData r = (RoutineData) intent.getSerializableExtra("routine");
                     int check = intent.getIntExtra("check", 0);
 
                     if (check == 0) {
@@ -146,6 +146,13 @@ public class RoutineChildFragment extends Fragment {
         routines = sqLiteUtil.SelectRoutine(dayOfWeek);
 
         if (routines != null) {
+
+            sqLiteUtil.setInitView(getContext(), "EX_TB");
+
+            for (int i = 0; i < routines.size(); i++) {
+                routines.get(i).setExercises(sqLiteUtil.SelectExercise(routines.get(i).getID()));
+            }
+
             Collections.sort(routines, new RoutineComparator());
             setRecyclerView();
         }
@@ -168,10 +175,9 @@ public class RoutineChildFragment extends Fragment {
         if (adapter != null) {
             adapter.setOnClickRoutineListener(new RoutineAdapter.OnClickRoutine() {
                 @Override
-                public void onClickRoutine(Routine r, ArrayList<Exercise> e) {
+                public void onClickRoutine(RoutineData r) {
                     Intent intent = new Intent(getContext(), EditRoutineActivity.class);
                     intent.putExtra("routine", r);
-                    intent.putExtra("exercises", e);
                     startActivityResult.launch(intent);
                 }
             });

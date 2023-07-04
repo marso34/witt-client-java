@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +21,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.healthappttt.Data.Exercise;
+import com.example.healthappttt.Data.ExerciseData;
 import com.example.healthappttt.R;
 import com.example.healthappttt.adapter.ExerciseListAdapter;
 import com.google.android.material.tabs.TabLayout;
@@ -44,15 +45,15 @@ public class CRSelectExerciseFragment extends Fragment {
     private RecyclerView recyclerView;
     private ExerciseListAdapter adapter;
 
-    private ArrayList<Exercise> chestExercises;
-    private ArrayList<Exercise> shoulderExercises;
-    private ArrayList<Exercise> backExercises;
-    private ArrayList<Exercise> lowbodyExercises;
-    private ArrayList<Exercise> armExercises;
-    private ArrayList<Exercise> cardioExercises;
+    private ArrayList<ExerciseData> chestExercises;
+    private ArrayList<ExerciseData> shoulderExercises;
+    private ArrayList<ExerciseData> backExercises;
+    private ArrayList<ExerciseData> lowbodyExercises;
+    private ArrayList<ExerciseData> armExercises;
+    private ArrayList<ExerciseData> cardioExercises;
 
-    private ArrayList<Exercise> exercises;
-    private ArrayList<Exercise> selectExercises;
+    private ArrayList<ExerciseData> exercises;
+    private ArrayList<ExerciseData> selectExercises;
 
     private int[] tabPosition;
 
@@ -69,7 +70,7 @@ public class CRSelectExerciseFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     public interface OnFragmentInteractionListener {
-        void onRoutineAddEx(ArrayList<Exercise> selectExerciseNames);
+        void onRoutineAddEx(ArrayList<ExerciseData> selectExerciseNames);
     }
 
     @Override
@@ -145,7 +146,7 @@ public class CRSelectExerciseFragment extends Fragment {
         selectExercises = new ArrayList<>();
 
         if (getArguments() != null) {
-            selectExercises = (ArrayList<Exercise>) getArguments().getSerializable("exercises");
+//            selectExercises = (ArrayList<ExerciseData>) getArguments().getSerializable("exercises");
             // selectExercises를 이용해서 운동 리시트에 이미 체크한 운동을 처리
             int[] schedule = getArguments().getIntArray("schedule");
             setRoutineTime(schedule[0], schedule[1], schedule[2]);
@@ -160,49 +161,49 @@ public class CRSelectExerciseFragment extends Fragment {
         cardioExercises = new ArrayList<>();
 
 
-        chestExercises.add(new Exercise("가슴",0x1));
-        chestExercises.add(new Exercise("벤치프레스",0x1));
-        chestExercises.add(new Exercise("인클라인 벤치 프레스",0x1));
-        chestExercises.add(new Exercise("케이블 크로스 오버",0x1));
-        chestExercises.add(new Exercise("펙덱 플라인 머신",0x1));
+        chestExercises.add(new ExerciseData("가슴",0x1));
+        chestExercises.add(new ExerciseData("벤치프레스",0x1));
+        chestExercises.add(new ExerciseData("인클라인 벤치 프레스",0x1));
+        chestExercises.add(new ExerciseData("케이블 크로스 오버",0x1));
+        chestExercises.add(new ExerciseData("펙덱 플라인 머신",0x1));
         tabPosition[0] = 0;
 
-        shoulderExercises.add(new Exercise("어깨",0x4));
-        shoulderExercises.add(new Exercise("사이드 레터럴 레이즈",0x4));
-        shoulderExercises.add(new Exercise("밀리터리 프레스",0x4));
-        shoulderExercises.add(new Exercise("벤트 오버 레터럴 레이즈",0x4));
+        shoulderExercises.add(new ExerciseData("어깨",0x4));
+        shoulderExercises.add(new ExerciseData("사이드 레터럴 레이즈",0x4));
+        shoulderExercises.add(new ExerciseData("밀리터리 프레스",0x4));
+        shoulderExercises.add(new ExerciseData("벤트 오버 레터럴 레이즈",0x4));
         tabPosition[1] = chestExercises.size();
 
-        backExercises.add(new Exercise("등",0x2));
-        backExercises.add(new Exercise("렛 풀 다운",0x2));
-        backExercises.add(new Exercise("케이블 시티드 로우",0x2));
-        backExercises.add(new Exercise("풀 업",0x2));
-        backExercises.add(new Exercise("원 암 덤벨 로우",0x2));
+        backExercises.add(new ExerciseData("등",0x2));
+        backExercises.add(new ExerciseData("렛 풀 다운",0x2));
+        backExercises.add(new ExerciseData("케이블 시티드 로우",0x2));
+        backExercises.add(new ExerciseData("풀 업",0x2));
+        backExercises.add(new ExerciseData("원 암 덤벨 로우",0x2));
         tabPosition[2] = tabPosition[1] + shoulderExercises.size();
 
-        lowbodyExercises.add(new Exercise("하체",0x8));
-        lowbodyExercises.add(new Exercise("레그 프레스",0x8));
-        lowbodyExercises.add(new Exercise("루마니안 데드리프트",0x8));
-        lowbodyExercises.add(new Exercise("바벨 스쿼트",0x8));
-        lowbodyExercises.add(new Exercise("덤벨 스쿼트",0x8));
+        lowbodyExercises.add(new ExerciseData("하체",0x8));
+        lowbodyExercises.add(new ExerciseData("레그 프레스",0x8));
+        lowbodyExercises.add(new ExerciseData("루마니안 데드리프트",0x8));
+        lowbodyExercises.add(new ExerciseData("바벨 스쿼트",0x8));
+        lowbodyExercises.add(new ExerciseData("덤벨 스쿼트",0x8));
         tabPosition[3] = tabPosition[2] + lowbodyExercises.size();
 
-        armExercises.add(new Exercise("팔",0x10));
-        armExercises.add(new Exercise("바벨 컬",0x10));
-        armExercises.add(new Exercise("덤벨 컬",0x10));
-        armExercises.add(new Exercise("트레이셉스 프레스 다운 케이블",0x10));
+        armExercises.add(new ExerciseData("팔",0x10));
+        armExercises.add(new ExerciseData("바벨 컬",0x10));
+        armExercises.add(new ExerciseData("덤벨 컬",0x10));
+        armExercises.add(new ExerciseData("트레이셉스 프레스 다운 케이블",0x10));
         tabPosition[4] = tabPosition[3] + armExercises.size();
 
-        ArrayList<Exercise> absExercises = new ArrayList<>();
-        absExercises.add(new Exercise("복근",0x20));
-        absExercises.add(new Exercise("싯 업",0x20));
-        absExercises.add(new Exercise("크런치",0x20));
+        ArrayList<ExerciseData> absExercises = new ArrayList<>();
+        absExercises.add(new ExerciseData("복근",0x20));
+        absExercises.add(new ExerciseData("싯 업",0x20));
+        absExercises.add(new ExerciseData("크런치",0x20));
         tabPosition[5] = tabPosition[4] + absExercises.size();
 
-        cardioExercises.add(new Exercise("유산소",0x40));
-        cardioExercises.add(new Exercise("사이클",0x40));
-        cardioExercises.add(new Exercise("트레드 밀",0x40));
-        cardioExercises.add(new Exercise("인클라인 트레드 밀",0x40));
+        cardioExercises.add(new ExerciseData("유산소",0x40));
+        cardioExercises.add(new ExerciseData("사이클",0x40));
+        cardioExercises.add(new ExerciseData("트레드 밀",0x40));
+        cardioExercises.add(new ExerciseData("인클라인 트레드 밀",0x40));
         tabPosition[6] = tabPosition[5] + cardioExercises.size();
 
         exercises.addAll(chestExercises);
@@ -317,7 +318,8 @@ public class CRSelectExerciseFragment extends Fragment {
         if (adapter != null) {
             adapter.setOnSelectExerciseListener(new ExerciseListAdapter.OnSelectExercise() {
                 @Override
-                public void onSelectExercise(Exercise exercise, boolean add) {
+                public void onSelectExercise(ExerciseData exercise, boolean add) {
+                    Log.d("운동 추가 테스트", exercise + "");
                     if (add)    selectExercises.add(exercise);
                     else        selectExercises.remove(exercise);
 

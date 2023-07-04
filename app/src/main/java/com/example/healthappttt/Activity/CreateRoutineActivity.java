@@ -13,9 +13,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.healthappttt.Data.Exercise;
+import com.example.healthappttt.Data.PreferenceHelper;
 import com.example.healthappttt.Data.RetrofitClient;
-import com.example.healthappttt.Data.Routine;
 import com.example.healthappttt.Data.RoutineData;
 import com.example.healthappttt.Data.ExerciseData;
 import com.example.healthappttt.Data.SQLiteUtil;
@@ -35,10 +34,10 @@ import retrofit2.Response;
 public class CreateRoutineActivity extends AppCompatActivity implements CRSetTimeFragment.OnFragmentInteractionListener, CRSelectExerciseFragment.OnFragmentInteractionListener, CRInputDetailFragment.OnFragmentInteractionListener {
     private ServiceApi service;
     private SQLiteUtil sqLiteUtil;
+    private PreferenceHelper prefhelper;
 
     private int dayOfWeek, startTime, endTime;
-    private Routine routine;
-    private ArrayList<Exercise> selectExercises;
+    private RoutineData routine;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,9 +46,9 @@ public class CreateRoutineActivity extends AppCompatActivity implements CRSetTim
 
         service = RetrofitClient.getClient().create(ServiceApi.class);
         sqLiteUtil = SQLiteUtil.getInstance();
+        prefhelper = new PreferenceHelper(this);
 
-        routine = new Routine();
-        selectExercises = new ArrayList<>();
+        routine = new RoutineData();
 
         Intent intent = getIntent();
         dayOfWeek = intent.getIntExtra("dayOfWeek", 0);
@@ -68,16 +67,16 @@ public class CreateRoutineActivity extends AppCompatActivity implements CRSetTim
     private void SaveToDB() {
         ArrayList<ExerciseData> list = new ArrayList<>();
 
-        int index = 0, CAT = 0;
-        for (Exercise e : selectExercises) {
-            list.add(new ExerciseData(e.getTitle(), e.getCat(), e.getCount(), e.getVolume(), e.getNum(), index));
+        int CAT = 0;
+        for (ExerciseData e : routine.getExercises())
             CAT |= e.getCat();
-            index++;
-        }
+
+        routine.setUserID(285); // 나중에 userID prefhelper.getPK()로 수정
+        routine.setCat(CAT);
 
         int finalCAT = CAT;
-        RoutineData rData = new RoutineData(5, dayOfWeek, finalCAT, TimeToString(startTime), TimeToString(endTime), list);
-        service.createRoutine(rData).enqueue(new Callback<List<Integer>>() {
+
+        service.createRoutine(routine).enqueue(new Callback<List<Integer>>() {
             @Override
             public void onResponse(Call<List<Integer>> call, Response<List<Integer>> response) {
                 if (response.isSuccessful()) {
@@ -90,10 +89,10 @@ public class CreateRoutineActivity extends AppCompatActivity implements CRSetTim
                     for (int resultID : list) {
                         if (i == 0) {
                             PID = resultID; // 루틴ID
-                            routine = new Routine(PID, TimeToString(startTime), TimeToString(endTime), finalCAT, dayOfWeek);
+                            routine.setID(PID);
                         } else {
-                            selectExercises.get(i-1).setParentID(PID);
-                            selectExercises.get(i-1).setID(resultID);
+                            routine.getExercises().get(i-1).setParentID(PID);
+                            routine.getExercises().get(i-1).setID(resultID);
                         }
                         i++;
                     }
@@ -121,9 +120,8 @@ public class CreateRoutineActivity extends AppCompatActivity implements CRSetTim
         sqLiteUtil.insert(routine);
 
         sqLiteUtil.setInitView(this, "EX_TB");
-        for (Exercise e : selectExercises) {
-            sqLiteUtil.insert(e);
-        }
+        for (ExerciseData e : routine.getExercises())
+            sqLiteUtil.insert(e, false);
     }
 
     private void Terminate(boolean isSuccess) {
@@ -142,19 +140,23 @@ public class CreateRoutineActivity extends AppCompatActivity implements CRSetTim
         this.startTime = startTime;
         this.endTime = endTime;
 
+        routine.setDayOfWeek(dayOfWeek);
+        routine.setStartTime(TimeToString(startTime));
+        routine.setEndTime(TimeToString(endTime));
+
         fragmentToAddEx();
     }  // SetRoutineTime에서 호출하는 메서드
 
     @Override
-    public void onRoutineAddEx(ArrayList<Exercise> selectExercises) {
-        this.selectExercises = selectExercises;
+    public void onRoutineAddEx(ArrayList<ExerciseData> selectExercises) {
+        this.routine.setExercises(selectExercises);
 
         fragmentToExDetail();
     } // AddExerciseFragment에서 호출하는 메서드
 
     @Override
-    public void onRoutineExDetail(ArrayList<Exercise> exercises) {
-        this.selectExercises = exercises;
+    public void onRoutineExDetail(ArrayList<ExerciseData> exercises) {
+        this.routine.setExercises(exercises);
 
         SaveToDB(); // 받은 운동 정보 토대로 DB에 루틴, 운동 생성
     } // ExerciseDetailFragment에서 호출하는 메서드
@@ -206,7 +208,7 @@ public class CreateRoutineActivity extends AppCompatActivity implements CRSetTim
         schedule[2] = endTime;
 
         Bundle bundle = new Bundle();
-        bundle.putSerializable("exercises", selectExercises);
+        bundle.putSerializable("exercises", routine.getExercises());
         bundle.putIntArray("schedule", schedule);
         replaceFragment(new CRSelectExerciseFragment(), bundle);
     }
@@ -218,7 +220,7 @@ public class CreateRoutineActivity extends AppCompatActivity implements CRSetTim
         schedule[2] = endTime;
 
         Bundle bundle = new Bundle();
-        bundle.putSerializable("exercises", selectExercises);
+        bundle.putSerializable("exercises", routine.getExercises());
         bundle.putIntArray("schedule", schedule);
         replaceFragment(new CRInputDetailFragment(), bundle);
     }

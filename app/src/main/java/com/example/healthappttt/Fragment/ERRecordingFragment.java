@@ -13,22 +13,19 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Chronometer;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.os.SystemClock;
 
-import com.example.healthappttt.Data.Exercise;
-import com.example.healthappttt.Data.Routine;
+import com.example.healthappttt.Data.ExerciseData;
 import com.example.healthappttt.R;
-import com.example.healthappttt.adapter.ExerciseAdapter;
+import com.example.healthappttt.adapter.ExerciseRecordAdapter;
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -44,7 +41,7 @@ public class ERRecordingFragment extends Fragment {
     private TextView RunTimeTxt, RunTimeView; // 운동 시간 보여주는 뷰
     private TextView RestTimeTxt, RestTimeView; // 휴식시간 보여주는 뷰
     private RecyclerView recyclerView;
-    private ExerciseAdapter adapter;
+    private ExerciseRecordAdapter adapter;
     private CardView StopBtn;  // 종료 버튼
     private TextView StopBtnTxt;
 
@@ -60,8 +57,9 @@ public class ERRecordingFragment extends Fragment {
     private long pauseTime; // 계산하기 위한 시간 -> 스톱워치 눌렀을 때 현재 시간을 저장
     private int runTime;    // 총 운동 시간
 
-    private ArrayList<Exercise> exercises;
-    private ArrayList<Exercise> recordExercises; // 실제 운동을 기록, 어댑터에서 한 기록을 받아옴
+    private ArrayList<ExerciseData> exercises;
+    private ArrayList<ExerciseData> recordExercises; // 실제 운동을 기록, 어댑터에서 한 기록을 받아옴
+    private int recordPosition;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -76,7 +74,7 @@ public class ERRecordingFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     public interface OnFragmentInteractionListener {
-        void onRecordExercises(long StartTime, long EndTime, int runTime);
+        void onRecordExercises(long StartTime, long EndTime, int runTime, ArrayList<ExerciseData> recordExercises);
     }
 
     @Override
@@ -140,11 +138,19 @@ public class ERRecordingFragment extends Fragment {
         exercises = new ArrayList<>();
         recordExercises = new ArrayList<>();
 
-        if (getArguments() != null)
-            exercises = (ArrayList<Exercise>) getArguments().getSerializable("exercises");
+        if (getArguments() != null) {
+            exercises = (ArrayList<ExerciseData>) getArguments().getSerializable("exercises");
+
+            for (int i = 0; i < exercises.size(); i++) {
+                recordExercises.add(new ExerciseData(exercises.get(i)));
+                recordExercises.get(i).setSetOrTime(0);
+            }
+        }
 
         init();
-        setRecyclerView();
+
+        if (exercises != null)
+            setRecyclerView();
 
         StopWatch.setOnClickListener(v -> StartStopWatch());
         StopBtn.setOnClickListener(v -> EndRocording());
@@ -158,26 +164,30 @@ public class ERRecordingFragment extends Fragment {
         clickTime = 0;
         pauseTime = 0;
         isRunning = false;
+
+        recordPosition = -1;
     }
 
     private void setRecyclerView() {
-        adapter = new ExerciseAdapter(exercises);
+        adapter = new ExerciseRecordAdapter(exercises);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
 
         if (adapter != null) {
-            adapter.setOnExerciseClickListener(new ExerciseAdapter.OnExerciseClick() {
+            adapter.setOnExerciseClickListener(new ExerciseRecordAdapter.OnExerciseClick() {
                 @Override
                 public void onExerciseClick(int position, TextView CardioTxtView, ProgressBar progressBar) {
                     if (isRunning) {
-                        Exercise e = exercises.get(position);
+                        ExerciseData e = exercises.get(position);
 
                         if (e.getCat() == 0x40) { // 유산소의 경우
                             if (AdapterProgressBar == null) {
+                                recordPosition = position;
                                 AdapterProgressBar = progressBar;
                                 AdapterTxtView = CardioTxtView;
                             } else if (AdapterProgressBar == progressBar) {
+                                recordPosition = -1;
                                 AdapterProgressBar = null;
                                 AdapterTxtView = null;
                             }
@@ -186,6 +196,7 @@ public class ERRecordingFragment extends Fragment {
                             count++;
 
                             progressBar.setProgress(count);
+                            recordExercises.get(position).setSetOrTime(count);
                         }
                     }
                 }
@@ -245,7 +256,7 @@ public class ERRecordingFragment extends Fragment {
                     pauseTime = 0; // 스톱버튼 누를 시 전부 초기화
                     timerTask.cancel();
 
-                    mListener.onRecordExercises(startTime, System.currentTimeMillis(), runTime);
+                    mListener.onRecordExercises(startTime, System.currentTimeMillis(), runTime, recordExercises); // 시작시간, 종료시간(현재시간), 운동시간, 운동
                 }
             });
             alert_ex.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
@@ -304,6 +315,8 @@ public class ERRecordingFragment extends Fragment {
 
                     AdapterProgressBar.setProgress(progress);
                     AdapterTxtView.setText(resultT);
+
+                    recordExercises.get(recordPosition).setSetOrTime(progress/6000);
                 }
 
                 if (progress == AdapterProgressBar.getMax()) {

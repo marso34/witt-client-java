@@ -25,12 +25,12 @@ public class DBHelper extends SQLiteOpenHelper {
         String recordSql = "CREATE TABLE if not exists RECORD_TB ("
                 + "PK INT primary key,"
                 + "OUser_FK INT,"
+                + "PROMISE_FK INT,"
                 + "Start_Time INT,"
                 + "End_Time TIME,"
                 + "Run_Time TIME,"
                 + "CAT SMALLINT,"
-                + "PROMISE_FK INT,"
-                + "TS TIMESTAMP);";
+                + "TS TIMESTAMP DEFAULT CURRENT_TIMESTAMP);";
 //                + "FOREIGN KEY (PROMISE_FK) REFERENCES PROMISE_TB(PK));";
 
         db.execSQL(recordSql);
