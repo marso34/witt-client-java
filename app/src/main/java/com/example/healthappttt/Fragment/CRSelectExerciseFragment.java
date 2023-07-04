@@ -133,13 +133,13 @@ public class CRSelectExerciseFragment extends Fragment {
         NextBtn = view.findViewById(R.id.nextBtn);
         NextTxt = view.findViewById(R.id.nextTxt);
 
-        tabLayout.addTab(tabLayout.newTab().setText("가슴"));
-        tabLayout.addTab(tabLayout.newTab().setText("어깨"));
-        tabLayout.addTab(tabLayout.newTab().setText("등"));
-        tabLayout.addTab(tabLayout.newTab().setText("하체"));
-        tabLayout.addTab(tabLayout.newTab().setText("팔"));
-        tabLayout.addTab(tabLayout.newTab().setText("복근"));
-        tabLayout.addTab(tabLayout.newTab().setText("유산소"));
+//        tabLayout.addTab(tabLayout.newTab().setText("가슴"));
+//        tabLayout.addTab(tabLayout.newTab().setText("어깨"));
+//        tabLayout.addTab(tabLayout.newTab().setText("등"));
+//        tabLayout.addTab(tabLayout.newTab().setText("하체"));
+//        tabLayout.addTab(tabLayout.newTab().setText("팔"));
+//        tabLayout.addTab(tabLayout.newTab().setText("복근"));
+//        tabLayout.addTab(tabLayout.newTab().setText("유산소"));
 
         tabPosition = new int[7];
         exercises = new ArrayList<>();
