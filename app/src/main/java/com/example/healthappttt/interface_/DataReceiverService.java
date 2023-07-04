@@ -39,7 +39,7 @@ public class DataReceiverService extends Service {
 
         // SocketSingleton 인스턴스 생성 및 연결
 
-        socketSingleton = SocketSingleton.getInstance();
+        socketSingleton = SocketSingleton.getInstance(getBaseContext());
         socketSingleton.connect();
         handler = new Handler();
         reconnectRunnable = new Runnable() {

@@ -44,7 +44,7 @@ public class ChatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-        socketSingleton = SocketSingleton.getInstance();
+        socketSingleton = SocketSingleton.getInstance(this);
         // 인텐트에서 유저 이름을 가져옵니다.
         //username = getIntent().getExtra("username"); 이전 엑티비티에서 유저의 필요한 모든 정보 받아오기.
         preferenceHelper = new PreferenceHelper(this);

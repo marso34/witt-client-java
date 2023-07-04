@@ -2,6 +2,7 @@ package com.example.healthappttt.Data;
 
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
+import android.content.Context;
 import android.util.Log;
 
 import org.json.JSONException;
@@ -18,8 +19,11 @@ public class SocketSingleton {
     private Socket mSocket;
     private String serverUrl = "http://43.200.245.144:1337/";  // 서버 URL 설정
     private boolean isConnected = false;  // 소켓 연결 여부 확인
-
-    private SocketSingleton() {
+    private int userKey;
+    private static Context context;
+    private PreferenceHelper prefhelper;
+    private String name_TB = "UserTB";
+    private SocketSingleton(Context context) {
         try {
             mSocket = IO.socket(serverUrl);
         } catch (URISyntaxException e) {
@@ -29,7 +33,8 @@ public class SocketSingleton {
             Log.d(TAG, "Exception during Socket initialization: " + e.getMessage());
             e.printStackTrace();
         }
-
+        this.context = context;
+        prefhelper = new PreferenceHelper(context);
         connectSocket();
         setupSocketListeners();
         receiveMessage();
@@ -59,7 +64,6 @@ public class SocketSingleton {
             }
         });
     }
-
     private void receiveMessage() {
         mSocket.on("receiveMessage", new Emitter.Listener() {
             @Override
@@ -87,24 +91,26 @@ public class SocketSingleton {
     private void insertSocket(){
         JSONObject data = new JSONObject();
         try {
-            data.put("userKey", 284);//임시로 이걸로
+            data.put("userKey", prefhelper.getPK());//임시로 이걸로
             data.put("socketId", mSocket.id());//임시로 이걸로
         } catch (JSONException e) {
             e.printStackTrace();
         }
         mSocket.emit("insertSocket", data);
     }
-    public static SocketSingleton getInstance() {
+    public static SocketSingleton getInstance(Context context_) {
         if (instance == null) {
             synchronized (SocketSingleton.class) {
                 if (instance == null) {
-                    instance = new SocketSingleton();
+                    instance = new SocketSingleton(context_);
                 }
             }
         }
         return instance;
     }
-
+    public void setUserKey(int userkey_){
+        this.userKey = userkey_;
+    }
     public Socket getSocket() {
         return mSocket;
     }

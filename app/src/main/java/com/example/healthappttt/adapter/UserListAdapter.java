@@ -45,7 +45,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserLi
         user = userList.get(position);
 
         holder.userName.setText(user.getUserNM());
-        socketSingleton = SocketSingleton.getInstance();
+        socketSingleton = SocketSingleton.getInstance(context);
     }
 
     @Override
