@@ -1,5 +1,7 @@
 package com.example.healthappttt.Activity;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,37 +13,51 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.healthappttt.Data.Message;
-import com.example.healthappttt.Data.RetrofitClient;
+import com.example.healthappttt.Data.PreferenceHelper;
+import com.example.healthappttt.Data.SQLiteUtil;
+import com.example.healthappttt.Data.SocketSingleton;
 import com.example.healthappttt.R;
 import com.example.healthappttt.adapter.MessageListAdapter;
-import com.example.healthappttt.interface_.ServiceApi;
+
+import org.eclipse.paho.client.mqttv3.MqttClient;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class ChatActivity extends AppCompatActivity {
 
     private RecyclerView messageRecyclerView;
     private MessageListAdapter messageListAdapter;
     private List<Message> messageList;
-
+    private PreferenceHelper preferenceHelper;
+    private String userKey;
     private EditText messageEditText;
     private ImageButton sendButton;
-
+    private MqttClient mqttClient;
     private String username;
-
+    private SocketSingleton socketSingleton;
+    private String otherUserName;
+    private String chatRoomId;
+    private String otherUserKey;
+    private SQLiteUtil sqLiteUtil;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-
+        socketSingleton = SocketSingleton.getInstance(this);
         // 인텐트에서 유저 이름을 가져옵니다.
-        username = getIntent().getStringExtra("username");
-
+        //username = getIntent().getExtra("username"); 이전 엑티비티에서 유저의 필요한 모든 정보 받아오기.
+        preferenceHelper = new PreferenceHelper(this);
+        //userKey = String.valueOf(preferenceHelper.getPK());
+        sqLiteUtil = SQLiteUtil.getInstance();
+        sqLiteUtil.setInitView(this, "CHAT_MSG_TB");
+            otherUserName =  getIntent().getStringExtra("otherUserName");
+            chatRoomId =  getIntent().getStringExtra("ChatRoomId");
+            otherUserKey =  getIntent().getStringExtra("otherUserKey");
+        Log.d(TAG, "onCreate:chatact "+otherUserKey);
+        //otherUserKey로 로컬에서 프로필 데이터 가져오기. 일단 임시로 '284' 내 구글이메일
         // 레이아웃을 초기화합니다.
         messageRecyclerView = findViewById(R.id.chatRecyclerView);
         messageRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -53,7 +69,7 @@ public class ChatActivity extends AppCompatActivity {
         messageList = new ArrayList<>();
 
         // 어댑터를 초기화하고 메시지 목록을 설정합니다.
-        messageListAdapter = new MessageListAdapter(messageList, username);
+        messageListAdapter = new MessageListAdapter(messageList, username, otherUserName);
         messageRecyclerView.setAdapter(messageListAdapter);
 
         // 서버로부터 메시지 목록을 가져와서 messageList에 저장합니다.
@@ -69,7 +85,7 @@ public class ChatActivity extends AppCompatActivity {
                     sendMessageToServer(messageText);
 
                     // 메시지를 추가하고 어댑터를 갱신합니다.
-                    Message newMessage = new Message(username, messageText, System.currentTimeMillis());
+                    Message newMessage = new Message(1,Integer.parseInt(chatRoomId), messageText, String.valueOf(System.currentTimeMillis()));
                     messageList.add(newMessage);
                     messageListAdapter.notifyDataSetChanged();
 
@@ -82,48 +98,33 @@ public class ChatActivity extends AppCompatActivity {
 
     // 서버에서 메시지 목록을 가져오는 메소드입니다.
     private void getMessagesFromServer() {
+        List<Message>newMessages = null;
         // 서버로부터 메시지 목록을 가져와서 List<Message>로 반환합니다.
+        if(chatRoomId!= null) {
+            newMessages = sqLiteUtil.SelectMSG(0,Integer.parseInt(chatRoomId));
+        }
+        for (Message msg : newMessages) {
+            messageList.add(msg);
+        }
+
+        messageListAdapter.notifyDataSetChanged();
+        //메세지 리스트에 넣고 정렬하기.
         // TODO: 구현해야 함
     }
 
     // 서버로 메시지를 보내는 메소드입니다.
     private void sendMessageToServer(String messageText) {
-        ServiceApi apiService = RetrofitClient.getClient().create(ServiceApi.class);
-        Message newMessage = new Message(username, messageText, System.currentTimeMillis());
-        Call<Message> call = apiService.sendMessage(newMessage);
-        call.enqueue(new Callback<Message>() {
-            @Override
-            public void onResponse(Call<Message> call, Response<Message> response) {
-                // 메시지 전송이 성공한 경우
-                if (response.isSuccessful()) {
-                    Log.d("message", "Message sent successfully");
-                } else {
-                    Log.d("message", "Failed to send message");
-                }
-            }
+        try {
+            JSONObject data = new JSONObject();
+            data.put("otherUserKey",Integer.parseInt(otherUserKey));
+            data.put("chatRoomId", Integer.parseInt(chatRoomId));
+            data.put("messageText", messageText);
 
-            @Override
-            public void onFailure(Call<Message> call, Throwable t) {
-                // 메시지 전송이 실패한 경우
-                Log.d("message", "Failed to send message", t);
-            }
-        });
+            // Emit the 'sendMessage' event to the server with the message data
+            socketSingleton.getSocket().emit("sendMessage", data);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
+
 }
-
-
-//    private String getTime() {
-//        long now = System.currentTimeMillis();
-//        Date date = new Date(now);
-//        SimpleDateFormat dateFormat = new SimpleDateFormat("yy/MM/dd HH:mm:ss");
-//        String getTime = dateFormat.format(date);
-//
-//        return getTime;
-//    }
-
-//    public void onBackPressed() {
-////        Intent intent = new Intent(Intent.ACTION_MAIN);
-////        intent.addCategory(Intent.CATEGORY_HOME);
-////        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-////        startActivity(intent);
-//    }

@@ -7,7 +7,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.util.Log;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 public class SQLiteUtil { // 싱글톤 패턴으로 구현
     private static volatile SQLiteUtil instance; // volatile 메인 메모리에 저장
@@ -63,7 +67,19 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         }
 
     }
+        public void insert(int myFlag,String message, int chatRoomId) {
+            ContentValues values = new ContentValues();
+            values.put("MSG", message);
+            values.put("CHAT_ROOM_FK", chatRoomId);
 
+            // 현재 시간을 포맷에 맞춰서 문자열로 변환
+            String timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
+            values.put("TS", timestamp);
+            values.put("myFlag",myFlag);
+
+            db.insert("CHAT_MSG_TB", null, values);
+            db.close();
+        }
 
 
     /**
@@ -313,6 +329,41 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         }
         return null;
     }
+    public List<Message> SelectMSG(int myFlag,int chatRoomId) {
+        List<Message> messages = new ArrayList<>();
 
+        String[] columns = {"MSG","CHAT_ROOM_FK","TS"};
+        String selection = "CHAT_ROOM_FK=? AND myFlag=?";
+        String[] selectionArgs = {String.valueOf(chatRoomId),String.valueOf(myFlag)};
+        String orderBy = "TS ASC"; // 시간 순으로 정렬
+
+        Cursor cursor = db.query("CHAT_MSG_TB", columns, selection, selectionArgs, null, null, orderBy);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                String message = "값 없음";
+                String TS = "";
+                int MSGIndex = cursor.getColumnIndex("MSG");
+                int TSIndex = cursor.getColumnIndex("TS");
+                if (MSGIndex != -1) {
+                    message = cursor.getString(MSGIndex);
+                    // 메시지 처리 로직 작성
+                } else {
+                    // 컬럼이 존재하지 않을 경우 처리 로직 작성
+                }
+                if(TSIndex != -1){
+                    TS = cursor.getString(TSIndex);
+                }
+                messages.add(new Message(myFlag,chatRoomId,message,TS));
+            } while (cursor.moveToNext());
+        }
+
+        if (cursor != null) {
+            cursor.close();
+        }
+        db.close();
+
+        return messages;
+    }
 
 }
