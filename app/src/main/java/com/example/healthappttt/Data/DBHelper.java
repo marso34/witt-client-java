@@ -70,6 +70,15 @@ public class DBHelper extends SQLiteOpenHelper {
                 + "TS TIMESTAMP);";
 
         db.execSQL(reviewrecdsql);
+
+        String createTableQuery = "CREATE TABLE if not exists CHAT_MSG_TB ("
+                +"MSG_PK INT primary key AUTOINCREMENT,"
+                + "myFlag INT ,"
+                + "CHAT_ROOM_FK INT, "
+                + "MSG  VARCHAR(1500), "
+                + "TS  VARCHAR(30)"
+                + ");";
+        db.execSQL(createTableQuery);
     }
 
     @Override
@@ -82,7 +91,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         String exerciseSql = "DROP TABLE if exists EX_TB";
         db.execSQL(exerciseSql);
-
+        
         onCreate(db);
     }
 }

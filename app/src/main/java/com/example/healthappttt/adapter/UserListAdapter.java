@@ -43,7 +43,6 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserLi
     @Override
     public void onBindViewHolder(@NonNull UserListViewHolder holder, int position) {
         user = userList.get(position);
-
         holder.userName.setText(user.getUserNM());
         socketSingleton = SocketSingleton.getInstance(context);
     }
@@ -79,7 +78,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserLi
         }
     }
     public void StartChatActivity(){
-        Log.d(TAG, "StartChatActivity: "+user.getOtherUserKey());
+        Log.d(TAG, "StartChatActivity: "+ user.getOtherUserKey()+user.getUserNM());
         Intent intent = new Intent(context, ChatActivity.class);
         intent.putExtra("otherUserName",user.getUserNM());
         intent.putExtra("ChatRoomId",user.getChatRoomId());

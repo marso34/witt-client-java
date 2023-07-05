@@ -3,23 +3,24 @@ package com.example.healthappttt.Data;
 public class Message {
     public static final int TYPE_SENT = 1;
     public static final int TYPE_RECEIVED = 2;
-
-    private String username;
+    private int myFlag;
+    private int chatRoomId;
     private String message;
-    private long timestamp;
+    private String timestamp;
 
-    public Message(String username, String message, long timestamp) {
-        this.username = username;
+    public Message(int myFlag, int chatRoomId, String message, String timestamp) {
+        this.myFlag = myFlag;
+        this.chatRoomId = chatRoomId;
         this.message = message;
         this.timestamp = timestamp;
     }
 
-    public String getUsername() {
-        return username;
+    public int getChatRoomId() {
+        return chatRoomId;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setChatRoomId(int chatRoomId) {
+        this.chatRoomId = chatRoomId;
     }
 
     public String getMessage() {
@@ -31,10 +32,13 @@ public class Message {
     }
 
     public long getTimestamp() {
-        return timestamp;
+        return Long.parseLong(timestamp);
     }
 
-    public void setTimestamp(long timestamp) {
+    public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
+    }
+    public int getMyFlag() {
+        return myFlag;
     }
 }

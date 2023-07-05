@@ -73,9 +73,8 @@ public class ChattingFragment extends Fragment {
                     List<UserChat> users = response.body();
                     userList.clear();
                     for (UserChat user : users) {
-                        UserChat newUser = new UserChat(user.getUserNM(), user.getOtherUserKey(), user.getChatRoomId());
-                        userList.add(newUser);
-                        Log.d("chatUSERLIST", newUser.getUserNM());
+                        userList.add(user);
+                        Log.d("chatUSERLIST", user.getUserNM());
                     }
                     userListAdapter.notifyDataSetChanged();
                 } else {

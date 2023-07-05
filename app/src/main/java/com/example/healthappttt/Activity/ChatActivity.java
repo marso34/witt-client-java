@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.healthappttt.Data.Message;
 import com.example.healthappttt.Data.PreferenceHelper;
+import com.example.healthappttt.Data.SQLiteUtil;
 import com.example.healthappttt.Data.SocketSingleton;
 import com.example.healthappttt.R;
 import com.example.healthappttt.adapter.MessageListAdapter;
@@ -40,6 +41,7 @@ public class ChatActivity extends AppCompatActivity {
     private String otherUserName;
     private String chatRoomId;
     private String otherUserKey;
+    private SQLiteUtil sqLiteUtil;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +51,7 @@ public class ChatActivity extends AppCompatActivity {
         //username = getIntent().getExtra("username"); 이전 엑티비티에서 유저의 필요한 모든 정보 받아오기.
         preferenceHelper = new PreferenceHelper(this);
         //userKey = String.valueOf(preferenceHelper.getPK());
-
+        sqLiteUtil = SQLiteUtil.getInstance();
 
             otherUserName =  getIntent().getStringExtra("otherUserName");
             chatRoomId =  getIntent().getStringExtra("ChatRoomId");
@@ -67,7 +69,7 @@ public class ChatActivity extends AppCompatActivity {
         messageList = new ArrayList<>();
 
         // 어댑터를 초기화하고 메시지 목록을 설정합니다.
-        messageListAdapter = new MessageListAdapter(messageList, username);
+        messageListAdapter = new MessageListAdapter(messageList, username, otherUserName);
         messageRecyclerView.setAdapter(messageListAdapter);
 
         // 서버로부터 메시지 목록을 가져와서 messageList에 저장합니다.
@@ -83,7 +85,7 @@ public class ChatActivity extends AppCompatActivity {
                     sendMessageToServer(messageText);
 
                     // 메시지를 추가하고 어댑터를 갱신합니다.
-                    Message newMessage = new Message("김도현", messageText, System.currentTimeMillis());
+                    Message newMessage = new Message(1,Integer.parseInt(chatRoomId), messageText, String.valueOf(System.currentTimeMillis()));
                     messageList.add(newMessage);
                     messageListAdapter.notifyDataSetChanged();
 
@@ -96,7 +98,17 @@ public class ChatActivity extends AppCompatActivity {
 
     // 서버에서 메시지 목록을 가져오는 메소드입니다.
     private void getMessagesFromServer() {
+        List<Message>newMessages = null;
         // 서버로부터 메시지 목록을 가져와서 List<Message>로 반환합니다.
+        if(chatRoomId!= null) {
+            newMessages = sqLiteUtil.SelectMSG(0,Integer.parseInt(chatRoomId));
+        }
+        for (Message msg : newMessages) {
+            messageList.add(msg);
+        }
+
+        messageListAdapter.notifyDataSetChanged();
+        //메세지 리스트에 넣고 정렬하기.
         // TODO: 구현해야 함
     }
 

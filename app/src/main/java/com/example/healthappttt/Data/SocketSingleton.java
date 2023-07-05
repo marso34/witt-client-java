@@ -22,7 +22,8 @@ public class SocketSingleton {
     private int userKey;
     private static Context context;
     private PreferenceHelper prefhelper;
-    private String name_TB = "UserTB";
+    private SQLiteUtil sqLiteUtil;
+
     private SocketSingleton(Context context) {
         try {
             mSocket = IO.socket(serverUrl);
@@ -38,6 +39,7 @@ public class SocketSingleton {
         connectSocket();
         setupSocketListeners();
         receiveMessage();
+        sqLiteUtil = SQLiteUtil.getInstance(); //sqllite 객체
     }
 
     private void setupSocketListeners() {
@@ -73,7 +75,11 @@ public class SocketSingleton {
                 JSONObject data = (JSONObject) args[0];
                 try {
                     String message = data.getString("message");
-                    handleReceivedMessage(message);
+                    String chatRoomId = data.getString("chatRoomId");
+                    if(chatRoomId !=null) {
+                        int CRI = Integer.parseInt(chatRoomId);
+                        SqlLiteSaveMessage( 0,message,CRI);
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -82,12 +88,12 @@ public class SocketSingleton {
         });
     }
 
-    // handleReceivedMessage 메소드 구현
-    private void handleReceivedMessage(String message) {
-        // 받은 메시지를 처리하는 로직을 구현
-        Log.d("ChatActivity", "Received message: " + message);
-        // 처리 로직 작성
+
+    private void SqlLiteSaveMessage(int myFlag,String message,int chatRoomId){
+        sqLiteUtil.insert(myFlag,message,chatRoomId);
+        Log.d(TAG, "SqlLiteSaveMessage: 메세지 저장 완료"+message);
     }
+
     private void insertSocket(){
         JSONObject data = new JSONObject();
         try {
