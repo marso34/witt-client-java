@@ -52,7 +52,7 @@ public class ChatActivity extends AppCompatActivity {
         preferenceHelper = new PreferenceHelper(this);
         //userKey = String.valueOf(preferenceHelper.getPK());
         sqLiteUtil = SQLiteUtil.getInstance();
-
+        sqLiteUtil.setInitView(this, "CHAT_MSG_TB");
             otherUserName =  getIntent().getStringExtra("otherUserName");
             chatRoomId =  getIntent().getStringExtra("ChatRoomId");
             otherUserKey =  getIntent().getStringExtra("otherUserKey");

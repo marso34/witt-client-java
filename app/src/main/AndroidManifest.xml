@@ -108,6 +108,14 @@
                 android:value="" />
         </activity>
         <activity
+            android:name=".Activity.SubActivity"
+            android:exported="false"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".Activity.CalenderActivity"
             android:exported="false"
             android:screenOrientation="portrait">
