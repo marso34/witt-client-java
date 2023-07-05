@@ -11,11 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.healthappttt.Data.Exercise;
-import com.example.healthappttt.Data.Routine;
 import com.example.healthappttt.R;
-
-import java.util.ArrayList;
 
 import io.reactivex.rxjava3.annotations.NonNull;
 

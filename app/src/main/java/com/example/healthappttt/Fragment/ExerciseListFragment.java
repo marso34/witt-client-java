@@ -17,7 +17,7 @@ import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.ToggleButton;
 
-import com.example.healthappttt.Data.Exercise;
+import com.example.healthappttt.Data.ExerciseData;
 import com.example.healthappttt.R;
 import com.example.healthappttt.adapter.ExerciseListAdapter;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -64,7 +64,7 @@ public class ExerciseListFragment extends BottomSheetDialogFragment {
 
 
 
-        ArrayList<Exercise> ttt = new ArrayList<>(); // 임시
+        ArrayList<ExerciseData> ttt = new ArrayList<>(); // 임시
 //        ttt.add(new ExerciseName("팔굽혀펴기", 0x1));
 //        ttt.add(new ExerciseName("스쿼트", 0x8));
 //        ttt.add(new ExerciseName("딥스", 0x1));
@@ -100,7 +100,7 @@ public class ExerciseListFragment extends BottomSheetDialogFragment {
 //        ttt.add(new ExerciseName("유산소운동2", 0x40));
 //        ttt.add(new ExerciseName("유산소운동3", 0x40));
 
-        ArrayList<Exercise> test = new ArrayList<>(); // 임시
+        ArrayList<ExerciseData> test = new ArrayList<>(); // 임시
 
 
 
@@ -142,7 +142,7 @@ public class ExerciseListFragment extends BottomSheetDialogFragment {
                     }
 
                     test.clear();
-                    for (Exercise e : ttt) {
+                    for (ExerciseData e : ttt) {
                         if (exerciseCat == e.getCat())
                             test.add(e);
                     }
@@ -213,6 +213,6 @@ public class ExerciseListFragment extends BottomSheetDialogFragment {
     } // 액티비티에서 콜백 메서드를 set
 
     public interface OnExerciseClick {
-        void onExerciseClick(Exercise exerciseName, int exerciseCat);
+        void onExerciseClick(ExerciseData exerciseName, int exerciseCat);
     } // 운동 클릭했을 때, 엑티비티에 값 전달을 위한 인터페이스
 }

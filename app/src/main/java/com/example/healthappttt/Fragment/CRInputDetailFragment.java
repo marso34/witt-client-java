@@ -16,7 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.healthappttt.Data.Exercise;
+import com.example.healthappttt.Data.ExerciseData;
 import com.example.healthappttt.R;
 import com.example.healthappttt.adapter.ExerciseInputAdapter;
 
@@ -35,7 +35,7 @@ public class CRInputDetailFragment extends Fragment {
     private RecyclerView recyclerView;
     private ExerciseInputAdapter adapter;
 
-    private ArrayList<Exercise> exercises;
+    private ArrayList<ExerciseData> exercises;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -50,7 +50,7 @@ public class CRInputDetailFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     public interface OnFragmentInteractionListener {
-        void onRoutineExDetail(ArrayList<Exercise> exercises);
+        void onRoutineExDetail(ArrayList<ExerciseData> exercises);
     }
 
     @Override
@@ -111,7 +111,7 @@ public class CRInputDetailFragment extends Fragment {
         exercises = new ArrayList<>();
 
         if (getArguments() != null) {
-            exercises = (ArrayList<Exercise>) getArguments().getSerializable("exercises");
+            exercises = (ArrayList<ExerciseData>) getArguments().getSerializable("exercises");
             int[] schedule = getArguments().getIntArray("schedule");
             setRoutineTime(schedule[0], schedule[1], schedule[2]);
         }

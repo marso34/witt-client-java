@@ -106,7 +106,53 @@
                 app:tabIndicatorHeight="1.6dp"
                 app:tabSelectedTextColor="@color/black"
                 app:tabTextColor="@color/black"
-                tools:ignore="SpeakableTextPresentCheck"/>
+                tools:ignore="SpeakableTextPresentCheck">
+
+                <com.google.android.material.tabs.TabItem
+                    android:id="@+id/chestTab"
+                    android:layout_width="64dp"
+                    android:layout_height="42dp"
+                    android:textAlignment="center"
+                    android:text="가슴"/>
+                <com.google.android.material.tabs.TabItem
+                    android:id="@+id/backTab"
+                    android:layout_width="64dp"
+                    android:layout_height="42dp"
+                    android:textAlignment="center"
+                    android:text="등"/>
+                <com.google.android.material.tabs.TabItem
+                    android:id="@+id/shoulderTab"
+                    android:layout_width="64dp"
+                    android:layout_height="42dp"
+                    android:textAlignment="center"
+                    android:text="어깨"/>
+                <com.google.android.material.tabs.TabItem
+                    android:id="@+id/lowBodyTab"
+                    android:layout_width="64dp"
+                    android:layout_height="42dp"
+                    android:textAlignment="center"
+                    android:text="하체"/>
+                <com.google.android.material.tabs.TabItem
+                    android:id="@+id/armTab"
+                    android:layout_width="128dp"
+                    android:layout_height="42dp"
+                    android:background="@color/Background_1"
+                    android:textAlignment="center"
+                    android:text="팔"/>
+                <com.google.android.material.tabs.TabItem
+                    android:id="@+id/absTab"
+                    android:layout_width="64dp"
+                    android:layout_height="42dp"
+                    android:textAlignment="center"
+                    android:text="복근"/>
+                <com.google.android.material.tabs.TabItem
+                    android:id="@+id/cardioTab"
+                    android:layout_width="64dp"
+                    android:layout_height="42dp"
+                    android:textAlignment="center"
+                    android:text="유산소"/>
+
+            </com.google.android.material.tabs.TabLayout>
 
         </LinearLayout>
 
@@ -114,9 +160,10 @@
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingTop="19dp"
             android:clipToPadding="false"
-            android:paddingBottom="200dp"
-            tools:listitem="@layout/adapter_exercise_list"/>
+            android:paddingBottom="300dp"
+            tools:listitem="@layout/adapter_exercise_list_p"/>
 
     </LinearLayout>
 

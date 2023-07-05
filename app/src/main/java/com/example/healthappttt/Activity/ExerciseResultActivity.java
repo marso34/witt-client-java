@@ -13,9 +13,10 @@ import android.widget.TextView;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+
+import com.example.healthappttt.Data.RoutineData;
 import com.example.healthappttt.R;
-import com.example.healthappttt.Data.Routine;
-import com.example.healthappttt.Data.Exercise;
+import com.example.healthappttt.Data.ExerciseData;
 
 public class ExerciseResultActivity extends AppCompatActivity {
     private TextView title;
@@ -33,8 +34,8 @@ public class ExerciseResultActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
 //    private testAdapter adapter;
 
-    private Routine record;
-    private ArrayList<Exercise> exercises;
+    private RoutineData record;
+    private ArrayList<ExerciseData> exercises;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +44,7 @@ public class ExerciseResultActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        record = (Routine) intent.getSerializableExtra("record");
+        record = (RoutineData) intent.getSerializableExtra("record");
 
         StartTime = (TextView) findViewById(R.id.startTime);
         EndTime = (TextView) findViewById(R.id.endTime);
@@ -67,13 +68,13 @@ public class ExerciseResultActivity extends AppCompatActivity {
         int sum = 0;
         int min = 0;
 
-        for (Exercise e : exercises) {
+        for (ExerciseData e : exercises) {
             if (e.getState().equals("유산소")) {
-                min += e.getCount();
+                min += e.getSetOrTime();
                 continue;
             }
 
-            sum += (e.getVolume() * e.getCount());
+            sum += (e.getVolume() * e.getSetOrTime());
         }
 
         Weight.setText(sum + " kg");

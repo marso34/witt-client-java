@@ -17,9 +17,8 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.healthappttt.Data.Exercise;
+import com.example.healthappttt.Data.ExerciseData;
 import com.example.healthappttt.Data.RetrofitClient;
-import com.example.healthappttt.Data.Routine;
 import com.example.healthappttt.Data.RoutineData;
 import com.example.healthappttt.Data.ExerciseData;
 import com.example.healthappttt.Data.SQLiteUtil;
@@ -50,8 +49,8 @@ public class EditRoutineActivity extends AppCompatActivity {
     private ServiceApi service;
     private SQLiteUtil sqLiteUtil;
 
-    private Routine routine;
-    private ArrayList<Exercise> exercises;
+    private RoutineData routine;
+    private ArrayList<ExerciseData> exercises;
     private int runTime, startTime, endTime;
 
     @Override
@@ -87,8 +86,8 @@ public class EditRoutineActivity extends AppCompatActivity {
         sqLiteUtil.setInitView(this, "RT_TB");
 
         Intent intent = getIntent();
-        routine = (Routine) intent.getSerializableExtra("routine");
-        exercises = (ArrayList<Exercise>) intent.getSerializableExtra("exercises");
+        routine = (RoutineData) intent.getSerializableExtra("routine");
+        exercises = (ArrayList<ExerciseData>) intent.getSerializableExtra("exercises");
 
         init();
 
@@ -291,8 +290,8 @@ public class EditRoutineActivity extends AppCompatActivity {
         ArrayList<ExerciseData> list = new ArrayList<>();
         int CAT = 0;
 
-        for (Exercise e : exercises) {
-            list.add(new ExerciseData(e.getID(), routine.getID(), e.getTitle(), e.getCat(), e.getCount(), e.getVolume(), e.getNum(), e.getIndex()));
+        for (ExerciseData e : exercises) {
+            list.add(new ExerciseData(e.getID(), routine.getID(), e.getExerciseName(), e.getCat(), e.getSetOrTime(), e.getVolume(), e.getCntOrDis(), e.getIndex()));
             CAT |= e.getCat();
         }
 
@@ -326,7 +325,7 @@ public class EditRoutineActivity extends AppCompatActivity {
         sqLiteUtil.Update(routine);
         sqLiteUtil.setInitView(this, "EX_TB");
 
-        for (Exercise e: exercises)
+        for (ExerciseData e: exercises)
             sqLiteUtil.Update(e);
     }
 
