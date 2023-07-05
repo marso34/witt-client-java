@@ -297,6 +297,11 @@ public class MainActivity extends AppCompatActivity {
                             byte[] User_Img = Black.getUser_Img();
 
                             BlackList = new BlackListData(BL_PK, User_NM, OUser_FK, TS,User_Img); //서버에서 받아온 데이터 형식으로 바꿔야함
+                            /**
+                             * 받아온 리스트 PK와 SQLite에 존재하는 PK를 비교
+                             * 없으면 저장
+                             * 있으면 continue
+                             */
                             SaveBlackList(BlackList);//로컬db에 차단목록 저장 매서드
                         }
                     }
