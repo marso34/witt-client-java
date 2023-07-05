@@ -27,8 +27,7 @@ public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapte
     }
 
     public static class MainViewHolder extends RecyclerView.ViewHolder {
-        public LinearLayout ExerciseLayout, ListCatLayout;
-        public TextView ListCatTxt;
+        public LinearLayout ExerciseLayout;
         public TextView CatView, NameView;
         public LinearLayout CheckBoxLayout;
         public ImageView CheckedImg;
@@ -39,8 +38,6 @@ public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapte
             super(view);
 
             this.ExerciseLayout = view.findViewById(R.id.exerciseLayout);
-            this.ListCatLayout = view.findViewById(R.id.listCatLayout);
-            this.ListCatTxt = view.findViewById(R.id.listCat);
 
             this.CatView = view.findViewById(R.id.exerciseCat);
             this.NameView = view.findViewById(R.id.exerciseName);
@@ -58,17 +55,17 @@ public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapte
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_exercise_list, parent, false);
         final MainViewHolder mainViewHolder = new MainViewHolder(view);
 
-        view.findViewById(R.id.exerciseLayout).setOnClickListener(v -> {
-            int position = mainViewHolder.getAbsoluteAdapterPosition();
+        mainViewHolder.ExerciseLayout.setOnClickListener(v -> {
+//            int position = mainViewHolder.getAbsoluteAdapterPosition();
 
             mainViewHolder.isChecked = !mainViewHolder.isChecked;
 
             if (mainViewHolder.isChecked) {
                 mainViewHolder.CheckedImg.setVisibility(View.VISIBLE);
-                onSelectExercise.onSelectExercise(this.exercises.get(position), true);
+//                onSelectExercise.onSelectExercise(this.exercises.get(position), true);
             } else {
                 mainViewHolder.CheckedImg.setVisibility(View.GONE);
-                onSelectExercise.onSelectExercise(this.exercises.get(position), false);
+//                onSelectExercise.onSelectExercise(this.exercises.get(position), false);
             }
 
         });
@@ -86,21 +83,10 @@ public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapte
         holder.CatView.setBackgroundColor(Color.parseColor(this.exercises.get(position).getColor())); // 부위 바탕 색
         holder.NameView.setText(name);
 
-        if (name.equals(cat)) {
-            holder.ListCatLayout.setVisibility(View.VISIBLE); // 부위 이름만 표시
-            holder.ExerciseLayout.setVisibility(View.GONE);   // 다른 정보 다 끄기
-            holder.CheckBoxLayout.setVisibility(View.GONE);   // 선택칸 끄기
-            holder.ListCatTxt.setText(name);
-        } else {
-            holder.ListCatLayout.setVisibility(View.GONE);
-            holder.ExerciseLayout.setVisibility(View.VISIBLE); // 다른 정보 다 켜기
-            holder.CheckBoxLayout.setVisibility(View.VISIBLE); // 선택칸 표시
-
-            if (holder.isChecked)
-                holder.CheckedImg.setVisibility(View.VISIBLE);
-            else
-                holder.CheckedImg.setVisibility(View.GONE);
-        }
+        if (holder.isChecked)
+            holder.CheckedImg.setVisibility(View.VISIBLE);
+        else
+            holder.CheckedImg.setVisibility(View.GONE);
     }
 
     @Override

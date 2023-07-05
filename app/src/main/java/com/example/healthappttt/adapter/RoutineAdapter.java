@@ -50,8 +50,8 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
         public LinearLayout RoutineLayout, ClickLayout, NullLayout;
         public TextView startTimeView, endTimeView;
         public TextView EditBtn;
-        private RecyclerView recyclerView;
-        private ExerciseAdapter adapter;
+        public RecyclerView recyclerView;
+        public ExerciseAdapter adapter;
 
         public MainViewHolder(View view) {
             super(view);

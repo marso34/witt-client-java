@@ -24,6 +24,7 @@ import android.widget.TextView;
 import com.example.healthappttt.Data.ExerciseData;
 import com.example.healthappttt.R;
 import com.example.healthappttt.adapter.ExerciseListAdapter;
+import com.example.healthappttt.adapter.ExerciseListPAdapter;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
@@ -43,20 +44,11 @@ public class CRSelectExerciseFragment extends Fragment {
     private TextView NextTxt;
 
     private RecyclerView recyclerView;
-    private ExerciseListAdapter adapter;
+    private ExerciseListPAdapter adapter;
 
-    private ArrayList<ExerciseData> chestExercises;
-    private ArrayList<ExerciseData> shoulderExercises;
-    private ArrayList<ExerciseData> backExercises;
-    private ArrayList<ExerciseData> lowbodyExercises;
-    private ArrayList<ExerciseData> armExercises;
-    private ArrayList<ExerciseData> cardioExercises;
 
     private ArrayList<ExerciseData> exercises;
     private ArrayList<ExerciseData> selectExercises;
-
-    private int[] tabPosition;
-
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -141,7 +133,6 @@ public class CRSelectExerciseFragment extends Fragment {
 //        tabLayout.addTab(tabLayout.newTab().setText("복근"));
 //        tabLayout.addTab(tabLayout.newTab().setText("유산소"));
 
-        tabPosition = new int[7];
         exercises = new ArrayList<>();
         selectExercises = new ArrayList<>();
 
@@ -152,67 +143,7 @@ public class CRSelectExerciseFragment extends Fragment {
             setRoutineTime(schedule[0], schedule[1], schedule[2]);
         }
 
-
-        chestExercises = new ArrayList<>();
-        shoulderExercises = new ArrayList<>();
-        backExercises = new ArrayList<>();
-        lowbodyExercises = new ArrayList<>();
-        armExercises = new ArrayList<>();
-        cardioExercises = new ArrayList<>();
-
-
-        chestExercises.add(new ExerciseData("가슴",0x1));
-        chestExercises.add(new ExerciseData("벤치프레스",0x1));
-        chestExercises.add(new ExerciseData("인클라인 벤치 프레스",0x1));
-        chestExercises.add(new ExerciseData("케이블 크로스 오버",0x1));
-        chestExercises.add(new ExerciseData("펙덱 플라인 머신",0x1));
-        tabPosition[0] = 0;
-
-        shoulderExercises.add(new ExerciseData("어깨",0x4));
-        shoulderExercises.add(new ExerciseData("사이드 레터럴 레이즈",0x4));
-        shoulderExercises.add(new ExerciseData("밀리터리 프레스",0x4));
-        shoulderExercises.add(new ExerciseData("벤트 오버 레터럴 레이즈",0x4));
-        tabPosition[1] = chestExercises.size();
-
-        backExercises.add(new ExerciseData("등",0x2));
-        backExercises.add(new ExerciseData("렛 풀 다운",0x2));
-        backExercises.add(new ExerciseData("케이블 시티드 로우",0x2));
-        backExercises.add(new ExerciseData("풀 업",0x2));
-        backExercises.add(new ExerciseData("원 암 덤벨 로우",0x2));
-        tabPosition[2] = tabPosition[1] + shoulderExercises.size();
-
-        lowbodyExercises.add(new ExerciseData("하체",0x8));
-        lowbodyExercises.add(new ExerciseData("레그 프레스",0x8));
-        lowbodyExercises.add(new ExerciseData("루마니안 데드리프트",0x8));
-        lowbodyExercises.add(new ExerciseData("바벨 스쿼트",0x8));
-        lowbodyExercises.add(new ExerciseData("덤벨 스쿼트",0x8));
-        tabPosition[3] = tabPosition[2] + lowbodyExercises.size();
-
-        armExercises.add(new ExerciseData("팔",0x10));
-        armExercises.add(new ExerciseData("바벨 컬",0x10));
-        armExercises.add(new ExerciseData("덤벨 컬",0x10));
-        armExercises.add(new ExerciseData("트레이셉스 프레스 다운 케이블",0x10));
-        tabPosition[4] = tabPosition[3] + armExercises.size();
-
-        ArrayList<ExerciseData> absExercises = new ArrayList<>();
-        absExercises.add(new ExerciseData("복근",0x20));
-        absExercises.add(new ExerciseData("싯 업",0x20));
-        absExercises.add(new ExerciseData("크런치",0x20));
-        tabPosition[5] = tabPosition[4] + absExercises.size();
-
-        cardioExercises.add(new ExerciseData("유산소",0x40));
-        cardioExercises.add(new ExerciseData("사이클",0x40));
-        cardioExercises.add(new ExerciseData("트레드 밀",0x40));
-        cardioExercises.add(new ExerciseData("인클라인 트레드 밀",0x40));
-        tabPosition[6] = tabPosition[5] + cardioExercises.size();
-
-        exercises.addAll(chestExercises);
-        exercises.addAll(shoulderExercises);
-        exercises.addAll(backExercises);
-        exercises.addAll(lowbodyExercises);
-        exercises.addAll(armExercises);
-        exercises.addAll(absExercises);
-        exercises.addAll(cardioExercises);
+        parseExercise();
 
         if (exercises != null)
             setRecyclerView();
@@ -248,9 +179,7 @@ public class CRSelectExerciseFragment extends Fragment {
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                int position = tabPosition[tab.getPosition()];
-
-                recyclerView.smoothScrollToPosition(position);
+                recyclerView.smoothScrollToPosition(tab.getPosition());
             }
 
             @Override
@@ -270,25 +199,36 @@ public class CRSelectExerciseFragment extends Fragment {
         return view;
     }
 
-    private void setRoutineTime(int dayOfWeek, int startTime, int endTime) {
+    private void parseExercise() { // 나중에 xml 파싱으로
+        exercises.add(new ExerciseData("벤치프레스",0x1));
+        exercises.add(new ExerciseData("인클라인 벤치 프레스",0x1));
+        exercises.add(new ExerciseData("케이블 크로스 오버",0x1));
+        exercises.add(new ExerciseData("펙덱 플라인 머신",0x1));
 
-        String DayOfWeek = "";
+        exercises.add(new ExerciseData("사이드 레터럴 레이즈",0x4));
+        exercises.add(new ExerciseData("밀리터리 프레스",0x4));
+        exercises.add(new ExerciseData("벤트 오버 레터럴 레이즈",0x4));
 
-        switch (dayOfWeek) {
-            case 0: DayOfWeek = "일요일"; break;
-            case 1: DayOfWeek = "월요일"; break;
-            case 2: DayOfWeek = "화요일"; break;
-            case 3: DayOfWeek = "수요일"; break;
-            case 4: DayOfWeek = "목요일"; break;
-            case 5: DayOfWeek = "금요일"; break;
-            case 6: DayOfWeek = "토요일"; break;
-        }
+        exercises.add(new ExerciseData("렛 풀 다운",0x2));
+        exercises.add(new ExerciseData("케이블 시티드 로우",0x2));
+        exercises.add(new ExerciseData("풀 업",0x2));
+        exercises.add(new ExerciseData("원 암 덤벨 로우",0x2));
 
-        String StartTime = TimeToString(startTime);
-        String EndTime = TimeToString(endTime);
-        String result = DayOfWeek + " · " + StartTime + " - " + EndTime;
+        exercises.add(new ExerciseData("레그 프레스",0x8));
+        exercises.add(new ExerciseData("루마니안 데드리프트",0x8));
+        exercises.add(new ExerciseData("바벨 스쿼트",0x8));
+        exercises.add(new ExerciseData("덤벨 스쿼트",0x8));
 
-        ScheduleTxt.setText(result);
+        exercises.add(new ExerciseData("바벨 컬",0x10));
+        exercises.add(new ExerciseData("덤벨 컬",0x10));
+        exercises.add(new ExerciseData("트레이셉스 프레스 다운 케이블",0x10));
+
+        exercises.add(new ExerciseData("싯 업",0x20));
+        exercises.add(new ExerciseData("크런치",0x20));
+
+        exercises.add(new ExerciseData("사이클",0x40));
+        exercises.add(new ExerciseData("트레드 밀",0x40));
+        exercises.add(new ExerciseData("인클라인 트레드 밀",0x40));
     }
 
     private String TimeToString(int Time) {
@@ -310,28 +250,50 @@ public class CRSelectExerciseFragment extends Fragment {
     }
 
     private void setRecyclerView() {
-        adapter = new ExerciseListAdapter(exercises);
+        adapter = new ExerciseListPAdapter(getContext(), exercises);
+
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
 
         if (adapter != null) {
-            adapter.setOnSelectExerciseListener(new ExerciseListAdapter.OnSelectExercise() {
-                @Override
-                public void onSelectExercise(ExerciseData exercise, boolean add) {
-                    Log.d("운동 추가 테스트", exercise + "");
-                    if (add)    selectExercises.add(exercise);
-                    else        selectExercises.remove(exercise);
-
-                    if(selectExercises.size() > 0) {
-                        NextTxt.setBackgroundColor(Color.parseColor("#05c78c"));
-                        NextTxt.setTextColor(Color.parseColor("#ffffff"));
-                    } else {
-                        NextTxt.setBackgroundColor(Color.parseColor("#D1D8E2"));
-                        NextTxt.setTextColor(Color.parseColor("#9AA5B8"));
-                    }
-                }
-            });
+//            adapter.setOnSelectExerciseListener(new ExerciseListAdapter.OnSelectExercise() {
+//                @Override
+//                public void onSelectExercise(ExerciseData exercise, boolean add) {
+//                    Log.d("운동 추가 테스트", exercise + "");
+//                    if (add)    selectExercises.add(exercise);
+//                    else        selectExercises.remove(exercise);
+//
+//                    if(selectExercises.size() > 0) {
+//                        NextTxt.setBackgroundColor(Color.parseColor("#05c78c"));
+//                        NextTxt.setTextColor(Color.parseColor("#ffffff"));
+//                    } else {
+//                        NextTxt.setBackgroundColor(Color.parseColor("#D1D8E2"));
+//                        NextTxt.setTextColor(Color.parseColor("#9AA5B8"));
+//                    }
+//                }
+//            });
         }
+    }
+
+    private void setRoutineTime(int dayOfWeek, int startTime, int endTime) {
+
+        String DayOfWeek = "";
+
+        switch (dayOfWeek) {
+            case 0: DayOfWeek = "일요일"; break;
+            case 1: DayOfWeek = "월요일"; break;
+            case 2: DayOfWeek = "화요일"; break;
+            case 3: DayOfWeek = "수요일"; break;
+            case 4: DayOfWeek = "목요일"; break;
+            case 5: DayOfWeek = "금요일"; break;
+            case 6: DayOfWeek = "토요일"; break;
+        }
+
+        String StartTime = TimeToString(startTime);
+        String EndTime = TimeToString(endTime);
+        String result = DayOfWeek + " · " + StartTime + " - " + EndTime;
+
+        ScheduleTxt.setText(result);
     }
 }
