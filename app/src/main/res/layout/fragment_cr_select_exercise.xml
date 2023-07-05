@@ -134,8 +134,9 @@
                     android:text="하체"/>
                 <com.google.android.material.tabs.TabItem
                     android:id="@+id/armTab"
-                    android:layout_width="64dp"
+                    android:layout_width="128dp"
                     android:layout_height="42dp"
+                    android:background="@color/Background_1"
                     android:textAlignment="center"
                     android:text="팔"/>
                 <com.google.android.material.tabs.TabItem
