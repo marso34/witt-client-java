@@ -153,6 +153,11 @@ public class CRSelectExerciseFragment extends Fragment {
         }
 
 
+
+
+
+
+
         chestExercises = new ArrayList<>();
         shoulderExercises = new ArrayList<>();
         backExercises = new ArrayList<>();

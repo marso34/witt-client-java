@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
@@ -16,6 +17,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.healthappttt.R;
+import com.example.healthappttt.databinding.ActivityMainBinding;
+import com.example.healthappttt.databinding.FragmentCrSetTimeBinding;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,12 +26,7 @@ import com.example.healthappttt.R;
  * create an instance of this fragment.
  */
 public class CRSetTimeFragment extends Fragment {
-    private TextView RunTime, StartTime, EndTime, ResetBtn;
-    private ImageView StartTimeUP, StartTimeDown;
-    private ImageView EndTimeUP, EndTimeDown;
-
-    private CardView NextBtn;
-    private TextView NextTxt;
+    FragmentCrSetTimeBinding binding;
 
     private int runTime, startTime, endTime;
 
@@ -93,20 +91,16 @@ public class CRSetTimeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_cr_set_time, container, false);
+//        ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_cr_set_time, container, false);
 
-        RunTime = (TextView) view.findViewById(R.id.runTime);
-        StartTime = (TextView) view.findViewById(R.id.startTime);
-        EndTime = (TextView) view.findViewById(R.id.endTime);
-        ResetBtn = (TextView) view.findViewById(R.id.reset);
+        binding = FragmentCrSetTimeBinding.inflate(inflater);
 
-        StartTimeUP = (ImageView) view.findViewById(R.id.startTimeUP);
-        StartTimeDown = (ImageView) view.findViewById(R.id.startTimeDown);
-        EndTimeUP = (ImageView) view.findViewById(R.id.endTimeUP);
-        EndTimeDown = (ImageView) view.findViewById(R.id.endTimeDown);
+        return binding.getRoot();
+    }
 
-        NextBtn = (CardView) view.findViewById(R.id.nextBtn);
-        NextTxt = (TextView) view.findViewById(R.id.nextTxt);
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         if (getArguments() != null) {
             int[] schedule = getArguments().getIntArray("schedule");
@@ -115,58 +109,67 @@ public class CRSetTimeFragment extends Fragment {
 
         init();
 
-        StartTimeUP.setOnClickListener(v -> {
+        binding.startTimeUP.setOnClickListener(v -> {
             if (startTime < endTime) {
                 startTime += 5;
                 runTime = endTime - startTime;
-                StartTime.setText(TimeToString(startTime));
-                RunTime.setText(RuntimeToString(runTime));
+
+                binding.startTime.setText(TimeToString(startTime));
+                binding.runTime.setText(RuntimeToString(runTime));
                 setNextBtn();
             }
         });
 
-        StartTimeDown.setOnClickListener(v -> {
+        binding.startTimeDown.setOnClickListener(v -> {
             if (startTime > 0) {
                 startTime -= 5;
                 runTime = endTime - startTime;
-                StartTime.setText(TimeToString(startTime));
-                RunTime.setText(RuntimeToString(runTime));
+
+                binding.startTime.setText(TimeToString(startTime));
+                binding.runTime.setText(RuntimeToString(runTime));
                 setNextBtn();
             }
         });
 
-        EndTimeUP.setOnClickListener(v -> {
+        binding.endTimeUP.setOnClickListener(v -> {
             if (endTime < 240) {
                 endTime += 5;
                 runTime = endTime - startTime;
-                EndTime.setText(TimeToString(endTime));
-                RunTime.setText(RuntimeToString(runTime));
+
+                binding.endTime.setText(TimeToString(endTime));
+                binding.runTime.setText(RuntimeToString(runTime));
                 setNextBtn();
             }
         });
 
-        EndTimeDown.setOnClickListener(v -> {
+        binding.endTimeDown.setOnClickListener(v -> {
             if (endTime > startTime) {
                 endTime -= 5;
                 runTime = endTime - startTime;
-                EndTime.setText(TimeToString(endTime));
-                RunTime.setText(RuntimeToString(runTime));
+
+                binding.endTime.setText(TimeToString(endTime));
+                binding.runTime.setText(RuntimeToString(runTime));
                 setNextBtn();
             }
         });
 
-        NextBtn.setOnClickListener(v -> {
+        binding.nextBtn.setOnClickListener(v -> {
             if (runTime > 0) {
                 mListener.onRoutineSetTime(startTime, endTime);
             }
         });
+    }
 
-        return view;
+    @Override
+    public void onDestroyView() {  //프레그먼트가 보여주는 뷰들이 Destroy(파괴)되어도 프레그먼트 객체가 살아있을 수 있기에 뷰들이 메모리에서 없어질때 바인딩클래스의 인스턴스도 파괴함으로서 메모리누수를 방지할 수 있음.
+        super.onDestroyView();
+
+        binding = null; //바인딩 객체를 GC(Garbage Collector) 가 없애도록 하기 위해 참조를 끊기
     }
 
     private void init() {
-        startTime = TimeToInt((String) StartTime.getText());
-        endTime = TimeToInt((String) StartTime.getText());
+        startTime = TimeToInt((String) binding.startTime.getText());
+        endTime = TimeToInt((String) binding.endTime.getText());
 
         runTime = endTime - startTime;
     }
@@ -174,11 +177,11 @@ public class CRSetTimeFragment extends Fragment {
     private void setNextBtn() {
         if (runTime > 0) {
 //            NextBtn = (CardView) view.findViewById(R.id.nextBtn);
-            NextTxt.setBackgroundColor(Color.parseColor("#05c78c"));
-            NextTxt.setTextColor(Color.parseColor("#ffffff"));
+            binding.nextTxt.setBackgroundColor(Color.parseColor("#05c78c"));
+            binding.nextTxt.setTextColor(Color.parseColor("#ffffff"));
         } else {
-            NextTxt.setBackgroundColor(Color.parseColor("#D1D8E2"));
-            NextTxt.setTextColor(Color.parseColor("#9AA5B8"));
+            binding.nextTxt.setBackgroundColor(Color.parseColor("#D1D8E2"));
+            binding.nextTxt.setTextColor(Color.parseColor("#9AA5B8"));
         }
     }
 
