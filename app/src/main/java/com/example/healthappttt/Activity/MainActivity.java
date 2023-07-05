@@ -49,9 +49,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -75,8 +72,6 @@ public class MainActivity extends AppCompatActivity {
     private SQLiteUtil reviewsqLiteUtil,blacksqLiteUtil,wittsqLiteUtil;
     private String name_TB = "UserTB";
 
-    private FirebaseAuth mAuth;
-    private FirebaseFirestore db;
     private SQLiteUtil sqLiteUtil;
     private boolean isConnected = false;  // 소켓 연결 여부 확인
 
