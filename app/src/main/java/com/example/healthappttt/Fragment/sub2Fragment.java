@@ -19,6 +19,7 @@ import com.example.healthappttt.Data.ExPerfInfo;
 import com.example.healthappttt.Data.LocInfo;
 import com.example.healthappttt.Data.MannerInfo;
 import com.example.healthappttt.Data.PhoneInfo;
+import com.example.healthappttt.Data.PreferenceHelper;
 import com.example.healthappttt.Data.RetrofitClient;
 import com.example.healthappttt.Data.UserClass;
 import com.example.healthappttt.Data.UserData;
@@ -60,6 +61,9 @@ public class sub2Fragment extends Fragment {
     private TextView deadliftTextView;
     private String phoneModel = Build.MODEL;
     private String serialNumber = Build.SERIAL;
+    private PreferenceHelper prefhelper;
+    private String name_TB = "membership";
+
     public static sub2Fragment newInstance(String email,double latitude, double longitude,double gymLatitude,double gymLongitude, String loName, int height, int weight, String name) {
         sub2Fragment fragment = new sub2Fragment();
         Bundle args = new Bundle();
@@ -79,6 +83,8 @@ public class sub2Fragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        prefhelper = new PreferenceHelper(name_TB);
+
         if (getArguments() != null) {
             latitude = getArguments().getDouble(ARG_LATITUDE);
             longitude = getArguments().getDouble(ARG_LONGITUDE);
@@ -178,6 +184,16 @@ public class sub2Fragment extends Fragment {
                         "Values:" + squatValue +" "+ benchValue + " " + deadliftValue;
                 // Display the message
                 Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
+
+                /**
+                 * TO DO : 같은 핸드폰(Device model)이면 로컬저장 X
+                 */
+                //if(getPhoneInfo().getDeviceId() == )
+                    //shared 로컬 저장
+                    Log.d("shared 로컬 저장 내 이메일:",getUserDT().getEmail());
+                    UserClass sharedUser = new UserClass(getUserDT(),getPhoneInfo(),getMannerInfo(),getLocInfo(),getExPerInfo(),getBodyInfo());
+                    prefhelper.putMembership(sharedUser);
+
             }
         });
 
@@ -211,7 +227,7 @@ public class sub2Fragment extends Fragment {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
-
+                    //shared
                     Log.d(TAG, "sendTokenToServer success");
                 } else {
                     // 서버로 데이터 전송 실패

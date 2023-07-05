@@ -13,7 +13,6 @@ public class UserProfile {
       IP: TB.IP,
       Platform: TB.Platform,
       PW: TB.PW,
-      token: TB.token,
       User_Img: TB.User_Img,
       User_NM: TB.User_NM*/
 

@@ -55,6 +55,6 @@
         android:id="@+id/Review_recycle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:listitem="@layout/adapter_reviews" />
+        tools:listitem="@layout/adapter_blockuser" />
 
 </LinearLayout>

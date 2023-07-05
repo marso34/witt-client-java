@@ -20,20 +20,40 @@
         android:theme="@style/Theme.HealthAppTTT"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <activity
+            android:name=".Activity.MyProfileEdit"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+<!--        <activity-->
+<!--            android:name=".WHChildFragment"-->
+<!--            android:exported="false">-->
+<!--            <meta-data-->
+<!--                android:name="android.app.lib_name"-->
+<!--                android:value="" />-->
+<!--        </activity>-->
+        <activity
+            android:name=".Activity.WittHistoryActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
         <service
             android:name=".interface_.DataReceiverService"
             android:enabled="true"
             android:exported="false" />
-
         <activity
             android:name=".Activity.ReviewsRecdAtivity"
-            android:exported="true">
+            android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".Activity.BlockActivity"
+            android:name=".Activity.BlackActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

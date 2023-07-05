@@ -35,6 +35,7 @@ import com.example.healthappttt.Data.ReviewListData;
 import com.example.healthappttt.Data.SQLiteUtil;
 import com.example.healthappttt.Data.UserKey;
 import com.example.healthappttt.Data.UserProfile;
+import com.example.healthappttt.Data.WittListData;
 import com.example.healthappttt.Fragment.ChattingFragment;
 import com.example.healthappttt.Fragment.HomeFragment;
 import com.example.healthappttt.Fragment.RoutineFragment;
@@ -48,6 +49,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -65,8 +69,14 @@ public class MainActivity extends AppCompatActivity {
     private PreferenceHelper prefhelper;
     private BlackListData BlackList;
     private ReviewListData ReviewList;
+    private WittListData wittList;
     //유저키를 UserKey 자료형으로 받음 ( 유동적으로 로그인에서 넘겨준 pk값이 들어가야함 )
     UserKey userKey;
+    private SQLiteUtil reviewsqLiteUtil,blacksqLiteUtil,wittsqLiteUtil;
+    private String name_TB = "UserTB";
+
+    private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
     private SQLiteUtil sqLiteUtil;
     private boolean isConnected = false;  // 소켓 연결 여부 확인
 
@@ -109,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
 
         SharedPreferences sharedPref = getSharedPreferences("myPref", Context.MODE_PRIVATE);
         String useremail = sharedPref.getString("useremail", "");
-
+        userKey = new UserKey(270);//new UserKey(prefhelper.getPK());
 
         if ( Build.VERSION.SDK_INT >= 23 &&
                 ContextCompat.checkSelfPermission( getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
@@ -219,21 +229,24 @@ public class MainActivity extends AppCompatActivity {
             signOut();
         });
         binding.myInformation.setOnClickListener(view -> {
-                //showUserInfoPopup(useremail);
+                //showUserInfoPopup(useremail); // 자신의 이메일 정보를 보여주는 팝업
             Intent intent = new Intent(MainActivity.this, MyProfileActivity.class);
             startActivity(intent);
         });
 
         //api 요청 인터페이스 가져오기
         apiService = RetrofitClient.getClient().create(ServiceApi.class); // create메서드로 api서비스 인터페이스의 구현제 생성
-        prefhelper = new PreferenceHelper(this);
-        sqLiteUtil = SQLiteUtil.getInstance(); //sqllite 객체
+        prefhelper = new PreferenceHelper(name_TB,this);
+//        sqLiteUtil = SQLiteUtil.getInstance(); //sqllite 객체
         getuserProfile(userKey); //유저키
         //로그인했을때 넘겨받는 정보를 파라미터로 넣는다.  email or phone_num 비교해서 해당하는 유저의 키를 받아온다.
         //유저의 pk를 그대로 받을수있으면 필요가 없음 다른방향( 다른유저의 키를 가져오는 느낌)으로 가야함
         Log.d("prefhelper", "USER_PK:" + prefhelper.getPK()); //저장된 유저의 pk값 가져오기
-        getBlackList(userKey);//매개변수 prefhelper.getPK() 변경하여 테스팅 필요
-        getReviewList(userKey);//매개변수 prefhelper.getPK() 변경하여 테스팅 필요
+
+        //매개변수 prefhelper.getPK() 변경하여 테스팅 필요
+        getBlackList(userKey);
+        getReviewList(userKey);
+        getWittHistory(userKey);
 
     }
 
@@ -291,7 +304,12 @@ public class MainActivity extends AppCompatActivity {
                             String TS = Black.getTS();
                             byte[] User_Img = Black.getUser_Img();
                             BlackList = new BlackListData(BL_PK, User_NM, OUser_FK, TS,User_Img); //서버에서 받아온 데이터 형식으로 바꿔야함
-                            SaveBlackList();//로컬db에 차단목록 저장 매서드
+                            /**
+                             * 받아온 리스트 PK와 SQLite에 존재하는 PK를 비교
+                             * 없으면 저장
+                             * 있으면 continue
+                             */
+                            SaveBlackList(BlackList);//로컬db에 차단목록 저장 매서드
                         }
                     }
                 } else {
@@ -329,9 +347,13 @@ public class MainActivity extends AppCompatActivity {
                             byte[] User_Img = Review.getUser_Img();
 
                             ReviewList = new ReviewListData(Review_PK, User_FK, RPT_User_FK, Text_Con, Check_Box, TS, User_NM, User_Img); //서버에서 받아온 데이터 형식으로 바꿔야함
-                            SaveReviewList();//로컬db에 받은 후기 저장 매서드
+                            Log.d("ReviewList_main에서 객체화한거", String.valueOf(Review.getReview_PK()));
+                            Log.d("ReviewList_main에서 객체화한거",Review.getText_Con());
+                            SaveReviewList(ReviewList);//로컬db에 받은 후기 저장 매서드
                         }
                     }
+                }else {
+                    Log.e("getReviewList", "API 요청 실패. 응답 코드: " + response.code());
                 }
             }
             @Override
@@ -341,17 +363,63 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void SaveReviewList() {
-        sqLiteUtil.setInitView(this,"RREVIEW_TB");
-        sqLiteUtil.insert(ReviewList);
-        Log.d("ReviewList데이터 저장 매서드","저장완료");
+    private void getWittHistory(UserKey userKey) {
+        Call<List<WittListData>> call = apiService.getWittHistory(userKey);
+        call.enqueue(new Callback<List<WittListData>>() {
+            @Override
+            public void onResponse(Call<List<WittListData>> call, Response<List<WittListData>> response) {
+                if (response.isSuccessful()){
+                    List<WittListData> WittList = response.body();
+                    if(WittList != null){
+                        for(WittListData Witt : WittList){
+                            Log.d("WittList데이터", String.valueOf(Witt.getUSER_FK()));
+                            int RECORD_PK = Witt.getRECORD_PK();
+                            int USER_FK = Witt.getUSER_FK();
+                            int OUser_FK = Witt.getOUser_FK();
+                            String TS = Witt.getTS();
+                            String User_NM = Witt.getUser_NM();
+                            byte[] User_Img = Witt.getUser_Img();
+
+                            wittList = new WittListData(RECORD_PK,USER_FK,OUser_FK,TS,User_NM,User_Img);
+                            Log.d("WittHistory_main에서", String.valueOf(Witt.getUser_NM()));
+                            Log.d("WittHistory_main에서", String.valueOf(Witt.getTS()));
+                            SaveWittList(wittList);//로컬db에 받은 후기 저장 매서드
+                        }
+                    }
+                }else{
+                    Log.e("getWittHistory", "API 요청 실패. 응답 코드: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<WittListData>> call, Throwable t) {
+                Log.e("getWittHistory", "API 요청실패, 에러메세지: " + t.getMessage());
+            }
+        });
+    }
+
+    private void SaveReviewList(ReviewListData reviewListData) {
+        reviewsqLiteUtil = SQLiteUtil.getInstance();
+        reviewsqLiteUtil.setInitView(this,"REVIEW_TB");
+        //Log.d("Main에서 받은후기 추가하기전 PK:", String.valueOf(reviewListData.getReview_PK()));
+        reviewsqLiteUtil.insertRL(reviewListData);
+        Log.d("SaveReviewList 매서드","저장완료");
     }
 
 
-    private void SaveBlackList() {
-        sqLiteUtil.setInitView(this, "BLACK_LIST_TB");
-        sqLiteUtil.insert(BlackList);
-        Log.d("BlackList데이터 저장 매서드","저장완료");
+    private void SaveBlackList(BlackListData blackListData) {
+        blacksqLiteUtil = SQLiteUtil.getInstance();
+        blacksqLiteUtil.setInitView(this, "BLACK_LIST_TB");
+        //Log.d("Main에서 블랙리스트 추가하기전 PK:", String.valueOf(blackListData.getBL_PK()));
+        blacksqLiteUtil.insertBL(blackListData);
+        Log.d("SaveBlackList 매서드","저장완료");
+    }
+    private void SaveWittList(WittListData wittListData){
+        wittsqLiteUtil = SQLiteUtil.getInstance();
+        wittsqLiteUtil.setInitView(this,"Witt_History_TB");
+        //Log.d("Main에서 받은후기 추가하기전 PK:", String.valueOf(wittListData.getUser_NM()));
+        reviewsqLiteUtil.insertWH(wittListData);
+        Log.d("SaveWittList 매서드","저장완료");
     }
 
 

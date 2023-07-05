@@ -61,15 +61,27 @@ public class DBHelper extends SQLiteOpenHelper {
 
         db.execSQL(blacklistsql);
 
-        String reviewrecdsql = "CREATE TABLE if not exists RREVIEW_TB("
+        String reviewrecdsql = "CREATE TABLE if not exists REVIEW_TB("
                 + "Review_PK INT primary key,"
                 + "User_FK INT,"
                 + "RPT_User_FK INT,"
                 + "Text_Con VARCHAR(30),"
                 + "Check_Box SMALLINT,"
-                + "TS TIMESTAMP);";
+                + "TS TIMESTAMP,"
+                + "User_NM VARCHAR(20),"
+                + "User_Img BLOB);";
 
         db.execSQL(reviewrecdsql);
+
+        String WittRecordsql = "Create Table if not exists Witt_History_TB("
+                + "RECORD_PK INT primary key,"
+                + "USER_FK INT,"
+                + "OUser_FK INT,"
+                + "TS TIMESTAMP,"
+                + "User_NM VARCHAR(20),"
+                + "User_Img BLOB);";
+
+        db.execSQL(WittRecordsql);
 
         String createTableQuery = "CREATE TABLE if not exists CHAT_MSG_TB ("
                 +"MSG_PK INTEGER primary key,"
@@ -96,4 +108,6 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(createTableQuery);
         onCreate(db);
     }
+
+
 }

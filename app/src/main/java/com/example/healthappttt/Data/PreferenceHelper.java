@@ -5,18 +5,24 @@ import android.content.SharedPreferences;
 import android.util.Base64;
 import android.util.Log;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class PreferenceHelper
 {
     private final String NAME = "name";
-
-
-
+    //    private UserProfile upf = new UserProfile();   테스트
     private SharedPreferences app_prefs;
     private Context context;
-//    private UserProfile upf = new UserProfile();   테스트
+    private UserClass userClass;
 
-    public PreferenceHelper(Context context) {
-        app_prefs = context.getSharedPreferences("UserProfile", Context.MODE_PRIVATE);
+
+    public PreferenceHelper(String file_name,Context context) {
+        app_prefs = context.getSharedPreferences(file_name, Context.MODE_PRIVATE);
+    }
+
+    public PreferenceHelper(String file_name) {
+        app_prefs = context.getSharedPreferences(file_name,Context.MODE_PRIVATE);
     }
 
 
@@ -46,7 +52,60 @@ public class PreferenceHelper
 //        Log.d("putblacklist에 저장:",getBlackUser(name));
 //        edit.apply();
 //    }
+    public void putMembership(UserClass userClass) {
+        SharedPreferences.Editor edit = app_prefs.edit();
+        UserData userData = userClass.getUserInfo();
+        PhoneInfo phoneInfo = userClass.getPhoneInfo();
+        MannerInfo mannerInfo = userClass.getMannerInfo();
+        LocInfo locInfo = userClass.getLocInfo();
+        ExPerfInfo exPerfInfo = userClass.getExPerfInfo();
+        BodyInfo bodyInfo = userClass.getBodyInfo();
+        /**
+         * UserData 저장
+         **/
+        edit.putString("email", userData.getEmail());
+        edit.putInt("platform",userData.getPlatform());
+        edit.putString("name",userData.getName());
+        edit.putString("image",userData.getImage());
+        /**
+         * PhoneInfo 저장
+         **/
+        edit.putString("phoneNumber",phoneInfo.getPhoneNumber());
+        edit.putString("deviceModel",phoneInfo.getDeviceModel());
+        edit.putString("deviceId",phoneInfo.getDeviceId());
+        /**
+         * MannerInfo 저장
+         **/
+        edit.putInt("reliabilityValue",mannerInfo.getReliabilityValue());
+        edit.putInt("sincerityValue",mannerInfo.getSincerityValue());
+        edit.putInt("kindnessValue",mannerInfo.getKindnessValue());
+        /**
+         * locInfo 저장
+         **/
+        edit.putFloat("userLat", (float) locInfo.getUserLat());
+        edit.putFloat("userLon", (float) locInfo.getUserLon());
+        edit.putString("gymNm",locInfo.getGymNm());
+        edit.putFloat("gymLat", (float) locInfo.getGymLat());
+        edit.putFloat("gymLon", (float) locInfo.getGymLon());
+        /**
+         * exPerfInfo 저장
+         **/
+        edit.putInt("benchValue",exPerfInfo.getBenchValue());
+        edit.putInt("squatValue",exPerfInfo.getSquatValue());
+        edit.putInt("deadliftValue",exPerfInfo.getDeadliftValue());
+        /**
+         * bodyInfo 저장
+         **/
+        edit.putString("birthday",bodyInfo.getBirthday());
+        edit.putInt("gender",bodyInfo.getGender());
+        edit.putInt("height", (int) bodyInfo.getHeight());
+        edit.putInt("weight", (int) bodyInfo.getWeight());
 
+        edit.apply();
+        Log.d("sharedpref","로컬 저장 완료 ");
+    }
+
+    //필요한 변수 getter 매소드 생성
     public int getPK() {
         return  app_prefs.getInt( "USER_PK", 00);
     }
@@ -65,9 +124,29 @@ public class PreferenceHelper
     public String getPW() {
         return app_prefs.getString("PW","__");
     }
-    public String getBlackUser(String name) {
-        return app_prefs.getString("BlackUser"+name,"__");
+
+
+    public static Map<String, Object> getUserData(SharedPreferences app_prefs) {
+        Map<String, Object> userData = new HashMap<>();
+        userData.put("name",app_prefs.getString("name","nothing"));
+        userData.put("gender", app_prefs.getInt("gender", 0));
+        userData.put("height", app_prefs.getInt("height", 0));
+        userData.put("weight", app_prefs.getInt("weight", 0));
+        userData.put("squatValue", app_prefs.getInt("squatValue", 0));
+        userData.put("benchValue", app_prefs.getInt("benchValue", 0));
+        userData.put("deadliftValue", app_prefs.getInt("deadliftValue", 0));
+        userData.put("image", app_prefs.getString("image", "nothing"));
+        Log.d("가져오는 실제 유저 키: ", String.valueOf(app_prefs.getInt("height", 0)));
+        return userData;
     }
+//    public int getGender() { return app_prefs.getInt("gender",00); }
+//    public int getheight() { return app_prefs.getInt("height",00); }
+//    public int getweight() { return app_prefs.getInt("weight",00); }
+//    public int getbenchValue() { return app_prefs.getInt("benchValue",00); }
+//    public int getsquatValue() { return app_prefs.getInt("squatValue",00); }
+//    public int getdeadliftValue() { return app_prefs.getInt("deadliftValue",00); }
+//    public String getimage() { return app_prefs.getString("image","nothing");}
+
 }
 //----------------------------------------------------------------------
 
