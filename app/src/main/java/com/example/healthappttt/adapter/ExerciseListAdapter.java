@@ -19,11 +19,13 @@ import java.util.ArrayList;
 
 public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapter.MainViewHolder> {
     private ArrayList<ExerciseData> exercises;
+    private ArrayList<ExerciseData> selectExercises;
 
     private OnSelectExercise onSelectExercise;
 
     public ExerciseListAdapter(ArrayList<ExerciseData> exercises) {
         this.exercises = exercises;
+        selectExercises = new ArrayList<>();
     }
 
     public static class MainViewHolder extends RecyclerView.ViewHolder {
@@ -56,12 +58,13 @@ public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapte
         final MainViewHolder mainViewHolder = new MainViewHolder(view);
 
         mainViewHolder.ExerciseLayout.setOnClickListener(v -> {
-//            int position = mainViewHolder.getAbsoluteAdapterPosition();
+            int position = mainViewHolder.getAbsoluteAdapterPosition();
 
             mainViewHolder.isChecked = !mainViewHolder.isChecked;
 
             if (mainViewHolder.isChecked) {
                 mainViewHolder.CheckedImg.setVisibility(View.VISIBLE);
+//                selectExercises.add(new ExerciseData(this.exercises.get(position)));
 //                onSelectExercise.onSelectExercise(this.exercises.get(position), true);
             } else {
                 mainViewHolder.CheckedImg.setVisibility(View.GONE);
