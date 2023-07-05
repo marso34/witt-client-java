@@ -5,6 +5,15 @@ import android.content.SharedPreferences;
 import android.util.Base64;
 import android.util.Log;
 
+import com.example.healthappttt.Data.User.BodyInfo;
+import com.example.healthappttt.Data.User.ExPerfInfo;
+import com.example.healthappttt.Data.User.LocInfo;
+import com.example.healthappttt.Data.User.MannerInfo;
+import com.example.healthappttt.Data.User.PhoneInfo;
+import com.example.healthappttt.Data.User.UserClass;
+import com.example.healthappttt.Data.User.UserData;
+import com.example.healthappttt.Data.User.UserProfile;
+
 import java.util.HashMap;
 import java.util.Map;
 

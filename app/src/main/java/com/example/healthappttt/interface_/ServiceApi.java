@@ -1,20 +1,20 @@
 package com.example.healthappttt.interface_;
 
-import com.example.healthappttt.Data.BlackListData;
-import com.example.healthappttt.Data.GetUserInfo;
-import com.example.healthappttt.Data.MSD;
-import com.example.healthappttt.Data.Message;
-import com.example.healthappttt.Data.NearUsersData;
-import com.example.healthappttt.Data.RecordData;
-import com.example.healthappttt.Data.ReviewListData;
-import com.example.healthappttt.Data.RoutineData;
-import com.example.healthappttt.Data.UserChat;
-import com.example.healthappttt.Data.UserClass;
+import com.example.healthappttt.Data.User.BlackListData;
+import com.example.healthappttt.Data.User.GetUserInfo;
+import com.example.healthappttt.Data.Chat.MSD;
+import com.example.healthappttt.Data.Chat.MSG;
+import com.example.healthappttt.Data.User.NearUsersData;
+import com.example.healthappttt.Data.Exercise.RecordData;
+import com.example.healthappttt.Data.User.ReviewListData;
+import com.example.healthappttt.Data.Exercise.RoutineData;
+import com.example.healthappttt.Data.Chat.UserChat;
+import com.example.healthappttt.Data.User.UserClass;
 import com.example.healthappttt.Data.UserInfo;
-import com.example.healthappttt.Data.UserKey;
-import com.example.healthappttt.Data.UserProfile;
-import com.example.healthappttt.Data.WittListData;
-import com.example.healthappttt.Data.email;
+import com.example.healthappttt.Data.User.UserKey;
+import com.example.healthappttt.Data.User.UserProfile;
+import com.example.healthappttt.Data.User.WittListData;
+import com.example.healthappttt.Data.User.email;
 import com.example.healthappttt.Data.pkData;
 
 import java.util.List;
@@ -77,6 +77,6 @@ public interface ServiceApi {
     Call<List<UserChat>> getUsers(@Body UserKey userKey);
 
     @POST("messages")
-    Call<Message> sendMessage(@Body Message message);
+    Call<MSG> sendMessage(@Body MSG message);
 
 }

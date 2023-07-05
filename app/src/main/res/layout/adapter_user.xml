@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
 
-    tools:context=".adapter.UserAdapter">
+    tools:context=".User.UserAdapter">
     <LinearLayout
         android:background="@drawable/round_button_white"
         android:layout_width="match_parent"

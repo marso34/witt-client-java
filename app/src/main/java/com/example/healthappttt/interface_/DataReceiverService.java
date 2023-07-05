@@ -16,10 +16,10 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
-import com.example.healthappttt.Activity.ChatActivity;
-import com.example.healthappttt.Activity.MainActivity;
-import com.example.healthappttt.Data.MSD;
-import com.example.healthappttt.Data.SocketSingleton;
+import com.example.healthappttt.Chat.ChatActivity;
+import com.example.healthappttt.MainActivity;
+import com.example.healthappttt.Data.Chat.MSD;
+import com.example.healthappttt.Data.Chat.SocketSingleton;
 import com.example.healthappttt.R;
 
 import io.socket.client.Socket;

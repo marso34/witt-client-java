@@ -7,6 +7,14 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.util.Log;
 
+import com.example.healthappttt.Data.Chat.MSG;
+import com.example.healthappttt.Data.Exercise.ExerciseData;
+import com.example.healthappttt.Data.Exercise.RecordData;
+import com.example.healthappttt.Data.Exercise.RoutineData;
+import com.example.healthappttt.Data.User.BlackListData;
+import com.example.healthappttt.Data.User.ReviewListData;
+import com.example.healthappttt.Data.User.WittListData;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -431,8 +439,8 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         return null;
     }
   
-    public List<Message> SelectMSG(int myFlag,int chatRoomId) {
-        List<Message> messages = new ArrayList<>();
+    public List<MSG> SelectMSG(int myFlag, int chatRoomId) {
+        List<MSG> messages = new ArrayList<>();
 
         String[] columns = {"MSG","CHAT_ROOM_FK","TS"};
         String selection = "CHAT_ROOM_FK=? AND myFlag=?";
@@ -456,7 +464,7 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
                 if(TSIndex != -1){
                     TS = cursor.getString(TSIndex);
                 }
-                messages.add(new Message(myFlag,chatRoomId,message,TS));
+                messages.add(new MSG(myFlag,chatRoomId,message,TS));
             } while (cursor.moveToNext());
         }
 

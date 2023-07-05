@@ -7,7 +7,7 @@
     android:layout_height="wrap_content"
     android:paddingVertical="6dp"
     android:orientation="vertical"
-    tools:context=".adapter.ExerciseListPAdapter" >
+    tools:context=".Routine.ExerciseListPAdapter" >
 
     <TextView
         android:id="@+id/listCat"
