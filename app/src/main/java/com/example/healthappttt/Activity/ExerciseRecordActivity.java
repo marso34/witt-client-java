@@ -11,8 +11,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.healthappttt.Data.Exercise;
 import com.example.healthappttt.Data.ExerciseData;
+import com.example.healthappttt.Data.PreferenceHelper;
 import com.example.healthappttt.Data.RecordData;
 import com.example.healthappttt.Data.RetrofitClient;
 import com.example.healthappttt.Data.RoutineComparator;
@@ -21,7 +21,7 @@ import com.example.healthappttt.Fragment.ERRecordingFragment;
 import com.example.healthappttt.Fragment.ERSelectRoutineFragment;
 import com.example.healthappttt.Fragment.ERSelectUserFragment;
 import com.example.healthappttt.R;
-import com.example.healthappttt.Data.Routine;
+import com.example.healthappttt.Data.RoutineData;
 import com.example.healthappttt.interface_.ServiceApi;
 
 import java.text.SimpleDateFormat;
@@ -37,11 +37,12 @@ import retrofit2.Response;
 public class ExerciseRecordActivity extends AppCompatActivity implements ERSelectRoutineFragment.OnFragmentInteractionListener, ERSelectUserFragment.OnFragmentInteractionListener, ERRecordingFragment.OnFragmentInteractionListener {
     private ServiceApi service;
     private SQLiteUtil sqLiteUtil;
+    private PreferenceHelper prefhelper;
 
     private int dayOfWeek;
-    private ArrayList<Routine> routines;
-    private Routine routine;
-    private ArrayList<Exercise> exercises;
+    private ArrayList<RoutineData> routines;
+    private RoutineData routine;
+    private RecordData record;
 
     private String startTime, endTime, runTime;
 
@@ -56,12 +57,20 @@ public class ExerciseRecordActivity extends AppCompatActivity implements ERSelec
         service = RetrofitClient.getClient().create(ServiceApi.class);
         sqLiteUtil = SQLiteUtil.getInstance();
         sqLiteUtil.setInitView(this, "RT_TB");
+        prefhelper = new PreferenceHelper(this);
+        Log.d("prefhelper", "USER_PK:" + prefhelper.getPK()); //저장된 유저의 pk값 가져오기
+
 
         routines = sqLiteUtil.SelectRoutine(dayOfWeek);
 
-        if (routines != null)
-            Collections.sort(routines, new RoutineComparator());
+        if (routines != null) {
+            sqLiteUtil.setInitView(this, "EX_TB");
 
+            for (int i = 0; i < routines.size(); i++)
+                routines.get(i).setExercises(sqLiteUtil.SelectExercise(routines.get(i).getID()));
+
+            Collections.sort(routines, new RoutineComparator());
+        }
         Bundle bundle = new Bundle();
         bundle.putSerializable("routines", routines);
         bundle.putInt("dayOfWeek", dayOfWeek);
@@ -91,16 +100,7 @@ public class ExerciseRecordActivity extends AppCompatActivity implements ERSelec
     private void SaveToDB() {
         ArrayList<ExerciseData> list = new ArrayList<>();
 
-        int CAT = 0;
-        for (Exercise e : exercises) {
-            list.add(new ExerciseData(e.getTitle(), e.getCat(), e.getCount(), e.getVolume(), e.getNum(), e.getIndex()));
-            CAT |= e.getCat();
-        }
-
-        RecordData rData = new RecordData(5, 0, CAT, startTime, endTime, runTime, 0, list);
-
-        int finalCAT = CAT;
-        service.recordExercise(rData).enqueue(new Callback<List<Integer>>() {
+        service.recordExercise(record).enqueue(new Callback<List<Integer>>() {
             @Override
             public void onResponse(Call<List<Integer>> call, Response<List<Integer>> response) {
                 if (response.isSuccessful()) {
@@ -114,10 +114,10 @@ public class ExerciseRecordActivity extends AppCompatActivity implements ERSelec
                     for (int resultID : list) {
                         if (i == 0) {
                             PID = resultID; // 루틴ID
-                            routine = new Routine(PID, startTime, endTime, runTime, finalCAT, dayOfWeek);
+                            record.setID(PID);
                         } else {
-                            exercises.get(i-1).setParentID(PID);
-                            exercises.get(i-1).setID(resultID);
+                            record.getExercises().get(i-1).setParentID(PID);
+                            record.getExercises().get(i-1).setID(resultID);
                         }
                         i++;
                     }
@@ -145,7 +145,12 @@ public class ExerciseRecordActivity extends AppCompatActivity implements ERSelec
     }
 
     private void SaveToDev() {
+        sqLiteUtil.setInitView(this, "RECORD_TB");
+        sqLiteUtil.insert(record);
 
+        sqLiteUtil.setInitView(this, "EX_TB");
+        for (ExerciseData e : record.getExercises())
+            sqLiteUtil.insert(e, true);
     }
 
     private void replaceFragment (Fragment fragment) { //프래그먼트 설정
@@ -178,9 +183,8 @@ public class ExerciseRecordActivity extends AppCompatActivity implements ERSelec
     }
 
     @Override
-    public void onSelectRoutine(Routine routine, ArrayList<Exercise> exercises) {
+    public void onSelectRoutine(RoutineData routine) {
         this.routine = routine;
-        this.exercises = exercises;
 
         replaceFragment(new ERSelectUserFragment());
     }
@@ -188,7 +192,7 @@ public class ExerciseRecordActivity extends AppCompatActivity implements ERSelec
     @Override
     public void onSelectUser() { // 나중에 유저 전달로 변경
         Bundle bundle = new Bundle();
-        bundle.putSerializable("exercises", exercises);
+        bundle.putSerializable("exercises", routine.getExercises());
 
 //        if (user != null) {}
 
@@ -196,10 +200,17 @@ public class ExerciseRecordActivity extends AppCompatActivity implements ERSelec
     }
 
     @Override
-    public void onRecordExercises(long StartTime, long EndTime, int RunTime) {
+    public void onRecordExercises(long StartTime, long EndTime, int RunTime, ArrayList<ExerciseData> recordExercises) {
         startTime = TimeToString(StartTime);
         endTime = TimeToString(EndTime);
         runTime = TimeToString(RunTime);
+
+        int cat = 0;
+        for (ExerciseData e : recordExercises)
+            cat |= e.getCat();
+
+        record = new RecordData(285, cat, startTime, endTime, runTime); // 나중에 userID prefhelper.getPK()로 수정
+        record.setExercises(recordExercises);
 
         SaveToDB();
     }

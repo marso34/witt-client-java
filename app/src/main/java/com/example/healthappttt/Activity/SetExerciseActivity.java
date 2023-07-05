@@ -4,12 +4,11 @@ import static android.content.ContentValues.TAG;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.healthappttt.Data.Exercise;
+import com.example.healthappttt.Data.ExerciseData;
 import com.example.healthappttt.R;
-import com.example.healthappttt.Data.Routine;
+import com.example.healthappttt.Data.RoutineData;
 import com.example.healthappttt.adapter.ExerciseInputAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -20,7 +19,6 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -39,8 +37,8 @@ public class SetExerciseActivity extends AppCompatActivity {
     private ExerciseInputAdapter adapter;
     private Button StartBtn;  // 시작 버튼
 
-    private Routine routine;
-    private ArrayList<Exercise> exercises;
+    private RoutineData routine;
+    private ArrayList<ExerciseData> exercises;
     private String dayOfWeek;
 
     private FirebaseFirestore firebaseFirestore;
@@ -61,7 +59,7 @@ public class SetExerciseActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
-        routine = new Routine();
+        routine = new RoutineData();
         exercises = new ArrayList<>();
 
         getCurrentWeek();
@@ -100,7 +98,7 @@ public class SetExerciseActivity extends AppCompatActivity {
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
                                 Log.d(TAG, "Document exists!");
-                                routine = new Routine(
+                                routine = new RoutineData(
 //                                        Integer.parseInt(document.getData().get("exerciseCategories").toString()),
 //                                        document.getData().get("startTime").toString(),
 //                                        document.getData().get("endTime").toString()

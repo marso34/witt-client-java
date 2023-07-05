@@ -7,7 +7,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.util.Log;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 public class SQLiteUtil { // 싱글톤 패턴으로 구현
     private static volatile SQLiteUtil instance; // volatile 메인 메모리에 저장
@@ -96,6 +100,7 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         db.close();
 
     }
+  
     // 동일한 Review_PK 값이 이미 존재하는지 확인하는 메서드
     private int checkExistingReviewPK(int reviewPK) {
         String sql = "SELECT Review_PK FROM REVIEW_TB WHERE Review_PK = ?";
@@ -108,6 +113,19 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         return existingReviewPK;
     }
 
+    public void insert(int myFlag,String message, int chatRoomId) {
+        ContentValues values = new ContentValues();
+        values.put("MSG", message);
+        values.put("CHAT_ROOM_FK", chatRoomId);
+
+        // 현재 시간을 포맷에 맞춰서 문자열로 변환
+        String timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
+        values.put("TS", timestamp);
+        values.put("myFlag",myFlag);
+
+        db.insert("CHAT_MSG_TB", null, values);
+        db.close();
+    }
 
 
     /**
@@ -135,7 +153,7 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
     /**
      * 이 메소드는 RT_TB 데이터를 삽입하는 메서드입니다.
      */
-    public void insert(Routine routine) {
+    public void insert(RoutineData routine) {
         ContentValues values = new ContentValues();
 
         if (table.equals("RT_TB")) {
@@ -155,17 +173,17 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
     /**
      * 이 메소드는 RECORD_TB 데이터를 삽입하는 메서드입니다.
      */
-    public void insert(Routine routine, int OUser_FK, int PROMISE_FK, String TS) {
+    public void insert(RecordData record) {
         ContentValues values = new ContentValues();
 
         if (table.equals("RECORD_TB")) {
-            values.put("PK", routine.getID());
-            values.put("OUser_FK", OUser_FK);
-            values.put("Start_Time", routine.getStartTime());
-            values.put("End_Time", routine.getEndTime());
-            values.put("CAT", routine.getCat());
-            values.put("PROMISE_FK", PROMISE_FK);
-            values.put("TS", TS);
+            values.put("PK", record.getID());
+            values.put("OUser_FK", record.getoUserID());
+            values.put("PROMISE_FK", record.getPromiseID());
+            values.put("Start_Time", record.getStartTime());
+            values.put("End_Time", record.getEndTime());
+            values.put("Run_Time", record.getRunTime());
+            values.put("CAT", record.getCat());
 
             long result = db.insert(table, null, values);
             Log.d(table, result + "성공");
@@ -177,29 +195,30 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
     /**
      * 이 메소드는 EX_TB에 데이터를 삽입하는 메서드입니다.
      */
-    public void insert(Exercise exercise) {
+    public void insert(ExerciseData exercise, boolean isRecord) {
         ContentValues values = new ContentValues();
 
-        if (table.equals("EX_TB")) {
+        if (table.equals("EX_TB") && !isRecord) {
             values.put("PK", exercise.getID());
             values.put("RT_FK", exercise.getParentID());
-            values.put("Ex_NM", exercise.getTitle());
-            values.put("Set_Or_Time", exercise.getCount());
+            values.put("Ex_NM", exercise.getExerciseName());
+            values.put("Set_Or_Time", exercise.getSetOrTime());
             values.put("Volume", exercise.getVolume());
-            values.put("Cnt_Or_Dis", exercise.getNum());
+            values.put("Cnt_Or_Dis", exercise.getCntOrDis());
             values.put("Sort_Index", exercise.getIndex());
             values.put("CAT", exercise.getCat());
 
-            Log.d("운동 세부 정보", "" +
-                    " pk " + exercise.getID() +
-                    " 부모 " + exercise.getParentID() +
-                    " 이름" + exercise.getTitle() +
-                    " 세트 " + exercise.getCount() +
-                    " 무게 " + exercise.getVolume() +
-                    " 횟수 " + exercise.getNum() +
-                    " 순서 " + exercise.getIndex() +
-                    " 부위 " + exercise.getCat()
-            );
+            long result = db.insert(table, null, values);
+            Log.d(table, result + "성공");
+        } else if (table.equals("EX_TB") && isRecord) {
+            values.put("PK", exercise.getID());
+            values.put("RECORD_FK", exercise.getParentID());
+            values.put("Ex_NM", exercise.getExerciseName());
+            values.put("Set_Or_Time", exercise.getSetOrTime());
+            values.put("Volume", exercise.getVolume());
+            values.put("Cnt_Or_Dis", exercise.getCntOrDis());
+            values.put("Sort_Index", exercise.getIndex());
+            values.put("CAT", exercise.getCat());
 
             long result = db.insert(table, null, values);
             Log.d(table, result + "성공");
@@ -220,7 +239,7 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
     }
 
 
-    public void Update(Routine routine) {
+    public void Update(RoutineData routine) {
         ContentValues values = new ContentValues();
 
         if (table.equals("RT_TB")) {
@@ -256,13 +275,13 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         }
     } // 운동 기록을 수정할 수 있게 할지는 아직 모름
 
-    public void Update(Exercise exercise) {
+    public void Update(ExerciseData exercise) {
         ContentValues values = new ContentValues();
 
         if (table.equals("EX_TB")) {
-            values.put("Set_Or_Time", exercise.getCount());
+            values.put("Set_Or_Time", exercise.getSetOrTime());
             values.put("Volume", exercise.getVolume());
-            values.put("Cnt_Or_Dis", exercise.getNum());
+            values.put("Cnt_Or_Dis", exercise.getCntOrDis());
             values.put("Sort_Index", exercise.getIndex());
 
             int result = db.update(table, values, "PK = ?", new String[]{String.valueOf(exercise.getID())});
@@ -272,7 +291,7 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         }
     }
 
-    public ArrayList<Routine> SelectRoutine(int DayOfWeek) {
+    public ArrayList<RoutineData> SelectRoutine(int DayOfWeek) {
         if (table.equals("RT_TB")) {
             String sql = "SELECT * FROM " + table + " WHERE Day_Of_Week = " + DayOfWeek + ";";
 
@@ -280,15 +299,15 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
 
             Cursor cursor = db.rawQuery(sql, null);
 
-            ArrayList<Routine> routines = new ArrayList<>();
+            ArrayList<RoutineData> routines = new ArrayList<>();
 
             while(cursor.moveToNext()) {
-                routines.add(new Routine(
-                        cursor.getInt(0),
-                        cursor.getString(1),
-                        cursor.getString(2),
-                        cursor.getInt(3),
-                        cursor.getInt(4)
+                routines.add(new RoutineData(
+                        cursor.getInt(0),    // ID
+                        cursor.getString(1), // startTime
+                        cursor.getString(2), // endTime
+                        cursor.getInt(3),    // cat
+                        cursor.getInt(4)     // dayOfWeek
                 ));
             }
 
@@ -300,16 +319,16 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         return null;
     }
 
-    public ArrayList<Exercise> SelectExercise(int RT_PK) {
+    public ArrayList<ExerciseData> SelectExercise(int RT_PK) {
         if (table.equals("EX_TB")) {
             String sql = "SELECT * FROM " + table + " WHERE RT_FK = " + RT_PK + ";";
 
             Cursor cursor = db.rawQuery(sql, null);
 
-            ArrayList<Exercise> exercises = new ArrayList<>();
+            ArrayList<ExerciseData> exercises = new ArrayList<>();
 
             while(cursor.moveToNext()) {
-                Exercise e = new Exercise( // 순서 잘 지킬 것, 나중에 수정
+                ExerciseData e = new ExerciseData( // 순서 잘 지킬 것, 나중에 수정
                         cursor.getInt(0),   // PK,          ID
                         cursor.getInt(1),   // RT FK,       parentID,
                         cursor.getString(3),// Ex_NM,       title
@@ -355,6 +374,7 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         }
         return null;
     }
+  
     public ArrayList<ReviewListData> SelectReviewUser() {
         if (table.equals("REVIEW_TB")) {
             String sql = "SELECT * FROM REVIEW_TB";
@@ -410,6 +430,42 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         }
         return null;
     }
+  
+    public List<Message> SelectMSG(int myFlag,int chatRoomId) {
+        List<Message> messages = new ArrayList<>();
 
+        String[] columns = {"MSG","CHAT_ROOM_FK","TS"};
+        String selection = "CHAT_ROOM_FK=? AND myFlag=?";
+        String[] selectionArgs = {String.valueOf(chatRoomId),String.valueOf(myFlag)};
+        String orderBy = "TS ASC"; // 시간 순으로 정렬
+
+        Cursor cursor = db.query("CHAT_MSG_TB", columns, selection, selectionArgs, null, null, orderBy);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                String message = "값 없음";
+                String TS = "";
+                int MSGIndex = cursor.getColumnIndex("MSG");
+                int TSIndex = cursor.getColumnIndex("TS");
+                if (MSGIndex != -1) {
+                    message = cursor.getString(MSGIndex);
+                    // 메시지 처리 로직 작성
+                } else {
+                    // 컬럼이 존재하지 않을 경우 처리 로직 작성
+                }
+                if(TSIndex != -1){
+                    TS = cursor.getString(TSIndex);
+                }
+                messages.add(new Message(myFlag,chatRoomId,message,TS));
+            } while (cursor.moveToNext());
+        }
+
+        if (cursor != null) {
+            cursor.close();
+        }
+        db.close();
+
+        return messages;
+    }
 
 }

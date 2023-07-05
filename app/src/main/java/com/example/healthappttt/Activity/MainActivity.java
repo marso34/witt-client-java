@@ -41,6 +41,7 @@ import com.example.healthappttt.Fragment.HomeFragment;
 import com.example.healthappttt.Fragment.RoutineFragment;
 import com.example.healthappttt.R;
 import com.example.healthappttt.databinding.ActivityMainBinding;
+import com.example.healthappttt.interface_.DataReceiverService;
 import com.example.healthappttt.interface_.ServiceApi;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -60,14 +61,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-
-
-
 public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
     private long backPressedTime = 0;
     private Toast toast;
-
     private ServiceApi apiService;
     private PreferenceHelper prefhelper;
     private BlackListData BlackList;
@@ -80,27 +77,39 @@ public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
+    private SQLiteUtil sqLiteUtil;
+    private boolean isConnected = false;  // 소켓 연결 여부 확인
 
     private static final int RC_SIGN_IN = 123;
     private GoogleSignInClient mGoogleSignInClient;
     private int tempItemID;
     Button mGoogleSignOutButton;
     private LoginActivity loginActivity;
-
     private int dayOfWeek;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        String uk = getIntent().getStringExtra("userKey");
+        if(uk != null){
+            userKey = new UserKey(Integer.parseInt(uk));
+        }
+        else Log.d(TAG, "onCreate: 유저키 없음");
+        Log.d(TAG, "onCreateuserkey: "+uk);
         final LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        // MyService 실행
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && ContextCompat.checkSelfPermission(this, Manifest.permission.FOREGROUND_SERVICE) != PackageManager.PERMISSION_GRANTED) {
+            // Foreground service permission not granted, handle it accordingly (e.g., request permission)
+        } else {
+            // Foreground service permission granted, start the service
+            Intent serviceIntent = new Intent(this, DataReceiverService.class);
+            startService(serviceIntent);
+        }
 
         Date currentDate = new Date();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(currentDate);
         dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK) - 1; // 현재 요일 정보
 
-        mAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = mAuth.getCurrentUser();
-        db = FirebaseFirestore.getInstance();
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.google_sign_in_client_id))
@@ -250,16 +259,15 @@ public class MainActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     List<UserProfile> profileList = response.body();
                     // 서버에서 받은 응답을 처리하는 코드를 작성합니다.
-
                     if (profileList != null) {   //서버에서 반환된 값이 null이 아닌 경우 처리할 코드
                         UserProfile userProfile = profileList.get(0); // 첫번째 UserProfile 객체를 가져온다.
                         prefhelper.putProfile(userProfile); // 로컬에 UserProfile 객체를 저장한다.
-
+                        Log.d(TAG, "onResponse:ll "+userProfile.getUSER_PK());
 //             Log.d("Profile", "USER_PK: " + USER_PK + ", Email: " + Email + ", IP: " + IP + ", Platform: " + Platform + ", User_NM: " + User_NM + ", User_Img: " + User_Img + "PW: " + PW);
 
                     } else {
                         //서버에서 반환된 값이 null인 경우 처리할 코드
-                        Log.d("MainActivity", "Response body is null");
+                        Log.d("MainActivity", "Response body is null"+response.body());
                     }
 
                 } else {
@@ -295,7 +303,6 @@ public class MainActivity extends AppCompatActivity {
                             int OUser_FK = Black.getOUser_FK();
                             String TS = Black.getTS();
                             byte[] User_Img = Black.getUser_Img();
-
                             BlackList = new BlackListData(BL_PK, User_NM, OUser_FK, TS,User_Img); //서버에서 받아온 데이터 형식으로 바꿔야함
                             /**
                              * 받아온 리스트 PK와 SQLite에 존재하는 PK를 비교
@@ -317,6 +324,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+
 //API 요청 후 응답을 SQLite로 받은후기 데이터 로컬 저장
     private void getReviewList(UserKey userKey){
         Call<List<ReviewListData>> call = apiService.getReviewList(userKey);

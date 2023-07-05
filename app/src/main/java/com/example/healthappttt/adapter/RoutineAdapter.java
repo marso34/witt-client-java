@@ -16,10 +16,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.healthappttt.Activity.EditRoutineActivity;
-import com.example.healthappttt.Data.Exercise;
+import com.example.healthappttt.Data.ExerciseData;
 import com.example.healthappttt.Data.ExerciseComparator;
-import com.example.healthappttt.Data.Routine;
-import com.example.healthappttt.Data.SQLiteUtil;
+import com.example.healthappttt.Data.RoutineData;
 import com.example.healthappttt.R;
 
 import org.checkerframework.checker.units.qual.A;
@@ -29,43 +28,36 @@ import java.util.Collections;
 
 public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainViewHolder> {
     private Context context;
-    private ArrayList<Routine> routines;
-    private SQLiteUtil sqLiteUtil;
+    private ArrayList<RoutineData> routines;
 
     private boolean isRecoding;
 
     private OnClickRoutine onClickRoutine;
 
-    public RoutineAdapter(Context context, ArrayList<Routine> routines) {
+    public RoutineAdapter(Context context, ArrayList<RoutineData> routines) {
         this.routines = routines;
         this.context = context;
         this.isRecoding = false;
-
-        sqLiteUtil = SQLiteUtil.getInstance();
-        sqLiteUtil.setInitView(context, "EX_TB");
     }
 
-    public RoutineAdapter(Context context, ArrayList<Routine> routines, boolean isRecoding) {
+    public RoutineAdapter(Context context, ArrayList<RoutineData> routines, boolean isRecoding) {
         this.routines = routines;
         this.context = context;
         this.isRecoding = isRecoding;
-
-        sqLiteUtil = SQLiteUtil.getInstance();
-        sqLiteUtil.setInitView(context, "EX_TB");
     }
 
     public static class MainViewHolder extends RecyclerView.ViewHolder {
-        public LinearLayout RoutineLayout, NullLayout;
+        public LinearLayout RoutineLayout, ClickLayout, NullLayout;
         public TextView startTimeView, endTimeView;
         public TextView EditBtn;
-        private RecyclerView recyclerView;
-        private ExerciseListAdapter adapter;
-        private ArrayList<Exercise> exercises;
+        public RecyclerView recyclerView;
+        public ExerciseAdapter adapter;
 
         public MainViewHolder(View view) {
             super(view);
 
             this.RoutineLayout = (LinearLayout) view.findViewById(R.id.routineLayout);
+            this.ClickLayout = (LinearLayout) view.findViewById(R.id.clickLayout);
             this.NullLayout = (LinearLayout) view.findViewById(R.id.nullLayout);
 
             this.startTimeView = (TextView) view.findViewById(R.id.startTime);
@@ -73,8 +65,6 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
             this.EditBtn = (TextView) view.findViewById(R.id.editBtn);
 
             this.recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
-
-            this.exercises = new ArrayList<>();
         }
     }
 
@@ -84,18 +74,18 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_routine, parent, false);
         final MainViewHolder mainViewHolder = new MainViewHolder(view);
 
-        view.setOnClickListener(v -> {
+        mainViewHolder.ClickLayout.setOnClickListener(v -> {
             if (isRecoding) {
                 int position = mainViewHolder.getAbsoluteAdapterPosition();
 
-                onClickRoutine.onClickRoutine(routines.get(position), mainViewHolder.exercises);
+                onClickRoutine.onClickRoutine(routines.get(position));
             }
         });
 
         mainViewHolder.EditBtn.setOnClickListener(v -> {
             int position = mainViewHolder.getAbsoluteAdapterPosition();
 
-            onClickRoutine.onClickRoutine(routines.get(position), mainViewHolder.exercises);
+            onClickRoutine.onClickRoutine(routines.get(position));
         });
 
         return mainViewHolder;
@@ -105,21 +95,20 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
     public void onBindViewHolder(@NonNull MainViewHolder holder, int position) {
         if (routines.size() > 0) {
             holder.RoutineLayout.setVisibility(View.VISIBLE);
+            holder.ClickLayout.setVisibility(View.GONE);
             holder.NullLayout.setVisibility(View.GONE);
             holder.startTimeView.setText(TimeToString(routines.get(position).getStartTime()));
             holder.endTimeView.setText(TimeToString(routines.get(position).getEndTime()));
 
-            holder.exercises = sqLiteUtil.SelectExercise(routines.get(position).getID());
+            setRecyclerView(holder.recyclerView, holder.adapter, position);
 
-            if (isRecoding)
+            if (isRecoding) {
                 holder.EditBtn.setVisibility(View.GONE);
-
-            if (holder.exercises != null) {
-                Collections.sort(holder.exercises, new ExerciseComparator());
-                setRecyclerView(holder.recyclerView, holder.adapter, holder.exercises);
+                holder.ClickLayout.setVisibility(View.VISIBLE);
             }
         } else {
             holder.RoutineLayout.setVisibility(View.GONE);
+            holder.ClickLayout.setVisibility(View.GONE);
             holder.NullLayout.setVisibility(View.VISIBLE);
         }
     }
@@ -132,7 +121,7 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
     }
 
     public void removeItem(int routineID) {
-        for (Routine r : routines) {
+        for (RoutineData r : routines) {
             if (r.getID() == routineID) {
                 int position = routines.indexOf(r);
                 routines.remove(position);
@@ -160,8 +149,11 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
         return am_pm + " " + hour + ":" + TimeSplit[1];
     }
 
-    private void setRecyclerView(RecyclerView recyclerView, ExerciseListAdapter adapter, ArrayList<Exercise> exercises) {
-        adapter = new ExerciseListAdapter(exercises, true); // 나중에 routine
+    private void setRecyclerView(RecyclerView recyclerView, ExerciseAdapter adapter, int positon) {
+        ArrayList<ExerciseData> e = (ArrayList<ExerciseData>) routines.get(positon).getExercises();
+        Collections.sort(e, new ExerciseComparator());
+
+        adapter = new ExerciseAdapter(e); // 나중에 routine
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setAdapter(adapter);
@@ -172,6 +164,6 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
     } // 액티비티에서 콜백 메서드를 set
 
     public interface OnClickRoutine {
-        void onClickRoutine(Routine r, ArrayList<Exercise> e);
+        void onClickRoutine(RoutineData r);
     } // 운동 클릭했을 때, 엑티비티에 값 전달을 위한 인터페이스
 }

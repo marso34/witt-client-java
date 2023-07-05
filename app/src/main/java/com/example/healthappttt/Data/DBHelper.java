@@ -25,12 +25,12 @@ public class DBHelper extends SQLiteOpenHelper {
         String recordSql = "CREATE TABLE if not exists RECORD_TB ("
                 + "PK INT primary key,"
                 + "OUser_FK INT,"
+                + "PROMISE_FK INT,"
                 + "Start_Time INT,"
                 + "End_Time TIME,"
                 + "Run_Time TIME,"
                 + "CAT SMALLINT,"
-                + "PROMISE_FK INT,"
-                + "TS TIMESTAMP);";
+                + "TS TIMESTAMP DEFAULT CURRENT_TIMESTAMP);";
 //                + "FOREIGN KEY (PROMISE_FK) REFERENCES PROMISE_TB(PK));";
 
         db.execSQL(recordSql);
@@ -82,6 +82,15 @@ public class DBHelper extends SQLiteOpenHelper {
                 + "User_Img BLOB);";
 
         db.execSQL(WittRecordsql);
+
+        String createTableQuery = "CREATE TABLE if not exists CHAT_MSG_TB ("
+                +"MSG_PK INTEGER primary key,"
+                + "myFlag INT ,"
+                + "CHAT_ROOM_FK INT, "
+                + "MSG  VARCHAR(1500), "
+                + "TS  VARCHAR(30)"
+                + ");";
+        db.execSQL(createTableQuery);
     }
 
     @Override
@@ -95,6 +104,8 @@ public class DBHelper extends SQLiteOpenHelper {
         String exerciseSql = "DROP TABLE if exists EX_TB";
         db.execSQL(exerciseSql);
 
+        String createTableQuery = "DROP TABLE if exists CHAT_MSG_TB";
+        db.execSQL(createTableQuery);
         onCreate(db);
     }
 

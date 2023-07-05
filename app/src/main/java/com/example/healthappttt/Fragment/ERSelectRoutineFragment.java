@@ -12,8 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.healthappttt.Data.Exercise;
-import com.example.healthappttt.Data.Routine;
+import com.example.healthappttt.Data.ExerciseData;
+import com.example.healthappttt.Data.RoutineData;
 import com.example.healthappttt.R;
 import com.example.healthappttt.adapter.RoutineAdapter;
 
@@ -32,7 +32,7 @@ public class ERSelectRoutineFragment extends Fragment {
     private RecyclerView recyclerView;
     private RoutineAdapter adapter;
 
-    private ArrayList<Routine> routines;
+    private ArrayList<RoutineData> routines;
     private int dayOfWeek;
 
     // TODO: Rename parameter arguments, choose names that match
@@ -47,7 +47,7 @@ public class ERSelectRoutineFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     public interface OnFragmentInteractionListener {
-        void onSelectRoutine(Routine routine, ArrayList<Exercise> exercises);
+        void onSelectRoutine(RoutineData routine);
     }
 
     @Override
@@ -104,7 +104,7 @@ public class ERSelectRoutineFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerView);
 
         if (getArguments() != null) {
-            routines = (ArrayList<Routine>) getArguments().getSerializable("routines");
+            routines = (ArrayList<RoutineData>) getArguments().getSerializable("routines");
             dayOfWeek = getArguments().getInt("dayOfWeek");
         }
 
@@ -132,8 +132,8 @@ public class ERSelectRoutineFragment extends Fragment {
         if (adapter != null) {
             adapter.setOnClickRoutineListener(new RoutineAdapter.OnClickRoutine() {
                 @Override
-                public void onClickRoutine(Routine r, ArrayList<Exercise> e) {
-                    mListener.onSelectRoutine(r, e);
+                public void onClickRoutine(RoutineData r) {
+                    mListener.onSelectRoutine(r);
                 }
             });
         }

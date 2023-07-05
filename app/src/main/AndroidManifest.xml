@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.healthappttt"
     tools:targetApi="m">
-
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -41,6 +41,10 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+        <service
+            android:name=".interface_.DataReceiverService"
+            android:enabled="true"
+            android:exported="false" />
         <activity
             android:name=".Activity.ReviewsRecdAtivity"
             android:exported="false">
@@ -108,7 +112,23 @@
                 android:value="" />
         </activity>
         <activity
+            android:name=".Activity.MainActivity"
+            android:exported="false"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".Activity.CalenderSubActivity"
+            android:exported="false"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".Activity.SubActivity"
             android:exported="false"
             android:screenOrientation="portrait">
             <meta-data
@@ -139,7 +159,7 @@
         <!-- android:name=".Activity.MainActivity2" -->
         <!-- android:exported="true" /> -->
         <activity
-            android:name=".Activity.MainActivity"
+            android:name=".Activity.LoginActivity"
             android:exported="true"
             android:screenOrientation="portrait"
             android:usesCleartextTraffic="true">

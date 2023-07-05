@@ -18,6 +18,8 @@ import io.reactivex.rxjava3.annotations.NonNull;
 public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.MessageViewHolder> {
     private List<Message> messageList;
     private String username;
+    private String otherUserName;
+
     public class MessageViewHolder extends RecyclerView.ViewHolder {
         public TextView nameTextView;
         public TextView messageTextView;
@@ -30,9 +32,10 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
             timeTextView = itemView.findViewById(R.id.timeTextView);
         }
     }
-    public MessageListAdapter(List<Message> messageList, String username) {
+    public MessageListAdapter(List<Message> messageList, String username, String otherUserName) {
         this.messageList = messageList;
         this.username = username;
+        this.otherUserName = otherUserName;
     }
 
     @Override
@@ -56,14 +59,14 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
         holder.messageTextView.setText(message.getMessage());
         holder.timeTextView.setText(DateUtils.getRelativeTimeSpanString(message.getTimestamp()));
 
-        if (message.getUsername().equals(username)) {
+        if (message.getMyFlag() == 1) {
             // 보낸 메시지인 경우
             holder.nameTextView.setVisibility(View.GONE);
             holder.messageTextView.setBackgroundResource(R.drawable.shape_rounded_rectangle_primary);
         } else {
             // 받은 메시지인 경우
             holder.nameTextView.setVisibility(View.VISIBLE);
-            holder.nameTextView.setText(message.getUsername());
+            holder.nameTextView.setText(otherUserName);
             holder.messageTextView.setBackgroundResource(R.drawable.received_message_background);
         }
     }
@@ -76,7 +79,7 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
     @Override
     public int getItemViewType(int position) {
         Message message = messageList.get(position);
-        if (message.getUsername().equals(username)) {
+        if (message.getMyFlag() == 1) {
             return Message.TYPE_SENT;
         } else {
             return Message.TYPE_RECEIVED;

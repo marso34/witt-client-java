@@ -298,7 +298,7 @@
                 android:clipToPadding="false"
                 android:visibility="visible"
                 app:layout_constrainedHeight="true"
-                tools:listitem="@layout/adapter_exercise" />
+                tools:listitem="@layout/adapter_exercise_record" />
 
             <TextView
                 android:layout_width="wrap_content"

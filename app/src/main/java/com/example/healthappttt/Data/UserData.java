@@ -20,7 +20,6 @@ public class UserData {
         this.platform = platform;
         this.name = name;
         this.image = image;
-
     }
 
     public String getEmail() {

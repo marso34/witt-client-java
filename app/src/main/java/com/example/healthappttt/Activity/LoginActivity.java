@@ -141,10 +141,11 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                         try {
                             String responseString = response.body().string();
                             Log.d(TAG, "onResponse!!: " + responseString);
-                            if (responseString.equals("Success")) {
-                                GoMain();
-                            } else {
+                            if (responseString.equals("Fail")) {
                                 sendData(email, name);
+
+                            } else {
+                                GoMain(responseString);
                             }
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -190,8 +191,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         startActivity(intent);
         finish();
     }
-    private void GoMain(){
+    private void GoMain(String userKey){
+        Log.d(TAG, "GoMain: "+userKey);
         Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("userKey",userKey);
         startActivity(intent);
         finish();
     }

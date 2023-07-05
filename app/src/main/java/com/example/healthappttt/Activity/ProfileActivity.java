@@ -14,7 +14,7 @@
 //import com.bumptech.glide.Glide;
 //import com.example.healthappttt.Data.Exercise;
 //import com.example.healthappttt.Data.Routine;
-//import com.example.healthappttt.Data.User;
+//import com.example.healthappttt.Data.UserChat;
 //import com.example.healthappttt.R;
 //import com.example.healthappttt.adapter.ExerciseInputAdapter;
 //import com.google.firebase.auth.FirebaseAuth;
@@ -82,7 +82,7 @@
 //
 //        intent = getIntent();
 //        firebaseFirestore = FirebaseFirestore.getInstance();
-//        User U = (User) getIntent().getSerializableExtra("User");//포스트인포 객체 만들어서 할당.;
+//        UserChat U = (UserChat) getIntent().getSerializableExtra("UserChat");//포스트인포 객체 만들어서 할당.;
 //        File f = (File) getIntent().getSerializableExtra("post");
 //    /*    ThisProfileUid = U.getKey_();
 //        ThisProfileName.setText(U.getUserName());
@@ -329,7 +329,7 @@
 ////
 ////        return getTime;
 ////    }
-////    private void myStartActivity(Class c,User u) {// loginactivity페이지에서 mainactivity페이지로 넘기는 코드
+////    private void myStartActivity(Class c,UserChat u) {// loginactivity페이지에서 mainactivity페이지로 넘기는 코드
 ////        Intent intent = new Intent(this, c);
 ////        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 ////        intent.putExtra("userId",u.getKey_());
