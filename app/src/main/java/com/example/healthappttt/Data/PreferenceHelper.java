@@ -25,6 +25,10 @@ public class PreferenceHelper
         app_prefs = context.getSharedPreferences(file_name,Context.MODE_PRIVATE);
     }
 
+    public PreferenceHelper(Context context) {
+        app_prefs = context.getSharedPreferences(NAME, Context.MODE_PRIVATE);
+    }
+
 
     //PK,email,IP,Platform,Name,PW,Img 로컬 저장 매소드
     public void putProfile(UserProfile upf) {
