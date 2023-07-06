@@ -61,12 +61,12 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
 
         if (message.getMyFlag() == 1) {
             // 보낸 메시지인 경우
-            holder.nameTextView.setVisibility(View.GONE);
             holder.messageTextView.setBackgroundResource(R.drawable.shape_rounded_rectangle_primary);
         } else {
+            holder.nameTextView.setText(otherUserName);
             // 받은 메시지인 경우
             holder.nameTextView.setVisibility(View.VISIBLE);
-            holder.nameTextView.setText(otherUserName);
+            ;
             holder.messageTextView.setBackgroundResource(R.drawable.received_message_background);
         }
     }

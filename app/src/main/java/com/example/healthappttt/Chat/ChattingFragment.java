@@ -33,6 +33,7 @@ public class ChattingFragment extends Fragment {
     private UserListAdapter userListAdapter;
     private List<UserChat> userList;
     private PreferenceHelper prefhelper;
+    private String name_TB = "UserTB";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -40,9 +41,10 @@ public class ChattingFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_chatting, container, false);
         userList = new ArrayList<>();
 
-        getUsersFromServer();
+        prefhelper = new PreferenceHelper(name_TB,getContext());
+
         // 리사이클러뷰를 초기화합니다.
-        userlistRecyclerView = view.findViewById(R.id.userlistRecyclerView);
+        userlistRecyclerView = view.findViewById(R.id.recyclerView2);
         userlistRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         // 유저 목록을 가져와서 userList에 저장합니다.
@@ -50,18 +52,17 @@ public class ChattingFragment extends Fragment {
         // 어댑터를 초기화하고 userList를 설정합니다.
         userListAdapter = new UserListAdapter(getContext(),userList);
         userlistRecyclerView.setAdapter(userListAdapter);
-
+        getUsersFromServer();
         // 어댑터의 아이템 클릭 리스너를 설정합니다.
-       
-
-
-
+        for (int i =0; i<userList.size();++i) {
+            Log.d("chatUSERLIST22", userList.get(i).getOtherUserKey());
+        }
         return view;
     }
 
     // 서버에서 유저 목록을 가져오는 메소드입니다.
     private void getUsersFromServer() {
-        prefhelper = new PreferenceHelper(getContext());
+
         // 서버로부터 유저 목록을 가져와서 List<UserChat>로 반환합니다.
         ServiceApi apiService = RetrofitClient.getClient().create(ServiceApi.class);
         Log.d(TAG, "getUsersFromServer: "+String.valueOf(prefhelper.getPK()));
@@ -71,12 +72,13 @@ public class ChattingFragment extends Fragment {
             public void onResponse(Call<List<UserChat>> call, Response<List<UserChat>> response) {
                 if (response.isSuccessful()) {
                     List<UserChat> users = response.body();
-                    userList.clear();
-                    for (UserChat user : users) {
-                        userList.add(user);
-                        Log.d("chatUSERLIST", user.getUserNM());
-                    }
+                    userList.addAll(users);
                     userListAdapter.notifyDataSetChanged();
+
+                    // userList에 데이터가 추가된 후에 실행되어야 하는 로직을 여기에 작성합니다.
+                    for (int i = 0; i < userList.size(); ++i) {
+                        Log.d("chatUSERLIST22", userList.get(i).getOtherUserKey());
+                    }
                 } else {
                     Toast.makeText(getContext(), "Failed to retrieve user list", Toast.LENGTH_SHORT).show();
                 }

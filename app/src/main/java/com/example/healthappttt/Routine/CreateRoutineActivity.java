@@ -43,7 +43,7 @@ public class CreateRoutineActivity extends AppCompatActivity implements CRSetTim
 
         service = RetrofitClient.getClient().create(ServiceApi.class);
         sqLiteUtil = SQLiteUtil.getInstance();
-        prefhelper = new PreferenceHelper(this);
+        prefhelper = new PreferenceHelper("UserTB",this);
 
         routine = new RoutineData();
 

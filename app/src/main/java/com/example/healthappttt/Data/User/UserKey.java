@@ -15,5 +15,7 @@ public class UserKey {
         this.BL_PK = BL_PK;
     }
 
-
+    public int getPk(){
+        return userPK;
+    }
 }

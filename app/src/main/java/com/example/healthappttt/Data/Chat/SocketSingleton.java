@@ -38,7 +38,7 @@ public class SocketSingleton {
             e.printStackTrace();
         }
         this.context = context;
-        prefhelper = new PreferenceHelper(context);
+        prefhelper = new PreferenceHelper("UserTB",context);
         connectSocket();
         setupSocketListeners();
         receiveMessage();
@@ -74,6 +74,7 @@ public class SocketSingleton {
             @Override
             public void call(Object... args) {
                 // 서버로부터 메시지를 수신했을 때의 동작 처리
+                Log.d(TAG, "callaa: ");
                 mSocket.emit("completeMessage");
                 JSONObject data = (JSONObject) args[0];
                 try {
@@ -86,6 +87,7 @@ public class SocketSingleton {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+
                 // 받은 메시지를 처리하는 로직 작성
             }
         });
@@ -106,6 +108,7 @@ public class SocketSingleton {
             e.printStackTrace();
         }
         mSocket.emit("insertSocket", data);
+        Log.d(TAG, "insertSocket: "+data);
     }
     public static SocketSingleton getInstance(Context context_) {
         if (instance == null) {
