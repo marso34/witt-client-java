@@ -83,7 +83,7 @@ public class sub2Fragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        prefhelper = new PreferenceHelper(name_TB);
+        prefhelper = new PreferenceHelper("UserTB",getContext());
 
         if (getArguments() != null) {
             latitude = getArguments().getDouble(ARG_LATITUDE);

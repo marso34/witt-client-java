@@ -2,7 +2,7 @@ package com.example.healthappttt.Data.Chat;
 
 public class MSG {
     public static final int TYPE_SENT = 1;
-    public static final int TYPE_RECEIVED = 2;
+    public static final int TYPE_RECEIVED = 0;
     private int myFlag;
     private int chatRoomId;
     private String message;

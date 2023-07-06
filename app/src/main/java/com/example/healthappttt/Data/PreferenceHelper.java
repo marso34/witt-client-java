@@ -2,7 +2,6 @@ package com.example.healthappttt.Data;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Base64;
 import android.util.Log;
 
 import com.example.healthappttt.Data.User.BodyInfo;
@@ -51,10 +50,10 @@ public class PreferenceHelper
         edit.putString("PW", upf.getPW());
 
         // User_Img 는 byte[] 타입이므로 Base64로 인코딩하여 저장
-        if(upf.getUser_Img() != null) {
-            String encodedImage = Base64.encodeToString(upf.getUser_Img(), Base64.DEFAULT);
-            edit.putString("User_Img", encodedImage);
-        }
+//        if(upf.getUser_Img() != null) {
+//            String encodedImage = Base64.encodeToString(upf.getUser_Img(), Base64.DEFAULT);
+//            edit.putString("User_Img", encodedImage);
+//        }
 
         edit.apply();
     }

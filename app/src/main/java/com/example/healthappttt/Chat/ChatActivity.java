@@ -48,7 +48,7 @@ public class ChatActivity extends AppCompatActivity {
         socketSingleton = SocketSingleton.getInstance(this);
         // 인텐트에서 유저 이름을 가져옵니다.
         //username = getIntent().getExtra("username"); 이전 엑티비티에서 유저의 필요한 모든 정보 받아오기.
-        preferenceHelper = new PreferenceHelper(this);
+        preferenceHelper = new PreferenceHelper("UserTB",this);
         //userKey = String.valueOf(preferenceHelper.getPK());
         sqLiteUtil = SQLiteUtil.getInstance();
         sqLiteUtil.setInitView(this, "CHAT_MSG_TB");
@@ -72,7 +72,7 @@ public class ChatActivity extends AppCompatActivity {
         messageRecyclerView.setAdapter(messageListAdapter);
 
         // 서버로부터 메시지 목록을 가져와서 messageList에 저장합니다.
-        getMessagesFromServer();
+        getMessagesFromRealTime();
 
         // 보내기 버튼의 클릭 리스너를 설정합니다.
         sendButton.setOnClickListener(new View.OnClickListener() {
@@ -87,7 +87,7 @@ public class ChatActivity extends AppCompatActivity {
                     MSG newMessage = new MSG(1,Integer.parseInt(chatRoomId), messageText, String.valueOf(System.currentTimeMillis()));
                     messageList.add(newMessage);
                     messageListAdapter.notifyDataSetChanged();
-
+                    getMessagesFromRealTime();
                     // 메시지 입력 필드를 비웁니다.
                     messageEditText.setText("");
                 }
@@ -96,20 +96,23 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     // 서버에서 메시지 목록을 가져오는 메소드입니다.
-    private void getMessagesFromServer() {
+    private void getMessagesFromRealTime() {
         List<MSG>newMessages = null;
         // 서버로부터 메시지 목록을 가져와서 List<Message>로 반환합니다.
+        SQLiteUtil sqLiteUtil = SQLiteUtil.getInstance();
+        sqLiteUtil.setInitView(this, "CHAT_MSG_TB");
         if(chatRoomId!= null) {
             newMessages = sqLiteUtil.SelectMSG(0,Integer.parseInt(chatRoomId));
         }
         for (MSG msg : newMessages) {
             messageList.add(msg);
+            Log.d(TAG, "getMessagesFromServer: "+msg.getMessage());
         }
-
         messageListAdapter.notifyDataSetChanged();
         //메세지 리스트에 넣고 정렬하기.
         // TODO: 구현해야 함
     }
+
 
     // 서버로 메시지를 보내는 메소드입니다.
     private void sendMessageToServer(String messageText) {
@@ -118,7 +121,6 @@ public class ChatActivity extends AppCompatActivity {
             data.put("otherUserKey",Integer.parseInt(otherUserKey));
             data.put("chatRoomId", Integer.parseInt(chatRoomId));
             data.put("messageText", messageText);
-
             // Emit the 'sendMessage' event to the server with the message data
             socketSingleton.getSocket().emit("sendMessage", data);
         } catch (JSONException e) {

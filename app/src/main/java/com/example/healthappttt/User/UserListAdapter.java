@@ -37,7 +37,25 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserLi
     @Override
     public UserListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.user_layout, parent, false);
-        return new UserListViewHolder(view);
+        UserListViewHolder viewHolder = new UserListViewHolder(view);
+
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int position = viewHolder.getAbsoluteAdapterPosition();
+                Log.d(TAG, "onClick: "+String.valueOf(position));
+                    UserChat user = userList.get(position);
+                Intent intent = new Intent(context, ChatActivity.class);
+                intent.putExtra("otherUserName",user.getUserNM());
+                intent.putExtra("ChatRoomId",user.getChatRoomId());
+                intent.putExtra("otherUserKey",user.getOtherUserKey());
+                Log.d(TAG, "onClick: "+user.getUserNM());
+                context.startActivity(intent);
+
+            }
+        });
+
+        return viewHolder;
     }
 
     @Override
@@ -45,6 +63,8 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserLi
         user = userList.get(position);
         holder.userName.setText(user.getUserNM());
         socketSingleton = SocketSingleton.getInstance(context);
+        Log.d(TAG, "onBindViewHolder: "+String.valueOf(position));
+
     }
 
     @Override
@@ -65,26 +85,12 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserLi
 
         public UserListViewHolder(@NonNull View itemView) {
             super(itemView);
-            userName = itemView.findViewById(R.id.txt_name);
+            userName = itemView.findViewById(R.id.UNE);
             String name = (String) userName.getText();
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                   //chat activity호출 및 키 주기.
-                    StartChatActivity();
 
-                }
-            });
         }
     }
-    public void StartChatActivity(){
-        Log.d(TAG, "StartChatActivity: "+ user.getOtherUserKey()+user.getUserNM());
-        Intent intent = new Intent(context, ChatActivity.class);
-        intent.putExtra("otherUserName",user.getUserNM());
-        intent.putExtra("ChatRoomId",user.getChatRoomId());
-        intent.putExtra("otherUserKey",user.getOtherUserKey());
-        context.startActivity(intent);
-    }
+
 
 
 }
