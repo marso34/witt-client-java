@@ -81,7 +81,7 @@ public class ExerciseRecordAdapter extends RecyclerView.Adapter<ExerciseRecordAd
     @Override
     public void onBindViewHolder(@NonNull MainViewHolder holder, int position) {
         String name = this.exercises.get(position).getExerciseName();
-        String cat = this.exercises.get(position).getState();
+        String cat = this.exercises.get(position).getStrCat();
         int progressCurrentValue = holder.progressBar.getProgress();
         int progressMaxValue = this.exercises.get(position).getSetOrTime();
 

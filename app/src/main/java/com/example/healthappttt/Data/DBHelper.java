@@ -26,7 +26,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 + "PK INT primary key,"
                 + "OUser_FK INT,"
                 + "PROMISE_FK INT,"
-                + "Start_Time INT,"
+                + "Start_Time TIME,"
                 + "End_Time TIME,"
                 + "Run_Time TIME,"
                 + "CAT SMALLINT,"
@@ -108,6 +108,4 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(createTableQuery);
         onCreate(db);
     }
-
-
 }

@@ -24,6 +24,7 @@ import com.example.healthappttt.databinding.FragmentCrSetTimeBinding;
 public class CRSetTimeFragment extends Fragment {
     FragmentCrSetTimeBinding binding;
 
+    private int[] schedule;
     private int runTime, startTime, endTime;
 
     // TODO: Rename parameter arguments, choose names that match
@@ -90,17 +91,17 @@ public class CRSetTimeFragment extends Fragment {
 //        ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_cr_set_time, container, false);
         binding = FragmentCrSetTimeBinding.inflate(inflater);
 
+        if (getArguments() != null) {
+            schedule = getArguments().getIntArray("schedule");
+            // 프래그먼트 시작할 때 시작시간, 종료시간을 넘겨 받을 떄 동장 정의
+        }
+
         return binding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        if (getArguments() != null) {
-            int[] schedule = getArguments().getIntArray("schedule");
-            // 프래그먼트 시작할 때 시작시간, 종료시간을 넘겨 받을 떄 동장 정의
-        }
 
         init();
 
@@ -181,10 +182,10 @@ public class CRSetTimeFragment extends Fragment {
     }
 
     private int TimeToInt(String Time) { // 시작 시간 및 종료 시간을 전역으로 가지고 종료시간이 시작 시간보다 빠를 수 없도록 수정할 것
-        String am_pm = Time.substring(0, Time.lastIndexOf(" "));
-        String temp = Time.substring(Time.lastIndexOf(" ")+1);
-        String hour = temp.substring(0, temp.lastIndexOf(":"));
-        String min = temp.substring(temp.lastIndexOf(":")+1);
+        String am_pm = Time.substring(0, Time.indexOf(" "));
+        String temp = Time.substring(Time.indexOf(" ")+1);
+        String hour = temp.substring(0, temp.indexOf(":"));
+        String min = temp.substring(temp.indexOf(":")+1);
 
         int T = Integer.parseInt(hour) * 10 + Integer.parseInt(min) / 6;
 

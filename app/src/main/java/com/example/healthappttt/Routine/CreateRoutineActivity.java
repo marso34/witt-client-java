@@ -121,42 +121,6 @@ public class CreateRoutineActivity extends AppCompatActivity implements CRSetTim
             sqLiteUtil.insert(e, false);
     }
 
-    private void Terminate(boolean isSuccess) {
-        if (isSuccess) {
-            Intent intent = new Intent();
-            intent.putExtra("routine", routine);
-            intent.putExtra("check", 1); // 루틴 추가를 의미
-            setResult(RESULT_OK, intent);
-        }
-
-        finish();
-    }
-
-    @Override
-    public void onRoutineSetTime(int startTime, int endTime) {
-        this.startTime = startTime;
-        this.endTime = endTime;
-
-        routine.setDayOfWeek(dayOfWeek);
-        routine.setStartTime(TimeToString(startTime));
-        routine.setEndTime(TimeToString(endTime));
-
-        fragmentToAddEx();
-    }  // SetRoutineTime에서 호출하는 메서드
-
-    @Override
-    public void onRoutineAddEx(ArrayList<ExerciseData> selectExercises) {
-        this.routine.setExercises(selectExercises);
-
-        fragmentToExDetail();
-    } // AddExerciseFragment에서 호출하는 메서드
-
-    @Override
-    public void onRoutineExDetail(ArrayList<ExerciseData> exercises) {
-        this.routine.setExercises(exercises);
-
-        SaveToDB(); // 받은 운동 정보 토대로 DB에 루틴, 운동 생성
-    } // ExerciseDetailFragment에서 호출하는 메서드
 
     private void replaceFragment (Fragment fragment) { //프래그먼트 설정
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -168,21 +132,6 @@ public class CreateRoutineActivity extends AppCompatActivity implements CRSetTim
             fragmentTransaction.remove( fragment );
             fragment = new Fragment();
         }
-        fragmentTransaction.replace(R.id.frame_layout, fragment);
-        fragmentTransaction.commit();
-    }
-
-    private void replaceFragment (Fragment fragment, Bundle bundle) { //프래그먼트 설정
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        if( fragment.isAdded() )
-        {
-            // Fragment 가 이미 추가되어 있으면 삭제한 후, 새로운 Fragment 를 생성한다.
-            // 새로운 Fragment 를 생성하지 않으면 2번째 보여질 때에 Fragment 가 보여지지 않는 것 같습니다.
-            fragmentTransaction.remove( fragment );
-            fragment = new Fragment();
-        }
-        fragment.setArguments(bundle);
         fragmentTransaction.replace(R.id.frame_layout, fragment);
         fragmentTransaction.commit();
     }
@@ -221,6 +170,58 @@ public class CreateRoutineActivity extends AppCompatActivity implements CRSetTim
         bundle.putIntArray("schedule", schedule);
         replaceFragment(new CRInputDetailFragment(), bundle);
     }
+
+    private void Terminate(boolean isSuccess) {
+        if (isSuccess) {
+            Intent intent = new Intent();
+            intent.putExtra("routine", routine);
+            intent.putExtra("check", 1); // 루틴 추가를 의미
+            setResult(RESULT_OK, intent);
+        }
+
+        finish();
+    }
+
+    private void replaceFragment (Fragment fragment, Bundle bundle) { //프래그먼트 설정
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        if( fragment.isAdded() )
+        {
+            // Fragment 가 이미 추가되어 있으면 삭제한 후, 새로운 Fragment 를 생성한다.
+            // 새로운 Fragment 를 생성하지 않으면 2번째 보여질 때에 Fragment 가 보여지지 않는 것 같습니다.
+            fragmentTransaction.remove( fragment );
+            fragment = new Fragment();
+        }
+        fragment.setArguments(bundle);
+        fragmentTransaction.replace(R.id.frame_layout, fragment);
+        fragmentTransaction.commit();
+    }
+
+    @Override
+    public void onRoutineSetTime(int startTime, int endTime) {
+        this.startTime = startTime;
+        this.endTime = endTime;
+
+        routine.setDayOfWeek(dayOfWeek);
+        routine.setStartTime(TimeToString(startTime));
+        routine.setEndTime(TimeToString(endTime));
+
+        fragmentToAddEx();
+    }  // SetRoutineTime에서 호출하는 메서드
+
+    @Override
+    public void onRoutineAddEx(ArrayList<ExerciseData> selectExercises) {
+        this.routine.setExercises(selectExercises);
+
+        fragmentToExDetail();
+    } // AddExerciseFragment에서 호출하는 메서드
+
+    @Override
+    public void onRoutineExDetail(ArrayList<ExerciseData> exercises) {
+        this.routine.setExercises(exercises);
+
+        SaveToDB(); // 받은 운동 정보 토대로 DB에 루틴, 운동 생성
+    } // ExerciseDetailFragment에서 호출하는 메서드
 
     @Override
     public void onBackPressed() {

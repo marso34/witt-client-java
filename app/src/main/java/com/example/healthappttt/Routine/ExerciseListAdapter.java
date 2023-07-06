@@ -1,6 +1,7 @@
 package com.example.healthappttt.Routine;
 
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,13 +19,16 @@ import java.util.ArrayList;
 
 public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapter.MainViewHolder> {
     private ArrayList<ExerciseData> exercises;
-    private ArrayList<ExerciseData> selectExercises;
+    private ArrayList<String> selectExerciseIndex;
+    private String cat;
 
-    private OnSelectExercise onSelectExercise;
-
-    public ExerciseListAdapter(ArrayList<ExerciseData> exercises) {
+    public ExerciseListAdapter(ArrayList<ExerciseData> exercises, ArrayList<String> selectExerciseIndex) {
         this.exercises = exercises;
-        selectExercises = new ArrayList<>();
+        this.selectExerciseIndex = selectExerciseIndex;
+
+        if (this.exercises.size() > 0 ) {
+            cat = this.exercises.get(0).getStrCat();
+        }
     }
 
     public static class MainViewHolder extends RecyclerView.ViewHolder {
@@ -63,13 +67,11 @@ public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapte
 
             if (mainViewHolder.isChecked) {
                 mainViewHolder.CheckedImg.setVisibility(View.VISIBLE);
-//                selectExercises.add(new ExerciseData(this.exercises.get(position)));
-//                onSelectExercise.onSelectExercise(this.exercises.get(position), true);
+                selectExerciseIndex.add(cat + " " + this.exercises.get(position).getExerciseName());
             } else {
                 mainViewHolder.CheckedImg.setVisibility(View.GONE);
-//                onSelectExercise.onSelectExercise(this.exercises.get(position), false);
+                selectExerciseIndex.remove(cat + " " + this.exercises.get(position).getExerciseName());
             }
-
         });
 
         return mainViewHolder;
@@ -78,16 +80,21 @@ public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapte
     @Override
     public void onBindViewHolder(@NonNull MainViewHolder holder, int position) {
         String name = this.exercises.get(position).getExerciseName();
-        String cat = this.exercises.get(position).getState();
 
         holder.CatView.setText(cat); // 운동
         holder.CatView.setTextColor(Color.parseColor(this.exercises.get(position).getTextColor())); // 부위 텍스트 색
         holder.CatView.setBackgroundColor(Color.parseColor(this.exercises.get(position).getColor())); // 부위 바탕 색
         holder.NameView.setText(name);
 
-        if (holder.isChecked)
-            holder.CheckedImg.setVisibility(View.VISIBLE);
-        else
+        for (String e : selectExerciseIndex) {
+            if (e.equals(cat + " " + name)) {
+                holder.CheckedImg.setVisibility(View.VISIBLE);
+                holder.isChecked = true;
+                break;
+            }
+        }
+
+        if (!holder.isChecked)
             holder.CheckedImg.setVisibility(View.GONE);
     }
 
@@ -95,12 +102,4 @@ public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapte
     public int getItemCount() {
         return exercises.size();
     }
-
-    public void setOnSelectExerciseListener(OnSelectExercise onSelectExerciseListener) {
-        this.onSelectExercise = onSelectExerciseListener;
-    } // 액티비티에서 콜백 메서드를 set
-
-    public interface OnSelectExercise {
-        void onSelectExercise(ExerciseData exercise, boolean add);
-    } // 운동 클릭했을 때, 엑티비티에 값 전달을 위한 인터페이스
 }

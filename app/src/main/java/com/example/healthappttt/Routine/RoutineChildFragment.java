@@ -133,7 +133,7 @@ public class RoutineChildFragment extends Fragment {
             sqLiteUtil.setInitView(getContext(), "EX_TB");
 
             for (int i = 0; i < routines.size(); i++) {
-                routines.get(i).setExercises(sqLiteUtil.SelectExercise(routines.get(i).getID()));
+                routines.get(i).setExercises(sqLiteUtil.SelectExercise(routines.get(i).getID(), true));
             }
 
             Collections.sort(routines, new RoutineComparator());

@@ -42,7 +42,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.MainVi
 
     @Override
     public void onBindViewHolder(@NonNull MainViewHolder holder, int position) {
-        holder.CatView.setText(this.exercises.get(position).getState());
+        holder.CatView.setText(this.exercises.get(position).getStrCat());
         holder.CatView.setTextColor(Color.parseColor(this.exercises.get(position).getTextColor())); // 부위 텍스트 색
         holder.CatView.setBackgroundColor(Color.parseColor(this.exercises.get(position).getColor())); // 부위 바탕 색
         holder.NameView.setText(this.exercises.get(position).getExerciseName());

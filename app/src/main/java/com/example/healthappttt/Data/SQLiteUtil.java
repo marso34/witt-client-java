@@ -327,7 +327,37 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         return null;
     }
 
-    public ArrayList<ExerciseData> SelectExercise(int RT_PK) {
+    public ArrayList<RecordData> SelectRecord(String Date) {
+        if (table.equals("RECORD_TB")) {
+            String sql = "SELECT * FROM " + table + " WHERE TS LIKE '" + Date + "%';";
+
+            Log.d("SQLite SelectRecord", sql);
+
+            Cursor cursor = db.rawQuery(sql, null);
+
+            ArrayList<RecordData> records = new ArrayList<>();
+
+            while(cursor.moveToNext()) {
+                records.add(new RecordData(
+                        cursor.getInt(0),    // ID
+                        cursor.getInt(1),    // OUser_FK
+                        cursor.getInt(2),    // PROMISE_FK
+                        cursor.getString(3), // Start_Time
+                        cursor.getString(4), // End_Time
+                        cursor.getString(5), // Run_Time
+                        cursor.getInt(6)
+                ));
+            }
+
+            return records;
+        } else {
+            Log.d(table, " 잘못된 메서드 호출");
+        }
+
+        return null;
+    }
+
+    public ArrayList<ExerciseData> SelectExercise(int RT_PK, boolean isRoutine) {
         if (table.equals("EX_TB")) {
             String sql = "SELECT * FROM " + table + " WHERE RT_FK = " + RT_PK + ";";
 
@@ -335,10 +365,13 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
 
             ArrayList<ExerciseData> exercises = new ArrayList<>();
 
+            int parentID = 1;
+            if (!isRoutine)  parentID = 2;
+
             while(cursor.moveToNext()) {
                 ExerciseData e = new ExerciseData( // 순서 잘 지킬 것, 나중에 수정
                         cursor.getInt(0),   // PK,          ID
-                        cursor.getInt(1),   // RT FK,       parentID,
+                        cursor.getInt(parentID),   // RT FK or RECORD__FK,       parentID,
                         cursor.getString(3),// Ex_NM,       title
                         cursor.getInt(8),   // CAT,         cat
                         cursor.getInt(4),   // Set_Or_Time, count:set

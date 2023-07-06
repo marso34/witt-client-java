@@ -47,7 +47,6 @@ public class RecordData implements Serializable {
     }
 
     public RecordData(int userID, int oUserID, int cat, String startTime, String endTime, String runTime, int promiseID, List<ExerciseData> exercises) {
-        this.ID = ID;
         this.userID = userID;
         this.oUserID = oUserID;
         this.cat = cat;
@@ -71,6 +70,16 @@ public class RecordData implements Serializable {
     public RecordData(int userID, int cat, String startTime, String endTime, String runTime) {
         this.ID = ID;
         this.userID = userID;
+        this.cat = cat;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.runTime = runTime;
+    }
+
+    public RecordData(int userID, int oUserID, int promiseID, String startTime, String endTime, String runTime, int cat) {
+        this.userID = userID;
+        this.oUserID = oUserID;
+        this.promiseID = promiseID;
         this.cat = cat;
         this.startTime = startTime;
         this.endTime = endTime;
