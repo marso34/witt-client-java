@@ -98,15 +98,15 @@
             android:name=".WorkOut.SetExerciseActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".Activity.CalenderTextFileManager"
-            android:exported="false"
-            android:screenOrientation="portrait"
-            tools:ignore="Instantiatable">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
+<!--        <activity-->
+<!--            android:name=".Activity.CalenderTextFileManager"-->
+<!--            android:exported="false"-->
+<!--            android:screenOrientation="portrait"-->
+<!--            tools:ignore="Instantiatable">-->
+<!--            <meta-data-->
+<!--                android:name="android.app.lib_name"-->
+<!--                android:value="" />-->
+<!--        </activity>-->
         <activity
             android:name=".MainActivity"
             android:exported="false"

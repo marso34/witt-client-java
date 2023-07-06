@@ -81,7 +81,7 @@
                         android:id="@+id/name"
                         style="@style/profile_style"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_marginLeft="5sp"
                         android:text="김건우" />
                 </LinearLayout>
