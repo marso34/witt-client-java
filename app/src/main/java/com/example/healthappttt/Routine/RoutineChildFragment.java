@@ -40,6 +40,7 @@ public class RoutineChildFragment extends Fragment {
     private SQLiteUtil sqLiteUtil;
     private ArrayList<RoutineData> routines;
     private int dayOfWeek;
+    private int code;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -53,8 +54,9 @@ public class RoutineChildFragment extends Fragment {
 
     public RoutineChildFragment() {}
     
-    public RoutineChildFragment(int dayOfWeek) {
+    public RoutineChildFragment(final int dayOfWeek, int code) {
         this.dayOfWeek = dayOfWeek;
+        this.code = code;
     }
 
     /**
@@ -123,24 +125,28 @@ public class RoutineChildFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerView);
         addRoutineBtn = view.findViewById(R.id.addRoutine);
 
-        sqLiteUtil = SQLiteUtil.getInstance();
-        sqLiteUtil.setInitView(getContext(), "RT_TB");
+        if (code == 285) { // 내 루틴 표시, 나중에 PreferenceHelper 이용해서 유저pk로 수정
+            sqLiteUtil = SQLiteUtil.getInstance();
+            sqLiteUtil.setInitView(getContext(), "RT_TB");
 
-        routines = sqLiteUtil.SelectRoutine(dayOfWeek);
+            routines = sqLiteUtil.SelectRoutine(dayOfWeek);
 
-        if (routines != null) {
+            if (routines != null) {
 
-            sqLiteUtil.setInitView(getContext(), "EX_TB");
+                sqLiteUtil.setInitView(getContext(), "EX_TB");
 
-            for (int i = 0; i < routines.size(); i++) {
-                routines.get(i).setExercises(sqLiteUtil.SelectExercise(routines.get(i).getID(), true));
+                for (int i = 0; i < routines.size(); i++)
+                    routines.get(i).setExercises(sqLiteUtil.SelectExercise(routines.get(i).getID(), true));
             }
 
-            Collections.sort(routines, new RoutineComparator());
-            setRecyclerView();
+        } else { // 남의 루틴 표시, 여기는 서버에서 받아오는 코드
+            addRoutineBtn.setVisibility(View.GONE);
         }
 
-        addRoutineBtn.setOnClickListener(view1 -> {
+        Collections.sort(routines, new RoutineComparator());
+        setRecyclerView();
+        
+        addRoutineBtn.setOnClickListener(v -> {
             Intent intent = new Intent(getContext(), CreateRoutineActivity.class);
             intent.putExtra("dayOfWeek", dayOfWeek);
             startActivityResult.launch(intent);
@@ -150,7 +156,7 @@ public class RoutineChildFragment extends Fragment {
     }
 
     private void setRecyclerView() {
-        adapter = new RoutineAdapter(getContext(), routines);  // 나중에 routine
+        adapter = new RoutineAdapter(getContext(), routines, 0);  // 나중에 수정
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);

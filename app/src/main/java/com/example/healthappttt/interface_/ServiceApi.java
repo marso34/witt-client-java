@@ -26,7 +26,6 @@ import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 public interface ServiceApi {
-
     @POST("/sendDataToIP")
     Call<Integer> sendDataToIP(@Body MSD m);
   
@@ -56,6 +55,9 @@ public interface ServiceApi {
 
     @POST("/routine/UpdateRoutine")
     Call<Integer> updateRoutine(@Body RoutineData data);
+
+    @POST("/routine/SelectRoutine")
+    Call<List<RoutineData>> selectRoutine(@Body pkData data);
 
     @POST("/record/RecordExercise")
     Call<List<Integer>> recordExercise(@Body RecordData data);

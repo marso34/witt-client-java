@@ -9,9 +9,12 @@ import java.util.ArrayList;
 
 public class RoutinePagerAdapter extends FragmentStateAdapter {
     private final ArrayList<Fragment> mFragmentList = new ArrayList<>();
+    private int code;
 
-    public RoutinePagerAdapter(@NonNull Fragment fragmentActivity) {
+    public RoutinePagerAdapter(@NonNull Fragment fragmentActivity, int code) {
         super(fragmentActivity);
+
+        this.code = code;
     }
 
     @NonNull
@@ -24,7 +27,7 @@ public class RoutinePagerAdapter extends FragmentStateAdapter {
             case 3:
             case 4:
             case 5:
-            case 6: addFragment(new RoutineChildFragment(position)); break;
+            case 6: addFragment(new RoutineChildFragment(position, code)); break;
             default:
                 return null;
         }

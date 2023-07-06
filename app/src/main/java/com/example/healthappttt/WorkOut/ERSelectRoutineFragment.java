@@ -123,7 +123,7 @@ public class ERSelectRoutineFragment extends Fragment {
     }
 
     private void setRecyclerView() {
-        adapter = new RoutineAdapter(getContext(), routines, true);
+        adapter = new RoutineAdapter(getContext(), routines, 1);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
