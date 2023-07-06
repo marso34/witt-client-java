@@ -3,6 +3,7 @@ package com.example.healthappttt.Profile;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -57,6 +58,9 @@ public class MyProfileEdit extends AppCompatActivity {
         squatValue1 = new AtomicInteger(squatValue);
         benchValue1 = new AtomicInteger(benchValue);
         deadValue1 = new AtomicInteger(deadValue);
+        Log.d("MyProfileEdit 스쿼트: ", String.valueOf(squatValue1));
+        Log.d("MyProfileEdit 벤치: ", String.valueOf(benchValue1));
+        Log.d("MyProfileEdit 데드: ", String.valueOf(deadValue1));
         // 받은 데이터를 해당 TextView에 설정
         binding.Ename.setText(name);
         binding.Eheight.setText(String.valueOf(height));
