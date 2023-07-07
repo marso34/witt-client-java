@@ -98,7 +98,6 @@
             android:name=".WorkOut.SetExerciseActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".MainActivity"
             android:exported="false"

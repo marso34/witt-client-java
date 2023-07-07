@@ -9,14 +9,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.example.healthappttt.Data.SQLiteUtil;
 import com.example.healthappttt.Data.User.BlackListData;
 import com.example.healthappttt.Data.User.ReviewListData;
-import com.example.healthappttt.Data.SQLiteUtil;
 import com.example.healthappttt.Data.User.WittListData;
 import com.example.healthappttt.R;
 import com.example.healthappttt.User.BlockUserAdapter;
@@ -31,16 +32,17 @@ import java.util.List;
 public class WHChildFragment extends Fragment {
 
     private int period;
-    private ArrayList<WittListData> WittList;
-    private ArrayList<WittListData> filerWittList1,filerWittList2,filerWittList3;
+    private ArrayList<WittListData> WittList, filteredList;
+    private ArrayList<WittListData> oneWeekAgoList, oneMonthAgoList, oneYearAgoList;
     ArrayList<BlackListData> BlackList;
     ArrayList<ReviewListData> ReviewList;
-    private List<String> dateList,oneWeekAgoList, oneMonthAgoList, oneYearAgoList;
+    private List<String> dateList;
     BlockUserAdapter WittHistoryAdapter;
 
     SQLiteUtil sqLiteUtil;
     LinearLayoutManager linearLayoutManager;
     private RecyclerView recyclerView;
+    private SearchView searchView;
     private boolean updating = false;
     private boolean topScrolled;
     Calendar calendar= Calendar.getInstance();
@@ -69,18 +71,20 @@ public class WHChildFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        filerWittList1 = new ArrayList<>();//1주                   날짜 비교하여 넣어지는 리스트
-        filerWittList2 = new ArrayList<>();//1개월
-        filerWittList3 = new ArrayList<>();//1년
+        filteredList = new ArrayList<>();
+        oneWeekAgoList = new ArrayList<>();//1주                   날짜 비교하여 넣어지는 리스트
+        oneMonthAgoList = new ArrayList<>();//1개월
+        oneYearAgoList = new ArrayList<>();//1년
 
         sqLiteUtil = SQLiteUtil.getInstance(); // SQLiteUtil 객체 생성
         sqLiteUtil.setInitView(getContext(),"Witt_History_TB");//위트내역 목록 로컬 db
         WittList = sqLiteUtil.SelectWittHistoryUser();//SELECT * FROM Witt_History_TB ORDER BY TS DESC
         WittHistoryAdapter = new BlockUserAdapter(BlackList,ReviewList, WittList ,getActivity());
-        datePicker(WittList);
-        Log.d("filerWittList1",filerWittList1.get(0).getTS());
-        Log.d("filerWittList2",filerWittList2.get(0).getTS());
-        Log.d("filerWittList3",filerWittList3.get(0).getTS());
+        datePicker(WittList);// 데이터 날짜별로 1주,1달,1년으로 구분 작업
+//        Log.d("filerWittList1",filerWittList1.get(0).getTS());
+//        Log.d("filerWittList2",filerWittList2.get(0).getTS());
+//        Log.d("filerWittList3",filerWittList3.get(0).getTS());
+
 
     }
 
@@ -88,27 +92,27 @@ public class WHChildFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup view  = (ViewGroup) inflater.inflate(R.layout.activity_whchild_fragment, container,false);
         recyclerView = view.findViewById(R.id.wh_recyclerView);
-
-        //WittList.addAll(sqLiteUtil.SelectWittHistoryUser());
-        Log.d("WHChild_oncreateview",WittList.get(0).getTS());
-
-
+        searchView = getActivity().findViewById(R.id.black_search);
 
         switch (period) {
             case 0 :
                 recyclerView.setAdapter(WittHistoryAdapter);
+                SearchAction(WittList);
                 break;
             case 1 :
-                WittHistoryAdapter = new BlockUserAdapter(filerWittList1,getActivity(),1);
+                WittHistoryAdapter = new BlockUserAdapter(oneWeekAgoList,getActivity(),1);
                 recyclerView.setAdapter(WittHistoryAdapter);
+                SearchAction(oneWeekAgoList);
                 break;
             case 2 :
-                WittHistoryAdapter = new BlockUserAdapter(filerWittList2,getActivity(),2);
+                WittHistoryAdapter = new BlockUserAdapter(oneMonthAgoList,getActivity(),2);
                 recyclerView.setAdapter(WittHistoryAdapter);
+                SearchAction(oneMonthAgoList);
                 break;
             case 3 :
-                WittHistoryAdapter = new BlockUserAdapter(filerWittList3,getActivity(),3);
+                WittHistoryAdapter = new BlockUserAdapter(oneYearAgoList,getActivity(),3);
                 recyclerView.setAdapter(WittHistoryAdapter);
+                SearchAction(oneYearAgoList);
                 break;
         }
 
@@ -142,11 +146,26 @@ public class WHChildFragment extends Fragment {
         });
         RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
         int totalItemCount = layoutManager.getItemCount();
-        if(totalItemCount < 1 && !updating){
+        if(totalItemCount < 1 && !updating){//총 아이템 수가 1보다 작고 업데이트 안될때 초기 계시물 로드
             postsUpdate(false);
         }
 
         return view;
+    }
+
+    private void SearchAction(ArrayList<WittListData> List) {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                searchFilter(newText, List);
+                return false;
+            }
+        });
     }
 
     private void setRecyclerView() {
@@ -159,12 +178,22 @@ public class WHChildFragment extends Fragment {
 
         WittHistoryAdapter.notifyDataSetChanged();
     }
-    private void postsUpdate(final boolean clear) { // 스크롤되면 할 작업
+    private void postsUpdate(final boolean clear) { // 스크롤되면 할 작업 (리스트 업데이트)
         updating = true;
         WittList.clear();
         WittList.addAll(sqLiteUtil.SelectWittHistoryUser()); // 데이터 갱신
         WittHistoryAdapter.notifyDataSetChanged(); // 어댑터에 변경된 데이터 설정
         updating = false;
+    }
+        public void searchFilter(String searchText,ArrayList<WittListData> List) {
+        filteredList.clear();
+
+        for(int i = 0; i < List.size(); i++){
+            if(List.get(i).getUser_NM().toLowerCase().contains(searchText.toLowerCase())) {
+                filteredList.add(List.get(i));
+            }
+        }
+        WittHistoryAdapter.filterWittList(filteredList);
     }
 
     private void datePicker(ArrayList<WittListData> WittList) {
@@ -185,7 +214,7 @@ public class WHChildFragment extends Fragment {
 
                 if (adata.after(oneWeekAgo) && adata.before(today)) {
                     // 1주 전부터 오늘 사이의 데이터
-                    filerWittList1.add(WittList.get(n));
+                    oneWeekAgoList.add(WittList.get(n));
                     Log.d("add1 일주일전", String.valueOf(adata.after(oneWeekAgo)));
                     Log.d("add1 데이터 시간 ",WittList.get(0).getTS());
                     Log.d("add1 일주일전", String.valueOf(adata.before(today)));
@@ -197,7 +226,7 @@ public class WHChildFragment extends Fragment {
 
                 if (adata.after(oneMonthAgo) && adata.before(today)) {
                     // 1개월 전부터 오늘 사이의 데이터
-                    filerWittList2.add(WittList.get(n));
+                    oneMonthAgoList.add(WittList.get(n));
                     Log.d("add2 데이터 시간 ",WittList.get(0).getTS());
                 }
 
@@ -207,7 +236,7 @@ public class WHChildFragment extends Fragment {
 
                 if (adata.after(oneYearAgo) && adata.before(today)) {
                     // 1년 전부터 오늘 사이의 데이터
-                    filerWittList3.add(WittList.get(n));
+                    oneYearAgoList.add(WittList.get(n));
                     Log.d("add3  ",WittList.get(0).getTS());
                 }
 

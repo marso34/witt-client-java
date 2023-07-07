@@ -47,7 +47,7 @@ public class ReviewsRecdAtivity extends AppCompatActivity {
         sqLiteUtil = SQLiteUtil.getInstance(); // SQLiteUtil 객체 생성
         sqLiteUtil.setInitView(this,"REVIEW_TB");//리뷰 목록 로컬 db
         ReviewList = sqLiteUtil.SelectReviewUser();//SELECT * FROM REVIEW_TB
-        Log.d("ReviewActivity첫번째 PK값: ", String.valueOf(ReviewList.get(0).getReview_PK()));
+        //Log.d("ReviewActivity첫번째 PK값: ", String.valueOf(ReviewList.get(0).getReview_PK()));
         ReviewAdapter = new BlockUserAdapter(BlackList,ReviewList,WittList, this);//어뎁터에 차단 목록 생성
 
         ReviewCnt = String.valueOf(ReviewList.size());//리뷰 리스트 개수 표시

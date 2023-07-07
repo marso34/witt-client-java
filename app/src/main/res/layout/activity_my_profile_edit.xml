@@ -226,7 +226,7 @@
                             android:id="@+id/SquatUpBtn"
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:background="@drawable/circle1"
+                            android:background="#00ff0000"
                             android:layout_gravity="center"/>
                         <ImageView
                             android:layout_width="24dp"
@@ -258,13 +258,13 @@
                             android:id="@+id/SquatDownBtn"
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:background="@drawable/circle1"
+                            android:background="#00ff0000"
                             android:layout_gravity="center"/>
 
                         <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:src="@drawable/ic_baseline_keyboard_arrow_up_"
+                            android:src="@drawable/ic_baseline_keyboard_arrow_down_24"
                             android:layout_gravity="center"/>
 
                     </FrameLayout>
@@ -284,7 +284,7 @@
                             android:id="@+id/BenchUpBtn"
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:background="@drawable/circle1"
+                            android:background="#00ff0000"
                             android:layout_gravity="center" />
 
                         <ImageView
@@ -318,12 +318,12 @@
                             android:id="@+id/BenchDownBtn"
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:background="@drawable/circle1"
+                            android:background="#00ff0000"
                             android:layout_gravity="center" />
                         <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:src="@drawable/ic_baseline_keyboard_arrow_up_"
+                            android:src="@drawable/ic_baseline_keyboard_arrow_down_24"
                             android:layout_gravity="center"/>
 
                     </FrameLayout>
@@ -340,7 +340,7 @@
                             android:id="@+id/DeadUpBtn"
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:background="@drawable/circle1"
+                            android:background="#00ff0000"
                             android:layout_gravity="center" />
 
                         <ImageView
@@ -372,12 +372,12 @@
                             android:id="@+id/DeadDownBtn"
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:background="@drawable/circle1"
+                            android:background="#00ff0000"
                             android:layout_gravity="center" />
                         <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:src="@drawable/ic_baseline_keyboard_arrow_up_"
+                            android:src="@drawable/ic_baseline_keyboard_arrow_down_24"
                             android:layout_gravity="center"/>
 
                     </FrameLayout>
