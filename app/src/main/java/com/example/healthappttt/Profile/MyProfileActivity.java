@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.healthappttt.Data.PreferenceHelper;
 import com.example.healthappttt.Data.User.UserClass;
 import com.example.healthappttt.R;
+import com.example.healthappttt.databinding.ActivityMyprofileBinding;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,11 +27,12 @@ import java.util.Map;
 
 public class MyProfileActivity extends AppCompatActivity {
 
+    private ActivityMyprofileBinding binding;
     private ActivityResultLauncher<Intent> editProfileLauncher;
-    private static String name_TB = "membership";
+    private static final String name_TB = "membership";
     private PreferenceHelper prefhelper;
+    private SharedPreferences sharedPreferences;
     private UserClass userClass;
-    private SharedPreferences shared_pref;
     ImageButton block_btn,Reviews_btn,WittHistory_btn;
     Button PEdit;
     ImageView ProfileImg;
@@ -42,7 +44,11 @@ public class MyProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_myprofile);
-        //기본 텍스트 세팅
+
+        binding = ActivityMyprofileBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+        //기본 텍스트 세팅 TODO 이걸로 추후에 바꿔서 연결해야함
         //prefhelper = new PreferenceHelper(name_TB);
         //userDefualt = prefhelper.getUserData(shared_pref);
 
@@ -56,6 +62,8 @@ public class MyProfileActivity extends AppCompatActivity {
         userDefault.put("benchValue", 90);
         userDefault.put("deadValue", 100);
 
+        prefhelper = new PreferenceHelper("default_user_info",this);
+        prefhelper.putUserDefault(userDefault);
 
 
         //버튼
@@ -77,25 +85,64 @@ public class MyProfileActivity extends AppCompatActivity {
         setDefault(userDefault);
 
         ViewChangeBlock(); // 화면전환 매서드
-        // MyprofileEdit에서 넘어온 데이터 처리
-        editProfileLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-            if (result.getResultCode() == Activity.RESULT_OK) {
-                Intent data = result.getData();
-                if (data != null) {
-                    // 결과 데이터를 처리 - Bundle extras = getIntent().getExtras();
-                    String editedName = data.getStringExtra("editedName");
-                    int editedHeight = data.getIntExtra("editedHeight", 0);
-                    // 결과 데이터 바인딩 해서 보여주기
-                }else { Log.d("editProfileLauncher","Data 값 존재 X"); }
 
-            }else { Log.d("result.getResultCode","결과값 코드가 맞지 않음"); }
-        });
+        // TODO MyprofileEdit에서 넘어온 데이터 처리
+        editProfileLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    // result 에는 resultCode 가 있다.
+                    // resultCode 의 값으로, 여러가지 구분해서 사용이 가능.
+                    if (result.getResultCode() == RESULT_OK){
+//                        String Ename = result.getData().getStringExtra("name");
+//                        int Eheight = result.getData().getIntExtra("height",0);
+//                        int Eweight = result.getData().getIntExtra("weight",0);
+//                        int EsquatValue = result.getData().getIntExtra("squatValue",0);
+//                        int EbenchValue = result.getData().getIntExtra("benchValue",0);
+//                        int EdeadValue = result.getData().getIntExtra("deadValue",0);
+//                        int Egender = result.getData().getIntExtra("gender",0);
+                        userDefault = prefhelper.getUserData();
+
+                        //화면에 연결
+                        binding.name.setText(userDefault.get("name").toString());
+                        binding.Pheight.setText(userDefault.get("height").toString() + "cm");
+                        binding.Pweight.setText(userDefault.get("weight").toString() + "kg");
+                        binding.Psqaut.setText(userDefault.get("squatValue").toString());
+                        binding.Pbench.setText(userDefault.get("benchValue").toString());
+                        binding.Pdeadlift.setText(userDefault.get("deadValue").toString());
+                        if(userDefault.get("gender").equals(0)) {
+                            binding.gender.setText("남자");
+                            binding.gender.setTextColor(Color.parseColor("#0000FF")); // 파란색
+                        }else {
+                            binding.gender.setText("여자");
+                            binding.gender.setTextColor(Color.parseColor("#FFC0CB")); // 핑크색
+                        }
 
 
+                    }else if(result.getResultCode() == Activity.RESULT_CANCELED){
+                        userDefault = prefhelper.getUserData();
+                        setDefault(userDefault);
+                        Log.d("Profile","그냥 뒤로가처리 후 기본값 설정됨");
+                    }
+                });
 
 
 
     }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//
+//        if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+//            if (data != null) {
+//                Bundle bundle = data.getExtras();
+//                if (bundle != null) {
+//                    String result = bundle.getString("result");
+//                    // 결과 데이터를 사용하여 필요한 작업 수행
+//                }
+//            }
+//        }
+//    }
+
+
     //기본 사용자 정보 세팅
     public void setDefault( Map<String, Object> data ) {
         name.setText(data.get("name").toString());//이름
@@ -108,10 +155,10 @@ public class MyProfileActivity extends AppCompatActivity {
 
         if( data.get("gender").toString().equals("0")) {
             gender.setText("남자");
-            gender.setBackgroundColor(Color.parseColor("#0000FF")); // 파란색
+            gender.setTextColor(Color.parseColor("#0000FF")); // 파란색
         } else{
             gender.setText("여자");
-            gender.setBackgroundColor(Color.parseColor("#FFC0CB")); // 핑크색
+            gender.setTextColor(Color.parseColor("#FFC0CB")); // 핑크색
         }
 
     }
@@ -123,6 +170,10 @@ public class MyProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MyProfileActivity.this, MyProfileEdit.class);
+
+
+
+
                 Bundle bundle = new Bundle();
                 for (Map.Entry<String, Object> entry : userDefault.entrySet()) {
                     String key = entry.getKey();

@@ -38,6 +38,7 @@ public class PreferenceHelper
     }
 
 
+
     //PK,email,IP,Platform,Name,PW,Img 로컬 저장 매소드
     public void putProfile(UserProfile upf) {
 
@@ -138,7 +139,7 @@ public class PreferenceHelper
     }
 
 
-    public static Map<String, Object> getUserData(SharedPreferences app_prefs) {
+    public  Map<String, Object> getUserData() {
         Map<String, Object> userData = new HashMap<>();
         userData.put("name",app_prefs.getString("name","nothing"));
         userData.put("gender", app_prefs.getInt("gender", 0));
@@ -146,10 +147,23 @@ public class PreferenceHelper
         userData.put("weight", app_prefs.getInt("weight", 0));
         userData.put("squatValue", app_prefs.getInt("squatValue", 0));
         userData.put("benchValue", app_prefs.getInt("benchValue", 0));
-        userData.put("deadliftValue", app_prefs.getInt("deadliftValue", 0));
+        userData.put("deadValue", app_prefs.getInt("deadValue", 0));
         userData.put("image", app_prefs.getString("image", "nothing"));
         Log.d("가져오는 실제 유저 키: ", String.valueOf(app_prefs.getInt("height", 0)));
         return userData;
+    }
+    public void putUserDefault(Map<String, Object> userdefault){
+        SharedPreferences.Editor edit = app_prefs.edit();
+        edit.putString("name", String.valueOf(userdefault.get("name")));
+        edit.putInt("gender", (Integer) userdefault.get("gender"));
+        edit.putInt("height", (Integer) userdefault.get("height"));
+        edit.putInt("weight", (Integer) userdefault.get("weight"));
+        edit.putInt("squatValue", (Integer) userdefault.get("squatValue"));
+        edit.putInt("benchValue", (Integer) userdefault.get("benchValue"));
+        edit.putInt("deadValue", (Integer) userdefault.get("deadValue"));
+        edit.apply();
+        Log.d("sharedpref","유저 기본 정보 로컬 저장 완료 ");
+
     }
 //    public int getGender() { return app_prefs.getInt("gender",00); }
 //    public int getheight() { return app_prefs.getInt("height",00); }

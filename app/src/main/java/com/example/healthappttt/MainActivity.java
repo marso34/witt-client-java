@@ -85,6 +85,8 @@ public class MainActivity extends AppCompatActivity {
     Button mGoogleSignOutButton;
     private LoginActivity loginActivity;
     private int dayOfWeek;
+
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         String uk = getIntent().getStringExtra("userKey");
@@ -328,12 +330,8 @@ public class MainActivity extends AppCompatActivity {
                             String TS = Black.getTS();
                             byte[] User_Img = Black.getUser_Img();
                             BlackList = new BlackListData(BL_PK, User_NM, OUser_FK, TS,User_Img); //서버에서 받아온 데이터 형식으로 바꿔야함
-                            /**
-                             * 받아온 리스트 PK와 SQLite에 존재하는 PK를 비교
-                             * 없으면 저장
-                             * 있으면 continue
-                             */
-                           // SaveBlackList(BlackList);//로컬db에 차단목록 저장 매서드
+
+                            SaveBlackList(BlackList);//로컬db에 차단목록 저장 매서드
                         }
                     }
                 } else {
@@ -373,7 +371,7 @@ public class MainActivity extends AppCompatActivity {
                             ReviewList = new ReviewListData(Review_PK, User_FK, RPT_User_FK, Text_Con, Check_Box, TS, User_NM, User_Img); //서버에서 받아온 데이터 형식으로 바꿔야함
                             Log.d("ReviewList_main에서 객체화한거", String.valueOf(Review.getReview_PK()));
                             Log.d("ReviewList_main에서 객체화한거",Review.getText_Con());
-                            //SaveReviewList(ReviewList);//로컬db에 받은 후기 저장 매서드
+                            SaveReviewList(ReviewList);//로컬db에 받은 후기 저장 매서드
                         }
                     }
                 }else {
@@ -407,7 +405,7 @@ public class MainActivity extends AppCompatActivity {
                             wittList = new WittListData(RECORD_PK,USER_FK,OUser_FK,TS,User_NM,User_Img);
                             Log.d("WittHistory_main에서", String.valueOf(Witt.getUser_NM()));
                             Log.d("WittHistory_main에서", String.valueOf(Witt.getTS()));
-                            //SaveWittList(wittList);//로컬db에 받은 후기 저장 매서드
+                            SaveWittList(wittList);//로컬db에 받은 후기 저장 매서드
                         }
                     }
                 }else{
@@ -422,29 +420,75 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-//    private void SaveReviewList(ReviewListData reviewListData) {
-//        reviewsqLiteUtil = SQLiteUtil.getInstance();
-//        reviewsqLiteUtil.setInitView(this,"REVIEW_TB");
-//        //Log.d("Main에서 받은후기 추가하기전 PK:", String.valueOf(reviewListData.getReview_PK()));
-//        reviewsqLiteUtil.insertRL(reviewListData);
-//        Log.d("SaveReviewList 매서드","저장완료");
-//    }
-//
-//
-//    private void SaveBlackList(BlackListData blackListData) {
-//        blacksqLiteUtil = SQLiteUtil.getInstance();
-//        blacksqLiteUtil.setInitView(this, "BLACK_LIST_TB");
-//        //Log.d("Main에서 블랙리스트 추가하기전 PK:", String.valueOf(blackListData.getBL_PK()));
-//        blacksqLiteUtil.insertBL(blackListData);
-//        Log.d("SaveBlackList 매서드","저장완료");
-//    }
-//    private void SaveWittList(WittListData wittListData){
-//        wittsqLiteUtil = SQLiteUtil.getInstance();
-//        wittsqLiteUtil.setInitView(this,"Witt_History_TB");
-//        //Log.d("Main에서 받은후기 추가하기전 PK:", String.valueOf(wittListData.getUser_NM()));
-//        reviewsqLiteUtil.insertWH(wittListData);
-//        Log.d("SaveWittList 매서드","저장완료");
-//    }
+    private void SaveReviewList(ReviewListData reviewListData) {
+        reviewsqLiteUtil = SQLiteUtil.getInstance();
+        reviewsqLiteUtil.setInitView(this,"REVIEW_TB");
+
+        //중복 PK 확인
+        boolean CheckStored = false;
+        List<ReviewListData> reviewList = reviewsqLiteUtil.SelectReviewUser();
+        for(ReviewListData storedData : reviewList) {
+            int storedPK = storedData.getReview_PK();
+            if(storedPK == reviewListData.getReview_PK()){
+                CheckStored = true;
+                break;
+            }
+        }
+        if (CheckStored) {
+            Log.d("SaveReviewList 메서드", "중복된 PK -> 저장 X");
+        } else {
+            reviewsqLiteUtil.insertRL(reviewListData);
+            Log.d("SaveReviewList 메서드", "저장 완료");
+        }
+    }
+
+
+    private void SaveBlackList(BlackListData blackListData) {
+        blacksqLiteUtil = SQLiteUtil.getInstance();
+        blacksqLiteUtil.setInitView(this, "BLACK_LIST_TB");
+
+        // 중복 PK 확인
+        boolean CheckStored = false;
+        List<BlackListData> blackList = blacksqLiteUtil.SelectBlackUser();
+        for (BlackListData storedData : blackList) {
+            int storedPK = storedData.getBL_PK();
+            if (storedPK == blackListData.getBL_PK()) {
+                CheckStored = true;
+                break;
+            }
+        }
+
+        if (CheckStored) {
+            Log.d("SaveBlackList 메서드", "중복된 PK -> 저장 X");
+        } else {
+            blacksqLiteUtil.insertBL(blackListData);
+            Log.d("SaveBlackList 메서드", "저장 완료");
+        }
+
+
+    }
+    private void SaveWittList(WittListData wittListData){
+        wittsqLiteUtil = SQLiteUtil.getInstance();
+        wittsqLiteUtil.setInitView(this,"Witt_History_TB");
+
+        // 중복 PK 확인
+        boolean CheckStored = false;
+        List<WittListData> WittList = wittsqLiteUtil.SelectWittHistoryUser();
+        for (WittListData storedData : WittList) {
+            int storedPK = storedData.getRECORD_PK();
+            if (storedPK == wittListData.getRECORD_PK()) {
+                CheckStored = true;
+                break;
+            }
+        }
+
+        if (CheckStored) {
+            Log.d("SaveWittList 메서드", "중복된 PK -> 저장 X");
+        } else {
+            wittsqLiteUtil.insertWH(wittListData);
+            Log.d("SaveWittList 메서드", "저장 완료");
+        }
+    }
 
 
 
