@@ -1,8 +1,11 @@
 package com.example.healthappttt.Data;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.util.Log;
@@ -130,9 +133,14 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         String timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
         values.put("TS", timestamp);
         values.put("myFlag",myFlag);
-
-        db.insert("CHAT_MSG_TB", null, values);
-        db.close();
+        try {
+            db.insertOrThrow("CHAT_MSG_TB", null, values);
+            Log.d(TAG, "데이터 삽입 성공");
+        } catch (SQLException e) {
+            Log.e(TAG, "데이터베이스 오류: " + e.getMessage());
+        } finally {
+            db.close();
+        }
     }
 
 

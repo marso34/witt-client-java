@@ -51,7 +51,6 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserLi
                 intent.putExtra("otherUserKey",user.getOtherUserKey());
                 Log.d(TAG, "onClick: "+user.getUserNM());
                 context.startActivity(intent);
-
             }
         });
 

@@ -13,16 +13,20 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.healthappttt.Data.Chat.MSG;
+import com.example.healthappttt.Data.Chat.SocketSingleton;
 import com.example.healthappttt.Data.PreferenceHelper;
 import com.example.healthappttt.Data.SQLiteUtil;
-import com.example.healthappttt.Data.Chat.SocketSingleton;
 import com.example.healthappttt.R;
 
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 public class ChatActivity extends AppCompatActivity {
@@ -46,6 +50,7 @@ public class ChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
         socketSingleton = SocketSingleton.getInstance(this);
+        socketSingleton.setChatActivity(this);
         // 인텐트에서 유저 이름을 가져옵니다.
         //username = getIntent().getExtra("username"); 이전 엑티비티에서 유저의 필요한 모든 정보 받아오기.
         preferenceHelper = new PreferenceHelper("UserTB",this);
@@ -79,40 +84,81 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String messageText = messageEditText.getText().toString();
+
                 if (!messageText.equals("")) {
                     // 서버로 메시지를 보냅니다.
                     sendMessageToServer(messageText);
 
-                    // 메시지를 추가하고 어댑터를 갱신합니다.
-                    MSG newMessage = new MSG(1,Integer.parseInt(chatRoomId), messageText, String.valueOf(System.currentTimeMillis()));
+                    // 현재 시간을 가져옵니다.
+                    Date currentDate = new Date();
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    String currentTime = format.format(currentDate);
+                    System.out.println("Current Time: " + currentTime);
+
+                    // 새로운 메시지를 생성합니다.
+                    MSG newMessage = new MSG(1, Integer.parseInt(chatRoomId), messageText, currentTime);
+
+                    // 메시지를 리스트에 추가합니다.
                     messageList.add(newMessage);
+                    Collections.sort(messageList, new Comparator<MSG>() {
+                        @Override
+                        public int compare(MSG msg1, MSG msg2) {
+                            long timestamp1 = msg1.getTimestamp();
+                            long timestamp2 = msg2.getTimestamp();
+                            return Long.compare(timestamp1, timestamp2);
+                        }
+                    });
+                    // 어댑터를 갱신합니다.
                     messageListAdapter.notifyDataSetChanged();
-                    getMessagesFromRealTime();
+
+                    // 스크롤을 마지막 메시지로 이동합니다.
+                    messageRecyclerView.scrollToPosition(messageList.size() - 1);
+
                     // 메시지 입력 필드를 비웁니다.
                     messageEditText.setText("");
                 }
             }
         });
+
     }
 
     // 서버에서 메시지 목록을 가져오는 메소드입니다.
-    private void getMessagesFromRealTime() {
-        List<MSG>newMessages = null;
+    public void getMessagesFromRealTime() {
+        List<MSG> newMessages = null;
         // 서버로부터 메시지 목록을 가져와서 List<Message>로 반환합니다.
         SQLiteUtil sqLiteUtil = SQLiteUtil.getInstance();
         sqLiteUtil.setInitView(this, "CHAT_MSG_TB");
-        if(chatRoomId!= null) {
-            newMessages = sqLiteUtil.SelectMSG(0,Integer.parseInt(chatRoomId));
+        if (chatRoomId != null) {
+            newMessages = sqLiteUtil.SelectMSG(0, Integer.parseInt(chatRoomId));
+            for (MSG M : newMessages) {
+                Log.d(TAG, "getMessagesFromRealTime: " + M.getMessage());
+            }
+        } else {
+            Log.d(TAG, "getMessagesFromRealTime: error ");
         }
+
+        messageList.clear(); // 기존의 메시지 리스트를 비웁니다.
+
         for (MSG msg : newMessages) {
             messageList.add(msg);
-            Log.d(TAG, "getMessagesFromServer: "+msg.getMessage());
+            Log.d(TAG, "getMessagesFromServer: " + msg.getMessage());
         }
-        messageListAdapter.notifyDataSetChanged();
-        //메세지 리스트에 넣고 정렬하기.
-        // TODO: 구현해야 함
+        Collections.sort(messageList, new Comparator<MSG>() {
+            @Override
+            public int compare(MSG msg1, MSG msg2) {
+                long timestamp1 = msg1.getTimestamp();
+                long timestamp2 = msg2.getTimestamp();
+                return Long.compare(timestamp1, timestamp2);
+            }
+        });
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                messageListAdapter.notifyDataSetChanged();
+            }
+        });
+        // TODO: 메시지 리스트에 넣고 정렬하기
     }
-
 
     // 서버로 메시지를 보내는 메소드입니다.
     private void sendMessageToServer(String messageText) {
@@ -126,6 +172,7 @@ public class ChatActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
     }
 
 }

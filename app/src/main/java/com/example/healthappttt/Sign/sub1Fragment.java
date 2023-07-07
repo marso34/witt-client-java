@@ -63,7 +63,12 @@ public class sub1Fragment extends Fragment {
             gymLongitude = getArguments().getDouble(ARG_GYM_LONGITUDE);;
             loName = getArguments().getString(ARG_LO_NAME);
             email = getArguments().getString(ARG_EMAIL);
-            Log.d(TAG, "sub1fss"+email);
+            Log.d(TAG, "--"+String.valueOf(latitude)+"--"+
+                    String.valueOf(longitude) +"--"+
+                    String.valueOf(gymLatitude) +"--"+
+                    String.valueOf(gymLongitude) +"--"+
+                    loName+"--"+
+                    email);
 
         }
 
@@ -79,6 +84,7 @@ public class sub1Fragment extends Fragment {
 
         EditText W = (EditText) view.findViewById(R.id.weight);
         W.setInputType(InputType.TYPE_CLASS_NUMBER);
+
         sexButton = view.findViewById(R.id.sex);
         sexButton.setOnClickListener(new View.OnClickListener() {
             @Override
