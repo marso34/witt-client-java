@@ -287,28 +287,31 @@ public class MainActivity extends AppCompatActivity {
     }
     //API 요청 후 응답을 SQLite로 차단테이블 데이터 로컬 저장
     private void getMSGFromServer(pkData userKey){
-        Log.d(TAG, "getMSGFromServer: key "+ String.valueOf(userKey.getPk()));
-        sqLiteUtil.setInitView(this,"CHAT_MSG_TB");
+        Log.d(TAG, "getMSGFromServer: key " + String.valueOf(userKey.getPk()));
+
+
         Call<List<MSG>> call = apiService.getMSGFromServer(userKey);
         call.enqueue(new Callback<List<MSG>>() {
             @Override
             public void onResponse(Call<List<MSG>> call, Response<List<MSG>> response) {
                 if (response.isSuccessful()) {
                     List<MSG> msgList = response.body();
-                    for(MSG M : msgList){
-                        sqLiteUtil.insert(0,M.getMessage(),M.getChatRoomId());
-                        Log.d(TAG, "onResponsechat: "+M.getChatRoomId());
+                    for (MSG msg : msgList) {
+                        sqLiteUtil.setInitView(getBaseContext(), "CHAT_MSG_TB");
+                        sqLiteUtil.insert(0, msg.getMessage(), msg.getChatRoomId());
+                        Log.d(TAG, "onResponsechat: " + msg.getChatRoomId());
                     }
                 } else {
-                    Log.e("getBlackList", "API 요청 실패. 응답 코드: " + response.code());
+                    Log.e("getMSGFromServer", "API 요청 실패. 응답 코드: " + response.code());
                 }
             }
 
             @Override
             public void onFailure(Call<List<MSG>> call, Throwable t) {
-                Log.e("getBlackList", "API 요청실패, 에러메세지: " + t.getMessage());
+                Log.e("getMSGFromServer", "API 요청 실패, 에러 메시지: " + t.getMessage());
             }
         });
+
     }
     private void getBlackList(UserKey userKey) {
         Call<List<BlackListData>> call = apiService.getBlackList(userKey);

@@ -1,4 +1,5 @@
 <resources>
+    <string name = "google_places_api_key">AIzaSyA6RE55LrazpWCOa0lRu0xOzNInsKHDnMU</string>
     <string name="app_name">위트 With Training</string>
     <string name="title_activity_join">JoinActivity</string>
     <!-- Strings used for fragments for navigation -->

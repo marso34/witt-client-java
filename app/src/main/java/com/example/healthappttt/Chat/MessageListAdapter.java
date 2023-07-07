@@ -33,6 +33,7 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
         }
     }
     public MessageListAdapter(List<MSG> messageList, String username, String otherUserName) {
+
         this.messageList = messageList;
         this.username = username;
         this.otherUserName = otherUserName;

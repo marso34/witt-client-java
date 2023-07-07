@@ -36,19 +36,21 @@
     </RelativeLayout>
 
     <!-- 채팅 메시지 -->
+
+    <!-- 메시지 입력창 -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/chatRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_below="@id/Toolbar"
+        android:layout_height="wrap_content"
         android:layout_above="@+id/linearLayout"
-        android:layout_marginBottom="10dp"
+        android:layout_below="@id/Toolbar"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="7dp"
         android:background="@android:color/white"
         app:layoutManager="LinearLayoutManager"
         app:reverseLayout="true"
         app:stackFromEnd="true" />
 
-    <!-- 메시지 입력창 -->
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
