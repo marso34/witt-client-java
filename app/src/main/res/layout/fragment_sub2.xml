@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activity.SubActivity4"
 
     android:orientation="vertical">
 
@@ -75,7 +74,6 @@
                 <FrameLayout
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-
                     >
 
                     <Button
@@ -85,13 +83,13 @@
                         android:layout_gravity="center"
                         android:background="#00ff0000"
 
-                        ></Button>
+                        />
 
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/ic_baseline_keyboard_arrow_up_"></ImageView>
+                        android:src="@drawable/ic_baseline_keyboard_arrow_up_"/>
 
                 </FrameLayout>
 

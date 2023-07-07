@@ -27,19 +27,21 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.example.healthappttt.Data.User.BlackListData;
-import com.example.healthappttt.Data.User.GetUserInfo;
+import com.example.healthappttt.Chat.ChattingFragment;
+import com.example.healthappttt.Data.Chat.MSG;
 import com.example.healthappttt.Data.PreferenceHelper;
 import com.example.healthappttt.Data.RetrofitClient;
-import com.example.healthappttt.Data.User.ReviewListData;
 import com.example.healthappttt.Data.SQLiteUtil;
+import com.example.healthappttt.Data.User.BlackListData;
+import com.example.healthappttt.Data.User.GetUserInfo;
+import com.example.healthappttt.Data.User.ReviewListData;
 import com.example.healthappttt.Data.User.UserKey;
 import com.example.healthappttt.Data.User.UserProfile;
 import com.example.healthappttt.Data.User.WittListData;
-import com.example.healthappttt.Chat.ChattingFragment;
-import com.example.healthappttt.Routine.RoutineFragment;
+import com.example.healthappttt.Data.pkData;
 import com.example.healthappttt.Home.HomeFragment;
 import com.example.healthappttt.Profile.MyProfileActivity;
+import com.example.healthappttt.Routine.RoutineFragment;
 import com.example.healthappttt.Sign.LoginActivity;
 import com.example.healthappttt.WorkOut.ExerciseRecordActivity;
 import com.example.healthappttt.databinding.ActivityMainBinding;
@@ -84,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
     private LoginActivity loginActivity;
     private int dayOfWeek;
 
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         String uk = getIntent().getStringExtra("userKey");
@@ -92,6 +95,12 @@ public class MainActivity extends AppCompatActivity {
         }
         else Log.d(TAG, "onCreate: 유저키 없음");
         Log.d(TAG, "onCreateuserkey: "+uk);
+        apiService = RetrofitClient.getClient().create(ServiceApi.class); // create메서드로 api서비스 인터페이스의 구현제 생성
+
+
+        sqLiteUtil = SQLiteUtil.getInstance(); //sqllite 객체
+        prefhelper = new PreferenceHelper(name_TB,this);
+        getuserProfile(userKey); //유저키
         final LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         // MyService 실행
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && ContextCompat.checkSelfPermission(this, Manifest.permission.FOREGROUND_SERVICE) != PackageManager.PERMISSION_GRANTED) {
@@ -107,7 +116,6 @@ public class MainActivity extends AppCompatActivity {
         calendar.setTime(currentDate);
         dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK) - 1; // 현재 요일 정보
 
-
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.google_sign_in_client_id))
                 .requestEmail()
@@ -116,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
 
         SharedPreferences sharedPref = getSharedPreferences("myPref", Context.MODE_PRIVATE);
         String useremail = sharedPref.getString("useremail", "");
-        userKey = new UserKey(270);//new UserKey(prefhelper.getPK());
+
 
         if ( Build.VERSION.SDK_INT >= 23 &&
                 ContextCompat.checkSelfPermission( getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
@@ -232,10 +240,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //api 요청 인터페이스 가져오기
-        apiService = RetrofitClient.getClient().create(ServiceApi.class); // create메서드로 api서비스 인터페이스의 구현제 생성
-        prefhelper = new PreferenceHelper(name_TB,this);
-//        sqLiteUtil = SQLiteUtil.getInstance(); //sqllite 객체
-        getuserProfile(userKey); //유저키
+
         //로그인했을때 넘겨받는 정보를 파라미터로 넣는다.  email or phone_num 비교해서 해당하는 유저의 키를 받아온다.
         //유저의 pk를 그대로 받을수있으면 필요가 없음 다른방향( 다른유저의 키를 가져오는 느낌)으로 가야함
         Log.d("prefhelper", "USER_PK:" + prefhelper.getPK()); //저장된 유저의 pk값 가져오기
@@ -244,7 +249,7 @@ public class MainActivity extends AppCompatActivity {
         getBlackList(userKey);
         getReviewList(userKey);
         getWittHistory(userKey);
-
+        getMSGFromServer(new pkData(userKey.getPk()));
     }
 
     //API 요청 후 응답을 shared로 유저테이블 데이터 로컬 저장
@@ -258,7 +263,7 @@ public class MainActivity extends AppCompatActivity {
                     // 서버에서 받은 응답을 처리하는 코드를 작성합니다.
                     if (profileList != null) {   //서버에서 반환된 값이 null이 아닌 경우 처리할 코드
                         UserProfile userProfile = profileList.get(0); // 첫번째 UserProfile 객체를 가져온다.
-                        prefhelper.putProfile(userProfile); // 로컬에 UserProfile 객체를 저장한다.
+                            prefhelper.putProfile(userProfile); // 로컬에 UserProfile 객체를 저장한다.
                         Log.d(TAG, "onResponse:ll "+userProfile.getUSER_PK());
 //             Log.d("Profile", "USER_PK: " + USER_PK + ", Email: " + Email + ", IP: " + IP + ", Platform: " + Platform + ", User_NM: " + User_NM + ", User_Img: " + User_Img + "PW: " + PW);
 
@@ -283,6 +288,33 @@ public class MainActivity extends AppCompatActivity {
 
     }
     //API 요청 후 응답을 SQLite로 차단테이블 데이터 로컬 저장
+    private void getMSGFromServer(pkData userKey){
+        Log.d(TAG, "getMSGFromServer: key " + String.valueOf(userKey.getPk()));
+
+
+        Call<List<MSG>> call = apiService.getMSGFromServer(userKey);
+        call.enqueue(new Callback<List<MSG>>() {
+            @Override
+            public void onResponse(Call<List<MSG>> call, Response<List<MSG>> response) {
+                if (response.isSuccessful()) {
+                    List<MSG> msgList = response.body();
+                    for (MSG msg : msgList) {
+                        sqLiteUtil.setInitView(getBaseContext(), "CHAT_MSG_TB");
+                        sqLiteUtil.insert(0, msg.getMessage(), msg.getChatRoomId());
+                        Log.d(TAG, "onResponsechat: " + msg.getChatRoomId());
+                    }
+                } else {
+                    Log.e("getMSGFromServer", "API 요청 실패. 응답 코드: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<MSG>> call, Throwable t) {
+                Log.e("getMSGFromServer", "API 요청 실패, 에러 메시지: " + t.getMessage());
+            }
+        });
+
+    }
     private void getBlackList(UserKey userKey) {
         Call<List<BlackListData>> call = apiService.getBlackList(userKey);
         call.enqueue(new Callback<List<BlackListData>>() {
@@ -301,11 +333,7 @@ public class MainActivity extends AppCompatActivity {
                             String TS = Black.getTS();
                             byte[] User_Img = Black.getUser_Img();
                             BlackList = new BlackListData(BL_PK, User_NM, OUser_FK, TS,User_Img); //서버에서 받아온 데이터 형식으로 바꿔야함
-                            /**
-                             * 받아온 리스트 PK와 SQLite에 존재하는 PK를 비교
-                             * 없으면 저장
-                             * 있으면 continue
-                             */
+
                             SaveBlackList(BlackList);//로컬db에 차단목록 저장 매서드
                         }
                     }
@@ -398,25 +426,71 @@ public class MainActivity extends AppCompatActivity {
     private void SaveReviewList(ReviewListData reviewListData) {
         reviewsqLiteUtil = SQLiteUtil.getInstance();
         reviewsqLiteUtil.setInitView(this,"REVIEW_TB");
-        //Log.d("Main에서 받은후기 추가하기전 PK:", String.valueOf(reviewListData.getReview_PK()));
-        reviewsqLiteUtil.insertRL(reviewListData);
-        Log.d("SaveReviewList 매서드","저장완료");
+
+        //중복 PK 확인
+        boolean CheckStored = false;
+        List<ReviewListData> reviewList = reviewsqLiteUtil.SelectReviewUser();
+        for(ReviewListData storedData : reviewList) {
+            int storedPK = storedData.getReview_PK();
+            if(storedPK == reviewListData.getReview_PK()){
+                CheckStored = true;
+                break;
+            }
+        }
+        if (CheckStored) {
+            Log.d("SaveReviewList 메서드", "중복된 PK -> 저장 X");
+        } else {
+            reviewsqLiteUtil.insertRL(reviewListData);
+            Log.d("SaveReviewList 메서드", "저장 완료");
+        }
     }
 
 
     private void SaveBlackList(BlackListData blackListData) {
         blacksqLiteUtil = SQLiteUtil.getInstance();
         blacksqLiteUtil.setInitView(this, "BLACK_LIST_TB");
-        //Log.d("Main에서 블랙리스트 추가하기전 PK:", String.valueOf(blackListData.getBL_PK()));
-        blacksqLiteUtil.insertBL(blackListData);
-        Log.d("SaveBlackList 매서드","저장완료");
+
+        // 중복 PK 확인
+        boolean CheckStored = false;
+        List<BlackListData> blackList = blacksqLiteUtil.SelectBlackUser();
+        for (BlackListData storedData : blackList) {
+            int storedPK = storedData.getBL_PK();
+            if (storedPK == blackListData.getBL_PK()) {
+                CheckStored = true;
+                break;
+            }
+        }
+
+        if (CheckStored) {
+            Log.d("SaveBlackList 메서드", "중복된 PK -> 저장 X");
+        } else {
+            blacksqLiteUtil.insertBL(blackListData);
+            Log.d("SaveBlackList 메서드", "저장 완료");
+        }
+
+
     }
     private void SaveWittList(WittListData wittListData){
         wittsqLiteUtil = SQLiteUtil.getInstance();
         wittsqLiteUtil.setInitView(this,"Witt_History_TB");
-        //Log.d("Main에서 받은후기 추가하기전 PK:", String.valueOf(wittListData.getUser_NM()));
-        reviewsqLiteUtil.insertWH(wittListData);
-        Log.d("SaveWittList 매서드","저장완료");
+
+        // 중복 PK 확인
+        boolean CheckStored = false;
+        List<WittListData> WittList = wittsqLiteUtil.SelectWittHistoryUser();
+        for (WittListData storedData : WittList) {
+            int storedPK = storedData.getRECORD_PK();
+            if (storedPK == wittListData.getRECORD_PK()) {
+                CheckStored = true;
+                break;
+            }
+        }
+
+        if (CheckStored) {
+            Log.d("SaveWittList 메서드", "중복된 PK -> 저장 X");
+        } else {
+            wittsqLiteUtil.insertWH(wittListData);
+            Log.d("SaveWittList 메서드", "저장 완료");
+        }
     }
 
 

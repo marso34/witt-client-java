@@ -31,6 +31,7 @@ public class DataReceiverService extends Service {
     private Socket socket;
     private ChatActivity chatActivity;
     private SocketSingleton socketSingleton;
+
     private static final int NOTIFICATION_ID = 123;
 
     @Override
@@ -58,9 +59,7 @@ public class DataReceiverService extends Service {
 
     }
 
-    public void setChatActivity(ChatActivity chatActivity) {
-        this.chatActivity = chatActivity;
-    }
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         // 소켓 연결 상태 확인 및 재연결 작업 시작

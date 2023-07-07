@@ -9,4 +9,8 @@ public class pkData {
     public pkData(int ID) {
         this.ID = ID;
     }
+
+    public int getPk(){
+        return ID;
+    }
 }

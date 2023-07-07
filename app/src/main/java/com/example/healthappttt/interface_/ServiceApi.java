@@ -36,6 +36,9 @@ public interface ServiceApi {
     @POST("/getBlackList")// 차단목록에서 차단 유저 리스트 가져오는 api
     Call<List<BlackListData>> getBlackList(@Body UserKey userKey);
 
+    @POST("/getMSGFromServer")
+    Call<List<MSG>> getMSGFromServer(@Body pkData pk);
+
     @POST("/getReviewList") //받은 후기에서 후기 리스트 가져오는 api
     Call<List<ReviewListData>> getReviewList(@Body UserKey userKey);
 

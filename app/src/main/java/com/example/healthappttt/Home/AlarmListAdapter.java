@@ -52,7 +52,7 @@ public class AlarmListAdapter extends RecyclerView.Adapter<AlarmListAdapter.Alar
 
         public AlarmListViewHolder(@NonNull View itemView) {
             super(itemView);
-            userName = itemView.findViewById(R.id.txt_name);
+            userName = itemView.findViewById(R.id.UNE);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

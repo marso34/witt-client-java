@@ -5,6 +5,7 @@ import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 import android.content.Context;
 import android.util.Log;
 
+import com.example.healthappttt.Chat.ChatActivity;
 import com.example.healthappttt.Data.PreferenceHelper;
 import com.example.healthappttt.Data.SQLiteUtil;
 
@@ -26,6 +27,7 @@ public class SocketSingleton {
     private static Context context;
     private PreferenceHelper prefhelper;
     private SQLiteUtil sqLiteUtil;
+    private ChatActivity chatActivity;
 
     private SocketSingleton(Context context) {
         try {
@@ -38,7 +40,6 @@ public class SocketSingleton {
             e.printStackTrace();
         }
         this.context = context;
-        prefhelper = new PreferenceHelper(context);
         connectSocket();
         setupSocketListeners();
         receiveMessage();
@@ -69,11 +70,14 @@ public class SocketSingleton {
             }
         });
     }
+
     private void receiveMessage() {
+        prefhelper = new PreferenceHelper("UserTB",context);
         mSocket.on("receiveMessage", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
                 // 서버로부터 메시지를 수신했을 때의 동작 처리
+                Log.d(TAG, "callaa: ");
                 mSocket.emit("completeMessage");
                 JSONObject data = (JSONObject) args[0];
                 try {
@@ -86,6 +90,7 @@ public class SocketSingleton {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                chatActivity.getMessagesFromRealTime();
                 // 받은 메시지를 처리하는 로직 작성
             }
         });
@@ -93,6 +98,7 @@ public class SocketSingleton {
 
 
     private void SqlLiteSaveMessage(int myFlag,String message,int chatRoomId){
+        sqLiteUtil.setInitView(context,"CHAT_MSG_TB");
         sqLiteUtil.insert(myFlag,message,chatRoomId);
         Log.d(TAG, "SqlLiteSaveMessage: 메세지 저장 완료"+message);
     }
@@ -106,6 +112,7 @@ public class SocketSingleton {
             e.printStackTrace();
         }
         mSocket.emit("insertSocket", data);
+        Log.d(TAG, "insertSocket: "+data);
     }
     public static SocketSingleton getInstance(Context context_) {
         if (instance == null) {
@@ -153,6 +160,12 @@ public class SocketSingleton {
             return mSocket.id();
         }
         return null;
+    }
+    public void setChatActivity(ChatActivity chatActivity) {
+        if (chatActivity == null) {
+            throw new IllegalArgumentException("chatActivity cannot be null");
+        }
+        this.chatActivity = chatActivity;
     }
 
     // 다른 메소드 및 이벤트 핸들러 등 추가 구현 가능
