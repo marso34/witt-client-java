@@ -58,6 +58,8 @@ public class BlockUserAdapter extends RecyclerView.Adapter<BlockUserAdapter.View
         this.activity = activity;
         this.database = SQLiteUtil.getInstance();
 
+        // 이 부분 와일드카드 써서 최적화 가능할듯
+        
         if (blackList != null) {
             this.BlockList = blackList;
         }else if (reviewList != null) {

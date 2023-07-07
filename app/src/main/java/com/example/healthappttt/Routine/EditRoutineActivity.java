@@ -84,11 +84,10 @@ public class EditRoutineActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         routine = (RoutineData) intent.getSerializableExtra("routine");
-        exercises = (ArrayList<ExerciseData>) intent.getSerializableExtra("exercises");
 
         init();
 
-        if (exercises != null)
+        if (routine != null)
             setRecyclerView();
 
         DayOfWeekGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -247,7 +246,7 @@ public class EditRoutineActivity extends AppCompatActivity {
     }
 
     private void setRecyclerView() {
-        adapter = new ExerciseInputAdapter(exercises, true);
+        adapter = new ExerciseInputAdapter(routine.getExercises(), true);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);

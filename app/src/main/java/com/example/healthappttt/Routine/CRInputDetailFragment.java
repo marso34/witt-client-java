@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -122,7 +123,7 @@ public class CRInputDetailFragment extends Fragment {
         NextTxt.setTextColor(Color.parseColor("#ffffff"));
 
         NextBtn.setOnClickListener(v -> {
-            mListener.onRoutineExDetail(adapter.getInputData());
+            mListener.onRoutineExDetail(exercises);
         });
 
         return view;

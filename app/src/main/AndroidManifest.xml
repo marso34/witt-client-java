@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.healthappttt"
     tools:targetApi="m">
+
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -21,19 +22,21 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".RoutineActivity"
+            android:exported="false" />
+        <activity
             android:name=".Profile.MyProfileEdit"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
-        </activity>
-<!--        <activity-->
-<!--            android:name=".WHChildFragment"-->
-<!--            android:exported="false">-->
-<!--            <meta-data-->
-<!--                android:name="android.app.lib_name"-->
-<!--                android:value="" />-->
-<!--        </activity>-->
+        </activity> <!-- <activity -->
+        <!-- android:name=".WHChildFragment" -->
+        <!-- android:exported="false"> -->
+        <!-- <meta-data -->
+        <!-- android:name="android.app.lib_name" -->
+        <!-- android:value="" /> -->
+        <!-- </activity> -->
         <activity
             android:name=".Profile.WittHistoryActivity"
             android:exported="false">
@@ -41,10 +44,12 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+
         <service
             android:name=".interface_.DataReceiverService"
             android:enabled="true"
             android:exported="false" />
+
         <activity
             android:name=".Profile.ReviewsRecdAtivity"
             android:exported="false">

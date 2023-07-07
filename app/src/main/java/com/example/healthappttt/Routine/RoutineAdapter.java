@@ -23,20 +23,17 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
     private Context context;
     private ArrayList<RoutineData> routines;
 
-    private boolean isRecoding;
+    private int attribute; // == 0 내 루틴, attribute > 0 운동 기록할 때 선택용, attribute < 0 남의 루틴
 
     private OnClickRoutine onClickRoutine;
 
-    public RoutineAdapter(Context context, ArrayList<RoutineData> routines) {
+    /**
+     * @attribute attribute(운동 기록) > 0  or attribute == 0(내 루틴) or attribute < 0(다른 사람 루틴)
+     */
+    public RoutineAdapter(Context context, ArrayList<RoutineData> routines, int attribute) {
         this.routines = routines;
         this.context = context;
-        this.isRecoding = false;
-    }
-
-    public RoutineAdapter(Context context, ArrayList<RoutineData> routines, boolean isRecoding) {
-        this.routines = routines;
-        this.context = context;
-        this.isRecoding = isRecoding;
+        this.attribute = attribute;
     }
 
     public static class MainViewHolder extends RecyclerView.ViewHolder {
@@ -68,7 +65,7 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
         final MainViewHolder mainViewHolder = new MainViewHolder(view);
 
         mainViewHolder.ClickLayout.setOnClickListener(v -> {
-            if (isRecoding) {
+            if (attribute > 0) {
                 int position = mainViewHolder.getAbsoluteAdapterPosition();
 
                 onClickRoutine.onClickRoutine(routines.get(position));
@@ -88,20 +85,25 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
     public void onBindViewHolder(@NonNull MainViewHolder holder, int position) {
         if (routines.size() > 0) {
             holder.RoutineLayout.setVisibility(View.VISIBLE);
-            holder.ClickLayout.setVisibility(View.GONE);
             holder.NullLayout.setVisibility(View.GONE);
+            holder.ClickLayout.setVisibility(View.GONE);
+
             holder.startTimeView.setText(TimeToString(routines.get(position).getStartTime()));
             holder.endTimeView.setText(TimeToString(routines.get(position).getEndTime()));
 
+            if (attribute == 0) { // 내 루틴
+
+            } else if (attribute > 0) { // 운동 기록
+                holder.ClickLayout.setVisibility(View.VISIBLE);
+                holder.EditBtn.setVisibility(View.GONE);
+            } else { // 다른 사람 루틴
+                holder.EditBtn.setVisibility(View.GONE);
+            }
+
             setRecyclerView(holder.recyclerView, holder.adapter, position);
 
-            if (isRecoding) {
-                holder.EditBtn.setVisibility(View.GONE);
-                holder.ClickLayout.setVisibility(View.VISIBLE);
-            }
         } else {
             holder.RoutineLayout.setVisibility(View.GONE);
-            holder.ClickLayout.setVisibility(View.GONE);
             holder.NullLayout.setVisibility(View.VISIBLE);
         }
     }

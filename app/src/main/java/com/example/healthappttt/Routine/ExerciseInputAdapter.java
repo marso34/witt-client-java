@@ -22,7 +22,7 @@ public class ExerciseInputAdapter extends RecyclerView.Adapter<ExerciseInputAdap
     private ArrayList<ExerciseData> exercises;
     private boolean isEdit;
 
-    public ExerciseInputAdapter(ArrayList<ExerciseData> exercises) {
+    public ExerciseInputAdapter(ArrayList<ExerciseData> exercises) { // 드래그 앤 드롭 추가할 것
         this.exercises = exercises;
         this.isEdit = false;
     }
@@ -132,7 +132,7 @@ public class ExerciseInputAdapter extends RecyclerView.Adapter<ExerciseInputAdap
 
     @Override
     public void onBindViewHolder(@NonNull MainViewHolder holder, int position) {
-        holder.CatView.setText(this.exercises.get(position).getState()); // 운동 부위
+        holder.CatView.setText(this.exercises.get(position).getStrCat()); // 운동 부위
         holder.CatView.setTextColor(Color.parseColor(this.exercises.get(position).getTextColor())); // 부위 텍스트 색
         holder.CatView.setBackgroundColor(Color.parseColor(this.exercises.get(position).getColor())); // 부위 바탕 색
         holder.NameView.setText(this.exercises.get(position).getExerciseName()); // 운동 이름
@@ -152,6 +152,4 @@ public class ExerciseInputAdapter extends RecyclerView.Adapter<ExerciseInputAdap
         exercises.remove(position);
         notifyItemRemoved(position);
     }
-
-    public ArrayList<ExerciseData> getInputData() { return exercises; }
 }

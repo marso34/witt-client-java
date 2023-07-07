@@ -24,6 +24,8 @@ public class RoutineFragment extends Fragment {
     private TabLayout tabLayout;
     private ViewPager2 viewPager;
     private RoutinePagerAdapter pagerAdapter;
+
+    private int code;
     
 
     // TODO: Rename parameter arguments, choose names that match
@@ -68,7 +70,13 @@ public class RoutineFragment extends Fragment {
         tabLayout = view.findViewById(R.id.tab_layout);
         viewPager = view.findViewById(R.id.view_pager);
 
-        pagerAdapter = new RoutinePagerAdapter(this);
+        if (getArguments() != null) {
+            code = getArguments().getInt("code");
+        } else {
+            code = 285; // 나중에 PreferenceHelper 이용해서 유저pk로 수정
+        }
+
+        pagerAdapter = new RoutinePagerAdapter(this, code);
         pagerAdapter.createFragment(0);
         pagerAdapter.createFragment(1);
         pagerAdapter.createFragment(2);
