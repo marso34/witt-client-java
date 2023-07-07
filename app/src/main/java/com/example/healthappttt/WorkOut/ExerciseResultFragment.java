@@ -110,7 +110,13 @@ public class ExerciseResultFragment extends Fragment {
         String min = minSec.substring(0, minSec.indexOf(":"));
         String sec = minSec.substring(minSec.indexOf(":")+1);
 
-        @SuppressLint("DefaultLocale") String result = String.format("%s시간 %s분 %s초", hour, min, sec);
+        String result = "";
+        int h = Integer.parseInt(hour), m = Integer.parseInt(min), s = Integer.parseInt(sec);
+
+        if (h == 0)     result += h + "시간";
+        if (h == 0)     result += m + "분";
+        if (h == 0)     result += s + "초";
+
         return result;
     }
 
