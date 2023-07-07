@@ -17,14 +17,27 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.example.healthappttt.Data.Exercise.GetRoutine;
+import com.example.healthappttt.Data.Exercise.RecordData;
 import com.example.healthappttt.Data.Exercise.RoutineData;
 import com.example.healthappttt.Data.Exercise.RoutineComparator;
+import com.example.healthappttt.Data.PreferenceHelper;
+import com.example.healthappttt.Data.RetrofitClient;
 import com.example.healthappttt.Data.SQLiteUtil;
 import com.example.healthappttt.R;
+import com.example.healthappttt.interface_.ServiceApi;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
+import java.util.prefs.PreferenceChangeEvent;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -37,7 +50,11 @@ public class RoutineChildFragment extends Fragment {
     private RoutineAdapter adapter;
     private CardView addRoutineBtn;
 
+
+    private ServiceApi service;
     private SQLiteUtil sqLiteUtil;
+    private PreferenceHelper prefhelper;
+
     private ArrayList<RoutineData> routines;
     private int dayOfWeek;
     private int code;
@@ -124,6 +141,9 @@ public class RoutineChildFragment extends Fragment {
 
         recyclerView = view.findViewById(R.id.recyclerView);
         addRoutineBtn = view.findViewById(R.id.addRoutine);
+//        prefhelper = new PreferenceHelper(this);
+
+        routines = new ArrayList<>();
 
         if (code == 285) { // 내 루틴 표시, 나중에 PreferenceHelper 이용해서 유저pk로 수정
             sqLiteUtil = SQLiteUtil.getInstance();
@@ -141,6 +161,27 @@ public class RoutineChildFragment extends Fragment {
 
         } else { // 남의 루틴 표시, 여기는 서버에서 받아오는 코드
             addRoutineBtn.setVisibility(View.GONE);
+
+            service = RetrofitClient.getClient().create(ServiceApi.class);
+            service.selectRoutine(new GetRoutine(code, dayOfWeek)).enqueue(new Callback<List<RoutineData>>() {
+                @Override
+                public void onResponse(Call<List<RoutineData>> call, Response<List<RoutineData>> response) {
+                    if (response.isSuccessful()) {
+                        Toast.makeText(getContext(), "루틴 불러오기 성공!!!", Toast.LENGTH_SHORT).show();
+                        Log.d("성공", "루틴 불러오기 성공");
+
+                    } else {
+                        Toast.makeText(getContext(), "루틴 불러오기 실패!!!", Toast.LENGTH_SHORT).show();
+                        Log.d("실패", "루틴 불러오기 실패");
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<RoutineData>> call, Throwable t) {
+                    Toast.makeText(getContext(), "서버 연결 실패..", Toast.LENGTH_SHORT).show();
+                    Log.d("실패", t.getMessage());
+                }
+            });
         }
 
         Collections.sort(routines, new RoutineComparator());

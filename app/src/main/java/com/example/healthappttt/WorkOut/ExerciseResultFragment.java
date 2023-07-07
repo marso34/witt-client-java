@@ -113,9 +113,10 @@ public class ExerciseResultFragment extends Fragment {
         String result = "";
         int h = Integer.parseInt(hour), m = Integer.parseInt(min), s = Integer.parseInt(sec);
 
-        if (h == 0)     result += h + "시간";
-        if (h == 0)     result += m + "분";
-        if (h == 0)     result += s + "초";
+        if (h > 0)     result += h + "시간 ";
+        if (m > 0)     result += m + "분 ";
+        if (s > 0)     result += s + "초";
+        if (result == null) result = "0초";
 
         return result;
     }

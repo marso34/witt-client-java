@@ -1,5 +1,6 @@
 package com.example.healthappttt.interface_;
 
+import com.example.healthappttt.Data.Exercise.GetRoutine;
 import com.example.healthappttt.Data.User.BlackListData;
 import com.example.healthappttt.Data.User.GetUserInfo;
 import com.example.healthappttt.Data.Chat.MSD;
@@ -57,7 +58,7 @@ public interface ServiceApi {
     Call<Integer> updateRoutine(@Body RoutineData data);
 
     @POST("/routine/SelectRoutine")
-    Call<List<RoutineData>> selectRoutine(@Body pkData data);
+    Call<List<RoutineData>> selectRoutine(@Body GetRoutine data);
 
     @POST("/record/RecordExercise")
     Call<List<Integer>> recordExercise(@Body RecordData data);
