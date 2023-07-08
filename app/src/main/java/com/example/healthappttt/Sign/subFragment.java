@@ -39,11 +39,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.libraries.places.api.Places;
-import com.google.android.libraries.places.api.model.AutocompletePrediction;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.net.FetchPlaceRequest;
 import com.google.android.libraries.places.api.net.FetchPlaceResponse;
-import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest;
 import com.google.android.libraries.places.api.net.PlacesClient;
 
 import org.json.JSONArray;
@@ -304,37 +302,6 @@ public class subFragment extends Fragment implements OnMapReadyCallback, Locatio
         } catch (JSONException e) {
             e.printStackTrace();
         }
-    }
-
-
-    private List<String> getAssociatedLocations(String query) {
-        // Initialize Places API
-        Places.initialize(requireContext(), "YOUR_API_KEY");
-
-        // Create PlacesClient
-        PlacesClient placesClient = Places.createClient(requireContext());
-
-        List<String> associatedLocations = new ArrayList<>();
-
-        // Create Autocomplete request
-        FindAutocompletePredictionsRequest request = FindAutocompletePredictionsRequest.builder()
-                .setQuery(query)
-                .build();
-
-        // Perform Autocomplete request
-        placesClient.findAutocompletePredictions(request)
-                .addOnSuccessListener((response) -> {
-                    for (AutocompletePrediction prediction : response.getAutocompletePredictions()) {
-                        String location = prediction.getFullText(null).toString();
-                        associatedLocations.add(location);
-                    }
-                    locationAdapter.notifyDataSetChanged();
-                })
-                .addOnFailureListener((exception) -> {
-                    // Handle failure
-                });
-
-        return associatedLocations;
     }
 
 
