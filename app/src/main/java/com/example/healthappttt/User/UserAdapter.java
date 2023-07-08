@@ -1,6 +1,7 @@
 package com.example.healthappttt.User;//package com.example.healthappttt.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.healthappttt.Data.UserInfo;
+import com.example.healthappttt.Profile.MyProfileActivity;
 import com.example.healthappttt.R;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -86,10 +88,10 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Intent intent = new Intent(mContext, ProfileActivity.class);
-                //intent.putExtra("UserInfo",userInfo);
+                Intent intent = new Intent(mContext, MyProfileActivity.class);
+                intent.putExtra("UserKey",userInfo.getUserKey());
 //                intent.putExtra("post",finalProfilefile);
-                //mContext.startActivity(intent);
+                mContext.startActivity(intent);
             }
         });
 

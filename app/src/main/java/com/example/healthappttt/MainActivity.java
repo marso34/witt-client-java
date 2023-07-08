@@ -85,11 +85,11 @@ public class MainActivity extends AppCompatActivity {
     Button mGoogleSignOutButton;
     private LoginActivity loginActivity;
     private int dayOfWeek;
-
+    private String uk;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        String uk = getIntent().getStringExtra("userKey");
+        uk = getIntent().getStringExtra("userKey");
         if(uk != null){
             userKey = new UserKey(Integer.parseInt(uk));
         }
@@ -236,6 +236,8 @@ public class MainActivity extends AppCompatActivity {
         binding.myInformation.setOnClickListener(view -> {
                 //showUserInfoPopup(useremail); // 자신의 이메일 정보를 보여주는 팝업
             Intent intent = new Intent(MainActivity.this, MyProfileActivity.class);
+            intent.putExtra("myPK", uk);
+            //Log.d("main에서 넘겨주는 myPK",uk);
             startActivity(intent);
         });
 
@@ -274,6 +276,7 @@ public class MainActivity extends AppCompatActivity {
 
                 } else {
                     // 서버 응답이 실패했을때
+                    Toast.makeText(MainActivity.this, "서버 연결 실패", Toast.LENGTH_SHORT).show();
                     Log.d("MainActivity", "서버 응답 실패. 상태코드:" + response.code());
                 }
             }

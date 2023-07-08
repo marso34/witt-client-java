@@ -161,6 +161,7 @@ public class PreferenceHelper
         edit.putInt("squatValue", (Integer) userdefault.get("squatValue"));
         edit.putInt("benchValue", (Integer) userdefault.get("benchValue"));
         edit.putInt("deadValue", (Integer) userdefault.get("deadValue"));
+        edit.putInt("totalValue",(Integer) userdefault.get("totalValue"));
         edit.apply();
         Log.d("sharedpref","유저 기본 정보 로컬 저장 완료 ");
 

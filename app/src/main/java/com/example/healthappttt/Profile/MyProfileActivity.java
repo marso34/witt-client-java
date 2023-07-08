@@ -47,30 +47,10 @@ public class MyProfileActivity extends AppCompatActivity {
 
         binding = ActivityMyprofileBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        //prefhelper = new PreferenceHelper("default_user_info",this);
 
-        //기본 텍스트 세팅 TODO 이걸로 추후에 바꿔서 연결해야함
-        //prefhelper = new PreferenceHelper(name_TB);
-        //userDefualt = prefhelper.getUserData(shared_pref);
-
-        //testcase
-        userDefault = new HashMap<>();
-        userDefault.put("name","이형원");
-        userDefault.put("gender",0);
-        userDefault.put("height", 175);
-        userDefault.put("weight", 87);
-        userDefault.put("squatValue", 80);
-        userDefault.put("benchValue", 90);
-        userDefault.put("deadValue", 100);
-
-        prefhelper = new PreferenceHelper("default_user_info",this);
-        prefhelper.putUserDefault(userDefault);
-
-
-        //버튼
-        block_btn = findViewById(R.id.block_btn);
         Reviews_btn = findViewById(R.id.Reviews_Recd);
         WittHistory_btn = findViewById(R.id.WittHistory);
-        PEdit = findViewById(R.id.PEdit);
         //텍스트
         name = findViewById(R.id.name);
         gender = findViewById(R.id.gender);
@@ -81,6 +61,48 @@ public class MyProfileActivity extends AppCompatActivity {
         Pdeadlift = findViewById(R.id.Pdeadlift);
         //이미지
         ProfileImg = findViewById(R.id.ProfileImg);
+//-------------------------------------------------------------------------------------
+        prefhelper = new PreferenceHelper("UserTB",this);
+        Intent intent = getIntent();//넘겨받은 pk를 담은 번들
+        if(intent.getStringExtra("myPK").equals( String.valueOf(prefhelper.getPK()) )){ //내 pk이면 마이 프로필
+
+        Log.d("프로필에서 membership으로 받기O",String.valueOf(prefhelper.getPK()));
+        Log.d("프로필에서 membership으로 받기O",intent.getStringExtra("myPK"));
+
+        }else{ // 내 pk가 아니면 상대 프로필
+            Log.d("프로필에서 membership으로 받기X",String.valueOf(prefhelper.getPK()));
+            Log.d("프로필에서 membership으로 받기X",intent.getStringExtra("myPK"));
+        }
+
+        //기본 텍스트 세팅 TODO 이걸로 추후에 바꿔서 연결해야함
+        //prefhelper = new PreferenceHelper(name_TB);
+        //userDefualt = prefhelper.getUserData(shared_pref);
+        prefhelper = new PreferenceHelper("membership",this);
+        Log.d("membership", String.valueOf(prefhelper.getUserData().get("name")));
+        // TODO 테스트케이스 -> 진짜로 받아온 데이터를 userDefault에 넣어 놓아야함
+        // TODO 단, putUserDefault로 따로 저장 X (테스트하려고 했기때문)
+        // TODO 수정하기 버튼 눌렀을때 참조 로컬 이름도 membership으로 바꿔야함
+        // TODO 수정하기 플로우 다시 한번 확인 해야할듯
+
+        //testcase----------------------//
+        userDefault = new HashMap<>();
+        userDefault.put("name","이형원");
+        userDefault.put("gender",0);
+        userDefault.put("height", 175);
+        userDefault.put("weight", 87);
+        userDefault.put("squatValue", 80);
+        userDefault.put("benchValue", 90);
+        userDefault.put("deadValue", 100);
+        userDefault.put("totalValue",270);
+
+        prefhelper.putUserDefault(userDefault);
+        //----------------------testcase//
+
+        //버튼
+        block_btn = findViewById(R.id.block_btn);
+
+        PEdit = findViewById(R.id.PEdit);
+
 
         setDefault(userDefault);
 
