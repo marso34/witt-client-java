@@ -51,7 +51,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private SignInButton mGoogleSignInButton;
     private ActivityResultLauncher<Intent> startActivityResult; // startActivityForResult 대체 방법
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -122,7 +121,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private void updateUI(@Nullable GoogleSignInAccount account) {
 
         if (account != null) {
-
             // Get Google ID token
             String token = account.getIdToken();
             String email = account.getEmail();

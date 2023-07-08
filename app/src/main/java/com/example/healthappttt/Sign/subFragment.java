@@ -387,6 +387,7 @@ public class subFragment extends Fragment implements OnMapReadyCallback, Locatio
         }
 
         private void getPlaceDetails(String placeId) {
+
             List<Place.Field> fields = Arrays.asList(Place.Field.LAT_LNG);
 
             FetchPlaceRequest request = FetchPlaceRequest.newInstance(placeId, fields);
@@ -398,7 +399,7 @@ public class subFragment extends Fragment implements OnMapReadyCallback, Locatio
                     LatLng latLng = place.getLatLng();
                     double latitude = latLng.latitude;
                     double longitude = latLng.longitude;
-
+                    Log.d(TAG, "wwwwwww: "+latitude+"aaaa"+longitude);
                     // Perform any action with latitude and longitude values
                     ((SubActivity) getActivity()).replaceFragment(sub1Fragment.newInstance(email, lat, lon, latitude, longitude, L.getName()));
                 }
