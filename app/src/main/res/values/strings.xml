@@ -1,0 +1,27 @@
+<resources>
+    <string name = "google_places_api_key">AIzaSyA6RE55LrazpWCOa0lRu0xOzNInsKHDnMU</string>
+    <string name="app_name">위트 With Training</string>
+    <string name="title_activity_join">JoinActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="send_button_desc">보내기</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="google_sign_in_client_id">623808844486-25q1loc8j4lss4dl0k24kc0k6sapv3rm.apps.googleusercontent.com</string>
+
+    <style name="profile_style" parent="android:Widget.TextView">
+        <item name="android:fontFamily">@font/spoqa_han_sans_neo</item>
+        <item name="android:textColor">#111111</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+</resources>
