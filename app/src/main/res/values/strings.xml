@@ -1,5 +1,5 @@
 <resources>
-    <string name = "google_places_api_key">AIzaSyABHVsl-g49X8e4UqO8u3V_b-J72wNl3ew</string>
+    <string name = "google_places_api_key">AIzaSyA6RE55LrazpWCOa0lRu0xOzNInsKHDnMU</string>
     <string name="app_name">위트 With Training</string>
     <string name="title_activity_join">JoinActivity</string>
     <!-- Strings used for fragments for navigation -->
@@ -13,7 +13,7 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="google_sign_in_client_id">623808844486-25q1loc8j4lss4dl0k24kc0k6sapv3rm.apps.googleusercontent.com</string>
+    <string name="google_sign_in_client_id">882480073865-cl8r4mir77ut5vor55vkd3lafh4ghdnn.apps.googleusercontent.com</string>
 
     <style name="profile_style" parent="android:Widget.TextView">
         <item name="android:fontFamily">@font/spoqa_han_sans_neo</item>
