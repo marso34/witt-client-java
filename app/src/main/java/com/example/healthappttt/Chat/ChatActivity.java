@@ -139,7 +139,7 @@ public class ChatActivity extends AppCompatActivity {
             Log.d(TAG, "getMessagesFromRealTime: error ");
         }
 
-        messageList.clear(); // 기존의 메시지 리스트를 비웁니다.
+//        messageList.clear(); // 기존의 메시지 리스트를 비웁니다.
 
         for (MSG msg : newMessages) {
             messageList.add(msg);

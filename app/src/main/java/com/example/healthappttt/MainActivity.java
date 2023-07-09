@@ -536,6 +536,8 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         // Update UI after sign out
+                        Intent serviceIntent = new Intent(getApplicationContext(), DataReceiverService.class);
+                        stopService(serviceIntent);
                         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                         startActivity(intent);
                         finish();
