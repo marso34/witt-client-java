@@ -24,8 +24,6 @@ import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -77,7 +75,7 @@ public class ChatActivity extends AppCompatActivity {
         messageRecyclerView.setAdapter(messageListAdapter);
 
         // 서버로부터 메시지 목록을 가져와서 messageList에 저장합니다.
-        getMessagesFromRealTime();
+        getAllMSG();
 
         // 보내기 버튼의 클릭 리스너를 설정합니다.
         sendButton.setOnClickListener(new View.OnClickListener() {
@@ -97,17 +95,17 @@ public class ChatActivity extends AppCompatActivity {
 
                     // 새로운 메시지를 생성합니다.
                     MSG newMessage = new MSG(1, Integer.parseInt(chatRoomId), messageText, currentTime);
-
+                    SaveMyMessage(1,messageText,Integer.parseInt(chatRoomId));
                     // 메시지를 리스트에 추가합니다.
                     messageList.add(newMessage);
-                    Collections.sort(messageList, new Comparator<MSG>() {
-                        @Override
-                        public int compare(MSG msg1, MSG msg2) {
-                            long timestamp1 = msg1.getTimestamp();
-                            long timestamp2 = msg2.getTimestamp();
-                            return Long.compare(timestamp1, timestamp2);
-                        }
-                    });
+//                    Collections.sort(messageList, new Comparator<MSG>() {
+//                        @Override
+//                        public int compare(MSG msg1, MSG msg2) {
+//                            long timestamp1 = msg1.getTimestamp();
+//                            long timestamp2 = msg2.getTimestamp();
+//                            return Long.compare(timestamp1, timestamp2);
+//                        }
+//                    });
                     // 어댑터를 갱신합니다.
                     messageListAdapter.notifyDataSetChanged();
 
@@ -124,6 +122,31 @@ public class ChatActivity extends AppCompatActivity {
     public String getChatRoomId (){
         return chatRoomId;
     }
+    private void SaveMyMessage(int myFlag,String message,int chatRoomId){
+        SQLiteUtil sqLiteUtil = SQLiteUtil.getInstance();
+        sqLiteUtil.setInitView(this,"CHAT_MSG_TB");
+        sqLiteUtil.insert(1,message,chatRoomId,0);
+        Log.d(TAG, "SqlLiteSaveMessage: 메세지 저장 완료"+message);
+    }
+    public void getAllMSG(){
+
+        SQLiteUtil sqLiteUtil = SQLiteUtil.getInstance();
+        sqLiteUtil.setInitView(this, "CHAT_MSG_TB");
+        messageList.addAll(sqLiteUtil.SelectAllMSG(Integer.parseInt(chatRoomId)));
+        for (MSG M : messageList){
+            Log.d(TAG, "getAllMSG: "+M.getMyFlag());
+        }
+
+//        Collections.sort(messageList, new Comparator<MSG>() {
+//            @Override
+//            public int compare(MSG msg1, MSG msg2) {
+//                long timestamp1 = msg1.getTimestamp();
+//                long timestamp2 = msg2.getTimestamp();
+//                return Long.compare(timestamp1, timestamp2);
+//            }
+//        });
+        messageListAdapter.notifyDataSetChanged();
+    }
     // 서버에서 메시지 목록을 가져오는 메소드입니다.
     public void getMessagesFromRealTime() {
         List<MSG> newMessages = null;
@@ -139,20 +162,19 @@ public class ChatActivity extends AppCompatActivity {
             Log.d(TAG, "getMessagesFromRealTime: error ");
         }
 
-//        messageList.clear(); // 기존의 메시지 리스트를 비웁니다.
 
         for (MSG msg : newMessages) {
             messageList.add(msg);
             Log.d(TAG, "getMessagesFromServer: " + msg.getMessage());
         }
-        Collections.sort(messageList, new Comparator<MSG>() {
-            @Override
-            public int compare(MSG msg1, MSG msg2) {
-                long timestamp1 = msg1.getTimestamp();
-                long timestamp2 = msg2.getTimestamp();
-                return Long.compare(timestamp1, timestamp2);
-            }
-        });
+//        Collections.sort(messageList, new Comparator<MSG>() {
+//            @Override
+//            public int compare(MSG msg1, MSG msg2) {
+//                long timestamp1 = msg1.getTimestamp();
+//                long timestamp2 = msg2.getTimestamp();
+//                return Long.compare(timestamp1, timestamp2);
+//            }
+//        });
         runOnUiThread(new Runnable() {
             @Override
             public void run() {

@@ -3,7 +3,9 @@ package com.example.healthappttt;
 import static android.content.ContentValues.TAG;
 
 import android.Manifest;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -45,6 +47,7 @@ import com.example.healthappttt.Routine.RoutineFragment;
 import com.example.healthappttt.Sign.LoginActivity;
 import com.example.healthappttt.WorkOut.ExerciseRecordActivity;
 import com.example.healthappttt.databinding.ActivityMainBinding;
+import com.example.healthappttt.interface_.AlarmRecever;
 import com.example.healthappttt.interface_.DataReceiverService;
 import com.example.healthappttt.interface_.ServiceApi;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -85,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
     Button mGoogleSignOutButton;
     private LoginActivity loginActivity;
     private int dayOfWeek;
-
+    Intent serviceIntent;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
             // Foreground service permission not granted, handle it accordingly (e.g., request permission)
         } else {
             // Foreground service permission granted, start the service
-            Intent serviceIntent = new Intent(this, DataReceiverService.class);
+            serviceIntent = new Intent(this, DataReceiverService.class);
             startService(serviceIntent);
         }
 
@@ -252,6 +255,30 @@ public class MainActivity extends AppCompatActivity {
         getMSGFromServer(new pkData(userKey.getPk()));
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        serviceIntent = null;
+        setAlarmTimer();
+        Thread.currentThread().interrupt();
+    }
+    private void setAlarmTimer() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.add(Calendar.SECOND, 1);
+
+        Intent intent = new Intent(this, AlarmRecever.class);
+        // ...
+
+        PendingIntent sender = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_IMMUTABLE); // 또는 PendingIntent.FLAG_MUTABLE
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        if (alarmManager != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), sender);
+            }
+        }
+    }
     //API 요청 후 응답을 shared로 유저테이블 데이터 로컬 저장
     private void getuserProfile(UserKey userKey) {
         Call<List<UserProfile>> call = apiService.getuserprofile(userKey);
@@ -300,7 +327,7 @@ public class MainActivity extends AppCompatActivity {
                     List<MSG> msgList = response.body();
                     for (MSG msg : msgList) {
                         sqLiteUtil.setInitView(getBaseContext(), "CHAT_MSG_TB");
-                        sqLiteUtil.insert(0, msg.getMessage(), msg.getChatRoomId());
+                        sqLiteUtil.insert(2, msg.getMessage(), msg.getChatRoomId(),1);
                         Log.d(TAG, "onResponsechat: " + msg.getChatRoomId());
                     }
                 } else {

@@ -87,7 +87,7 @@ public class SocketSingleton {
                     chatRoomId = data.getString("chatRoomId");
                     if(chatRoomId !=null) {
                         int CRI = Integer.parseInt(chatRoomId);
-                        SqlLiteSaveMessage( 0,message,CRI);
+                        SqlLiteSaveMessage( 2,message,CRI);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -104,7 +104,7 @@ public class SocketSingleton {
 
     private void SqlLiteSaveMessage(int myFlag,String message,int chatRoomId){
         sqLiteUtil.setInitView(context,"CHAT_MSG_TB");
-        sqLiteUtil.insert(myFlag,message,chatRoomId);
+        sqLiteUtil.insert(myFlag,message,chatRoomId,1);
         Log.d(TAG, "SqlLiteSaveMessage: 메세지 저장 완료"+message);
     }
 

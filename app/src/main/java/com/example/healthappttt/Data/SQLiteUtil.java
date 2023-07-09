@@ -124,15 +124,15 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         return existingReviewPK;
     }
 
-    public void insert(int myFlag,String message, int chatRoomId) {
+    public void insert(int myFlag,String message, int chatRoomId,int read) {
         ContentValues values = new ContentValues();
         values.put("MSG", message);
         values.put("CHAT_ROOM_FK", chatRoomId);
-
         // 현재 시간을 포맷에 맞춰서 문자열로 변환
         String timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
         values.put("TS", timestamp);
-        values.put("myFlag",myFlag);
+        values.put("MYFLAG",myFlag);
+        values.put("READ",read);
         try {
             db.insertOrThrow("CHAT_MSG_TB", null, values);
             Log.d(TAG, "데이터 삽입 성공");
@@ -479,13 +479,52 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         }
         return null;
     }
-  
+    public List<MSG> SelectAllMSG(int chatRoomId){
+        List<MSG> messages = new ArrayList<>();
+
+        String[] columns = {"MSG","CHAT_ROOM_FK","TS","MYFLAG"};
+        String selection = "CHAT_ROOM_FK=?";
+        String[] selectionArgs = {String.valueOf(chatRoomId)};
+        String orderBy = "TS ASC"; // 시간 순으로 정렬
+        Cursor cursor = db.query("CHAT_MSG_TB", columns, selection, selectionArgs, null, null, orderBy);
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                String message = "값 없음";
+                String TS = "";
+                String mfl = "1";
+                int MSGIndex = cursor.getColumnIndex("MSG");
+                int mf =  cursor.getColumnIndex("MYFLAG");
+                int TSIndex = cursor.getColumnIndex("TS");
+                Log.d(TAG, "SelectAllMSG111: " +mf);
+                Log.d(TAG, "SelectAllMSG111: " +MSGIndex);
+                if (MSGIndex != -1) {
+                    message = cursor.getString(MSGIndex);
+                    // 메시지 처리 로직 작성
+                } else {
+                    // 컬럼이 존재하지 않을 경우 처리 로직 작성
+                }
+                if(TSIndex != -1){
+                    TS = cursor.getString(TSIndex);
+                }
+                if(mf != -1)
+                {
+                    mfl = cursor.getString(mf);
+                }
+
+                else Log.d(TAG, "SelectAllMSG: " +mf);
+                messages.add(new MSG(Integer.parseInt(mfl),chatRoomId,message,TS));
+            } while (cursor.moveToNext());
+        }
+        return messages;
+    }
+
+
     public List<MSG> SelectMSG(int myFlag, int chatRoomId) {
         List<MSG> messages = new ArrayList<>();
 
         String[] columns = {"MSG","CHAT_ROOM_FK","TS"};
-        String selection = "CHAT_ROOM_FK=? AND myFlag=?";
-        String[] selectionArgs = {String.valueOf(chatRoomId),String.valueOf(myFlag)};
+        String selection = "CHAT_ROOM_FK=? AND MYFLAG=? AND READ = ?";
+        String[] selectionArgs = {String.valueOf(chatRoomId),String.valueOf(myFlag), String.valueOf(1)};
         String orderBy = "TS ASC"; // 시간 순으로 정렬
 
         Cursor cursor = db.query("CHAT_MSG_TB", columns, selection, selectionArgs, null, null, orderBy);
@@ -508,6 +547,11 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
                 messages.add(new MSG(myFlag,chatRoomId,message,TS));
             } while (cursor.moveToNext());
         }
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("READ", 0);
+        String updateSelection = "CHAT_ROOM_FK=? AND MYFLAG=? AND READ=?";
+        String[] updateSelectionArgs = {String.valueOf(chatRoomId), String.valueOf(myFlag), "1"};
+        db.update("CHAT_MSG_TB", contentValues, updateSelection, updateSelectionArgs);
 
         if (cursor != null) {
             cursor.close();
