@@ -92,10 +92,10 @@ public class SocketSingleton {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                Log.d(TAG, "callcall: " + chatRoomId);
-                if(chatActivity.getChatRoomId().equals(chatRoomId))
-
+                if(chatActivity != null && chatActivity.getChatRoomId().equals(chatRoomId))
                     chatActivity.getMessagesFromRealTime();
+                Log.d(TAG, "callcall: " + chatRoomId);
+
                 // 받은 메시지를 처리하는 로직 작성
             }
         });
