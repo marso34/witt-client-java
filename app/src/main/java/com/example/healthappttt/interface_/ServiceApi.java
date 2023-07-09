@@ -9,6 +9,8 @@ import com.example.healthappttt.Data.Exercise.RecordData;
 import com.example.healthappttt.Data.User.ReviewListData;
 import com.example.healthappttt.Data.Exercise.RoutineData;
 import com.example.healthappttt.Data.Chat.UserChat;
+import com.example.healthappttt.Data.User.SaveImageResponse;
+import com.example.healthappttt.Data.User.UploadResponse;
 import com.example.healthappttt.Data.User.UserClass;
 import com.example.healthappttt.Data.UserInfo;
 import com.example.healthappttt.Data.User.UserKey;
@@ -19,11 +21,17 @@ import com.example.healthappttt.Data.pkData;
 
 import java.util.List;
 
+import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface ServiceApi {
 
@@ -82,4 +90,11 @@ public interface ServiceApi {
     @POST("messages")
     Call<MSG> sendMessage(@Body MSG message);
 
+    @Multipart
+    @POST("uploadImage")
+    Call<UploadResponse> uploadImage(@Part MultipartBody.Part image, @Query("userId") String userId);
+
+    @FormUrlEncoded
+    @POST("saveImageUrl")
+    Call<SaveImageResponse> saveImageUrl(@Field("imageUrl") String imageUrl, @Query("userId") String userId);
 }

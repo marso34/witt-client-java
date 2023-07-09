@@ -4,10 +4,12 @@ package com.example.healthappttt.Sign;
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -204,31 +206,20 @@ public class subFragment extends Fragment implements OnMapReadyCallback, Locatio
     @Override
     public void onPause() {
         super.onPause();
-        // Stop locationupdates
+
         stopLocationUpdates();
     }
     private void performSearch(final String query) {
-        // Clear previous search results
         searchResults.clear();
-        // Split the query into individual words
-        String[] words = query.split(" ");
 
-        // Combine words into a single query string
-        StringBuilder queryBuilder = new StringBuilder();
-        for (String word : words) {
-            queryBuilder.append(word).append(" ");
-        }
-        String fullQuery = queryBuilder.toString().trim();
-
-        // Perform search in background thread
-        new Thread(new Runnable() {
+        @SuppressLint("StaticFieldLeak") AsyncTask<Void, Void, String> searchTask = new AsyncTask<Void, Void, String>() {
             @Override
-            public void run() {
+            protected String doInBackground(Void... voids) {
                 try {
                     OkHttpClient client = new OkHttpClient().newBuilder().build();
 
                     HttpUrl.Builder urlBuilder = HttpUrl.parse("https://maps.googleapis.com/maps/api/place/autocomplete/json").newBuilder();
-                    urlBuilder.addQueryParameter("input", fullQuery);
+                    urlBuilder.addQueryParameter("input", query);
                     urlBuilder.addQueryParameter("types", "establishment");
                     urlBuilder.addQueryParameter("location", String.valueOf(lat) + ", " + String.valueOf(lon)); // 현재 위치
                     urlBuilder.addQueryParameter("radius", "10000");
@@ -245,33 +236,27 @@ public class subFragment extends Fragment implements OnMapReadyCallback, Locatio
 
                     Response response = client.newCall(request).execute();
                     if (response.isSuccessful()) {
-                        String responseBody = response.body().string();
-                        // TODO: Parse the response body and extract the required information
-                        // You can use JSON parsing libraries like Gson or JSONObject to parse the response
-                        // Handle the extracted information as per your requirement
-                        // Example: Log the response body
-                        Log.d("도냐?","ㅁㅁㅁ");
-
-                        // Update the search results on the main thread
-                        if (isAdded()) {
-                            getActivity().runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    parseResponseAndAddLocations(responseBody);
-                                    Log.d("도냐?","ㅁㅁㅁ");
-                                }
-                            });
-                        }
+                        return response.body().string();
                     } else {
-                        // Handle the error response
                         Log.e("Error", "Request failed with code: " + response.code());
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                return null;
             }
-        }).start();
+
+            @Override
+            protected void onPostExecute(String responseBody) {
+                if (responseBody != null) {
+                    parseResponseAndAddLocations(responseBody);
+                }
+            }
+        };
+
+        searchTask.execute();
     }
+
     private void parseResponseAndAddLocations(String responseBody) {
         Log.d(TAG, "parseResponseAndAddLocations: " + responseBody);
         // TODO: Parse the response body and extract the required information
@@ -286,9 +271,9 @@ public class subFragment extends Fragment implements OnMapReadyCallback, Locatio
             for (int i = 0; i < predictions.length(); i++) {
                 JSONObject prediction = predictions.getJSONObject(i);
                 JSONArray terms = prediction.getJSONArray("terms");
-                String buildingName = terms.getJSONObject(i).getString("value");
+                String buildingName = terms.getJSONObject(0).getString("value");
                 String placeId = prediction.getString("place_id");
-                associatedLocations.add(new LocData(buildingName,placeId));
+                associatedLocations.add(new LocData(buildingName, placeId));
             }
 
             // Clear previous search results

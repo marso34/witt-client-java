@@ -2,8 +2,12 @@ package com.example.healthappttt.Sign;
 
 import static android.content.ContentValues.TAG;
 
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +27,7 @@ import com.example.healthappttt.Data.PreferenceHelper;
 import com.example.healthappttt.Data.RetrofitClient;
 import com.example.healthappttt.Data.User.UserClass;
 import com.example.healthappttt.Data.User.UserData;
+import com.example.healthappttt.MainActivity;
 import com.example.healthappttt.R;
 import com.example.healthappttt.interface_.ServiceApi;
 
@@ -44,10 +49,13 @@ public class sub2Fragment extends Fragment {
     private static final String ARG_EMAIL = "email";
     private static final int Platform = 0;
 
+
+    private TextView Sum3;
+    private int sum = 180;
     private String email;
-    private int squatValue = 60;
-    private int benchValue = 60;
-    private int deadliftValue = 60;
+    private int squatValue = 0;
+    private int benchValue = 0;
+    private int deadliftValue = 0;
     private int height = -1;
     private int weight = -1;
     private String name;
@@ -113,21 +121,26 @@ public class sub2Fragment extends Fragment {
         Button deadliftUpButton = view.findViewById(R.id.DeadUpBtn);
         Button deadliftDownButton = view.findViewById(R.id.DeadDownBtn);
         Button checkButton = view.findViewById(R.id.Check);
+        Sum3 = view.findViewById(R.id.sum3);
+        updateSum3();
+
 
         squatUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 squatValue += 5;
                 squatTextView.setText(String.valueOf(squatValue));
+                updateSum3();
             }
         });
 
         squatDownButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(squatValue > 5)
+                if(squatValue > 0)
                     squatValue -= 5;
                 squatTextView.setText(String.valueOf(squatValue));
+                updateSum3();
             }
         });
 
@@ -136,6 +149,7 @@ public class sub2Fragment extends Fragment {
             public void onClick(View v) {
                 benchValue += 5;
                 benchTextView.setText(String.valueOf(benchValue));
+                updateSum3();
             }
         });
 
@@ -143,9 +157,10 @@ public class sub2Fragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                if(benchValue > 5)
+                if(benchValue > 0)
                     benchValue -= 5;
                 benchTextView.setText(String.valueOf(benchValue));
+                updateSum3();
             }
         });
 
@@ -154,15 +169,42 @@ public class sub2Fragment extends Fragment {
             public void onClick(View v) {
                 deadliftValue += 5;
                 deadliftTextView.setText(String.valueOf(deadliftValue));
+                updateSum3();
             }
         });
 
         deadliftDownButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(deadliftValue > 5)
+                if(deadliftValue > 0)
                     deadliftValue -= 5;
                 deadliftTextView.setText(String.valueOf(deadliftValue));
+                updateSum3();
+            }
+        });
+
+        Sum3.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String Sum1 = s.toString();
+                if (Sum1 != "0" || Sum1 != null) {
+                    checkButton.setEnabled(true);
+                    checkButton.setBackgroundResource(R.drawable.enabled_button_background);
+                    checkButton.setTextColor(Color.parseColor("#FEFEFE"));
+
+                } else {
+                    checkButton.setEnabled(false);
+                    checkButton.setBackgroundResource(R.drawable.disabled_button_background);
+                    checkButton.setTextColor(Color.parseColor("#99A4B7"));
+                }
             }
         });
 
@@ -194,8 +236,13 @@ public class sub2Fragment extends Fragment {
                     UserClass sharedUser = new UserClass(getUserDT(),getPhoneInfo(),getMannerInfo(),getLocInfo(),getExPerInfo(),getBodyInfo());
                     prefhelper.putMembership(sharedUser);
 
+                Intent intent = new Intent(getActivity(), MainActivity.class);
+                startActivity(intent);
+
             }
         });
+
+
 
         return view;
     }
@@ -243,5 +290,12 @@ public class sub2Fragment extends Fragment {
             }
         });
     }
+
+    private void updateSum3() {
+        sum = squatValue + benchValue + deadliftValue;
+        Sum3.setText(String.valueOf(sum) + " KG");
+    }
+
+
 
 }

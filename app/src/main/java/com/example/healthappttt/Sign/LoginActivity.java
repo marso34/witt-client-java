@@ -82,7 +82,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             }
         });
 
-        updateUI(GoogleSignIn.getLastSignedInAccount(this));
+        //updateUI(GoogleSignIn.getLastSignedInAccount(this));
     }
 
     private void signIn() {
@@ -140,6 +140,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                         try {
                             String responseString = response.body().string();
                             Log.d(TAG, "onResponse!!: " + responseString);
+
                             if (responseString.equals("Fail")) {
                                 sendData(email, name);
 

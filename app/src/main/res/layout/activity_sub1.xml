@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activity.SubActivity1"
+    tools:context=".Sign.SubActivity"
     android:orientation="vertical">
 
     <ScrollView
@@ -100,7 +100,6 @@
             </android.widget.Button>
 
             <android.widget.Button
-                android:onClick="btnClick2"
                 android:id="@+id/move2"
                 android:layout_width="328dp"
                 android:layout_height="56dp"
