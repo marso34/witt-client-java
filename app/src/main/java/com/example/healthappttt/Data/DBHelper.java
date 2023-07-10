@@ -85,6 +85,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         String createTableQuery = "CREATE TABLE if not exists CHAT_MSG_TB ("
                 +"MSG_PK INTEGER primary key,"
+                + "USER_FK INT,"
                 + "MYFLAG INT ,"
                 + "CHAT_ROOM_FK INT, "
                 + "MSG  VARCHAR(1500), "

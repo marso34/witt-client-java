@@ -30,7 +30,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.healthappttt.Chat.ChattingFragment;
-import com.example.healthappttt.Data.Chat.MSG;
 import com.example.healthappttt.Data.PreferenceHelper;
 import com.example.healthappttt.Data.RetrofitClient;
 import com.example.healthappttt.Data.SQLiteUtil;
@@ -40,7 +39,6 @@ import com.example.healthappttt.Data.User.ReviewListData;
 import com.example.healthappttt.Data.User.UserKey;
 import com.example.healthappttt.Data.User.UserProfile;
 import com.example.healthappttt.Data.User.WittListData;
-import com.example.healthappttt.Data.pkData;
 import com.example.healthappttt.Home.HomeFragment;
 import com.example.healthappttt.Profile.MyProfileActivity;
 import com.example.healthappttt.Routine.RoutineFragment;
@@ -89,9 +87,11 @@ public class MainActivity extends AppCompatActivity {
     private LoginActivity loginActivity;
     private int dayOfWeek;
     Intent serviceIntent;
-
+    private int login;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        login = 1;
+
         String uk = getIntent().getStringExtra("userKey");
         if(uk != null){
             userKey = new UserKey(Integer.parseInt(uk));
@@ -112,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
             // Foreground service permission granted, start the service
             serviceIntent = new Intent(this, DataReceiverService.class);
             startService(serviceIntent);
+            DataReceiverService.setNormalExit(false);
         }
 
         Date currentDate = new Date();
@@ -252,16 +253,17 @@ public class MainActivity extends AppCompatActivity {
         getBlackList(userKey);
         getReviewList(userKey);
         getWittHistory(userKey);
-        getMSGFromServer(new pkData(userKey.getPk()));
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
-        serviceIntent = null;
-        setAlarmTimer();
-        Thread.currentThread().interrupt();
+        if(login == 1) {
+            serviceIntent = null;
+            setAlarmTimer();
+            Thread.currentThread().interrupt();
+            Log.d(TAG, "메인 종료");
+        }
     }
     private void setAlarmTimer() {
         Calendar calendar = Calendar.getInstance();
@@ -278,6 +280,28 @@ public class MainActivity extends AppCompatActivity {
                 alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), sender);
             }
         }
+    }
+    private void signOut() {
+        mGoogleSignInClient.signOut()
+                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        login = 0;
+                        DataReceiverService.setNormalExit(true);
+                        stopService(serviceIntent);
+
+                        // Update UI after sign out
+                        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e("MainActivity", "Google sign out failed", e);
+                    }
+                });
     }
     //API 요청 후 응답을 shared로 유저테이블 데이터 로컬 저장
     private void getuserProfile(UserKey userKey) {
@@ -315,33 +339,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
     //API 요청 후 응답을 SQLite로 차단테이블 데이터 로컬 저장
-    private void getMSGFromServer(pkData userKey){
-        Log.d(TAG, "getMSGFromServer: key " + String.valueOf(userKey.getPk()));
-
-
-        Call<List<MSG>> call = apiService.getMSGFromServer(userKey);
-        call.enqueue(new Callback<List<MSG>>() {
-            @Override
-            public void onResponse(Call<List<MSG>> call, Response<List<MSG>> response) {
-                if (response.isSuccessful()) {
-                    List<MSG> msgList = response.body();
-                    for (MSG msg : msgList) {
-                        sqLiteUtil.setInitView(getBaseContext(), "CHAT_MSG_TB");
-                        sqLiteUtil.insert(2, msg.getMessage(), msg.getChatRoomId(),1);
-                        Log.d(TAG, "onResponsechat: " + msg.getChatRoomId());
-                    }
-                } else {
-                    Log.e("getMSGFromServer", "API 요청 실패. 응답 코드: " + response.code());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<MSG>> call, Throwable t) {
-                Log.e("getMSGFromServer", "API 요청 실패, 에러 메시지: " + t.getMessage());
-            }
-        });
-
-    }
     private void getBlackList(UserKey userKey) {
         Call<List<BlackListData>> call = apiService.getBlackList(userKey);
         call.enqueue(new Callback<List<BlackListData>>() {
@@ -557,26 +554,7 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
-    private void signOut() {
-        mGoogleSignInClient.signOut()
-                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        // Update UI after sign out
-                        Intent serviceIntent = new Intent(getApplicationContext(), DataReceiverService.class);
-                        stopService(serviceIntent);
-                        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                        startActivity(intent);
-                        finish();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.e("MainActivity", "Google sign out failed", e);
-                    }
-                });
-    }
+
 
     private void showUserInfoPopup(String userEmail) {
 

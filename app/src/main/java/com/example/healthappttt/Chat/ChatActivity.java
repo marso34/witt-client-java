@@ -2,6 +2,7 @@ package com.example.healthappttt.Chat;
 
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
+import android.content.ContentValues;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,8 +16,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.healthappttt.Data.Chat.MSG;
 import com.example.healthappttt.Data.Chat.SocketSingleton;
 import com.example.healthappttt.Data.PreferenceHelper;
+import com.example.healthappttt.Data.RetrofitClient;
 import com.example.healthappttt.Data.SQLiteUtil;
+import com.example.healthappttt.Data.pkData;
 import com.example.healthappttt.R;
+import com.example.healthappttt.interface_.ServiceApi;
 
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.json.JSONException;
@@ -26,6 +30,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ChatActivity extends AppCompatActivity {
 
@@ -43,6 +51,7 @@ public class ChatActivity extends AppCompatActivity {
     private String chatRoomId;
     private String otherUserKey;
     private SQLiteUtil sqLiteUtil;
+    private ServiceApi apiService;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,12 +61,13 @@ public class ChatActivity extends AppCompatActivity {
         // 인텐트에서 유저 이름을 가져옵니다.
         //username = getIntent().getExtra("username"); 이전 엑티비티에서 유저의 필요한 모든 정보 받아오기.
         preferenceHelper = new PreferenceHelper("UserTB",this);
-        //userKey = String.valueOf(preferenceHelper.getPK());
+        userKey = String.valueOf(preferenceHelper.getPK());
         sqLiteUtil = SQLiteUtil.getInstance();
         sqLiteUtil.setInitView(this, "CHAT_MSG_TB");
-            otherUserName =  getIntent().getStringExtra("otherUserName");
-            chatRoomId =  getIntent().getStringExtra("ChatRoomId");
-            otherUserKey =  getIntent().getStringExtra("otherUserKey");
+        getMSGFromServer(Integer.parseInt(userKey));
+        otherUserName =  getIntent().getStringExtra("otherUserName");
+        chatRoomId =  getIntent().getStringExtra("ChatRoomId");
+        otherUserKey =  getIntent().getStringExtra("otherUserKey");
         Log.d(TAG, "onCreate:chatact "+otherUserKey);
         //otherUserKey로 로컬에서 프로필 데이터 가져오기. 일단 임시로 '284' 내 구글이메일
         // 레이아웃을 초기화합니다.
@@ -119,20 +129,47 @@ public class ChatActivity extends AppCompatActivity {
         });
 
     }
+    private void getMSGFromServer(int userKey){
+        Log.d(ContentValues.TAG, "getMSGFromServer: key " + String.valueOf(userKey));
+
+        apiService = RetrofitClient.getClient().create(ServiceApi.class); // create메서드로 api서비스 인터페이스의 구현제 생성
+        Call<List<MSG>> call = apiService.getMSGFromServer(new pkData(userKey));
+        call.enqueue(new Callback<List<MSG>>() {
+            @Override
+            public void onResponse(Call<List<MSG>> call, Response<List<MSG>> response) {
+                if (response.isSuccessful()) {
+                    List<MSG> msgList = response.body();
+                    for (MSG msg : msgList) {
+                        sqLiteUtil.setInitView(getBaseContext(), "CHAT_MSG_TB");
+                        sqLiteUtil.insert(userKey,2, msg.getMessage(), msg.getChatRoomId(),1);
+                        Log.d(ContentValues.TAG, "onResponsechat: " + msg.getChatRoomId());
+                    }
+                } else {
+                    Log.e("getMSGFromServer", "API 요청 실패. 응답 코드: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<MSG>> call, Throwable t) {
+                Log.e("getMSGFromServer", "API 요청 실패, 에러 메시지: " + t.getMessage());
+            }
+        });
+
+    }
     public String getChatRoomId (){
         return chatRoomId;
     }
     private void SaveMyMessage(int myFlag,String message,int chatRoomId){
         SQLiteUtil sqLiteUtil = SQLiteUtil.getInstance();
         sqLiteUtil.setInitView(this,"CHAT_MSG_TB");
-        sqLiteUtil.insert(1,message,chatRoomId,0);
+        sqLiteUtil.insert(Integer.parseInt(userKey),1,message,chatRoomId,0);
         Log.d(TAG, "SqlLiteSaveMessage: 메세지 저장 완료"+message);
     }
     public void getAllMSG(){
 
         SQLiteUtil sqLiteUtil = SQLiteUtil.getInstance();
         sqLiteUtil.setInitView(this, "CHAT_MSG_TB");
-        messageList.addAll(sqLiteUtil.SelectAllMSG(Integer.parseInt(chatRoomId)));
+        messageList.addAll(sqLiteUtil.SelectAllMSG(userKey,Integer.parseInt(chatRoomId)));
         for (MSG M : messageList){
             Log.d(TAG, "getAllMSG: "+M.getMyFlag());
         }
@@ -154,7 +191,7 @@ public class ChatActivity extends AppCompatActivity {
         SQLiteUtil sqLiteUtil = SQLiteUtil.getInstance();
         sqLiteUtil.setInitView(this, "CHAT_MSG_TB");
         if (chatRoomId != null) {
-            newMessages = sqLiteUtil.SelectMSG(0, Integer.parseInt(chatRoomId));
+            newMessages = sqLiteUtil.SelectMSG(userKey,0, Integer.parseInt(chatRoomId));
             for (MSG M : newMessages) {
                 Log.d(TAG, "getMessagesFromRealTime: " + M.getMessage());
             }

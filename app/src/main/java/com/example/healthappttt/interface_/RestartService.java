@@ -1,5 +1,7 @@
 package com.example.healthappttt.interface_;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -9,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.IBinder;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
@@ -57,10 +60,11 @@ public class RestartService extends Service {
 
         Notification notification = builder.build();
         startForeground(9, notification);
-
+        Log.d(TAG, "  ");
         Intent serviceIntent = new Intent(this, DataReceiverService.class);
         // ...
-        startService(serviceIntent);
+        if(DataReceiverService.isServiceRunning == false)
+            startService(serviceIntent);
         stopForeground(true);
         stopSelf();
 

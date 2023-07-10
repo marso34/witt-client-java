@@ -124,8 +124,9 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         return existingReviewPK;
     }
 
-    public void insert(int myFlag,String message, int chatRoomId,int read) {
+    public void insert(int userKey,int myFlag,String message, int chatRoomId,int read) {
         ContentValues values = new ContentValues();
+        values.put("USER_FK",userKey);
         values.put("MSG", message);
         values.put("CHAT_ROOM_FK", chatRoomId);
         // 현재 시간을 포맷에 맞춰서 문자열로 변환
@@ -479,12 +480,12 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         }
         return null;
     }
-    public List<MSG> SelectAllMSG(int chatRoomId){
+    public List<MSG> SelectAllMSG(String userKey,int chatRoomId){
         List<MSG> messages = new ArrayList<>();
 
         String[] columns = {"MSG","CHAT_ROOM_FK","TS","MYFLAG"};
-        String selection = "CHAT_ROOM_FK=?";
-        String[] selectionArgs = {String.valueOf(chatRoomId)};
+        String selection = "USER_FK=? AND CHAT_ROOM_FK=?";
+        String[] selectionArgs = {userKey,String.valueOf(chatRoomId)};
         String orderBy = "TS ASC"; // 시간 순으로 정렬
         Cursor cursor = db.query("CHAT_MSG_TB", columns, selection, selectionArgs, null, null, orderBy);
         if (cursor != null && cursor.moveToFirst()) {
@@ -519,12 +520,12 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
     }
 
 
-    public List<MSG> SelectMSG(int myFlag, int chatRoomId) {
+    public List<MSG> SelectMSG(String userKey,int myFlag, int chatRoomId) {
         List<MSG> messages = new ArrayList<>();
 
         String[] columns = {"MSG","CHAT_ROOM_FK","TS"};
-        String selection = "CHAT_ROOM_FK=? AND MYFLAG=? AND READ = ?";
-        String[] selectionArgs = {String.valueOf(chatRoomId),String.valueOf(myFlag), String.valueOf(1)};
+        String selection = "USER_FK = ? AND CHAT_ROOM_FK=? AND MYFLAG=? AND READ = ?";
+        String[] selectionArgs = {userKey,String.valueOf(chatRoomId),String.valueOf(myFlag), String.valueOf(1)};
         String orderBy = "TS ASC"; // 시간 순으로 정렬
 
         Cursor cursor = db.query("CHAT_MSG_TB", columns, selection, selectionArgs, null, null, orderBy);
