@@ -90,7 +90,6 @@ public class ExerciseRecordAdapter extends RecyclerView.Adapter<ExerciseRecordAd
         holder.CatView.setText(cat);
         holder.NameView.setText(name);
 
-
         if (this.exercises.get(position).getCat() == 0x40) {// 유산소일 경우
             holder.CountView.setText(Integer.toString(progressMaxValue));
             holder.CountUnitView.setText("분");

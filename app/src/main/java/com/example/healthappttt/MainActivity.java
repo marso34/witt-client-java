@@ -41,6 +41,7 @@ import com.example.healthappttt.Data.User.WittListData;
 import com.example.healthappttt.Data.pkData;
 import com.example.healthappttt.Home.HomeFragment;
 import com.example.healthappttt.Profile.MyProfileActivity;
+import com.example.healthappttt.Record.RecordFragment;
 import com.example.healthappttt.Routine.RoutineFragment;
 import com.example.healthappttt.Sign.LoginActivity;
 import com.example.healthappttt.WorkOut.ExerciseRecordActivity;
@@ -216,7 +217,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.profile:
                         binding.viewName.setText("기록");
-//                        replaceFragment(new ProfileFragment()); // 운동 기록 프래그먼트로 나중에 수정
+                        replaceFragment(new RecordFragment());
                         break;
                 }
 
@@ -629,7 +630,7 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         if (System.currentTimeMillis() > backPressedTime + 2000) {
             backPressedTime = System.currentTimeMillis();
-            showGuide("\'뒤로\' 버튼을 한번 더 누르시면 종료됩니다.");
+            showGuide("뒤로 버튼을 한번 더 누르시면 종료됩니다.");
             return;
         }
 

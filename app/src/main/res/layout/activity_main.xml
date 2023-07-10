@@ -66,24 +66,18 @@
             app:layout_constraintVertical_bias="0.0" >
         </FrameLayout>
 
-    </FrameLayout>
-
-    <FrameLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom">
-
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomNav"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/rounded_top"
             app:itemBackground="@color/transparent"
+            android:layout_gravity="bottom"
             app:itemHorizontalTranslationEnabled="false"
+            app:labelVisibilityMode="labeled"
             app:itemIconTint="@drawable/menu_selector_color"
             app:itemTextColor="@drawable/menu_selector_color"
-            app:labelVisibilityMode="labeled"
-            app:elevation="0dp"
+            app:elevation="20dp"
             app:menu="@menu/bottom_nav_menu" />
 
     </FrameLayout>

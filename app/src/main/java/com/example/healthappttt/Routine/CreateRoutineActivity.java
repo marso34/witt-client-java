@@ -43,7 +43,7 @@ public class CreateRoutineActivity extends AppCompatActivity implements CRSetTim
 
         service = RetrofitClient.getClient().create(ServiceApi.class);
         sqLiteUtil = SQLiteUtil.getInstance();
-        prefhelper = new PreferenceHelper("UserTB",this);
+        prefhelper = new PreferenceHelper("default_user_info",this);
 
         routine = new RoutineData();
 
@@ -77,7 +77,7 @@ public class CreateRoutineActivity extends AppCompatActivity implements CRSetTim
             @Override
             public void onResponse(Call<List<Integer>> call, Response<List<Integer>> response) {
                 if (response.isSuccessful()) {
-                    Toast.makeText(CreateRoutineActivity.this, "루틴 생성 성공!!!", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(CreateRoutineActivity.this, "루틴 생성 성공!!!", Toast.LENGTH_SHORT).show();
                     Log.d("성공", "루틴 생성 성공");
 
                     List<Integer> list = response.body();
@@ -97,7 +97,7 @@ public class CreateRoutineActivity extends AppCompatActivity implements CRSetTim
                     SaveToDev();
                     Terminate(true); // 루틴 생성 액티비티 종료
                 } else {
-                    Toast.makeText(CreateRoutineActivity.this, "루틴 생성에 실패하였습니다.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CreateRoutineActivity.this, "루틴 생성에 실패하였습니다. 인터넷 상태를 확인해주세요", Toast.LENGTH_SHORT).show();
                     Log.d("실패", "respone 실패");
                     Terminate(false); // 루틴 생성 액티비티 종료
                 }
@@ -105,7 +105,7 @@ public class CreateRoutineActivity extends AppCompatActivity implements CRSetTim
 
             @Override
             public void onFailure(Call<List<Integer>> call, Throwable t) {
-                Toast.makeText(CreateRoutineActivity.this, "서버 연결에 실패", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CreateRoutineActivity.this, "루틴 생성에 실패하였습니다. 인터넷 상태를 확인해주세요", Toast.LENGTH_SHORT).show();
                 Log.d("실패", t.getMessage());
                 Terminate(false); // 루틴 생성 액티비티 종료
             }

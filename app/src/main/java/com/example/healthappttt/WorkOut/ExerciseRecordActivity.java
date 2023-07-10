@@ -19,6 +19,7 @@ import com.example.healthappttt.Data.Exercise.RoutineComparator;
 import com.example.healthappttt.Data.SQLiteUtil;
 import com.example.healthappttt.R;
 import com.example.healthappttt.Data.Exercise.RoutineData;
+import com.example.healthappttt.Record.ExerciseResultFragment;
 import com.example.healthappttt.interface_.ServiceApi;
 
 import java.text.SimpleDateFormat;

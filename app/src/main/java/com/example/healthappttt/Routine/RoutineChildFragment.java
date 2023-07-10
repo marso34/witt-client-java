@@ -141,11 +141,12 @@ public class RoutineChildFragment extends Fragment {
 
         recyclerView = view.findViewById(R.id.recyclerView);
         addRoutineBtn = view.findViewById(R.id.addRoutine);
+        prefhelper = new PreferenceHelper("UserTB", getContext());
 //        prefhelper = new PreferenceHelper(this);
 
         routines = new ArrayList<>();
 
-        if (code == 285) { // 내 루틴 표시, 나중에 PreferenceHelper 이용해서 유저pk로 수정
+        if (code == prefhelper.getPK()) { // 내 루틴 표시, 나중에 PreferenceHelper 이용해서 유저pk로 수정
             sqLiteUtil = SQLiteUtil.getInstance();
             sqLiteUtil.setInitView(getContext(), "RT_TB");
 
@@ -158,7 +159,7 @@ public class RoutineChildFragment extends Fragment {
                 for (int i = 0; i < routines.size(); i++)
                     routines.get(i).setExercises(sqLiteUtil.SelectExercise(routines.get(i).getID(), true));
 
-                setRecyclerView();
+                setRecyclerView(0);
             }
         } else { // 남의 루틴 표시, 여기는 서버에서 받아오는 코드
             addRoutineBtn.setVisibility(View.GONE);
@@ -168,19 +169,14 @@ public class RoutineChildFragment extends Fragment {
                 @Override
                 public void onResponse(Call<List<RoutineData>> call, Response<List<RoutineData>> response) {
                     if (response.isSuccessful()) {
-                        Toast.makeText(getContext(), "루틴 불러오기 성공!!!", Toast.LENGTH_SHORT).show();
                         Log.d("성공", "루틴 불러오기 성공");
 
                         routines = (ArrayList<RoutineData>) response.body();
                         for (int i = 0; i < response.body().size(); i++)
                             routines.get(i).setExercises(response.body().get(i).getExercises());
 
-                        setRecyclerView();
+                        setRecyclerView(-1);
                         adapter.notifyDataSetChanged();
-
-                        Log.d("루틴", "루틴 불러오기 성공" + routines.size());
-
-
                     } else {
                         Toast.makeText(getContext(), "루틴 불러오기 실패!!!", Toast.LENGTH_SHORT).show();
                         Log.d("실패", "루틴 불러오기 실패");
@@ -195,7 +191,6 @@ public class RoutineChildFragment extends Fragment {
             });
         }
 
-        Collections.sort(routines, new RoutineComparator());
 
         addRoutineBtn.setOnClickListener(v -> {
             Intent intent = new Intent(getContext(), CreateRoutineActivity.class);
@@ -206,8 +201,10 @@ public class RoutineChildFragment extends Fragment {
         return view;
     }
 
-    private void setRecyclerView() {
-        adapter = new RoutineAdapter(getContext(), routines, 0);  // 나중에 수정 code가 내 코드면 0, 아니면 -1
+    private void setRecyclerView(int attribute) {
+        Collections.sort(routines, new RoutineComparator());
+
+        adapter = new RoutineAdapter(getContext(), routines, attribute);  // attribute = code가 내 코드면 0, 아니면 -1
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
