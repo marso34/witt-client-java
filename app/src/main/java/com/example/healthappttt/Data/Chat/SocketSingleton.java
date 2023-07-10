@@ -39,7 +39,6 @@ public class SocketSingleton {
         mSocket.on("connected", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
-                Toast.makeText(context, "소캣 실행완료", Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "소캣 연결됨");
                 JSONObject data = (JSONObject) args[0];
                 try {

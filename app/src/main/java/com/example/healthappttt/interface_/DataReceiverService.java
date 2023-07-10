@@ -11,7 +11,6 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -52,8 +51,6 @@ public class DataReceiverService extends Service {
             @Override
             public void run() {
                 Log.d(TAG, "데이타 리시브 실행중임");
-
-                Toast.makeText(getApplicationContext(), "실행중", Toast.LENGTH_SHORT).show();
                     socketSingleton.connect();
                     socket = socketSingleton.getSocket();
                 // 일정 시간 간격으로 소켓 연결 상태 확인 및 재연결 작업 수행
@@ -62,7 +59,6 @@ public class DataReceiverService extends Service {
         };
         Log.d(TAG, "연결됨 id = " + socketSingleton.getSocketId());
     }
-
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
