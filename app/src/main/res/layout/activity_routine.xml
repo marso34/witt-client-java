@@ -15,10 +15,20 @@
         android:gravity="center">
 
         <TextView
+            android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:text="ㅇㅇㅇ님의 루틴"
+            android:text="ㅇㅇㅇ"
+            android:textColor="@color/Standard"
+            android:textStyle="bold"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:text="님의 루틴"
             android:textColor="@color/Standard"
             android:textStyle="bold"
             android:textSize="18sp"/>

@@ -14,7 +14,6 @@ import com.example.healthappttt.databinding.ActivityRoutineBinding;
 public class RoutineActivity extends AppCompatActivity {
     ActivityRoutineBinding binding;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,6 +22,9 @@ public class RoutineActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         int code = intent.getIntExtra("code", 285); // 프리페런스헬퍼로 디폴트값 넣기
+        String name = intent.getStringExtra("name");
+
+        binding.name.setText(name);
 
         Bundle bundle = new Bundle();
         bundle.putSerializable("code", code);

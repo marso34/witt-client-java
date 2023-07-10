@@ -193,8 +193,11 @@ public class RoutineChildFragment extends Fragment {
 
 
         addRoutineBtn.setOnClickListener(v -> {
-            Intent intent = new Intent(getContext(), CreateRoutineActivity.class);
-            intent.putExtra("dayOfWeek", dayOfWeek);
+//            Intent intent = new Intent(getContext(), CreateRoutineActivity.class);
+//            intent.putExtra("dayOfWeek", dayOfWeek);
+            Intent intent = new Intent(getContext(), RoutineActivity.class);
+            intent.putExtra("code", 270);
+            intent.putExtra("name", "이형원");
             startActivityResult.launch(intent);
         });
 
