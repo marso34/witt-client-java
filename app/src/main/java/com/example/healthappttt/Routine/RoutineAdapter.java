@@ -2,16 +2,20 @@ package com.example.healthappttt.Routine;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,15 +24,26 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.healthappttt.Data.Exercise.ExerciseData;
 import com.example.healthappttt.Data.Exercise.ExerciseComparator;
 import com.example.healthappttt.Data.Exercise.RoutineData;
+import com.example.healthappttt.Data.RetrofitClient;
+import com.example.healthappttt.Data.SQLiteUtil;
+import com.example.healthappttt.Data.pkData;
 import com.example.healthappttt.R;
+import com.example.healthappttt.interface_.ServiceApi;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainViewHolder> {
     private Context context;
-    private ArrayList<RoutineData> routines;
 
+    private ServiceApi service;
+    private SQLiteUtil sqLiteUtil;
+
+    private ArrayList<RoutineData> routines;
     private int attribute; // == 0 내 루틴, attribute > 0 운동 기록할 때 선택용, attribute < 0 남의 루틴
 
     private OnClickRoutine onClickRoutine;
@@ -40,6 +55,9 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
         this.routines = routines;
         this.context = context;
         this.attribute = attribute;
+
+        service = RetrofitClient.getClient().create(ServiceApi.class);
+        sqLiteUtil = SQLiteUtil.getInstance();
     }
 
     public static class MainViewHolder extends RecyclerView.ViewHolder {
@@ -70,17 +88,23 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_routine, parent, false);
         final MainViewHolder mainViewHolder = new MainViewHolder(view);
 
-        mainViewHolder.ClickLayout.setOnClickListener(v -> {
-            if (attribute > 0) {
-                int position = mainViewHolder.getAbsoluteAdapterPosition();
 
+        mainViewHolder.ClickLayout.setOnClickListener(v -> {
+            int position = mainViewHolder.getAbsoluteAdapterPosition();
+
+            if (attribute > 0)
                 onClickRoutine.onClickRoutine(routines.get(position));
-            }
         });
 
         mainViewHolder.EditBtn.setOnClickListener(v -> {
+            int position = mainViewHolder.getAbsoluteAdapterPosition();
+
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             View dialogView = LayoutInflater.from(parent.getContext()).inflate(R.layout.routine_edit_popup, null);
+
+            Button e = dialogView.findViewById(R.id.edit);
+            Button copyBtn = dialogView.findViewById(R.id.copy);
+            Button deleteBtn = dialogView.findViewById(R.id.delete);
 
             builder.setView(dialogView);
             AlertDialog alertDialog  = builder.create();
@@ -88,11 +112,30 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
             alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             alertDialog.show();
 
+            e.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = mainViewHolder.getAbsoluteAdapterPosition();
+                    onClickRoutine.onClickRoutine(routines.get(position));
+                    alertDialog.dismiss();
+                }
+            });
 
+            copyBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(context, "추후 업데이트 예정입니다.", Toast.LENGTH_SHORT).show();
+                    alertDialog.dismiss();
+                }
+            });
 
-//            int position = mainViewHolder.getAbsoluteAdapterPosition();
-//
-//            onClickRoutine.onClickRoutine(routines.get(position));
+            deleteBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    DeleteToDB(position); // "예" 클릭시 삭제
+                    alertDialog.dismiss();
+                }
+            });
         });
 
         return mainViewHolder;
@@ -132,16 +175,43 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
         return routines.size();
     }
 
-    public void removeItem(int routineID) {
-        for (RoutineData r : routines) {
-            if (r.getID() == routineID) {
-                int position = routines.indexOf(r);
-                routines.remove(position);
-                notifyItemRemoved(position);
+    private void DeleteToDB(int position) {
+        Log.d("루틴 포지션", position + "");
 
-                break;
+        Log.d("루틴 아이디", routines.get(position).getID() + "");
+
+        service.deleteRoutine(new pkData(routines.get(position).getID())).enqueue(new Callback<Integer>() {
+            @Override
+            public void onResponse(Call<Integer> call, Response<Integer> response) {
+                if(response.isSuccessful() && response.body() == 200) {
+                    Log.d("성공", "루틴 삭제 성공");
+                    DeleteToDev(position);
+                    removeItem(position);
+//                    Terminate(true, 2); // 루틴 삭제를 의미
+                } else {
+                    Toast.makeText(context, "루틴 삭제 실패", Toast.LENGTH_SHORT).show();
+                    Log.d("실패", "루틴 삭제 실패");
+//                    Terminate(false);
+                }
             }
-        }
+
+            @Override
+            public void onFailure(Call<Integer> call, Throwable t) {
+                Toast.makeText(context, "루틴 삭제 실패", Toast.LENGTH_SHORT).show();
+                Log.d("실패", t.getMessage());
+//                Terminate(false);
+            }
+        });
+    }
+
+    private void DeleteToDev(int position) {
+        sqLiteUtil.setInitView(context, "RT_TB");
+        sqLiteUtil.delete(routines.get(position).getID());
+    }
+
+    public void removeItem(int position) {
+        routines.remove(position);
+        notifyItemRemoved(position);
     }
 
     private String TimeToString(String Time) {

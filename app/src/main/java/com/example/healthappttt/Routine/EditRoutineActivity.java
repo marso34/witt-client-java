@@ -76,27 +76,6 @@ public class EditRoutineActivity extends AppCompatActivity {
             }
         });
 
-        binding.delete.setOnClickListener(v -> {
-            AlertDialog.Builder alert_ex = new AlertDialog.Builder(this);
-            alert_ex.setMessage("루틴을 삭제할까요?");
-            alert_ex.setPositiveButton("예", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    DeleteToDB(); // "예" 클릭시 삭제
-                }
-            });
-            alert_ex.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    // 아니오 누를 시 아무것도 안 함
-                }
-            });
-            alert_ex.setTitle("루틴 삭제");
-
-            AlertDialog alert = alert_ex.create();
-            alert.show();
-        });
-
         binding.startTimeUP.setOnClickListener(v -> {
             if (startTime < endTime) {
                 startTime += 5;
@@ -141,7 +120,7 @@ public class EditRoutineActivity extends AppCompatActivity {
             } else {
                 routine.setStartTime(TimeToStringD(startTime));
                 routine.setEndTime(TimeToStringD(endTime));
-//                UpdateToDB();
+                UpdateToDB();
             }
         });
     }
@@ -223,48 +202,8 @@ public class EditRoutineActivity extends AppCompatActivity {
         binding.recyclerView.setAdapter(adapter);
     }
 
-    private void DeleteToDB() {
-        service.deleteRoutine(new pkData(routine.getID())).enqueue(new Callback<Integer>() {
-            @Override
-            public void onResponse(Call<Integer> call, Response<Integer> response) {
-                if(response.isSuccessful() && response.body() == 200) {
-                    Toast.makeText(EditRoutineActivity.this, "루틴 삭제 성공!!!", Toast.LENGTH_SHORT).show();
-                    Log.d("성공", "루틴 삭제 성공");
-                    DeleteToDev();
-                    Terminate(true, 2); // 루틴 삭제를 의미
-                } else {
-                    Toast.makeText(EditRoutineActivity.this, "루틴 삭제 실패", Toast.LENGTH_SHORT).show();
-                    Log.d("실패", "루틴 삭제 실패");
-                    Terminate(false);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Integer> call, Throwable t) {
-                Toast.makeText(EditRoutineActivity.this, "서버 연결에 실패", Toast.LENGTH_SHORT).show();
-                Log.d("실패", t.getMessage());
-                Terminate(false);
-            }
-        });
-    }
-
-    private void DeleteToDev() {
-        sqLiteUtil.setInitView(this, "RT_TB");
-        sqLiteUtil.delete(routine.getID());
-    }
-
     private void UpdateToDB() {
-        ArrayList<ExerciseData> list = new ArrayList<>();
-        int CAT = 0;
-
-        for (ExerciseData e : routine.getExercises()) {
-            list.add(new ExerciseData(e.getID(), routine.getID(), e.getExerciseName(), e.getCat(), e.getSetOrTime(), e.getVolume(), e.getCntOrDis(), e.getIndex()));
-            CAT |= e.getCat();
-        }
-
-        RoutineData rData = new RoutineData(routine.getID(), 5, routine.getDayOfWeek(), CAT, routine.getStartTime(), routine.getEndTime(), list);
-
-        service.updateRoutine(rData).enqueue(new Callback<Integer>() {
+        service.updateRoutine(routine).enqueue(new Callback<Integer>() {
             @Override
             public void onResponse(Call<Integer> call, Response<Integer> response) {
                 if (response.isSuccessful()) {

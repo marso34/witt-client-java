@@ -123,14 +123,13 @@ public class RoutineChildFragment extends Fragment {
                                 routines.get(i).setStartTime(r.getStartTime());
                                 routines.get(i).setEndTime(r.getEndTime());
                                 routines.get(i).setCat(r.getCat());
+                                routines.get(i).setExercises(r.getExercises());
                                 break;
                             }
                         }
                     }
                     else if (check == 1)
                         routines.add(r); // 루틴 추가
-                    else if (check == 2)
-                        adapter.removeItem(r.getID()); // 루틴 삭제
 
                     Collections.sort(routines, new RoutineComparator());
                     adapter.notifyDataSetChanged();
@@ -196,9 +195,6 @@ public class RoutineChildFragment extends Fragment {
         binding.addRoutine.setOnClickListener(v -> {
             Intent intent = new Intent(getContext(), CreateRoutineActivity.class);
             intent.putExtra("dayOfWeek", dayOfWeek);
-//            Intent intent = new Intent(getContext(), RoutineActivity.class);
-//            intent.putExtra("code", 270);
-//            intent.putExtra("name", "이형원");
             startActivityResult.launch(intent);
         });
     }
