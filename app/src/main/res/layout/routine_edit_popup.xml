@@ -1,0 +1,36 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/rounded_rectangle"
+    android:padding="16dp">
+
+    <Button
+        android:id="@+id/edit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:text="수정하기"
+        android:textSize="16sp"
+        android:gravity="center"/>
+
+    <Button
+        android:id="@+id/copy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:text="복사하기"
+        android:textSize="16sp"
+        android:gravity="center"/>
+
+    <Button
+        android:id="@+id/delete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:text="삭제하기"
+        android:textColor="#f257af"
+        android:textSize="16sp"
+        android:gravity="center"/>
+
+</LinearLayout>

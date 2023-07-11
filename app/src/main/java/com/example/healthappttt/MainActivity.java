@@ -468,8 +468,6 @@ public class MainActivity extends AppCompatActivity {
             blacksqLiteUtil.insertBL(blackListData);
             Log.d("SaveBlackList 메서드", "저장 완료");
         }
-
-
     }
     private void SaveWittList(WittListData wittListData){
         wittsqLiteUtil = SQLiteUtil.getInstance();

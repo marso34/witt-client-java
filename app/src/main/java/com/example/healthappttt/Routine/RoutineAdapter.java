@@ -1,9 +1,15 @@
 package com.example.healthappttt.Routine;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -39,22 +45,22 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
     public static class MainViewHolder extends RecyclerView.ViewHolder {
         public LinearLayout RoutineLayout, ClickLayout, NullLayout;
         public TextView startTimeView, endTimeView;
-        public TextView EditBtn;
+        public ImageView EditBtn;
         public RecyclerView recyclerView;
         public ExerciseAdapter adapter;
 
         public MainViewHolder(View view) {
             super(view);
 
-            this.RoutineLayout = (LinearLayout) view.findViewById(R.id.routineLayout);
-            this.ClickLayout = (LinearLayout) view.findViewById(R.id.clickLayout);
-            this.NullLayout = (LinearLayout) view.findViewById(R.id.nullLayout);
+            this.RoutineLayout = view.findViewById(R.id.routineLayout);
+            this.ClickLayout = view.findViewById(R.id.clickLayout);
+            this.NullLayout = view.findViewById(R.id.nullLayout);
 
-            this.startTimeView = (TextView) view.findViewById(R.id.startTime);
-            this.endTimeView = (TextView) view.findViewById(R.id.endTime);
-            this.EditBtn = (TextView) view.findViewById(R.id.editBtn);
+            this.startTimeView = view.findViewById(R.id.startTime);
+            this.endTimeView = view.findViewById(R.id.endTime);
+            this.EditBtn = view.findViewById(R.id.editBtn);
 
-            this.recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+            this.recyclerView = view.findViewById(R.id.recyclerView);
         }
     }
 
@@ -73,9 +79,20 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
         });
 
         mainViewHolder.EditBtn.setOnClickListener(v -> {
-            int position = mainViewHolder.getAbsoluteAdapterPosition();
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            View dialogView = LayoutInflater.from(parent.getContext()).inflate(R.layout.routine_edit_popup, null);
 
-            onClickRoutine.onClickRoutine(routines.get(position));
+            builder.setView(dialogView);
+            AlertDialog alertDialog  = builder.create();
+            alertDialog.getWindow().setGravity(Gravity.BOTTOM);   //다이얼로그 하단
+            alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            alertDialog.show();
+
+
+
+//            int position = mainViewHolder.getAbsoluteAdapterPosition();
+//
+//            onClickRoutine.onClickRoutine(routines.get(position));
         });
 
         return mainViewHolder;
