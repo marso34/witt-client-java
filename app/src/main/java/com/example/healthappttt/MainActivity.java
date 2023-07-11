@@ -236,7 +236,7 @@ public class MainActivity extends AppCompatActivity {
         binding.myInformation.setOnClickListener(view -> {
                 //showUserInfoPopup(useremail); // 자신의 이메일 정보를 보여주는 팝업
             Intent intent = new Intent(MainActivity.this, MyProfileActivity.class);
-            intent.putExtra("myPK", uk);
+            intent.putExtra("PK", uk);
             //Log.d("main에서 넘겨주는 myPK",uk);
             startActivity(intent);
         });

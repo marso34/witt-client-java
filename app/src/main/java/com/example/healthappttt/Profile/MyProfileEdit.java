@@ -23,7 +23,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -55,10 +54,12 @@ public class MyProfileEdit extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         membershippref = new PreferenceHelper("membership",this);
+        UserTB = new PreferenceHelper("UserTB",MyProfileEdit.this);
         apiService = RetrofitClient.getClient().create(ServiceApi.class);
+
         edit_img = findViewById(R.id.edit_img); // 내 프로필 사진
         elbum = findViewById(R.id.elbum);// 사진첩
-        //3대 측정, 스쿼트, 벤치, 데드
+        //
 
         //초기값 넣어주기 이름, 키, 몸무게 / 성별 / 이미지 / 3대 운동량
         Bundle extras = getIntent().getExtras();
@@ -71,7 +72,7 @@ public class MyProfileEdit extends AppCompatActivity {
             benchValue = extras.getInt("benchValue");
             deadValue = extras.getInt("deadValue");
             }
-        //AtomicInteger 변수 초기화
+        //AtomicInteger 변수 초기화 (3대 측정, 스쿼트, 벤치, 데드)
         squatValue1 = new AtomicInteger(squatValue);
         benchValue1 = new AtomicInteger(benchValue);
         deadValue1 = new AtomicInteger(deadValue);
@@ -147,10 +148,10 @@ public class MyProfileEdit extends AppCompatActivity {
                 }
 
                 membershippref.putUserDefault(UpdateDefault); // 로컬 저장
-                UserTB = new PreferenceHelper(MyProfileEdit.this);
-                UpdateDefault.put("myPK",membershippref.getPK()); // 키는 서버에서 필요해서 따로 추가
+
+                UpdateDefault.put("myPK",UserTB.getPK()); // 키는 서버에서 필요해서 따로 추가
                 EditProfile(UpdateDefault); //서버 db 수정 TODO 뭔가 이상함 서버 코드 수정 필요
-                Log.d("서버 db 수정 : ","EditProfile(UpdateDefault) "+membershippref.getPK());
+
                 setResult(RESULT_OK, intent);//응답코드 -1
                 finish();//스택에서 제거
             }
@@ -158,11 +159,13 @@ public class MyProfileEdit extends AppCompatActivity {
     }
 
     private void EditProfile(Map<String, Object> editData) {
-        Call<ResponseBody> call = apiService.EditProfile(editData);
-        call.enqueue(new Callback<ResponseBody>() {
+        Call<String> call = apiService.EditProfile(editData);
+        call.enqueue(new Callback<String>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            public void onResponse(Call<String> call, Response<String> response) {
                 if (response.isSuccessful()) {
+                    String data = response.body();
+                    //Log.d("서버에서 보내온 수정된 pk", data);
                     Log.d("MyProfileEdit","프로필 서버 db에서 수정성공");
                 } else {
                     // 요청이 실패했을 때의 처리 로직
@@ -171,7 +174,7 @@ public class MyProfileEdit extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(Call<String> call, Throwable t) {
                 Toast.makeText(MyProfileEdit.this, "서버 연결 실패", Toast.LENGTH_SHORT).show();
                 Log.d("MainActivity", "서버 응답 실패. 상태코드:?");
             }

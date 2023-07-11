@@ -82,18 +82,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
 
         UserInfo userInfo = mDataset.get(position);
         Log.d("유저 이름!", userInfo.getName());
-
+        Log.d("유저 PK!", String.valueOf(userInfo.getUserKey()));
         getCurrentWeek();
-//
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(mContext, MyProfileActivity.class);
-                intent.putExtra("UserKey",userInfo.getUserKey());
-//                intent.putExtra("post",finalProfilefile);
-                mContext.startActivity(intent);
-            }
-        });
 
       //  Log.d(TAG, "onBindViewHolder: "+ userInfo.getUserName().toString());
         holder.Name.setText(userInfo.getName().toString());
@@ -135,6 +125,19 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
                                 holder.ExerciseNames.add(a);
                             }
                     holder.Adapter.notifyDataSetChanged();
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("상세 프로필", "userAdapter에서 클릭처리");
+                String adapterUserKey = String.valueOf(userInfo.getUserKey());
+                Intent intent = new Intent(mContext, MyProfileActivity.class);
+
+                intent.putExtra("PK",adapterUserKey);
+//                intent.putExtra("post",finalProfilefile);--?
+                mContext.startActivity(intent);
+            }
+        });
 
     }
 

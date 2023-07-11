@@ -50,7 +50,7 @@ public interface ServiceApi {
     Call<List<WittListData>> getWittHistory(@Body UserKey userKey);
 
     @POST("/profile/EditProfile")// 수정된 프로필 정보 업데이트
-    Call<ResponseBody> EditProfile(@Body Map<String, Object> editData);
+    Call<String> EditProfile(@Body Map<String, Object> editData);
 
     @POST("/routine/CreateRoutine")
     Call<List<Integer>> createRoutine(@Body RoutineData data);
