@@ -3,11 +3,13 @@ package com.example.healthappttt.Routine;
 import android.graphics.Color;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -33,12 +35,15 @@ public class ExerciseInputAdapter extends RecyclerView.Adapter<ExerciseInputAdap
     }
 
     public static class MainViewHolder extends RecyclerView.ViewHolder {
+        private LinearLayout ExerciseLyout;
         public TextView CatView, NameView;
         public EditText EditVolume, EditCount, EditSet;
         public ImageView RemoveBtn;
 
         public MainViewHolder(View view) {
             super(view);
+
+            this.ExerciseLyout = view.findViewById(R.id.exerciseCard);
 
             this.CatView = (TextView) view.findViewById(R.id.exerciseCat);
             this.NameView = (TextView) view.findViewById(R.id.exerciseName);
@@ -61,7 +66,7 @@ public class ExerciseInputAdapter extends RecyclerView.Adapter<ExerciseInputAdap
             @Override
             public void onClick(View view) {
                 int position = mainViewHolder.getAbsoluteAdapterPosition();
-                exercises.get(position).setID(-1 * exercises.get(position).getID());
+//                exercises.get(position).setID(-1 * exercises.get(position).getID());
                 // 인터페이스 구현해서 버튼 누르면 position 전달해서 프래그먼트 or 액티비티에서 removeItem 호출하고 adapter.notifyDataSetChanged() 실행
                 removeItem(position);
             }
@@ -151,5 +156,7 @@ public class ExerciseInputAdapter extends RecyclerView.Adapter<ExerciseInputAdap
     public void removeItem(int position) {
         exercises.remove(position);
         notifyItemRemoved(position);
+
+        Log.d("운동 크기", exercises.size() + "");
     }
 }

@@ -3,25 +3,24 @@
     <item android:id="@android:id/background">
         <shape>
             <corners android:radius="10dp" />
-            <solid android:color="#eeeeee" />
+            <solid android:color="@color/Background_1" />
         </shape>
     </item>
     <item android:id="@android:id/secondaryProgress">
-        <clip>
+        <scale android:scaleWidth="100%">
             <shape>
-                <corners android:radius="10dp" />
-                <solid android:color="#B2CCFF" />
+                <corners android:radius="10dp"/>
+                <solid android:color="@color/Background_3"/>
             </shape>
-        </clip>
+        </scale>
     </item>
     <item android:id="@android:id/progress">
-        <clip>
+        <scale android:scaleWidth="100%">
             <shape>
-                <corners android:radius="10dp" />
-                <solid android:color="#aaaaaa" />
+                <corners android:radius="10dp"/>
+                <solid android:color="@color/Signature"/>
             </shape>
-        </clip>
-
+        </scale>
     </item>
 </layer-list>
 

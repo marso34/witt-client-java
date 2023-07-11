@@ -8,6 +8,8 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -27,6 +29,7 @@ import com.example.healthappttt.Data.PreferenceHelper;
 import com.example.healthappttt.Data.RetrofitClient;
 import com.example.healthappttt.Data.SQLiteUtil;
 import com.example.healthappttt.R;
+import com.example.healthappttt.databinding.FragmentRoutineChildBinding;
 import com.example.healthappttt.interface_.ServiceApi;
 import com.google.gson.annotations.SerializedName;
 
@@ -45,20 +48,16 @@ import retrofit2.Response;
  * create an instance of this fragment.
  */
 public class RoutineChildFragment extends Fragment {
+    FragmentRoutineChildBinding binding;
     private ActivityResultLauncher<Intent> startActivityResult;
-    private RecyclerView recyclerView;
     private RoutineAdapter adapter;
-    private CardView addRoutineBtn;
-
 
     private ServiceApi service;
     private SQLiteUtil sqLiteUtil;
     private PreferenceHelper prefhelper;
 
     private ArrayList<RoutineData> routines;
-    private int dayOfWeek;
-    private int code;
-
+    private int dayOfWeek, code;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -106,7 +105,7 @@ public class RoutineChildFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_routine_child, container, false);
+        binding = FragmentRoutineChildBinding.inflate(inflater);
 
         startActivityResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
             @Override
@@ -124,14 +123,13 @@ public class RoutineChildFragment extends Fragment {
                                 routines.get(i).setStartTime(r.getStartTime());
                                 routines.get(i).setEndTime(r.getEndTime());
                                 routines.get(i).setCat(r.getCat());
+                                routines.get(i).setExercises(r.getExercises());
                                 break;
                             }
                         }
                     }
                     else if (check == 1)
                         routines.add(r); // 루틴 추가
-                    else if (check == 2)
-                        adapter.removeItem(r.getID()); // 루틴 삭제
 
                     Collections.sort(routines, new RoutineComparator());
                     adapter.notifyDataSetChanged();
@@ -139,13 +137,17 @@ public class RoutineChildFragment extends Fragment {
             }
         });
 
-        recyclerView = view.findViewById(R.id.recyclerView);
-        addRoutineBtn = view.findViewById(R.id.addRoutine);
-//        prefhelper = new PreferenceHelper(this);
-
+        prefhelper = new PreferenceHelper("UserTB", getContext());
         routines = new ArrayList<>();
 
-        if (code == 285) { // 내 루틴 표시, 나중에 PreferenceHelper 이용해서 유저pk로 수정
+        return binding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        if (code == prefhelper.getPK()) { // 내 루틴 표시, 나중에 PreferenceHelper 이용해서 유저pk로 수정
             sqLiteUtil = SQLiteUtil.getInstance();
             sqLiteUtil.setInitView(getContext(), "RT_TB");
 
@@ -158,29 +160,24 @@ public class RoutineChildFragment extends Fragment {
                 for (int i = 0; i < routines.size(); i++)
                     routines.get(i).setExercises(sqLiteUtil.SelectExercise(routines.get(i).getID(), true));
 
-                setRecyclerView();
+                setRecyclerView(0);
             }
         } else { // 남의 루틴 표시, 여기는 서버에서 받아오는 코드
-            addRoutineBtn.setVisibility(View.GONE);
+            binding.addRoutine.setVisibility(View.GONE);
 
             service = RetrofitClient.getClient().create(ServiceApi.class);
             service.selectRoutine(new GetRoutine(code, dayOfWeek)).enqueue(new Callback<List<RoutineData>>() {
                 @Override
                 public void onResponse(Call<List<RoutineData>> call, Response<List<RoutineData>> response) {
                     if (response.isSuccessful()) {
-                        Toast.makeText(getContext(), "루틴 불러오기 성공!!!", Toast.LENGTH_SHORT).show();
                         Log.d("성공", "루틴 불러오기 성공");
 
                         routines = (ArrayList<RoutineData>) response.body();
                         for (int i = 0; i < response.body().size(); i++)
                             routines.get(i).setExercises(response.body().get(i).getExercises());
 
-                        setRecyclerView();
+                        setRecyclerView(-1);
                         adapter.notifyDataSetChanged();
-
-                        Log.d("루틴", "루틴 불러오기 성공" + routines.size());
-
-
                     } else {
                         Toast.makeText(getContext(), "루틴 불러오기 실패!!!", Toast.LENGTH_SHORT).show();
                         Log.d("실패", "루틴 불러오기 실패");
@@ -195,22 +192,27 @@ public class RoutineChildFragment extends Fragment {
             });
         }
 
-        Collections.sort(routines, new RoutineComparator());
-
-        addRoutineBtn.setOnClickListener(v -> {
+        binding.addRoutine.setOnClickListener(v -> {
             Intent intent = new Intent(getContext(), CreateRoutineActivity.class);
             intent.putExtra("dayOfWeek", dayOfWeek);
             startActivityResult.launch(intent);
         });
-
-        return view;
     }
 
-    private void setRecyclerView() {
-        adapter = new RoutineAdapter(getContext(), routines, 0);  // 나중에 수정 code가 내 코드면 0, 아니면 -1
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(adapter);
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        binding = null; //바인딩 객체를 GC(Garbage Collector) 가 없애도록 하기 위해 참조를 끊기
+    }
+
+    private void setRecyclerView(int attribute) {
+        Collections.sort(routines, new RoutineComparator());
+
+        adapter = new RoutineAdapter(getContext(), routines, attribute);  // attribute = code가 내 코드면 0, 아니면 -1
+        binding.recyclerView.setHasFixedSize(true);
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.recyclerView.setAdapter(adapter);
 
         if (adapter != null) {
             adapter.setOnClickRoutineListener(new RoutineAdapter.OnClickRoutine() {

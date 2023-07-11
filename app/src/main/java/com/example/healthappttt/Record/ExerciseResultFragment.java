@@ -1,4 +1,4 @@
-package com.example.healthappttt.WorkOut;
+package com.example.healthappttt.Record;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -12,9 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.healthappttt.Data.Exercise.RecordData;
-import com.example.healthappttt.Data.PreferenceHelper;
-import com.example.healthappttt.Data.SQLiteUtil;
-import com.example.healthappttt.R;
 import com.example.healthappttt.databinding.FragmentExerciseResultBinding;
 
 /**

@@ -176,7 +176,7 @@
                 android:layout_marginTop="4dp"
                 android:max="100"
                 android:progress="0"
-                android:progressDrawable="@drawable/progressbar_exercise1"
+                android:progressDrawable="@drawable/progressbar_exercise"
                 android:secondaryProgress="36" />
 
 

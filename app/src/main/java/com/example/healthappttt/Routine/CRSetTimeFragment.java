@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -167,6 +168,7 @@ public class CRSetTimeFragment extends Fragment {
         startTime = TimeToInt((String) binding.startTime.getText());
         endTime = TimeToInt((String) binding.endTime.getText());
 
+        Log.d("운동 시간", startTime + " " + endTime);
         runTime = endTime - startTime;
     }
 

@@ -98,7 +98,7 @@ public class ERSelectRoutineFragment extends Fragment {
         // Inflate the layout for this fragment
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_er_select_routine, container, false);
 
-        Edit = view.findViewById(R.id.edit);
+//        Edit = view.findViewById(R.id.edit);
         DayOfWeekTxt = view.findViewById(R.id.dayOfWeek);
         recyclerView = view.findViewById(R.id.recyclerView);
 

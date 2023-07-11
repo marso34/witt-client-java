@@ -90,7 +90,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:text="오전 12:00"
+                        android:text="오후 01:00"
                         android:textStyle="bold"
                         android:textColor="@color/Standard"
                         android:textSize="18sp" />
@@ -135,7 +135,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:text="오전 12:00"
+                        android:text="오후 02:00"
                         android:textStyle="bold"
                         android:textColor="@color/Standard"
                         android:textSize="18sp" />
@@ -173,11 +173,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:background="@color/Background_2"
+            android:background="@color/Signature"
             android:text="설정하기"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:textColor="@color/Background_3"/>
+            android:textColor="@color/Background_1"/>
 
     </androidx.cardview.widget.CardView>
 </RelativeLayout>

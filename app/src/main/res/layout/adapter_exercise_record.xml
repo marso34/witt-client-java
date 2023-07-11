@@ -106,8 +106,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="8dp"
                 style="?android:attr/progressBarStyleHorizontal"
-                android:progressDrawable="@drawable/progressbar_exercise1"
+                android:progressDrawable="@drawable/progressbar_exercise"
                 android:progress="0"/>
+
+<!--            <com.google.android.material.progressindicator.LinearProgressIndicator-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                app:trackThickness="8dp"-->
+<!--                app:trackCornerRadius="10dp"-->
+<!--                app:trackColor="@color/Background_1"-->
+<!--                app:indicatorColor="@color/Signature"/>-->
 
             <TextView
                 android:id="@+id/cardioTxt"
@@ -115,6 +123,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="00:00:00"
+                android:textColor="@color/Subtitle"
                 android:textSize="16sp"/>
 
         </LinearLayout>
