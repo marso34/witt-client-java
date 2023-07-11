@@ -509,9 +509,6 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
                 {
                     mfl = cursor.getString(mf);
                 }
-
-                else Log.d(TAG, "SelectAllMSG: " +mf);
-                Log.d(TAG, "셀렉트 올 :fk= "+userKey+"msg = " + message);
                 messages.add(new MSG(Integer.parseInt(mfl),chatRoomId,message,TS));
             } while (cursor.moveToNext());
         }
@@ -545,7 +542,6 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
                     TS = cursor.getString(TSIndex);
                 }
 
-                Log.d(TAG, "일반 셀렉트 :fk= "+userKey+"msg = " + message);
                 messages.add(new MSG(myFlag,chatRoomId,message,TS));
             } while (cursor.moveToNext());
         }

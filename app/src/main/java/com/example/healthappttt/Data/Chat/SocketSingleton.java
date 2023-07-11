@@ -32,7 +32,7 @@ public class SocketSingleton {
 
     private SocketSingleton(Context context) {
         this.context = context;
-        Log.d(TAG, "소캣 키는중");
+
         try {
             mSocket = IO.socket(serverUrl);
         } catch (URISyntaxException e) {
@@ -84,7 +84,7 @@ public class SocketSingleton {
             @Override
             public void call(Object... args) {
                 // 서버로부터 메시지를 수신했을 때의 동작 처리
-                Log.d(TAG, "callaa: ");
+
                 JSONObject data = (JSONObject) args[0];
                 String message;
                 String chatRoomId = null;
@@ -97,7 +97,7 @@ public class SocketSingleton {
                         mSocket.emit("completeMessage");
                         if(chatActivity != null && chatActivity.getChatRoomId().equals(chatRoomId))
                             chatActivity.getAllMSG();
-                        Log.d(TAG, "callcall: " + chatRoomId);
+
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -113,7 +113,8 @@ public class SocketSingleton {
     private void SqlLiteSaveMessage(int userKey,int myFlag,String message,int chatRoomId){
         sqLiteUtil.setInitView(context,"CHAT_MSG_TB");
         sqLiteUtil.insert(userKey,myFlag,message,chatRoomId,1);
-        Log.d(TAG, "SqlLiteSaveMessage: 메세지 저장 완료"+message);
+
+
     }
 
     private void insertSocket(){
@@ -125,7 +126,7 @@ public class SocketSingleton {
             e.printStackTrace();
         }
         mSocket.emit("insertSocket", data);
-        Log.d(TAG, "insertSocket: "+data);
+
     }
     public static SocketSingleton getInstance(Context context_) {
         if (instance == null) {

@@ -1,7 +1,5 @@
 package com.example.healthappttt.interface_;
 
-import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
-
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -41,7 +39,7 @@ public class DataReceiverService extends Service {
         super.onCreate();
         normalExit = false;
         // SocketSingleton 인스턴스 생성 및 연결
-        Log.d(TAG, "데이타 리시브 켜지고 소캣연결함");
+
         isServiceRunning = true;
         socketSingleton = SocketSingleton.getInstance(getBaseContext());
         socket = socketSingleton.getSocket();
@@ -50,7 +48,7 @@ public class DataReceiverService extends Service {
         reconnectRunnable = new Runnable() {
             @Override
             public void run() {
-                Log.d(TAG, "데이타 리시브 실행중임");
+
                     socketSingleton.connect();
                 // 일정 시간 간격으로 소켓 연결 상태 확인 및 재연결 작업 수행
                 handler.postDelayed(this, 20000); // 5초마다 반복 실행

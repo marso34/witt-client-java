@@ -2,7 +2,6 @@ package com.example.healthappttt.Chat;
 
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
-import android.content.ContentValues;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -133,7 +132,7 @@ public class ChatActivity extends AppCompatActivity {
 
     }
     private void getMSGFromServer(int userKey){
-        Log.d(ContentValues.TAG, "getMSGFromServer: key " + String.valueOf(userKey));
+
         apiService = RetrofitClient.getClient().create(ServiceApi.class); // create메서드로 api서비스 인터페이스의 구현제 생성
         Call<List<MSG>> call = apiService.getMSGFromServer(new pkData(userKey));
         call.enqueue(new Callback<List<MSG>>() {
@@ -144,7 +143,7 @@ public class ChatActivity extends AppCompatActivity {
                     for (MSG msg : msgList) {
                         sqLiteUtil.setInitView(getBaseContext(), "CHAT_MSG_TB");
                         sqLiteUtil.insert(userKey,2, msg.getMessage(), msg.getChatRoomId(),1);
-                        Log.d(ContentValues.TAG, "onResponsechat: " + msg.getChatRoomId());
+
                     }
                 } else {
                     Log.e("getMSGFromServer", "API 요청 실패. 응답 코드: " + response.code());
@@ -153,7 +152,7 @@ public class ChatActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<List<MSG>> call, Throwable t) {
-                Log.e("getMSGFromServer", "API 요청 실패, 에러 메시지: " + t.getMessage());
+
             }
         });
 
@@ -162,11 +161,11 @@ public class ChatActivity extends AppCompatActivity {
         return chatRoomId;
     }
     private void SaveMyMessage(int userKey,int myFlag,String message,int chatRoomId){
-        Log.d(TAG, "SaveMyMessage: userKey"+String.valueOf(userKey));
+
         SQLiteUtil sqLiteUtil = SQLiteUtil.getInstance();
         sqLiteUtil.setInitView(this,"CHAT_MSG_TB");
         sqLiteUtil.insert(userKey,1,message,chatRoomId,0);
-        Log.d(TAG, "SqlLiteSaveMessage: 메세지 저장 완료"+message);
+
     }
     public void getAllMSG(){
         messageList.clear();
@@ -174,9 +173,7 @@ public class ChatActivity extends AppCompatActivity {
         sqLiteUtil.setInitView(this, "CHAT_MSG_TB");
         for (MSG M : sqLiteUtil.SelectAllMSG(userKey,Integer.parseInt(chatRoomId))){
             messageList.add(M);
-            if(M.getMyFlag() == 1)
-            Log.d(TAG, "상대 : "+M.getMessage());
-            else if(M.getMyFlag() == 2) Log.d(TAG, "나 : "+M.getMessage());
+
         }
 
 //        Collections.sort(messageList, new Comparator<MSG>() {
@@ -202,9 +199,6 @@ public class ChatActivity extends AppCompatActivity {
         sqLiteUtil.setInitView(this, "CHAT_MSG_TB");
         if (chatRoomId != null) {
             newMessages = sqLiteUtil.SelectMSG(userKey,0, Integer.parseInt(chatRoomId));
-            for (MSG M : newMessages) {
-                Log.d(TAG, "getMessagesFromRealTime: " + M.getMessage());
-            }
         } else {
             Log.d(TAG, "getMessagesFromRealTime: error ");
         }
@@ -212,7 +206,6 @@ public class ChatActivity extends AppCompatActivity {
 
         for (MSG msg : newMessages) {
             messageList.add(msg);
-            Log.d(TAG, "getMessagesFromServer: " + msg.getMessage());
         }
 //        Collections.sort(messageList, new Comparator<MSG>() {
 //            @Override
@@ -264,7 +257,7 @@ public class ChatActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                Log.d(TAG, "call: 체팅 송신 완료");
+
             }
         });
             // 1초 후에 다시 송신과 대기를 수행
