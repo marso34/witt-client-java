@@ -13,6 +13,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -36,6 +37,8 @@ import com.example.healthappttt.Data.SQLiteUtil;
 import com.example.healthappttt.Data.User.BlackListData;
 import com.example.healthappttt.Data.User.GetUserInfo;
 import com.example.healthappttt.Data.User.ReviewListData;
+import com.example.healthappttt.Data.User.SaveImageResponse;
+import com.example.healthappttt.Data.User.UploadResponse;
 import com.example.healthappttt.Data.User.UserKey;
 import com.example.healthappttt.Data.User.UserProfile;
 import com.example.healthappttt.Data.User.WittListData;
@@ -56,10 +59,14 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 
+import java.io.File;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -94,6 +101,8 @@ public class MainActivity extends AppCompatActivity {
         login = 1;
 
         String uk = getIntent().getStringExtra("userKey");
+        SharedPreferences sharedPref = getSharedPreferences("myPref", Context.MODE_PRIVATE);
+        String url  = sharedPref.getString("URL", "");
 
         if(uk != null){
             userKey = new UserKey(Integer.parseInt(uk));
@@ -128,8 +137,7 @@ public class MainActivity extends AppCompatActivity {
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
-        SharedPreferences sharedPref = getSharedPreferences("myPref", Context.MODE_PRIVATE);
-        String useremail = sharedPref.getString("useremail", "");
+
 
 
         if ( Build.VERSION.SDK_INT >= 23 &&
@@ -257,6 +265,7 @@ public class MainActivity extends AppCompatActivity {
         getBlackList(userKey);
         getReviewList(userKey);
         getWittHistory(userKey);
+//         uploadImageToServer(url, userKey.toString());
     }
 
     @Override
@@ -653,4 +662,33 @@ public class MainActivity extends AppCompatActivity {
         toast = Toast.makeText(this, msg, Toast.LENGTH_SHORT);
         toast.show();
     }
+
+    private void uploadImageToServer(String imageUri, String userId) {
+
+        ServiceApi apiService = RetrofitClient.getClient().create(ServiceApi.class);
+
+
+        Call<UploadResponse> call = apiService.uploadImage(imageUri, userId);
+        call.enqueue(new Callback<UploadResponse>() {
+            @Override
+            public void onResponse(Call<UploadResponse> call, Response<UploadResponse> response) {
+                if (response.isSuccessful()) {
+                    UploadResponse uploadResponse = response.body();
+                    Toast.makeText(MainActivity.this, "이미지 업로드 성공", Toast.LENGTH_SHORT).show();
+
+                    // 이미지 URL을 MySQL 데이터베이스에 저장하는 로직 추가
+                } else {
+                    // 업로드 실패 처리
+                    Toast.makeText(MainActivity.this, "이미지 업로드 실패", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UploadResponse> call, Throwable t) {
+                // 통신 실패 처리
+                Toast.makeText(MainActivity.this, "통신 실패", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 }

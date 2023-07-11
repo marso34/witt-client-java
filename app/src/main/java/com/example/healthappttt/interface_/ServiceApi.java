@@ -10,6 +10,8 @@ import com.example.healthappttt.Data.Exercise.RecordData;
 import com.example.healthappttt.Data.User.ReviewListData;
 import com.example.healthappttt.Data.Exercise.RoutineData;
 import com.example.healthappttt.Data.Chat.UserChat;
+import com.example.healthappttt.Data.User.SaveImageResponse;
+import com.example.healthappttt.Data.User.UploadResponse;
 import com.example.healthappttt.Data.User.UserClass;
 import com.example.healthappttt.Data.UserInfo;
 import com.example.healthappttt.Data.User.UserKey;
@@ -21,11 +23,18 @@ import com.example.healthappttt.Data.pkData;
 import java.util.List;
 import java.util.Map;
 
+import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
+import retrofit2.http.Url;
 
 public interface ServiceApi {
     @POST("/sendDataToIP")
@@ -90,5 +99,10 @@ public interface ServiceApi {
     @POST("messages")
     Call<MSG> sendMessage(@Body MSG message);
 
+    @FormUrlEncoded
+    @POST("upload/image")
+    Call<UploadResponse> uploadImage(
+            @Field("imageUrl") String imageUrl,
+            @Field("userId") String userId
+    );
 }
-

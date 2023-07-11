@@ -44,15 +44,18 @@
                 android:text="총 3대 축정량"
                 android:textColor="@color/black"
                 android:textSize="14dp"
-                android:textStyle="bold"></TextView>
+                android:textStyle="bold"
+                android:layout_marginLeft="20dp"></TextView>
 
             <TextView
+                android:id="@+id/sum3"
                 android:layout_width="120dp"
                 android:layout_height="40dp"
-                android:text="155kg"
+                android:text="0"
                 android:textColor="@color/black"
                 android:textSize="24dp"
-                android:textStyle="bold"></TextView>
+                android:textStyle="bold"
+                android:layout_marginLeft="20dp"></TextView>
         </LinearLayout>
 
         <LinearLayout
@@ -89,7 +92,9 @@
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/ic_baseline_keyboard_arrow_up_"/>
+                        android:src="@drawable/ic_baseline_keyboard_arrow_up_"
+                        android:background="@drawable/circle2"
+                        android:backgroundTint="#DFE3E8"/>
 
                 </FrameLayout>
 
@@ -105,7 +110,7 @@
                     android:layout_width="50dp"
                     android:layout_height="30dp"
                     android:gravity="center"
-                    android:text="60"
+                    android:text="0"
                     android:textColor="@color/black"
                     android:textSize="14dp"
                     android:textStyle="bold"></TextView>
@@ -128,7 +133,9 @@
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/ic_baseline_keyboard_arrow_down_24"></ImageView>
+                        android:src="@drawable/ic_baseline_keyboard_arrow_down_24"
+                        android:background="@drawable/circle2"
+                        android:backgroundTint="#DFE3E8"></ImageView>
 
                 </FrameLayout>
             </LinearLayout>
@@ -156,7 +163,9 @@
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/ic_baseline_keyboard_arrow_up_"></ImageView>
+                        android:src="@drawable/ic_baseline_keyboard_arrow_up_"
+                        android:background="@drawable/circle2"
+                        android:backgroundTint="#DFE3E8"></ImageView>
 
                 </FrameLayout>
 
@@ -172,7 +181,7 @@
                     android:layout_width="50dp"
                     android:layout_height="30dp"
                     android:gravity="center"
-                    android:text="60"
+                    android:text="0"
                     android:textColor="@color/black"
                     android:textSize="14dp"
                     android:textStyle="bold"></TextView>
@@ -195,7 +204,9 @@
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/ic_baseline_keyboard_arrow_down_24"></ImageView>
+                        android:src="@drawable/ic_baseline_keyboard_arrow_down_24"
+                        android:background="@drawable/circle2"
+                        android:backgroundTint="#DFE3E8"></ImageView>
 
                 </FrameLayout>
             </LinearLayout>
@@ -213,16 +224,18 @@
 
                     <Button
                         android:id="@+id/DeadUpBtn"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:layout_gravity="center"
                         android:background="#00ff0000"></Button>
 
                     <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/ic_baseline_keyboard_arrow_up_"></ImageView>
+                        android:src="@drawable/ic_baseline_keyboard_arrow_up_"
+                        android:background="@drawable/circle2"
+                        android:backgroundTint="#DFE3E8"></ImageView>
                 </FrameLayout>
 
                 <TextView
@@ -237,7 +250,7 @@
                     android:layout_width="50dp"
                     android:layout_height="30dp"
                     android:gravity="center"
-                    android:text="60"
+                    android:text="0"
                     android:textColor="@color/black"
                     android:textSize="14dp"
                     android:textStyle="bold"></TextView>
@@ -251,8 +264,8 @@
                     <Button
 
                         android:id="@+id/DeadDownBtn"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:layout_gravity="center"
                         android:background="#00ff0000"></Button>
 
@@ -260,7 +273,10 @@
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/ic_baseline_keyboard_arrow_down_24"></ImageView>
+                        android:src="@drawable/ic_baseline_keyboard_arrow_down_24"
+                        android:background="@drawable/circle2"
+                        android:backgroundTint="#DFE3E8"
+                        ></ImageView>
 
                 </FrameLayout>
             </LinearLayout>
@@ -270,14 +286,15 @@
             android:id="@+id/Check"
             android:layout_width="328dp"
             android:layout_height="44dp"
-            android:layout_marginLeft="16dp"
             android:layout_marginTop="120dp"
-            android:background="@drawable/circle2"
-            android:backgroundTint="#D1D8E2"
             android:text="설정하기"
-            android:textColor="#9AA5B8"
-            android:textSize="15dp"
             android:textStyle="bold"
-            tools:ignore="TouchTargetSizeCheck"></android.widget.Button>
+            android:textColor="#99A4B7"
+            android:background="@drawable/circle2"
+            tools:ignore="TouchTargetSizeCheck"
+            android:layout_gravity="center_horizontal"
+            >
+
+        </android.widget.Button>
     </LinearLayout>
 </FrameLayout>
