@@ -30,8 +30,8 @@ public class MyProfileActivity extends AppCompatActivity {
     private ActivityMyprofileBinding binding;
     private ActivityResultLauncher<Intent> editProfileLauncher;
     private static final String name_TB = "membership";
-    private PreferenceHelper prefhelper;
-    private SharedPreferences sharedPreferences;
+    private PreferenceHelper membership;
+    private PreferenceHelper UserTB;
     private UserClass userClass;
     ImageButton block_btn,Reviews_btn,WittHistory_btn;
     Button PEdit;
@@ -62,40 +62,50 @@ public class MyProfileActivity extends AppCompatActivity {
         //이미지
         ProfileImg = findViewById(R.id.ProfileImg);
 //-------------------------------------------------------------------------------------
-        prefhelper = new PreferenceHelper("UserTB",this);
+        UserTB = new PreferenceHelper("UserTB",this);
         Intent intent = getIntent();//넘겨받은 pk를 담은 번들
-        if(intent.getStringExtra("myPK").equals( String.valueOf(prefhelper.getPK()) )){ //내 pk이면 마이 프로필
+        if(intent.getStringExtra("myPK").equals( String.valueOf(UserTB.getPK()) )){ //내 pk이면 마이 프로필
 
-        Log.d("프로필에서 membership으로 받기O",String.valueOf(prefhelper.getPK()));
+        Log.d("프로필에서 membership으로 받기O",String.valueOf(UserTB.getPK()));
         Log.d("프로필에서 membership으로 받기O",intent.getStringExtra("myPK"));
 
         }else{ // 내 pk가 아니면 상대 프로필
-            Log.d("프로필에서 membership으로 받기X",String.valueOf(prefhelper.getPK()));
+            Log.d("프로필에서 membership으로 받기X",String.valueOf(UserTB.getPK()));
             Log.d("프로필에서 membership으로 받기X",intent.getStringExtra("myPK"));
         }
 
         //기본 텍스트 세팅 TODO 이걸로 추후에 바꿔서 연결해야함
         //prefhelper = new PreferenceHelper(name_TB);
         //userDefualt = prefhelper.getUserData(shared_pref);
-        prefhelper = new PreferenceHelper("membership",this);
-        Log.d("membership", String.valueOf(prefhelper.getUserData().get("name")));
+        membership = new PreferenceHelper("membership",this);
+        //Log.d("membership", String.valueOf(prefhelper.getUserData().get("name")));
         // TODO 테스트케이스 -> 진짜로 받아온 데이터를 userDefault에 넣어 놓아야함
         // TODO 단, putUserDefault로 따로 저장 X (테스트하려고 했기때문)
         // TODO 수정하기 버튼 눌렀을때 참조 로컬 이름도 membership으로 바꿔야함
         // TODO 수정하기 플로우 다시 한번 확인 해야할듯
 
-        //testcase----------------------//
         userDefault = new HashMap<>();
-        userDefault.put("name","이형원");
-        userDefault.put("gender",0);
-        userDefault.put("height", 175);
-        userDefault.put("weight", 87);
-        userDefault.put("squatValue", 80);
-        userDefault.put("benchValue", 90);
-        userDefault.put("deadValue", 100);
-        userDefault.put("totalValue",270);
+        userDefault.put("name",membership.getUserData().get("name"));
+        userDefault.put("gender",membership.getUserData().get("gender"));
+        userDefault.put("height", membership.getUserData().get("height"));
+        userDefault.put("weight", membership.getUserData().get("weight"));
+        userDefault.put("squatValue",membership.getUserData().get("squatValue"));
+        userDefault.put("benchValue", membership.getUserData().get("benchValue"));
+        userDefault.put("deadValue", membership.getUserData().get("deadValue"));
+        userDefault.put("totalValue",membership.getUserData().get("totalValue"));
 
-        prefhelper.putUserDefault(userDefault);
+        //testcase----------------------//
+//        userDefault = new HashMap<>();
+//        userDefault.put("name","이형원");
+//        userDefault.put("gender",0);
+//        userDefault.put("height", 175);
+//        userDefault.put("weight", 87);
+//        userDefault.put("squatValue", 80);
+//        userDefault.put("benchValue", 90);
+//        userDefault.put("deadValue", 100);
+//        userDefault.put("totalValue",270);
+//
+//        membership.putUserDefault(userDefault);
         //----------------------testcase//
 
         //버튼
@@ -121,7 +131,7 @@ public class MyProfileActivity extends AppCompatActivity {
 //                        int EbenchValue = result.getData().getIntExtra("benchValue",0);
 //                        int EdeadValue = result.getData().getIntExtra("deadValue",0);
 //                        int Egender = result.getData().getIntExtra("gender",0);
-                        userDefault = prefhelper.getUserData();
+                        userDefault = membership.getUserData();
 
                         //화면에 연결
                         binding.name.setText(userDefault.get("name").toString());
@@ -140,7 +150,7 @@ public class MyProfileActivity extends AppCompatActivity {
 
 
                     }else if(result.getResultCode() == Activity.RESULT_CANCELED){
-                        userDefault = prefhelper.getUserData();
+                        userDefault = membership.getUserData();
                         setDefault(userDefault);
                         Log.d("Profile","그냥 뒤로가처리 후 기본값 설정됨");
                     }

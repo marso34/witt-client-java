@@ -31,7 +31,8 @@ import retrofit2.Response;
 public class MyProfileEdit extends AppCompatActivity {
 
     private ActivityMyProfileEditBinding binding;
-    private PreferenceHelper prefhelper;
+    private PreferenceHelper membershippref;
+    private PreferenceHelper UserTB;
     private ServiceApi apiService;
 
     ImageView edit_img;
@@ -53,7 +54,7 @@ public class MyProfileEdit extends AppCompatActivity {
         binding = ActivityMyProfileEditBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        prefhelper = new PreferenceHelper("default_user_info",this);
+        membershippref = new PreferenceHelper("membership",this);
         apiService = RetrofitClient.getClient().create(ServiceApi.class);
         edit_img = findViewById(R.id.edit_img); // 내 프로필 사진
         elbum = findViewById(R.id.elbum);// 사진첩
@@ -145,10 +146,11 @@ public class MyProfileEdit extends AppCompatActivity {
                     UpdateDefault.put("gender",1);
                 }
 
-                prefhelper.putUserDefault(UpdateDefault); // 로컬 저장
-                UpdateDefault.put("myPK",prefhelper.getPK()); // 키는 서버에서 필요해서 따로 추가
-                EditProfile(UpdateDefault); //서버 db 수정
-                Log.d("서버 db 수정 : ","EditProfile(UpdateDefault)");
+                membershippref.putUserDefault(UpdateDefault); // 로컬 저장
+                UserTB = new PreferenceHelper(MyProfileEdit.this);
+                UpdateDefault.put("myPK",membershippref.getPK()); // 키는 서버에서 필요해서 따로 추가
+                EditProfile(UpdateDefault); //서버 db 수정 TODO 뭔가 이상함 서버 코드 수정 필요
+                Log.d("서버 db 수정 : ","EditProfile(UpdateDefault) "+membershippref.getPK());
                 setResult(RESULT_OK, intent);//응답코드 -1
                 finish();//스택에서 제거
             }

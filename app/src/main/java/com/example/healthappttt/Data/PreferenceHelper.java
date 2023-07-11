@@ -106,6 +106,7 @@ public class PreferenceHelper
         edit.putInt("benchValue",exPerfInfo.getBenchValue());
         edit.putInt("squatValue",exPerfInfo.getSquatValue());
         edit.putInt("deadliftValue",exPerfInfo.getDeadliftValue());
+        edit.putInt("totalValue",exPerfInfo.getBenchValue() + exPerfInfo.getSquatValue() + exPerfInfo.getDeadliftValue());
         /**
          * bodyInfo 저장
          **/
@@ -148,8 +149,9 @@ public class PreferenceHelper
         userData.put("squatValue", app_prefs.getInt("squatValue", 0));
         userData.put("benchValue", app_prefs.getInt("benchValue", 0));
         userData.put("deadValue", app_prefs.getInt("deadValue", 0));
+        userData.put("totalValue",app_prefs.getInt("totalValue",0));
         userData.put("image", app_prefs.getString("image", "nothing"));
-        Log.d("가져오는 실제 유저 키: ", String.valueOf(app_prefs.getInt("height", 0)));
+        Log.d("member getUserData() ", String.valueOf(app_prefs.getInt("height", 0)));
         return userData;
     }
     public void putUserDefault(Map<String, Object> userdefault){
@@ -163,7 +165,7 @@ public class PreferenceHelper
         edit.putInt("deadValue", (Integer) userdefault.get("deadValue"));
         edit.putInt("totalValue",(Integer) userdefault.get("totalValue"));
         edit.apply();
-        Log.d("sharedpref","유저 기본 정보 로컬 저장 완료 ");
+        Log.d("putUserDefault","유저 기본 정보 로컬 저장 완료 ");
 
     }
 //    public int getGender() { return app_prefs.getInt("gender",00); }
