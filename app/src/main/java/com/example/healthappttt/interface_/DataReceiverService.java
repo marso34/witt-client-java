@@ -52,19 +52,17 @@ public class DataReceiverService extends Service {
             public void run() {
                 Log.d(TAG, "데이타 리시브 실행중임");
                     socketSingleton.connect();
-                    socket = socketSingleton.getSocket();
                 // 일정 시간 간격으로 소켓 연결 상태 확인 및 재연결 작업 수행
-                handler.postDelayed(this, 5000); // 5초마다 반복 실행
+                handler.postDelayed(this, 20000); // 5초마다 반복 실행
             }
         };
-        Log.d(TAG, "연결됨 id = " + socketSingleton.getSocketId());
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         // 소켓 연결 상태 확인 및 재연결 작업 시작z
-        handler.postDelayed(reconnectRunnable, 5000); // 5초 후에 시작
+        handler.postDelayed(reconnectRunnable, 2000); // 5초 후에 시작
         // 서비스 로직 수행
 //        createNotification();zzZz
         service = intent;

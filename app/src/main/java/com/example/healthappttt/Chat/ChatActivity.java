@@ -4,6 +4,7 @@ import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
 import android.content.ContentValues;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -31,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import io.socket.emitter.Emitter;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -52,6 +54,7 @@ public class ChatActivity extends AppCompatActivity {
     private String otherUserKey;
     private SQLiteUtil sqLiteUtil;
     private ServiceApi apiService;
+    private  int out = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +65,7 @@ public class ChatActivity extends AppCompatActivity {
         //username = getIntent().getExtra("username"); 이전 엑티비티에서 유저의 필요한 모든 정보 받아오기.
         preferenceHelper = new PreferenceHelper("UserTB",this);
         userKey = String.valueOf(preferenceHelper.getPK());
+        Log.d(TAG, "onCreate: userkey"+userKey);
         sqLiteUtil = SQLiteUtil.getInstance();
         sqLiteUtil.setInitView(this, "CHAT_MSG_TB");
         getMSGFromServer(Integer.parseInt(userKey));
@@ -105,7 +109,7 @@ public class ChatActivity extends AppCompatActivity {
 
                     // 새로운 메시지를 생성합니다.
                     MSG newMessage = new MSG(1, Integer.parseInt(chatRoomId), messageText, currentTime);
-                    SaveMyMessage(1,messageText,Integer.parseInt(chatRoomId));
+                    SaveMyMessage(Integer.parseInt(userKey),1,messageText,Integer.parseInt(chatRoomId));
                     // 메시지를 리스트에 추가합니다.
                     messageList.add(newMessage);
 //                    Collections.sort(messageList, new Comparator<MSG>() {
@@ -117,8 +121,7 @@ public class ChatActivity extends AppCompatActivity {
 //                        }
 //                    });
                     // 어댑터를 갱신합니다.
-                    messageListAdapter.notifyDataSetChanged();
-
+                    getAllMSG();
                     // 스크롤을 마지막 메시지로 이동합니다.
                     messageRecyclerView.scrollToPosition(messageList.size() - 1);
 
@@ -131,7 +134,6 @@ public class ChatActivity extends AppCompatActivity {
     }
     private void getMSGFromServer(int userKey){
         Log.d(ContentValues.TAG, "getMSGFromServer: key " + String.valueOf(userKey));
-
         apiService = RetrofitClient.getClient().create(ServiceApi.class); // create메서드로 api서비스 인터페이스의 구현제 생성
         Call<List<MSG>> call = apiService.getMSGFromServer(new pkData(userKey));
         call.enqueue(new Callback<List<MSG>>() {
@@ -159,19 +161,22 @@ public class ChatActivity extends AppCompatActivity {
     public String getChatRoomId (){
         return chatRoomId;
     }
-    private void SaveMyMessage(int myFlag,String message,int chatRoomId){
+    private void SaveMyMessage(int userKey,int myFlag,String message,int chatRoomId){
+        Log.d(TAG, "SaveMyMessage: userKey"+String.valueOf(userKey));
         SQLiteUtil sqLiteUtil = SQLiteUtil.getInstance();
         sqLiteUtil.setInitView(this,"CHAT_MSG_TB");
-        sqLiteUtil.insert(Integer.parseInt(userKey),1,message,chatRoomId,0);
+        sqLiteUtil.insert(userKey,1,message,chatRoomId,0);
         Log.d(TAG, "SqlLiteSaveMessage: 메세지 저장 완료"+message);
     }
     public void getAllMSG(){
-
+        messageList.clear();
         SQLiteUtil sqLiteUtil = SQLiteUtil.getInstance();
         sqLiteUtil.setInitView(this, "CHAT_MSG_TB");
-        messageList.addAll(sqLiteUtil.SelectAllMSG(userKey,Integer.parseInt(chatRoomId)));
-        for (MSG M : messageList){
-            Log.d(TAG, "getAllMSG: "+M.getMyFlag());
+        for (MSG M : sqLiteUtil.SelectAllMSG(userKey,Integer.parseInt(chatRoomId))){
+            messageList.add(M);
+            if(M.getMyFlag() == 1)
+            Log.d(TAG, "상대 : "+M.getMessage());
+            else if(M.getMyFlag() == 2) Log.d(TAG, "나 : "+M.getMessage());
         }
 
 //        Collections.sort(messageList, new Comparator<MSG>() {
@@ -182,7 +187,12 @@ public class ChatActivity extends AppCompatActivity {
 //                return Long.compare(timestamp1, timestamp2);
 //            }
 //        });
-        messageListAdapter.notifyDataSetChanged();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                messageListAdapter.notifyDataSetChanged();
+            }
+        });
     }
     // 서버에서 메시지 목록을 가져오는 메소드입니다.
     public void getMessagesFromRealTime() {
@@ -224,16 +234,51 @@ public class ChatActivity extends AppCompatActivity {
     // 서버로 메시지를 보내는 메소드입니다.
     private void sendMessageToServer(String messageText) {
         try {
+            out =1;
+
             JSONObject data = new JSONObject();
+            data.put("mySocketId",SocketSingleton.mSocket.id());
             data.put("otherUserKey",Integer.parseInt(otherUserKey));
             data.put("chatRoomId", Integer.parseInt(chatRoomId));
             data.put("messageText", messageText);
+            performSendingAndWaiting(data);
             // Emit the 'sendMessage' event to the server with the message data
-            socketSingleton.getSocket().emit("sendMessage", data);
+           
+         
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
     }
 
-}
+    private void performSendingAndWaiting(JSONObject data) {
+        socketSingleton.getSocket().emit("sendMessage", data);
+        socketSingleton.getSocket().on("receiveReturn", new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+                JSONObject data = (JSONObject) args[0]; // 수신된 데이터 추출
+                try {
+                    String signal = data.getString("signal"); // signal 값을 추출하여 사용
+                    // 처리할 작업 수행
+                    out = Integer.parseInt(signal);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                Log.d(TAG, "call: 체팅 송신 완료");
+            }
+        });
+            // 1초 후에 다시 송신과 대기를 수행
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (out != 2)
+                        performSendingAndWaiting(data);
+                    else{
+                        handler.removeCallbacksAndMessages(null);
+                    }
+                }
+            }, 1000); // 1000 밀리초는 1초입니다.
+        }
+
+    }

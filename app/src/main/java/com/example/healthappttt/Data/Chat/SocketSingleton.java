@@ -21,7 +21,7 @@ import io.socket.emitter.Emitter;
 
 public class SocketSingleton {
     private static volatile SocketSingleton instance;
-    private static volatile Socket mSocket;
+    public static volatile Socket mSocket;
     private String serverUrl = "http://43.200.245.144:1337/";  // 서버 URL 설정
     private boolean isConnected = false;  // 소켓 연결 여부 확인
     private int userKey;
@@ -32,6 +32,23 @@ public class SocketSingleton {
 
     private SocketSingleton(Context context) {
         this.context = context;
+        Log.d(TAG, "소캣 키는중");
+        try {
+            mSocket = IO.socket(serverUrl);
+        } catch (URISyntaxException e) {
+            Log.d(TAG, "Failed to initialize Socket: " + e.getMessage());
+            Toast.makeText(context, "서버에 연결할 수 없습니다.", Toast.LENGTH_SHORT).show();
+            // 접속 할 수 있게 바꿔야돼나?
+        } catch (Exception e) {
+            Log.d(TAG, "Exception during Socket initialization: " + e.getMessage());
+            Toast.makeText(context, "서버에 연결할 수 없습니다.", Toast.LENGTH_SHORT).show();
+            // 접속 할 수 있게 바꿔야돼나?
+        }
+        connectSocket();
+        setupSocketListeners();
+        receiveMessage();
+        sqLiteUtil = SQLiteUtil.getInstance(); //sqllite 객체
+
     }
 
     private void setupSocketListeners() {
@@ -68,7 +85,6 @@ public class SocketSingleton {
             public void call(Object... args) {
                 // 서버로부터 메시지를 수신했을 때의 동작 처리
                 Log.d(TAG, "callaa: ");
-                mSocket.emit("completeMessage");
                 JSONObject data = (JSONObject) args[0];
                 String message;
                 String chatRoomId = null;
@@ -77,14 +93,16 @@ public class SocketSingleton {
                     chatRoomId = data.getString("chatRoomId");
                     if(chatRoomId !=null) {
                         int CRI = Integer.parseInt(chatRoomId);
-                        SqlLiteSaveMessage(userKey,2,message,CRI);
+                        SqlLiteSaveMessage(prefhelper.getPK(),2,message,CRI);
+                        mSocket.emit("completeMessage");
+                        if(chatActivity != null && chatActivity.getChatRoomId().equals(chatRoomId))
+                            chatActivity.getAllMSG();
+                        Log.d(TAG, "callcall: " + chatRoomId);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                if(chatActivity != null && chatActivity.getChatRoomId().equals(chatRoomId))
-                    chatActivity.getMessagesFromRealTime();
-                Log.d(TAG, "callcall: " + chatRoomId);
+
 
                 // 받은 메시지를 처리하는 로직 작성
             }
@@ -123,27 +141,7 @@ public class SocketSingleton {
         this.userKey = userkey_;
     }
     public Socket getSocket() {
-        if(mSocket != null)
             return mSocket;
-        else{
-            Log.d(TAG, "소캣 키는중");
-            try {
-                mSocket = IO.socket(serverUrl);
-            } catch (URISyntaxException e) {
-                Log.d(TAG, "Failed to initialize Socket: " + e.getMessage());
-                Toast.makeText(context, "서버에 연결할 수 없습니다.", Toast.LENGTH_SHORT).show();
-                // 접속 할 수 있게 바꿔야돼나?
-            } catch (Exception e) {
-                Log.d(TAG, "Exception during Socket initialization: " + e.getMessage());
-                Toast.makeText(context, "서버에 연결할 수 없습니다.", Toast.LENGTH_SHORT).show();
-                // 접속 할 수 있게 바꿔야돼나?
-            }
-            connectSocket();
-            setupSocketListeners();
-            receiveMessage();
-            sqLiteUtil = SQLiteUtil.getInstance(); //sqllite 객체
-            return mSocket;
-        }
     }
 
     public boolean isConnected() {
@@ -177,6 +175,7 @@ public class SocketSingleton {
         }
         return null;
     }
+
     public void setChatActivity(ChatActivity chatActivity) {
         if (chatActivity == null) {
             throw new IllegalArgumentException("chatActivity cannot be null");

@@ -136,7 +136,7 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         values.put("READ",read);
         try {
             db.insertOrThrow("CHAT_MSG_TB", null, values);
-            Log.d(TAG, "데이터 삽입 성공");
+            Log.d(TAG, "데이터 삽입 성공 :fk= "+userKey+"msg = " + message);
         } catch (SQLException e) {
             Log.e(TAG, "데이터베이스 오류: " + e.getMessage());
         } finally {
@@ -496,8 +496,6 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
                 int MSGIndex = cursor.getColumnIndex("MSG");
                 int mf =  cursor.getColumnIndex("MYFLAG");
                 int TSIndex = cursor.getColumnIndex("TS");
-                Log.d(TAG, "SelectAllMSG111: " +mf);
-                Log.d(TAG, "SelectAllMSG111: " +MSGIndex);
                 if (MSGIndex != -1) {
                     message = cursor.getString(MSGIndex);
                     // 메시지 처리 로직 작성
@@ -513,6 +511,7 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
                 }
 
                 else Log.d(TAG, "SelectAllMSG: " +mf);
+                Log.d(TAG, "셀렉트 올 :fk= "+userKey+"msg = " + message);
                 messages.add(new MSG(Integer.parseInt(mfl),chatRoomId,message,TS));
             } while (cursor.moveToNext());
         }
@@ -545,6 +544,8 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
                 if(TSIndex != -1){
                     TS = cursor.getString(TSIndex);
                 }
+
+                Log.d(TAG, "일반 셀렉트 :fk= "+userKey+"msg = " + message);
                 messages.add(new MSG(myFlag,chatRoomId,message,TS));
             } while (cursor.moveToNext());
         }
