@@ -159,10 +159,10 @@ public class MyProfileActivity extends AppCompatActivity {
 
     public void setOtherProfileView() {
         //내프로필(text+수정하기), 차단목록, 설정 탈퇴 안보이게
-        binding.myprofile.setVisibility(View.INVISIBLE);
-        binding.black.setVisibility(View.INVISIBLE);
-        binding.set.setVisibility(View.INVISIBLE);
-        binding.secession.setVisibility(View.INVISIBLE);
+        binding.myprofile.setVisibility(View.GONE);
+        binding.black.setVisibility(View.GONE);
+        binding.set.setVisibility(View.GONE);
+        binding.secession.setVisibility(View.GONE);
         //상세 프로필(text),루틴, 신고내역 오늘 루틴, 위트 보내기 보이게
         binding.Oprofile.setVisibility(View.VISIBLE);
         binding.routineTb.setVisibility(View.VISIBLE);
