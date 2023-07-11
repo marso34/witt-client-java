@@ -62,7 +62,6 @@ public class sub2Fragment extends Fragment {
     private String phoneModel = Build.MODEL;
     private String serialNumber = Build.SERIAL;
     private PreferenceHelper prefhelper;
-    private String name_TB = "membership";
 
     public static sub2Fragment newInstance(String email,double latitude, double longitude,double gymLatitude,double gymLongitude, String loName, int height, int weight, String name) {
         sub2Fragment fragment = new sub2Fragment();
@@ -83,7 +82,7 @@ public class sub2Fragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        prefhelper = new PreferenceHelper("UserTB",getContext());
+        prefhelper = new PreferenceHelper("membership",getContext());
 
         if (getArguments() != null) {
             latitude = getArguments().getDouble(ARG_LATITUDE);
