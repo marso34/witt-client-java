@@ -77,10 +77,6 @@ public class ExerciseData implements Serializable {
         this.index = e.index;
     }
 
-
-
-
-
     public int getID()                      { return this.ID; }
     public int getParentID()                { return this.parentID; }
     public String getExerciseName()         { return this.exerciseName; }
@@ -90,7 +86,7 @@ public class ExerciseData implements Serializable {
     public int getCntOrDis()                { return this.cntOrDis; }
     public int getIndex()                   { return this.index; }
 
-    public String getState() { // 나중에 getStrCat으로 변경
+    public String getStrCat() { // 나중에 getStrCat으로 변경
         switch (this.cat) {
             case 0x1:  return "가슴";
             case 0x2:  return "등";

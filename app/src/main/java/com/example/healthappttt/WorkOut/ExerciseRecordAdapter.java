@@ -81,7 +81,7 @@ public class ExerciseRecordAdapter extends RecyclerView.Adapter<ExerciseRecordAd
     @Override
     public void onBindViewHolder(@NonNull MainViewHolder holder, int position) {
         String name = this.exercises.get(position).getExerciseName();
-        String cat = this.exercises.get(position).getState();
+        String cat = this.exercises.get(position).getStrCat();
         int progressCurrentValue = holder.progressBar.getProgress();
         int progressMaxValue = this.exercises.get(position).getSetOrTime();
 
@@ -89,7 +89,6 @@ public class ExerciseRecordAdapter extends RecyclerView.Adapter<ExerciseRecordAd
         holder.CatView.setBackgroundColor(Color.parseColor(this.exercises.get(position).getColor())); // 부위 바탕 색
         holder.CatView.setText(cat);
         holder.NameView.setText(name);
-
 
         if (this.exercises.get(position).getCat() == 0x40) {// 유산소일 경우
             holder.CountView.setText(Integer.toString(progressMaxValue));

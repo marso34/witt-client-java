@@ -12,7 +12,7 @@ import java.util.Date;
 
 public class MSG {
     public static final int TYPE_SENT = 1;
-    public static final int TYPE_RECEIVED = 0;
+    public static final int TYPE_RECEIVED = 2;
     @SerializedName("myFlag")
     private int myFlag;
     @SerializedName("chatRoomId")

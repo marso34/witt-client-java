@@ -69,7 +69,7 @@ public class ExerciseResultActivity extends AppCompatActivity {
         int min = 0;
 
         for (ExerciseData e : exercises) {
-            if (e.getState().equals("유산소")) {
+            if (e.getStrCat().equals("유산소")) {
                 min += e.getSetOrTime();
                 continue;
             }

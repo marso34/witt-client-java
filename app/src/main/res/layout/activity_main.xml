@@ -23,10 +23,10 @@
                 android:id="@+id/viewName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
+                android:text="홈"
+                android:textColor="@color/Standard"
                 android:textSize="24dp"
-                android:textStyle="bold"
-                android:text="홈" />
+                android:textStyle="bold" />
 
             <ImageView
                 android:layout_width="30dp"
@@ -47,10 +47,10 @@
                 android:id="@+id/sign_out_button"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:text="로그아웃"
+                android:layout_gravity="end"
                 android:layout_marginRight="10dp"
                 android:src="@drawable/baseline_exit_to_app_24"
-                android:layout_gravity="end"/>
+                android:text="로그아웃" />
         </androidx.appcompat.widget.Toolbar>
 
         <FrameLayout
@@ -66,24 +66,18 @@
             app:layout_constraintVertical_bias="0.0" >
         </FrameLayout>
 
-    </FrameLayout>
-
-    <FrameLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom">
-
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomNav"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/rounded_top"
             app:itemBackground="@color/transparent"
+            android:layout_gravity="bottom"
             app:itemHorizontalTranslationEnabled="false"
+            app:labelVisibilityMode="labeled"
             app:itemIconTint="@drawable/menu_selector_color"
             app:itemTextColor="@drawable/menu_selector_color"
-            app:labelVisibilityMode="labeled"
-            app:elevation="0dp"
+            app:elevation="20dp"
             app:menu="@menu/bottom_nav_menu" />
 
     </FrameLayout>

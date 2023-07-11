@@ -5,18 +5,16 @@ import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.healthappttt.Data.Exercise.ExerciseData;
@@ -31,20 +29,19 @@ import java.util.ArrayList;
  * create an instance of this fragment.
  */
 public class CRSelectExerciseFragment extends Fragment {
-    private TextView DirectInputBtn, ScheduleTxt;
-    private EditText searchView;
-    private ImageView removeTxtBtn;
-
+    private TextView DirectInputBtn, ScheduleTxt, NextTxt;
     private TabLayout tabLayout;
     private CardView NextBtn;
-    private TextView NextTxt;
+
+    private SearchView searchView;
 
     private RecyclerView recyclerView;
     private ExerciseListPAdapter adapter;
 
 
     private ArrayList<ExerciseData> exercises;
-    private ArrayList<ExerciseData> selectExercises;
+    private ArrayList<ExerciseData> searchList;
+    public ArrayList<String> selectExerciseIndex;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -113,7 +110,6 @@ public class CRSelectExerciseFragment extends Fragment {
         ScheduleTxt = view.findViewById(R.id.schedule);
 
         searchView = view.findViewById(R.id.search);
-        removeTxtBtn = view.findViewById(R.id.removeTxt);
 
         tabLayout = view.findViewById(R.id.tabLayout);
         recyclerView = view.findViewById(R.id.recyclerView);
@@ -121,16 +117,8 @@ public class CRSelectExerciseFragment extends Fragment {
         NextBtn = view.findViewById(R.id.nextBtn);
         NextTxt = view.findViewById(R.id.nextTxt);
 
-//        tabLayout.addTab(tabLayout.newTab().setText("가슴"));
-//        tabLayout.addTab(tabLayout.newTab().setText("어깨"));
-//        tabLayout.addTab(tabLayout.newTab().setText("등"));
-//        tabLayout.addTab(tabLayout.newTab().setText("하체"));
-//        tabLayout.addTab(tabLayout.newTab().setText("팔"));
-//        tabLayout.addTab(tabLayout.newTab().setText("복근"));
-//        tabLayout.addTab(tabLayout.newTab().setText("유산소"));
-
         exercises = new ArrayList<>();
-        selectExercises = new ArrayList<>();
+        selectExerciseIndex = new ArrayList<>();
 
         if (getArguments() != null) {
 //            selectExercises = (ArrayList<ExerciseData>) getArguments().getSerializable("exercises");
@@ -144,32 +132,17 @@ public class CRSelectExerciseFragment extends Fragment {
         if (exercises != null)
             setRecyclerView();
 
-        searchView.addTextChangedListener(new TextWatcher() {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+            public boolean onQueryTextSubmit(String query) {
+                return false;
             }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+            public boolean onQueryTextChange(String newText) {
+                searchExercise(newText);
+                return false;
             }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                String str = searchView.getText().toString();
-
-                if (str != null) {
-                    removeTxtBtn.setVisibility(View.VISIBLE);
-                } else {
-                    removeTxtBtn.setVisibility(View.INVISIBLE);
-                }
-            }
-        });
-
-        removeTxtBtn.setOnClickListener(v -> {
-            searchView.setText(null);
-            removeTxtBtn.setVisibility(View.INVISIBLE);
         });
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -188,8 +161,31 @@ public class CRSelectExerciseFragment extends Fragment {
         });
 
         NextBtn.setOnClickListener(v -> {
-            if (selectExercises.size() > 0)
+            if (selectExerciseIndex.size() > 0) {
+
+                ArrayList<ExerciseData> selectExercises = new ArrayList<>();
+
+                for (String str : selectExerciseIndex) {
+                    String strCat = str.substring(0, str.indexOf(" "));
+                    String name = str.substring(str.indexOf(" ")+1);
+
+                    int cat = 0;
+
+                    switch (strCat) {
+                        case "가슴"   : cat = 0x1;  break;
+                        case "등"     : cat = 0x2;  break;
+                        case "어깨"   : cat = 0x4;  break;
+                        case "하체"   : cat = 0x8;  break;
+                        case "팔"     : cat = 0x10; break;
+                        case "복근"   : cat = 0x20; break;
+                        case "유산소" : cat = 0x40; break;
+                    }
+
+                    selectExercises.add(new ExerciseData(name, cat));
+                }
+
                 mListener.onRoutineAddEx(selectExercises);
+            }
         });
 
         return view;
@@ -225,6 +221,8 @@ public class CRSelectExerciseFragment extends Fragment {
         exercises.add(new ExerciseData("사이클",0x40));
         exercises.add(new ExerciseData("트레드 밀",0x40));
         exercises.add(new ExerciseData("인클라인 트레드 밀",0x40));
+
+        searchList = (ArrayList<ExerciseData>) exercises.clone();
     }
 
     private String TimeToString(int Time) {
@@ -245,31 +243,23 @@ public class CRSelectExerciseFragment extends Fragment {
         return am_pm + " " + result;
     }
 
+    private void searchExercise(String searchTxt) {
+        searchList.clear();
+
+        for (ExerciseData e : exercises) {
+            if (e.getExerciseName().contains(searchTxt) || e.getStrCat().equals(searchTxt))
+                searchList.add(e);
+        }
+
+        adapter.notifyDataSetChanged();
+    }
+
     private void setRecyclerView() {
-        adapter = new ExerciseListPAdapter(getContext(), exercises);
+        adapter = new ExerciseListPAdapter(getContext(), searchList, selectExerciseIndex);
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
-
-        if (adapter != null) {
-//            adapter.setOnSelectExerciseListener(new ExerciseListAdapter.OnSelectExercise() {
-//                @Override
-//                public void onSelectExercise(ExerciseData exercise, boolean add) {
-//                    Log.d("운동 추가 테스트", exercise + "");
-//                    if (add)    selectExercises.add(exercise);
-//                    else        selectExercises.remove(exercise);
-//
-//                    if(selectExercises.size() > 0) {
-//                        NextTxt.setBackgroundColor(Color.parseColor("#05c78c"));
-//                        NextTxt.setTextColor(Color.parseColor("#ffffff"));
-//                    } else {
-//                        NextTxt.setBackgroundColor(Color.parseColor("#D1D8E2"));
-//                        NextTxt.setTextColor(Color.parseColor("#9AA5B8"));
-//                    }
-//                }
-//            });
-        }
     }
 
     private void setRoutineTime(int dayOfWeek, int startTime, int endTime) {

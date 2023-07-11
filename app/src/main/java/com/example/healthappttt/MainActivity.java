@@ -3,7 +3,9 @@ package com.example.healthappttt;
 import static android.content.ContentValues.TAG;
 
 import android.Manifest;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -29,7 +31,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.healthappttt.Chat.ChattingFragment;
-import com.example.healthappttt.Data.Chat.MSG;
 import com.example.healthappttt.Data.PreferenceHelper;
 import com.example.healthappttt.Data.RetrofitClient;
 import com.example.healthappttt.Data.SQLiteUtil;
@@ -41,13 +42,14 @@ import com.example.healthappttt.Data.User.UploadResponse;
 import com.example.healthappttt.Data.User.UserKey;
 import com.example.healthappttt.Data.User.UserProfile;
 import com.example.healthappttt.Data.User.WittListData;
-import com.example.healthappttt.Data.pkData;
 import com.example.healthappttt.Home.HomeFragment;
 import com.example.healthappttt.Profile.MyProfileActivity;
+import com.example.healthappttt.Record.RecordFragment;
 import com.example.healthappttt.Routine.RoutineFragment;
 import com.example.healthappttt.Sign.LoginActivity;
 import com.example.healthappttt.WorkOut.ExerciseRecordActivity;
 import com.example.healthappttt.databinding.ActivityMainBinding;
+import com.example.healthappttt.interface_.AlarmRecever;
 import com.example.healthappttt.interface_.DataReceiverService;
 import com.example.healthappttt.interface_.ServiceApi;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -92,13 +94,16 @@ public class MainActivity extends AppCompatActivity {
     Button mGoogleSignOutButton;
     private LoginActivity loginActivity;
     private int dayOfWeek;
-
-
+    Intent serviceIntent;
+    private int login;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        login = 1;
+
         String uk = getIntent().getStringExtra("userKey");
         SharedPreferences sharedPref = getSharedPreferences("myPref", Context.MODE_PRIVATE);
         String url  = sharedPref.getString("URL", "");
+
         if(uk != null){
             userKey = new UserKey(Integer.parseInt(uk));
         }
@@ -116,8 +121,9 @@ public class MainActivity extends AppCompatActivity {
             // Foreground service permission not granted, handle it accordingly (e.g., request permission)
         } else {
             // Foreground service permission granted, start the service
-            Intent serviceIntent = new Intent(this, DataReceiverService.class);
+            serviceIntent = new Intent(this, DataReceiverService.class);
             startService(serviceIntent);
+            DataReceiverService.setNormalExit(false);
         }
 
         Date currentDate = new Date();
@@ -224,7 +230,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.profile:
                         binding.viewName.setText("기록");
-//                        replaceFragment(new ProfileFragment()); // 운동 기록 프래그먼트로 나중에 수정
+                        replaceFragment(new RecordFragment());
                         break;
                 }
 
@@ -244,6 +250,8 @@ public class MainActivity extends AppCompatActivity {
         binding.myInformation.setOnClickListener(view -> {
                 //showUserInfoPopup(useremail); // 자신의 이메일 정보를 보여주는 팝업
             Intent intent = new Intent(MainActivity.this, MyProfileActivity.class);
+            intent.putExtra("PK", uk);
+            //Log.d("main에서 넘겨주는 myPK",uk);
             startActivity(intent);
         });
 
@@ -257,10 +265,57 @@ public class MainActivity extends AppCompatActivity {
         getBlackList(userKey);
         getReviewList(userKey);
         getWittHistory(userKey);
-        getMSGFromServer(new pkData(userKey.getPk()));
-        uploadImageToServer(url, userKey.toString());
+//         uploadImageToServer(url, userKey.toString());
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(login == 1) {
+            serviceIntent = null;
+            setAlarmTimer();
+            Thread.currentThread().interrupt();
+            Log.d(TAG, "메인 종료");
+        }
+    }
+    private void setAlarmTimer() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.add(Calendar.SECOND, 1);
+
+        Intent intent = new Intent(this, AlarmRecever.class);
+        // ...
+
+        PendingIntent sender = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_IMMUTABLE); // 또는 PendingIntent.FLAG_MUTABLE
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        if (alarmManager != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), sender);
+            }
+        }
+    }
+    private void signOut() {
+        mGoogleSignInClient.signOut()
+                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        login = 0;
+                        DataReceiverService.setNormalExit(true);
+                        stopService(serviceIntent);
+
+                        // Update UI after sign out
+                        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e("MainActivity", "Google sign out failed", e);
+                    }
+                });
+    }
     //API 요청 후 응답을 shared로 유저테이블 데이터 로컬 저장
     private void getuserProfile(UserKey userKey) {
         Call<List<UserProfile>> call = apiService.getuserprofile(userKey);
@@ -283,6 +338,7 @@ public class MainActivity extends AppCompatActivity {
 
                 } else {
                     // 서버 응답이 실패했을때
+                    Toast.makeText(MainActivity.this, "서버 연결 실패", Toast.LENGTH_SHORT).show();
                     Log.d("MainActivity", "서버 응답 실패. 상태코드:" + response.code());
                 }
             }
@@ -297,33 +353,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
     //API 요청 후 응답을 SQLite로 차단테이블 데이터 로컬 저장
-    private void getMSGFromServer(pkData userKey){
-        Log.d(TAG, "getMSGFromServer: key " + String.valueOf(userKey.getPk()));
-
-
-        Call<List<MSG>> call = apiService.getMSGFromServer(userKey);
-        call.enqueue(new Callback<List<MSG>>() {
-            @Override
-            public void onResponse(Call<List<MSG>> call, Response<List<MSG>> response) {
-                if (response.isSuccessful()) {
-                    List<MSG> msgList = response.body();
-                    for (MSG msg : msgList) {
-                        sqLiteUtil.setInitView(getBaseContext(), "CHAT_MSG_TB");
-                        sqLiteUtil.insert(0, msg.getMessage(), msg.getChatRoomId());
-                        Log.d(TAG, "onResponsechat: " + msg.getChatRoomId());
-                    }
-                } else {
-                    Log.e("getMSGFromServer", "API 요청 실패. 응답 코드: " + response.code());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<MSG>> call, Throwable t) {
-                Log.e("getMSGFromServer", "API 요청 실패, 에러 메시지: " + t.getMessage());
-            }
-        });
-
-    }
     private void getBlackList(UserKey userKey) {
         Call<List<BlackListData>> call = apiService.getBlackList(userKey);
         call.enqueue(new Callback<List<BlackListData>>() {
@@ -476,8 +505,6 @@ public class MainActivity extends AppCompatActivity {
             blacksqLiteUtil.insertBL(blackListData);
             Log.d("SaveBlackList 메서드", "저장 완료");
         }
-
-
     }
     private void SaveWittList(WittListData wittListData){
         wittsqLiteUtil = SQLiteUtil.getInstance();
@@ -539,24 +566,7 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
-    private void signOut() {
-        mGoogleSignInClient.signOut()
-                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        // Update UI after sign out
-                        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                        startActivity(intent);
-                        finish();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.e("MainActivity", "Google sign out failed", e);
-                    }
-                });
-    }
+
 
     private void showUserInfoPopup(String userEmail) {
 
@@ -638,7 +648,7 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         if (System.currentTimeMillis() > backPressedTime + 2000) {
             backPressedTime = System.currentTimeMillis();
-            showGuide("\'뒤로\' 버튼을 한번 더 누르시면 종료됩니다.");
+            showGuide("뒤로 버튼을 한번 더 누르시면 종료됩니다.");
             return;
         }
 

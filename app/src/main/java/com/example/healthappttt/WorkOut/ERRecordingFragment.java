@@ -318,6 +318,7 @@ public class ERRecordingFragment extends Fragment {
                 }
 
                 if (progress == AdapterProgressBar.getMax()) {
+                    adapter.notifyDataSetChanged();
                     AdapterProgressBar = null;
                     AdapterTxtView = null;
                 }

@@ -19,6 +19,7 @@ import com.example.healthappttt.Data.Exercise.RoutineComparator;
 import com.example.healthappttt.Data.SQLiteUtil;
 import com.example.healthappttt.R;
 import com.example.healthappttt.Data.Exercise.RoutineData;
+import com.example.healthappttt.Record.ExerciseResultFragment;
 import com.example.healthappttt.interface_.ServiceApi;
 
 import java.text.SimpleDateFormat;
@@ -54,8 +55,9 @@ public class ExerciseRecordActivity extends AppCompatActivity implements ERSelec
         service = RetrofitClient.getClient().create(ServiceApi.class);
         sqLiteUtil = SQLiteUtil.getInstance();
         sqLiteUtil.setInitView(this, "RT_TB");
-        prefhelper = new PreferenceHelper("UserTB",this);
-        Log.d("prefhelper", "USER_PK:" + prefhelper.getPK()); //저장된 유저의 pk값 가져오기
+      
+//        prefhelper = new PreferenceHelper(this);
+//        Log.d("prefhelper", "USER_PK:" + prefhelper.getPK()); //저장된 유저의 pk값 가져오기
 
 
         routines = sqLiteUtil.SelectRoutine(dayOfWeek);
@@ -64,7 +66,7 @@ public class ExerciseRecordActivity extends AppCompatActivity implements ERSelec
             sqLiteUtil.setInitView(this, "EX_TB");
 
             for (int i = 0; i < routines.size(); i++)
-                routines.get(i).setExercises(sqLiteUtil.SelectExercise(routines.get(i).getID()));
+                routines.get(i).setExercises(sqLiteUtil.SelectExercise(routines.get(i).getID(), true));
 
             Collections.sort(routines, new RoutineComparator());
         }
@@ -88,7 +90,7 @@ public class ExerciseRecordActivity extends AppCompatActivity implements ERSelec
 
     private String TimeToString(long time) {
         Date date = new Date(time);
-        SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm:ss");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
         String result = dateFormat.format(date);
 
         return result;
@@ -120,7 +122,10 @@ public class ExerciseRecordActivity extends AppCompatActivity implements ERSelec
                     }
 
                     SaveToDev();
-                    finish();
+
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("record", record);
+                    replaceFragment(new ExerciseResultFragment(), bundle);
 
                 } else {
                     Toast.makeText(ExerciseRecordActivity.this, "서버 연결에 실패", Toast.LENGTH_SHORT).show();
