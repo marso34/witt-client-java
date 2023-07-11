@@ -32,6 +32,7 @@ import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 
 public interface ServiceApi {
 
@@ -90,11 +91,10 @@ public interface ServiceApi {
     @POST("messages")
     Call<MSG> sendMessage(@Body MSG message);
 
-    @Multipart
-    @POST("uploadImage")
-    Call<UploadResponse> uploadImage(@Part MultipartBody.Part image, @Query("userId") String userId);
-
     @FormUrlEncoded
-    @POST("saveImageUrl")
-    Call<SaveImageResponse> saveImageUrl(@Field("imageUrl") String imageUrl, @Query("userId") String userId);
+    @POST("upload/image")
+    Call<UploadResponse> uploadImage(
+            @Field("imageUrl") String imageUrl,
+            @Field("userId") String userId
+    );
 }

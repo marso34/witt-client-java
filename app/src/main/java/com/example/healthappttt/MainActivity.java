@@ -99,7 +99,6 @@ public class MainActivity extends AppCompatActivity {
         String uk = getIntent().getStringExtra("userKey");
         SharedPreferences sharedPref = getSharedPreferences("myPref", Context.MODE_PRIVATE);
         String url  = sharedPref.getString("URL", "");
-        Uri imageUri = Uri.parse(url);
         if(uk != null){
             userKey = new UserKey(Integer.parseInt(uk));
         }
@@ -259,7 +258,7 @@ public class MainActivity extends AppCompatActivity {
         getReviewList(userKey);
         getWittHistory(userKey);
         getMSGFromServer(new pkData(userKey.getPk()));
-        //uploadImageToServer(imageUri, userKey.toString());
+        uploadImageToServer(url, userKey.toString());
     }
 
     //API 요청 후 응답을 shared로 유저테이블 데이터 로컬 저장
@@ -654,23 +653,20 @@ public class MainActivity extends AppCompatActivity {
         toast.show();
     }
 
-    private void uploadImageToServer(Uri imageUri, String userId) {
+    private void uploadImageToServer(String imageUri, String userId) {
+
         ServiceApi apiService = RetrofitClient.getClient().create(ServiceApi.class);
-        File imageFile = new File(imageUri.getPath());
 
-        RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), imageFile);
-        MultipartBody.Part imagePart = MultipartBody.Part.createFormData("image", imageFile.getName(), requestBody);
 
-        Call<UploadResponse> call = apiService.uploadImage(imagePart, userId);
+        Call<UploadResponse> call = apiService.uploadImage(imageUri, userId);
         call.enqueue(new Callback<UploadResponse>() {
             @Override
             public void onResponse(Call<UploadResponse> call, Response<UploadResponse> response) {
                 if (response.isSuccessful()) {
                     UploadResponse uploadResponse = response.body();
-                    String imageUrl = uploadResponse.getImageUrl();
+                    Toast.makeText(MainActivity.this, "이미지 업로드 성공", Toast.LENGTH_SHORT).show();
 
                     // 이미지 URL을 MySQL 데이터베이스에 저장하는 로직 추가
-                    saveImageUrlToDatabase(imageUrl, userId);
                 } else {
                     // 업로드 실패 처리
                     Toast.makeText(MainActivity.this, "이미지 업로드 실패", Toast.LENGTH_SHORT).show();
@@ -685,26 +681,4 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void saveImageUrlToDatabase(String imageUrl, String userId) {
-        ServiceApi apiService = RetrofitClient.getClient().create(ServiceApi.class);
-        Call<SaveImageResponse> call = apiService.saveImageUrl(imageUrl, userId);
-        call.enqueue(new Callback<SaveImageResponse>() {
-            @Override
-            public void onResponse(Call<SaveImageResponse> call, Response<SaveImageResponse> response) {
-                if (response.isSuccessful()) {
-                    // 이미지 URL 저장 성공 처리
-                    Toast.makeText(MainActivity.this, "이미지 저장 성공", Toast.LENGTH_SHORT).show();
-                } else {
-                    // 이미지 URL 저장 실패 처리
-                    Toast.makeText(MainActivity.this, "이미지 저장 실패", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<SaveImageResponse> call, Throwable t) {
-                // 통신 실패 처리
-                Toast.makeText(MainActivity.this, "통신 실패", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
 }

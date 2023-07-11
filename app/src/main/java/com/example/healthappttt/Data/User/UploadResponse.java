@@ -2,6 +2,7 @@ package com.example.healthappttt.Data.User;
 
 public class UploadResponse {
     private String imageUrl;
+    private String userid;
 
     public String getImageUrl() {
         return imageUrl;
