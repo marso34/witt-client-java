@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -39,11 +41,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.libraries.places.api.Places;
-import com.google.android.libraries.places.api.model.AutocompletePrediction;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.net.FetchPlaceRequest;
 import com.google.android.libraries.places.api.net.FetchPlaceResponse;
-import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest;
 import com.google.android.libraries.places.api.net.PlacesClient;
 
 import org.json.JSONArray;
@@ -123,39 +123,44 @@ public class subFragment extends Fragment implements OnMapReadyCallback, Locatio
         locationRequest = LocationRequest.create();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         locationRequest.setInterval(10000); // Update location every 10 seconds
-
-        // Create location callback
-        locationCallback = new LocationCallback() {
-            @Override
-            public void onLocationResult(LocationResult locationResult) {
-                if (locationResult == null) {
-                    return;
+        if ( Build.VERSION.SDK_INT >= 23 &&
+                ContextCompat.checkSelfPermission( getContext(), Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
+            ActivityCompat.requestPermissions( getActivity(), new String[] {
+                    Manifest.permission.ACCESS_FINE_LOCATION}, 0 );
+        }
+        else {
+            // Create location callback
+            locationCallback = new LocationCallback() {
+                @Override
+                public void onLocationResult(LocationResult locationResult) {
+                    if (locationResult == null) {
+                        return;
+                    }
+                    for (Location location : locationResult.getLocations()) {
+                        // Update current location
+                        updateCurrentLocation(location);
+                    }
                 }
-                for (Location location : locationResult.getLocations()) {
-                    // Update current location
-                    updateCurrentLocation(location);
+            };
+            // Listen to text changes in the search EditText
+            searchEditText.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                    // Not used
                 }
-            }
-        };
-        // Listen to text changes in the search EditText
-        searchEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                // Not used
-            }
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // Perform search when text changes
-                performSearch(s.toString());
-            }
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    // Perform search when text changes
+                    performSearch(s.toString());
+                }
 
-            @Override
-            public void afterTextChanged(Editable s) {
-                // Not used
-            }
-        });
-
+                @Override
+                public void afterTextChanged(Editable s) {
+                    // Not used
+                }
+            });
+        }
         return view;
     }
 
@@ -304,37 +309,6 @@ public class subFragment extends Fragment implements OnMapReadyCallback, Locatio
         } catch (JSONException e) {
             e.printStackTrace();
         }
-    }
-
-
-    private List<String> getAssociatedLocations(String query) {
-        // Initialize Places API
-        Places.initialize(requireContext(), "YOUR_API_KEY");
-
-        // Create PlacesClient
-        PlacesClient placesClient = Places.createClient(requireContext());
-
-        List<String> associatedLocations = new ArrayList<>();
-
-        // Create Autocomplete request
-        FindAutocompletePredictionsRequest request = FindAutocompletePredictionsRequest.builder()
-                .setQuery(query)
-                .build();
-
-        // Perform Autocomplete request
-        placesClient.findAutocompletePredictions(request)
-                .addOnSuccessListener((response) -> {
-                    for (AutocompletePrediction prediction : response.getAutocompletePredictions()) {
-                        String location = prediction.getFullText(null).toString();
-                        associatedLocations.add(location);
-                    }
-                    locationAdapter.notifyDataSetChanged();
-                })
-                .addOnFailureListener((exception) -> {
-                    // Handle failure
-                });
-
-        return associatedLocations;
     }
 
 

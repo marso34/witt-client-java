@@ -121,7 +121,9 @@ public class ChatActivity extends AppCompatActivity {
         });
 
     }
-
+    public String getChatRoomId (){
+        return chatRoomId;
+    }
     // 서버에서 메시지 목록을 가져오는 메소드입니다.
     public void getMessagesFromRealTime() {
         List<MSG> newMessages = null;
@@ -137,7 +139,7 @@ public class ChatActivity extends AppCompatActivity {
             Log.d(TAG, "getMessagesFromRealTime: error ");
         }
 
-        messageList.clear(); // 기존의 메시지 리스트를 비웁니다.
+//        messageList.clear(); // 기존의 메시지 리스트를 비웁니다.
 
         for (MSG msg : newMessages) {
             messageList.add(msg);

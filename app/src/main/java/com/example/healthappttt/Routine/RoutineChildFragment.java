@@ -157,8 +157,9 @@ public class RoutineChildFragment extends Fragment {
 
                 for (int i = 0; i < routines.size(); i++)
                     routines.get(i).setExercises(sqLiteUtil.SelectExercise(routines.get(i).getID(), true));
-            }
 
+                setRecyclerView();
+            }
         } else { // 남의 루틴 표시, 여기는 서버에서 받아오는 코드
             addRoutineBtn.setVisibility(View.GONE);
 
@@ -169,6 +170,16 @@ public class RoutineChildFragment extends Fragment {
                     if (response.isSuccessful()) {
                         Toast.makeText(getContext(), "루틴 불러오기 성공!!!", Toast.LENGTH_SHORT).show();
                         Log.d("성공", "루틴 불러오기 성공");
+
+                        routines = (ArrayList<RoutineData>) response.body();
+                        for (int i = 0; i < response.body().size(); i++)
+                            routines.get(i).setExercises(response.body().get(i).getExercises());
+
+                        setRecyclerView();
+                        adapter.notifyDataSetChanged();
+
+                        Log.d("루틴", "루틴 불러오기 성공" + routines.size());
+
 
                     } else {
                         Toast.makeText(getContext(), "루틴 불러오기 실패!!!", Toast.LENGTH_SHORT).show();
@@ -185,8 +196,7 @@ public class RoutineChildFragment extends Fragment {
         }
 
         Collections.sort(routines, new RoutineComparator());
-        setRecyclerView();
-        
+
         addRoutineBtn.setOnClickListener(v -> {
             Intent intent = new Intent(getContext(), CreateRoutineActivity.class);
             intent.putExtra("dayOfWeek", dayOfWeek);
@@ -197,7 +207,7 @@ public class RoutineChildFragment extends Fragment {
     }
 
     private void setRecyclerView() {
-        adapter = new RoutineAdapter(getContext(), routines, 0);  // 나중에 수정
+        adapter = new RoutineAdapter(getContext(), routines, 0);  // 나중에 수정 code가 내 코드면 0, 아니면 -1
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);

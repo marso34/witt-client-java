@@ -27,7 +27,7 @@ public class SocketSingleton {
     private static Context context;
     private PreferenceHelper prefhelper;
     private SQLiteUtil sqLiteUtil;
-    private ChatActivity chatActivity;
+    private ChatActivity chatActivity = null;
 
     private SocketSingleton(Context context) {
         try {
@@ -80,9 +80,11 @@ public class SocketSingleton {
                 Log.d(TAG, "callaa: ");
                 mSocket.emit("completeMessage");
                 JSONObject data = (JSONObject) args[0];
+                String message;
+                String chatRoomId = null;
                 try {
-                    String message = data.getString("message");
-                    String chatRoomId = data.getString("chatRoomId");
+                    message = data.getString("message");
+                    chatRoomId = data.getString("chatRoomId");
                     if(chatRoomId !=null) {
                         int CRI = Integer.parseInt(chatRoomId);
                         SqlLiteSaveMessage( 0,message,CRI);
@@ -90,7 +92,10 @@ public class SocketSingleton {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                chatActivity.getMessagesFromRealTime();
+                Log.d(TAG, "callcall: " + chatRoomId);
+                if(chatActivity.getChatRoomId().equals(chatRoomId))
+
+                    chatActivity.getMessagesFromRealTime();
                 // 받은 메시지를 처리하는 로직 작성
             }
         });
