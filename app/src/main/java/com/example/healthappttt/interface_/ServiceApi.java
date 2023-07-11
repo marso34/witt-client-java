@@ -19,6 +19,7 @@ import com.example.healthappttt.Data.User.email;
 import com.example.healthappttt.Data.pkData;
 
 import java.util.List;
+import java.util.Map;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -45,8 +46,12 @@ public interface ServiceApi {
     @POST("/profile/deleteFromServer") //차단하기에서 차단 항목 삭제하는 api
     Call<Integer> deleteFromServer(@Body UserKey BL_PK);
 
-    @POST("/profile/getWittHistory")
+
+    @POST("/profile/getWittHistory")//위트 내역 리스트 가져오기
     Call<List<WittListData>> getWittHistory(@Body UserKey userKey);
+
+    @POST("/profile/EditProfile")// 수정된 프로필 정보 업데이트
+    Call<String> EditProfile(@Body Map<String, Object> editData);
 
     @POST("/routine/CreateRoutine")
     Call<List<Integer>> createRoutine(@Body RoutineData data);
@@ -86,3 +91,4 @@ public interface ServiceApi {
     Call<MSG> sendMessage(@Body MSG message);
 
 }
+

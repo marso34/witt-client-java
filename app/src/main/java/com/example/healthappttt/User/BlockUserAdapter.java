@@ -14,16 +14,16 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.healthappttt.Profile.BlackActivity;
-import com.example.healthappttt.Profile.ReviewsRecdAtivity;
-import com.example.healthappttt.Profile.WittHistoryActivity;
-import com.example.healthappttt.Data.User.BlackListData;
 import com.example.healthappttt.Data.RetrofitClient;
-import com.example.healthappttt.Data.User.ReviewListData;
 import com.example.healthappttt.Data.SQLiteUtil;
+import com.example.healthappttt.Data.User.BlackListData;
+import com.example.healthappttt.Data.User.ReviewListData;
 import com.example.healthappttt.Data.User.UserKey;
 import com.example.healthappttt.Data.User.WittListData;
+import com.example.healthappttt.Profile.BlackActivity;
+import com.example.healthappttt.Profile.ReviewsRecdAtivity;
 import com.example.healthappttt.Profile.WHChildFragment;
+import com.example.healthappttt.Profile.WittHistoryActivity;
 import com.example.healthappttt.R;
 import com.example.healthappttt.interface_.ServiceApi;
 
@@ -71,6 +71,28 @@ public class BlockUserAdapter extends RecyclerView.Adapter<BlockUserAdapter.View
             Log.d("Adapter","DataList가 모두 null이다. ");
         }
     }
+
+//    public BlockUserAdapter (MYLists<B> datalists, Activity activity){
+//        this.activity = activity;
+//        this.database = SQLiteUtil.getInstance();
+//
+//        this.BlockList = datalists;
+//
+//    }
+
+    public class MYLists<B> {
+        private B BlackListData;	// 제네릭 타입 변수
+
+        void setBL(B element) {	// 제네릭 파라미터 메소드
+            this.BlackListData = element;
+        }
+
+        B getBL() {	// 제네릭 타입 반환 메소드
+            return BlackListData;
+        }
+    }
+
+
 
     public BlockUserAdapter( ArrayList<WittListData> wittList, Activity activity, int c) {
         this.WittList = wittList;

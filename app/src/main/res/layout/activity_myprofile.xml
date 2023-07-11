@@ -10,6 +10,7 @@
         android:background="#F2F5F9">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintprofile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -22,10 +23,29 @@
                 android:orientation="vertical"
                 app:layout_constraintTop_toTopOf="parent">
 
+            <LinearLayout
+                android:id="@+id/Oprofile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingVertical="20dp"
+                android:gravity="center"
+                android:visibility="gone">
+
+                <TextView
+                    style="@style/profile_style"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="상세 프로필"
+                    android:textSize="25sp" />
+
+            </LinearLayout>
                 <LinearLayout
+                    android:id="@+id/myprofile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    >
 
                     <TextView
                         style="@style/profile_style"
@@ -295,41 +315,52 @@
 
             </TableLayout>
 
-
-            <View
-                android:id="@+id/view0"
-                android:layout_width="0dp"
-                android:layout_height="10dp"
-                android:layout_weight="1"
+            <LinearLayout
+                android:id="@+id/aaa"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/exercise_3" />
+                app:layout_constraintTop_toBottomOf="@+id/exercise_3"
+                >
 
-<!--            오늘의 루틴 UI-->
-<!--            <TableLayout-->
-<!--                android:id="@+id/today_routine"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:orientation="horizontal"-->
-<!--                android:background="@drawable/rectangle"-->
-<!--                app:layout_constraintTop_toBottomOf="@id/view0"-->
-<!--                android:paddingVertical="20dp"-->
-<!--                android:paddingLeft="17dp"-->
-<!--                >-->
-<!--                <TableRow>-->
+                <View
+                    android:id="@+id/view0"
+                    android:layout_width="0dp"
+                    android:layout_height="10dp"
+                    android:layout_weight="1"
+                     />
 
-<!--                    <TextView-->
-<!--                        style="@style/profile_style"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:text="월요일 · 오후 6:00 - 오후 7:00" />-->
+                <!--            오늘의 루틴 UI-->
+                <TableLayout
+                    android:id="@+id/today_routine"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:background="@drawable/rectangle"
+                    app:layout_constraintTop_toBottomOf="@id/view0"
+                    android:paddingVertical="20dp"
+                    android:paddingLeft="17dp"
+                    android:visibility="gone">
 
-<!--                </TableRow>-->
+                    <TableRow>
 
-<!--&lt;!&ndash;                <TableRow>&ndash;&gt;-->
-<!--&lt;!&ndash;                    오늘 루틴의 부위, 이름, 횟수, 세트&ndash;&gt;-->
-<!--&lt;!&ndash;                </TableRow>&ndash;&gt;-->
+                        <TextView
+                            style="@style/profile_style"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="월요일 · 오후 6:00 - 오후 7:00" />
 
-<!--            </TableLayout>-->
+                    </TableRow>
+
+                    <!--                <TableRow>-->
+                    <!--                    오늘 루틴의 부위, 이름, 횟수, 세트-->
+                    <!--                </TableRow>-->
+
+                </TableLayout>
+
+            </LinearLayout>
+
 
 
             <LinearLayout
@@ -338,7 +369,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/rectangle"
                 android:orientation="vertical"
-                app:layout_constraintTop_toBottomOf="@+id/view0">
+                app:layout_constraintTop_toBottomOf="@+id/aaa">
 
                 <TextView
                     style="@style/profile_style"
@@ -447,6 +478,7 @@
                 </TableRow>
 
                 <TableRow
+                    android:id="@+id/black"
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginVertical="14dp">
 
@@ -474,6 +506,7 @@
                 </TableRow>
 
                 <TableRow
+                    android:id="@+id/set"
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginVertical="14dp">
 
@@ -501,6 +534,7 @@
                 </TableRow>
 
                 <TableRow
+                    android:id="@+id/routineTb"
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginVertical="14dp"
                     android:visibility="gone">
@@ -511,7 +545,7 @@
                         android:layout_height="wrap_content"
                         android:text="루틴"
                         android:textStyle="bold"
-                        android:layout_gravity="center"/>
+                        android:layout_gravity="center|left"/>
 
                     <View
                         android:layout_width="0dp"
@@ -529,6 +563,7 @@
                 </TableRow>
 
                 <TableRow
+                    android:id="@+id/report"
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginVertical="14dp"
                     android:visibility="gone">
@@ -613,6 +648,7 @@
     </androidx.core.widget.NestedScrollView>
 
     <LinearLayout
+        android:id="@+id/SendWitt"
         android:layout_width="match_parent"
         android:layout_height="172dp"
         android:layout_gravity="bottom|center"
