@@ -163,6 +163,8 @@ public class subFragment extends Fragment implements OnMapReadyCallback, Locatio
                 }
             });
         }
+        //스킵
+        ((SubActivity) getActivity()).replaceFragment(sub1Fragment.newInstance(email, lat, lon, 0.1, 0.1, "L.getName()"));
         return view;
     }
 

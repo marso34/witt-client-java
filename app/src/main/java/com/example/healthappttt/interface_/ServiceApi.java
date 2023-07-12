@@ -1,40 +1,34 @@
 package com.example.healthappttt.interface_;
 
-import com.example.healthappttt.Data.Exercise.GetRoutine;
-import com.example.healthappttt.Data.User.BlackListData;
-import com.example.healthappttt.Data.User.GetUserInfo;
 import com.example.healthappttt.Data.Chat.MSD;
 import com.example.healthappttt.Data.Chat.MSG;
-import com.example.healthappttt.Data.User.NearUsersData;
-import com.example.healthappttt.Data.Exercise.RecordData;
-import com.example.healthappttt.Data.User.ReviewListData;
-import com.example.healthappttt.Data.Exercise.RoutineData;
 import com.example.healthappttt.Data.Chat.UserChat;
-import com.example.healthappttt.Data.User.SaveImageResponse;
+import com.example.healthappttt.Data.Exercise.GetRoutine;
+import com.example.healthappttt.Data.Exercise.RecordData;
+import com.example.healthappttt.Data.Exercise.RoutineData;
+import com.example.healthappttt.Data.User.BlackListData;
+import com.example.healthappttt.Data.User.GetUserInfo;
+import com.example.healthappttt.Data.User.NearUsersData;
+import com.example.healthappttt.Data.User.ReviewListData;
 import com.example.healthappttt.Data.User.UploadResponse;
 import com.example.healthappttt.Data.User.UserClass;
-import com.example.healthappttt.Data.UserInfo;
 import com.example.healthappttt.Data.User.UserKey;
 import com.example.healthappttt.Data.User.UserProfile;
 import com.example.healthappttt.Data.User.WittListData;
 import com.example.healthappttt.Data.User.email;
+import com.example.healthappttt.Data.UserInfo;
 import com.example.healthappttt.Data.pkData;
 
 import java.util.List;
 import java.util.Map;
 
-import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
-import retrofit2.http.Multipart;
 import retrofit2.http.POST;
-import retrofit2.http.Part;
 import retrofit2.http.Path;
-import retrofit2.http.Query;
-import retrofit2.http.Url;
 
 public interface ServiceApi {
     @POST("/sendDataToIP")
@@ -61,6 +55,9 @@ public interface ServiceApi {
 
     @POST("/profile/EditProfile")// 수정된 프로필 정보 업데이트
     Call<String> EditProfile(@Body Map<String, Object> editData);
+
+    @POST("/profile/getOtherProfile")// 상세 프로필 가져오기
+    Call<Map<String,Object>> getOtherProfile(@Body UserKey userKey);
 
     @POST("/routine/CreateRoutine")
     Call<List<Integer>> createRoutine(@Body RoutineData data);

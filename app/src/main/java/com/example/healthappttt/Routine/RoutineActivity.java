@@ -1,12 +1,13 @@
 package com.example.healthappttt.Routine;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-
-import android.content.Intent;
-import android.os.Bundle;
 
 import com.example.healthappttt.R;
 import com.example.healthappttt.databinding.ActivityRoutineBinding;
@@ -23,6 +24,7 @@ public class RoutineActivity extends AppCompatActivity {
         Intent intent = getIntent();
         int code = intent.getIntExtra("code", 0);
         String name = intent.getStringExtra("name");
+        Log.d("code", String.valueOf(code));
 
         binding.name.setText(name);
 

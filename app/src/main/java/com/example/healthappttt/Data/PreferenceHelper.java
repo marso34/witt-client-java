@@ -78,7 +78,7 @@ public class PreferenceHelper
          **/
         edit.putString("email", userData.getEmail());
         edit.putInt("platform",userData.getPlatform());
-        edit.putString("name",userData.getName());
+        edit.putString("User_NM",userData.getName());
         edit.putString("image",userData.getImage());
         /**
          * PhoneInfo 저장
@@ -142,7 +142,7 @@ public class PreferenceHelper
 
     public  Map<String, Object> getUserData() {
         Map<String, Object> userData = new HashMap<>();
-        userData.put("name",app_prefs.getString("name","nothing"));
+        userData.put("User_NM",app_prefs.getString("User_NM","nothing"));
         userData.put("gender", app_prefs.getInt("gender", 0));
         userData.put("height", app_prefs.getInt("height", 0));
         userData.put("weight", app_prefs.getInt("weight", 0));
@@ -156,7 +156,7 @@ public class PreferenceHelper
     }
     public void putUserDefault(Map<String, Object> userdefault){
         SharedPreferences.Editor edit = app_prefs.edit();
-        edit.putString("name", String.valueOf(userdefault.get("name")));
+        edit.putString("User_NM", String.valueOf(userdefault.get("User_NM")));
         edit.putInt("gender", (Integer) userdefault.get("gender"));
         edit.putInt("height", (Integer) userdefault.get("height"));
         edit.putInt("weight", (Integer) userdefault.get("weight"));
