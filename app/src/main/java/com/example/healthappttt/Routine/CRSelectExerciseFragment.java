@@ -127,8 +127,10 @@ public class CRSelectExerciseFragment extends Fragment {
             RoutineData routine = (RoutineData) getArguments().getSerializable("routine");
             selectExerciseIndex = new ArrayList<>();
 
-            for (ExerciseData e : routine.getExercises())
-                selectExerciseIndex.add((e.getCat() + " " + e.getExerciseName()));
+            if (routine.getExercises() != null) {
+                for (ExerciseData e : routine.getExercises())
+                    selectExerciseIndex.add((e.getCat() + " " + e.getExerciseName()));
+            }
 
             setRoutineTime(routine.getDayOfWeek(), routine.getStartTime(), routine.getEndTime());
         }
