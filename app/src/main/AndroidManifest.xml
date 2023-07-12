@@ -108,7 +108,7 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyBH3t-Fw2rKII3omCBlrbDWHWvKGUAvvLg" />
+            android:value="AIzaSyA6RE55LrazpWCOa0lRu0xOzNInsKHDnMU" />
 
         <activity
             android:name=".Profile.MyProfileActivity"

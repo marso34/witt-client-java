@@ -103,7 +103,7 @@ public class subFragment extends Fragment implements OnMapReadyCallback, Locatio
         View view = inflater.inflate(R.layout.fragment_sub, container, false);
 
         // Initialize Places API
-        Places.initialize(requireContext(), "AIzaSyBH3t-Fw2rKII3omCBlrbDWHWvKGUAvvLg");
+        Places.initialize(requireContext(), getString(R.string.google_places_api_key));
         placesClient = Places.createClient(requireContext());
 
         // Initialize views
