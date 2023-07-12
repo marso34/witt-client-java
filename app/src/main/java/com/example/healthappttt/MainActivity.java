@@ -272,7 +272,7 @@ public class MainActivity extends AppCompatActivity {
         if(login == 0) {
             stopService(serviceIntent);
             serviceIntent = null;
-            socketSingleton.disconnect();
+
             Log.d(TAG, "메인 종료");
         }
         else {

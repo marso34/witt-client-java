@@ -140,11 +140,10 @@ public class SocketSingleton {
     }
 
     public void disconnect() {
-        if(mSocket != null) {
             mSocket.disconnect();
+        Log.d(TAG, "disconnect: 연결종료");
             mSocket = null;
             instance = null;
-        }
     }
 
     public String getSocketId() {

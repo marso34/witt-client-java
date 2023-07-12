@@ -59,7 +59,7 @@ public class ChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
         socketSingleton = SocketSingleton.getInstance();
-        socketSingleton.initialize(this);
+        socketSingleton.initialize(getBaseContext());
 
         socketSingleton.setChatActivity(this);
         // 인텐트에서 유저 이름을 가져옵니다.
