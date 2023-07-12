@@ -26,7 +26,6 @@ public class ExerciseResultActivity extends AppCompatActivity {
     private TextView categories;
     private TextView ttttt;
 
-
     private TextView StartTime, EndTime, RunTime, RestTime;
     private TextView Weight, Min;
     private Button EndBtn;

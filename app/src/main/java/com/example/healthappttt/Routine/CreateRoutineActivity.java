@@ -121,6 +121,43 @@ public class CreateRoutineActivity extends AppCompatActivity implements CRSetTim
             sqLiteUtil.insert(e, false);
     }
 
+    private void fragmentToSetTime() {
+        int[] schedule = new int[3];
+        schedule[0] = dayOfWeek;
+        schedule[1] = startTime;
+        schedule[2] = endTime;
+
+        Bundle bundle = new Bundle();
+        bundle.putIntArray("schedule", schedule);
+        replaceFragment(new CRSetTimeFragment(), bundle);
+    }
+
+    private void fragmentToAddEx() {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("routine", routine);
+//        bundle.putSerializable("exercises", routine.getExercises());
+//        bundle.putIntArray("schedule", schedule);
+        replaceFragment(new CRSelectExerciseFragment(), bundle);
+    }
+
+    private void fragmentToExDetail() {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("routine", routine);
+//        bundle.putSerializable("exercises", routine.getExercises());
+//        bundle.putIntArray("schedule", schedule);
+        replaceFragment(new CRInputDetailFragment(), bundle);
+    }
+
+    private void Terminate(boolean isSuccess) {
+        if (isSuccess) {
+            Intent intent = new Intent();
+            intent.putExtra("routine", routine);
+            intent.putExtra("check", 1); // 루틴 추가를 의미
+            setResult(RESULT_OK, intent);
+        }
+
+        finish();
+    }
 
     private void replaceFragment (Fragment fragment) { //프래그먼트 설정
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -134,52 +171,6 @@ public class CreateRoutineActivity extends AppCompatActivity implements CRSetTim
         }
         fragmentTransaction.replace(R.id.frame_layout, fragment);
         fragmentTransaction.commit();
-    }
-
-    private void fragmentToSetTime() {
-        int[] schedule = new int[3];
-        schedule[0] = dayOfWeek;
-        schedule[1] = startTime;
-        schedule[2] = endTime;
-
-        Bundle bundle = new Bundle();
-        bundle.putIntArray("schedule", schedule);
-        replaceFragment(new CRSetTimeFragment(), bundle);
-    }
-
-    private void fragmentToAddEx() {
-        int[] schedule = new int[3];
-        schedule[0] = dayOfWeek;
-        schedule[1] = startTime;
-        schedule[2] = endTime;
-
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("exercises", routine.getExercises());
-        bundle.putIntArray("schedule", schedule);
-        replaceFragment(new CRSelectExerciseFragment(), bundle);
-    }
-
-    private void fragmentToExDetail() {
-        int[] schedule = new int[3];
-        schedule[0] = dayOfWeek;
-        schedule[1] = startTime;
-        schedule[2] = endTime;
-
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("exercises", routine.getExercises());
-        bundle.putIntArray("schedule", schedule);
-        replaceFragment(new CRInputDetailFragment(), bundle);
-    }
-
-    private void Terminate(boolean isSuccess) {
-        if (isSuccess) {
-            Intent intent = new Intent();
-            intent.putExtra("routine", routine);
-            intent.putExtra("check", 1); // 루틴 추가를 의미
-            setResult(RESULT_OK, intent);
-        }
-
-        finish();
     }
 
     private void replaceFragment (Fragment fragment, Bundle bundle) { //프래그먼트 설정

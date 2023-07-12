@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.healthappttt.Data.Exercise.ExerciseData;
+import com.example.healthappttt.Data.Exercise.RoutineData;
 import com.example.healthappttt.R;
 
 import java.util.ArrayList;
@@ -111,9 +112,9 @@ public class CRInputDetailFragment extends Fragment {
         exercises = new ArrayList<>();
 
         if (getArguments() != null) {
-            exercises = (ArrayList<ExerciseData>) getArguments().getSerializable("exercises");
-            int[] schedule = getArguments().getIntArray("schedule");
-            setRoutineTime(schedule[0], schedule[1], schedule[2]);
+            RoutineData routine = (RoutineData) getArguments().getSerializable("routine");
+            exercises = routine.getExercises();
+            setRoutineTime(routine.getDayOfWeek(), routine.getStartTime(), routine.getEndTime());
         }
 
         if (exercises != null)
@@ -129,8 +130,7 @@ public class CRInputDetailFragment extends Fragment {
         return view;
     }
 
-    private void setRoutineTime(int dayOfWeek, int startTime, int endTime) {
-
+    private void setRoutineTime(int dayOfWeek, String startTime, String endTime) {
         String DayOfWeek = "";
 
         switch (dayOfWeek) {
@@ -143,27 +143,27 @@ public class CRInputDetailFragment extends Fragment {
             case 6: DayOfWeek = "토요일"; break;
         }
 
-        String StartTime = TimeToString(startTime);
-        String EndTime = TimeToString(endTime);
+        String StartTime = TimeParse(startTime);
+        String EndTime = TimeParse(endTime);
         String result = DayOfWeek + " · " + StartTime + " - " + EndTime;
 
         ScheduleTxt.setText(result);
     }
 
-    private String TimeToString(int Time) {
-        String am_pm = "";
+    private String TimeParse(String time) {
+        String hour = time.substring(0, time.indexOf(":"));
+        String minSec = time.substring(time.indexOf(":")+1);
+        String min = minSec.substring(0, minSec.indexOf(":"));
+        String am_pm = "오전";
 
-        if (Time >= 240) Time-= 240;
+        int tempHour = Integer.parseInt(hour);
 
-        if (Time < 120) {
-            am_pm = "오전";
-            if (Time < 10) Time += 120;
-        } else {
+        if (tempHour > 12) {
             am_pm = "오후";
-            if (Time >= 130) Time-= 120;
+            tempHour -= 12;
         }
 
-        @SuppressLint("DefaultLocale") String result = String.format("%02d:%02d", Time/10, Time % 10 * 6);
+        @SuppressLint("DefaultLocale") String result = String.format("%02d:%s", tempHour, min);
 
         return am_pm + " " + result;
     }

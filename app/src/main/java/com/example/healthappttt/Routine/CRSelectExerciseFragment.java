@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.healthappttt.Data.Exercise.ExerciseData;
+import com.example.healthappttt.Data.Exercise.RoutineData;
 import com.example.healthappttt.R;
 import com.google.android.material.tabs.TabLayout;
 
@@ -38,7 +39,6 @@ public class CRSelectExerciseFragment extends Fragment {
     private RecyclerView recyclerView;
     private ExerciseListPAdapter adapter;
 
-
     private ArrayList<ExerciseData> exercises;
     private ArrayList<ExerciseData> searchList;
     public ArrayList<String> selectExerciseIndex;
@@ -55,7 +55,7 @@ public class CRSelectExerciseFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     public interface OnFragmentInteractionListener {
-        void onRoutineAddEx(ArrayList<ExerciseData> selectExerciseNames);
+        void onRoutineAddEx(ArrayList<ExerciseData> selectExercises);
     }
 
     @Override
@@ -124,7 +124,13 @@ public class CRSelectExerciseFragment extends Fragment {
 //            selectExercises = (ArrayList<ExerciseData>) getArguments().getSerializable("exercises");
             // selectExercises를 이용해서 운동 리시트에 이미 체크한 운동을 처리
             int[] schedule = getArguments().getIntArray("schedule");
-            setRoutineTime(schedule[0], schedule[1], schedule[2]);
+            RoutineData routine = (RoutineData) getArguments().getSerializable("routine");
+            selectExerciseIndex = new ArrayList<>();
+
+            for (ExerciseData e : routine.getExercises())
+                selectExerciseIndex.add((e.getCat() + " " + e.getExerciseName()));
+
+            setRoutineTime(routine.getDayOfWeek(), routine.getStartTime(), routine.getEndTime());
         }
 
         parseExercise();
@@ -225,20 +231,20 @@ public class CRSelectExerciseFragment extends Fragment {
         searchList = (ArrayList<ExerciseData>) exercises.clone();
     }
 
-    private String TimeToString(int Time) {
-        String am_pm = "";
+    private String TimeParse(String time) {
+        String hour = time.substring(0, time.indexOf(":"));
+        String minSec = time.substring(time.indexOf(":")+1);
+        String min = minSec.substring(0, minSec.indexOf(":"));
+        String am_pm = "오전";
 
-        if (Time >= 240) Time-= 240;
+        int tempHour = Integer.parseInt(hour);
 
-        if (Time < 120) {
-            am_pm = "오전";
-            if (Time < 10) Time += 120;
-        } else {
+        if (tempHour > 12) {
             am_pm = "오후";
-            if (Time >= 130) Time-= 120;
+            tempHour -= 12;
         }
 
-        @SuppressLint("DefaultLocale") String result = String.format("%02d:%02d", Time/10, Time % 10 * 6);
+        @SuppressLint("DefaultLocale") String result = String.format("%02d:%s", tempHour, min);
 
         return am_pm + " " + result;
     }
@@ -262,8 +268,7 @@ public class CRSelectExerciseFragment extends Fragment {
         recyclerView.setAdapter(adapter);
     }
 
-    private void setRoutineTime(int dayOfWeek, int startTime, int endTime) {
-
+    private void setRoutineTime(int dayOfWeek, String startTime, String endTime) {
         String DayOfWeek = "";
 
         switch (dayOfWeek) {
@@ -276,8 +281,8 @@ public class CRSelectExerciseFragment extends Fragment {
             case 6: DayOfWeek = "토요일"; break;
         }
 
-        String StartTime = TimeToString(startTime);
-        String EndTime = TimeToString(endTime);
+        String StartTime = TimeParse(startTime);
+        String EndTime = TimeParse(endTime);
         String result = DayOfWeek + " · " + StartTime + " - " + EndTime;
 
         ScheduleTxt.setText(result);
