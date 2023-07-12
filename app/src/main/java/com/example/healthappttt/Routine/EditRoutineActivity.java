@@ -1,10 +1,15 @@
 package com.example.healthappttt.Routine;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -29,7 +34,7 @@ import retrofit2.Response;
 
 public class EditRoutineActivity extends AppCompatActivity {
     ActivityEditRoutineBinding binding;
-
+    private ActivityResultLauncher<Intent> startActivityResult;
     private ExerciseInputAdapter adapter;
 
     private ServiceApi service;
@@ -44,6 +49,19 @@ public class EditRoutineActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityEditRoutineBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        startActivityResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+            @Override
+            public void onActivityResult(ActivityResult data) {
+                if (data.getResultCode() == Activity.RESULT_OK && data.getData() != null) {
+                    Intent intent = data.getData();
+                    RoutineData r = (RoutineData) intent.getSerializableExtra("routine");
+                    routine.setExercises(r.getExercises());
+                    exercises = routine.getExercises();
+                    adapter.notifyDataSetChanged();
+                }
+            }
+        });
 
         service = RetrofitClient.getClient().create(ServiceApi.class);
         sqLiteUtil = SQLiteUtil.getInstance();
@@ -110,6 +128,10 @@ public class EditRoutineActivity extends AppCompatActivity {
                 binding.endTime.setText(TimeToString(endTime));
                 binding.runTime.setText(RuntimeToString(runTime));
             }
+        });
+
+        binding.addRoutine.setOnClickListener(v -> {
+
         });
 
         binding.completeBtn.setOnClickListener(v -> {
@@ -203,6 +225,7 @@ public class EditRoutineActivity extends AppCompatActivity {
     }
 
     private void UpdateToDB() {
+        routine.setExercises(exercises);
         service.updateRoutine(routine).enqueue(new Callback<Integer>() {
             @Override
             public void onResponse(Call<Integer> call, Response<Integer> response) {

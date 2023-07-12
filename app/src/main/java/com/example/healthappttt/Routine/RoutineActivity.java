@@ -21,7 +21,7 @@ public class RoutineActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         Intent intent = getIntent();
-        int code = intent.getIntExtra("code", 285); // 프리페런스헬퍼로 디폴트값 넣기
+        int code = intent.getIntExtra("code", 0);
         String name = intent.getStringExtra("name");
 
         binding.name.setText(name);
