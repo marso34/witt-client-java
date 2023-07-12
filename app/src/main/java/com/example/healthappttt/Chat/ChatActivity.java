@@ -3,7 +3,6 @@ package com.example.healthappttt.Chat;
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -204,8 +203,6 @@ public class ChatActivity extends AppCompatActivity {
         } else {
             Log.d(TAG, "getMessagesFromRealTime: error ");
         }
-
-
         for (MSG msg : newMessages) {
             messageList.add(msg);
         }
@@ -261,17 +258,17 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
             // 1초 후에 다시 송신과 대기를 수행
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    if (out != 2)
-                        performSendingAndWaiting(data);
-                    else{
-                        handler.removeCallbacksAndMessages(null);
-                    }
-                }
-            }, 1000); // 1000 밀리초는 1초입니다.
+//            Handler handler = new Handler();
+//            handler.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    if (out != 2)
+//                        performSendingAndWaiting(data);
+//                    else{
+//                        handler.removeCallbacksAndMessages(null);
+//                    }
+//                }
+//            }, 1000); // 1000 밀리초는 1초입니다.
         }
 
     }
