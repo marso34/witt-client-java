@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.example.healthappttt.R;
 import com.example.healthappttt.databinding.ActivityRoutineBinding;
@@ -24,11 +25,13 @@ public class RoutineActivity extends AppCompatActivity {
         int code = intent.getIntExtra("code", 0);
         String name = intent.getStringExtra("name");
 
+        Log.d("RoutineActivity", code + " " +  name);
+
         binding.name.setText(name);
 
         Bundle bundle = new Bundle();
-        bundle.putSerializable("code", code);
-        replaceFragment(new RoutineFragment(), new Bundle());
+        bundle.putInt("code", code);
+        replaceFragment(new RoutineFragment(), bundle);
     }
 
     private void replaceFragment (Fragment fragment, Bundle bundle){ //프래그먼트 설정

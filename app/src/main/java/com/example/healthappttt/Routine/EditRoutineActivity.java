@@ -12,6 +12,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.LinearGradient;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.RadioGroup;
@@ -27,6 +28,7 @@ import com.example.healthappttt.databinding.ActivityEditRoutineBinding;
 import com.example.healthappttt.interface_.ServiceApi;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -41,7 +43,6 @@ public class EditRoutineActivity extends AppCompatActivity {
     private SQLiteUtil sqLiteUtil;
 
     private RoutineData routine;
-    private ArrayList<ExerciseData> exercises;
     private int runTime, startTime, endTime;
 
     @Override
@@ -55,9 +56,13 @@ public class EditRoutineActivity extends AppCompatActivity {
             public void onActivityResult(ActivityResult data) {
                 if (data.getResultCode() == Activity.RESULT_OK && data.getData() != null) {
                     Intent intent = data.getData();
+                    Log.d("운동 갯수", routine.getExercises().size() + "");
+
                     RoutineData r = (RoutineData) intent.getSerializableExtra("routine");
-                    routine.setExercises(r.getExercises());
-                    exercises = routine.getExercises();
+
+                    for (int i = routine.getExercises().size(); i < r.getExercises().size(); i++)
+                        routine.getExercises().add(r.getExercises().get(i));
+
                     adapter.notifyDataSetChanged();
                 }
             }
@@ -72,10 +77,7 @@ public class EditRoutineActivity extends AppCompatActivity {
 
         init();
 
-        Log.d(this.toString(), "테스트");
-
         if (routine != null) {
-            exercises = routine.getExercises();
             setRecyclerView();
         }
 
@@ -130,14 +132,19 @@ public class EditRoutineActivity extends AppCompatActivity {
             }
         });
 
-        binding.addRoutine.setOnClickListener(v -> {
-
+        binding.addExercises.setOnClickListener(v -> {
+            Intent intent1 = new Intent(this, AddExerciseActivity.class);
+            if (routine != null) {
+                RoutineData r = new RoutineData(routine);
+                intent1.putExtra("routine", r);
+                startActivityResult.launch(intent1);
+            }
         });
 
         binding.completeBtn.setOnClickListener(v -> {
             if (runTime <= 0) {
                 Toast.makeText(this, "시간을 다시 설정해주세요", Toast.LENGTH_SHORT).show();
-            } else if (exercises.size() <= 0) {
+            } else if (routine.getExercises().size() <= 0) {
                 Toast.makeText(this, "운동이 없어요", Toast.LENGTH_SHORT).show();
             } else {
                 routine.setStartTime(TimeToStringD(startTime));
@@ -218,20 +225,25 @@ public class EditRoutineActivity extends AppCompatActivity {
     }
 
     private void setRecyclerView() {
-        adapter = new ExerciseInputAdapter(exercises, true);
+        adapter = new ExerciseInputAdapter(routine.getExercises(), true);
         binding.recyclerView.setHasFixedSize(true);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerView.setAdapter(adapter);
     }
 
     private void UpdateToDB() {
-        routine.setExercises(exercises);
-        service.updateRoutine(routine).enqueue(new Callback<Integer>() {
+        service.updateRoutine(routine).enqueue(new Callback<List<Integer>>() {
             @Override
-            public void onResponse(Call<Integer> call, Response<Integer> response) {
+            public void onResponse(Call<List<Integer>> call, Response<List<Integer>> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(EditRoutineActivity.this, "수정 성공", Toast.LENGTH_SHORT).show();
-                    UpdateToDev();
+
+                    List<Integer> list = response.body();
+
+                    for (int id : list)
+                        Log.d("반환 pk", id + "");
+
+//                    UpdateToDev();
                     Terminate(true, 0); // 루틴 수정을 의미
                 } else {
                     Toast.makeText(EditRoutineActivity.this, "서버 연결에 실패", Toast.LENGTH_SHORT).show();
@@ -241,7 +253,7 @@ public class EditRoutineActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<Integer> call, Throwable t) {
+            public void onFailure(Call<List<Integer>> call, Throwable t) {
                 Toast.makeText(EditRoutineActivity.this, "서버 연결에 실패", Toast.LENGTH_SHORT).show();
                 Log.d("실패", t.getMessage());
                 Terminate(false); // 루틴 수정 액티비티 종료
