@@ -24,7 +24,7 @@ public class ExerciseInputAdapter extends RecyclerView.Adapter<ExerciseInputAdap
     private ArrayList<ExerciseData> exercises;
     private boolean isEdit;
 
-    public ExerciseInputAdapter(ArrayList<ExerciseData> exercises) { // 드래그 앤 드롭 추가할 것
+    public ExerciseInputAdapter(ArrayList<ExerciseData> exercises) { // 드래그 앤 드롭 추가할 것 // ui 전체적으로 수정 필요
         this.exercises = exercises;
         this.isEdit = false;
     }

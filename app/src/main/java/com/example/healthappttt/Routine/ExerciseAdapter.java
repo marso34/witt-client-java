@@ -58,15 +58,27 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.MainVi
         int SetOrTime = exercises.get(position).getSetOrTime(); // 무산소 세트 수, 유산소 시간
         int Volume = exercises.get(position).getVolume(); // 무산소 무게, 유산소 강도(속도)
         int CntOrDis = exercises.get(position).getCntOrDis(); // 무산소 횟수, 유산소 거리
+        int cat = exercises.get(position).getCat();
 
         String result = "";
 
-        if (Volume != 0)
-            result += Volume + "kg";
-        if (CntOrDis != 0)
-            result += " · " + CntOrDis + "회";
-        if (SetOrTime != 0)
-            result += " · " + SetOrTime + "세트";
+        if (cat == 0x40) { // 유산소, 아래 내용은 나중에 수정
+            if (Volume != 0)
+                result += Volume + "km/s";
+            if (CntOrDis != 0)
+                result += " · " + CntOrDis + "km";
+            if (SetOrTime != 0)
+                result += " · " + SetOrTime + "분";
+        } else {
+            if (Volume != 0)
+                result += Volume + "kg";
+            if (CntOrDis != 0)
+                result += " · " + CntOrDis + "회";
+            if (SetOrTime != 0)
+                result += " · " + SetOrTime + "세트";
+        }
+
+
 
         return result;
     }
