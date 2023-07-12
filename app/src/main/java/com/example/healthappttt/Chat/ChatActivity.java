@@ -3,7 +3,6 @@ package com.example.healthappttt.Chat;
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -58,7 +57,9 @@ public class ChatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-        socketSingleton = SocketSingleton.getInstance(this);
+        socketSingleton = SocketSingleton.getInstance();
+        socketSingleton.initialize(getBaseContext());
+
         socketSingleton.setChatActivity(this);
         // 인텐트에서 유저 이름을 가져옵니다.
         //username = getIntent().getExtra("username"); 이전 엑티비티에서 유저의 필요한 모든 정보 받아오기.
@@ -202,8 +203,6 @@ public class ChatActivity extends AppCompatActivity {
         } else {
             Log.d(TAG, "getMessagesFromRealTime: error ");
         }
-
-
         for (MSG msg : newMessages) {
             messageList.add(msg);
         }
@@ -228,16 +227,15 @@ public class ChatActivity extends AppCompatActivity {
     private void sendMessageToServer(String messageText) {
         try {
             out =1;
-
             JSONObject data = new JSONObject();
-            data.put("mySocketId",SocketSingleton.mSocket.id());
+            data.put("mySocketId",socketSingleton.getSocket().id());
+            Log.d(TAG, "sendMessageToServer: "+socketSingleton.getSocket().id());
             data.put("otherUserKey",Integer.parseInt(otherUserKey));
             data.put("chatRoomId", Integer.parseInt(chatRoomId));
             data.put("messageText", messageText);
             performSendingAndWaiting(data);
             // Emit the 'sendMessage' event to the server with the message data
-           
-         
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -257,21 +255,20 @@ public class ChatActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
             }
         });
             // 1초 후에 다시 송신과 대기를 수행
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    if (out != 2)
-                        performSendingAndWaiting(data);
-                    else{
-                        handler.removeCallbacksAndMessages(null);
-                    }
-                }
-            }, 1000); // 1000 밀리초는 1초입니다.
+//            Handler handler = new Handler();
+//            handler.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    if (out != 2)
+//                        performSendingAndWaiting(data);
+//                    else{
+//                        handler.removeCallbacksAndMessages(null);
+//                    }
+//                }
+//            }, 1000); // 1000 밀리초는 1초입니다.
         }
 
     }

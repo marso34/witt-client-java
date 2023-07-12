@@ -13,7 +13,6 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -31,13 +30,13 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.healthappttt.Chat.ChattingFragment;
+import com.example.healthappttt.Data.Chat.SocketSingleton;
 import com.example.healthappttt.Data.PreferenceHelper;
 import com.example.healthappttt.Data.RetrofitClient;
 import com.example.healthappttt.Data.SQLiteUtil;
 import com.example.healthappttt.Data.User.BlackListData;
 import com.example.healthappttt.Data.User.GetUserInfo;
 import com.example.healthappttt.Data.User.ReviewListData;
-import com.example.healthappttt.Data.User.SaveImageResponse;
 import com.example.healthappttt.Data.User.UploadResponse;
 import com.example.healthappttt.Data.User.UserKey;
 import com.example.healthappttt.Data.User.UserProfile;
@@ -59,14 +58,10 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 
-import java.io.File;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -96,10 +91,12 @@ public class MainActivity extends AppCompatActivity {
     private int dayOfWeek;
     Intent serviceIntent;
     private int login;
+    private SocketSingleton socketSingleton;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         login = 1;
-
+        socketSingleton = SocketSingleton.getInstance();
+        socketSingleton.initialize(getBaseContext());
         String uk = getIntent().getStringExtra("userKey");
         SharedPreferences sharedPref = getSharedPreferences("myPref", Context.MODE_PRIVATE);
         String url  = sharedPref.getString("URL", "");
@@ -138,7 +135,8 @@ public class MainActivity extends AppCompatActivity {
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
 
-
+        socketSingleton = SocketSingleton.getInstance();
+        socketSingleton.initialize(getBaseContext());
 
         if ( Build.VERSION.SDK_INT >= 23 &&
                 ContextCompat.checkSelfPermission( getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
@@ -271,11 +269,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(login == 1) {
+        if(login == 0) {
+            stopService(serviceIntent);
             serviceIntent = null;
+
+            Log.d(TAG, "메인 종료");
+        }
+        else {
             setAlarmTimer();
             Thread.currentThread().interrupt();
-            Log.d(TAG, "메인 종료");
         }
     }
     private void setAlarmTimer() {
@@ -295,12 +297,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     private void signOut() {
+        socketSingleton.disconnect();
         mGoogleSignInClient.signOut()
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         login = 0;
-                        DataReceiverService.setNormalExit(true);
                         stopService(serviceIntent);
 
                         // Update UI after sign out
