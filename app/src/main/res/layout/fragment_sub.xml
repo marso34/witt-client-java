@@ -64,17 +64,17 @@
             android:id="@+id/move2"
             android:layout_width="328dp"
             android:layout_height="wrap_content"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:text="선택하기"
-            android:textSize="20dp"
-            android:textStyle="bold"
-            android:textColor="#99A4B7"
             android:background="@drawable/circle2"
-            android:backgroundTint="#D0D7E1"
-            android:foreground="?android:attr/selectableItemBackground" />
+            android:backgroundTint="#05C78C"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:paddingStart="16dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="10dp"
+            android:text="건너뛰기"
+            android:textColor="#FFFFFF"
+            android:textSize="20dp"
+            android:textStyle="bold" />
     </LinearLayout>
 
 

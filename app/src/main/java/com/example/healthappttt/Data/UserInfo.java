@@ -26,7 +26,6 @@ public class UserInfo {
 
 
     private Integer distance = 0;
-
     // Getters and Setters
     public long getUserKey() {
         return userKey;
@@ -74,8 +73,8 @@ public class UserInfo {
     public String getStartTime() {
         String[] timeParts = startTime.split(":"); // ":" 기준으로 문자열을 분리하여 배열에 저장
 // 분과 초를 추출하여 각각 정수형 변수에 저장
-        int minutes = Integer.parseInt(timeParts[1]);
-        int seconds = Integer.parseInt(timeParts[2]);
+        int minutes = Integer.parseInt(timeParts[0]);
+        int seconds = Integer.parseInt(timeParts[1]);
         String convertedTime = String.format("%02d:%02d", minutes, seconds); // mm:ss 형식으로 변환
         return convertedTime; // 변환된 시간 출력
     }
@@ -86,8 +85,8 @@ public class UserInfo {
     public String getEndTime() {
         String[] timeParts = endTime.split(":"); // ":" 기준으로 문자열을 분리하여 배열에 저장
 // 분과 초를 추출하여 각각 정수형 변수에 저장
-        int minutes = Integer.parseInt(timeParts[1]);
-        int seconds = Integer.parseInt(timeParts[2]);
+        int minutes = Integer.parseInt(timeParts[0]);
+        int seconds = Integer.parseInt(timeParts[1]);
         String convertedTime = String.format("%02d:%02d", minutes, seconds); // mm:ss 형식으로 변환
         return convertedTime; // 변환된 시간 출력
     }

@@ -87,7 +87,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
 
       //  Log.d(TAG, "onBindViewHolder: "+ userInfo.getUserName().toString());
         holder.Name.setText(userInfo.getName().toString());
-        holder.LocaName.setText(userInfo.getDistance().toString() + "Km");
+        //calculateDistances(//여기에);형원이 한테 받아서 하기.
+        holder.LocaName.setText(userInfo.getGymName());
         holder.PreferredTime.setText(userInfo.getStartTime()+" ~ "+userInfo.getEndTime());
         holder.ExerciseNames.clear();
         holder.recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
@@ -140,7 +141,34 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
         });
 
     }
+    private void calculateDistances(double myLatitude, double myLongitude) {
+        for (UserInfo userInfo : mDataset) {
+            double userLatitude = userInfo.getLatitude();
+            double userLongitude = userInfo.getLongitude();
 
+            // 거리 계산을 수행하여 distance 업데이트
+            int distance = calculateDistance(myLatitude, myLongitude, userLatitude, userLongitude);
+            userInfo.setDistance(distance);
+        }
+    }
+    private int calculateDistance(double lat1, double lon1, double lat2, double lon2) {
+        // 거리 계산 로직을 구현
+        // 예시로 Haversine 공식 사용
+        double R = 6371; // 지구의 반지름 (단위: km)
+
+        double dLat = Math.toRadians(lat2 - lat1);
+        double dLon = Math.toRadians(lon2 - lon1);
+
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
+                        Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+        double distance = R * c;
+
+        // 거리를 정수형으로 변환하여 반환
+        return (int) distance;
+    }
     public void getCurrentWeek() {
         Date currentDate = new Date();
 

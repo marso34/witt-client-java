@@ -2,7 +2,6 @@ package com.example.healthappttt.Sign;
 
 import static android.content.ContentValues.TAG;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,16 +17,15 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
+import com.example.healthappttt.Data.PreferenceHelper;
+import com.example.healthappttt.Data.RetrofitClient;
 import com.example.healthappttt.Data.User.BodyInfo;
 import com.example.healthappttt.Data.User.ExPerfInfo;
 import com.example.healthappttt.Data.User.LocInfo;
 import com.example.healthappttt.Data.User.MannerInfo;
 import com.example.healthappttt.Data.User.PhoneInfo;
-import com.example.healthappttt.Data.PreferenceHelper;
-import com.example.healthappttt.Data.RetrofitClient;
 import com.example.healthappttt.Data.User.UserClass;
 import com.example.healthappttt.Data.User.UserData;
-import com.example.healthappttt.MainActivity;
 import com.example.healthappttt.R;
 import com.example.healthappttt.interface_.ServiceApi;
 
@@ -231,12 +229,12 @@ public class sub2Fragment extends Fragment {
                  */
                 //if(getPhoneInfo().getDeviceId() == )
                     //shared 로컬 저장
-                    Log.d("shared 로컬 저장 내 이메일:",getUserDT().getEmail());
-                    UserClass sharedUser = new UserClass(getUserDT(),getPhoneInfo(),getMannerInfo(),getLocInfo(),getExPerInfo(),getBodyInfo());
-                    prefhelper.putMembership(sharedUser);
+//                Log.d("shared 로컬 저장 내 이메일:",getUserDT().getEmail());
+//                UserClass sharedUser = new UserClass(getUserDT(),getPhoneInfo(),getMannerInfo(),getLocInfo(),getExPerInfo(),getBodyInfo());
+//                prefhelper.putMembership(sharedUser);
 
-                Intent intent = new Intent(getActivity(), MainActivity.class);
-                startActivity(intent);
+//                Intent intent = new Intent(getActivity(), MainActivity.class);
+//                startActivity(intent);
 
             }
         });

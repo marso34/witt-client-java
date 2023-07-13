@@ -77,7 +77,7 @@ public class subFragment extends Fragment implements OnMapReadyCallback, Locatio
     private String email;
     private MapView mapView;
     private GoogleMap googleMap;
-    private Button searchButton;
+    private Button skip;
     private double lat;
     private double lon;
     private LocationManager locationManager;
@@ -96,6 +96,7 @@ public class subFragment extends Fragment implements OnMapReadyCallback, Locatio
         if (getArguments() != null) {
             email = getArguments().getString(ARG_EMAIL);
         }
+
     }
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -109,8 +110,8 @@ public class subFragment extends Fragment implements OnMapReadyCallback, Locatio
         // Initialize views
         searchEditText = view.findViewById(R.id.searchEditText);
         searchRecyclerView = view.findViewById(R.id.searchRecyclerView);
-
-        // Set up RecyclerView
+        skip = view.findViewById(R.id.move2);
+                // Set up RecyclerView
         searchRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         locationAdapter = new LocationAdapter();
         searchRecyclerView.setAdapter(locationAdapter);
@@ -163,6 +164,12 @@ public class subFragment extends Fragment implements OnMapReadyCallback, Locatio
                 }
             });
         }
+        skip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((SubActivity) getActivity()).replaceFragment(sub1Fragment.newInstance(email, lat, lon, 0.0, 0.0, "없음"));
+            }
+        });
         return view;
     }
 

@@ -61,8 +61,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserLi
     public void onBindViewHolder(@NonNull UserListViewHolder holder, int position) {
         user = userList.get(position);
         holder.userName.setText(user.getUserNM());
-        socketSingleton = SocketSingleton.getInstance();
-        socketSingleton.initialize(context);
+        socketSingleton = SocketSingleton.getInstance(context);
         Log.d(TAG, "onBindViewHolder: "+String.valueOf(position));
 
     }
