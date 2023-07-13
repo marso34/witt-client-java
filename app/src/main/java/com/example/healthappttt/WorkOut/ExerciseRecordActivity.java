@@ -55,8 +55,8 @@ public class ExerciseRecordActivity extends AppCompatActivity implements ERSelec
         service = RetrofitClient.getClient().create(ServiceApi.class);
         sqLiteUtil = SQLiteUtil.getInstance();
         sqLiteUtil.setInitView(this, "RT_TB");
-      
-//        prefhelper = new PreferenceHelper(this);
+
+        prefhelper = new PreferenceHelper("UserTB",this);
 //        Log.d("prefhelper", "USER_PK:" + prefhelper.getPK()); //저장된 유저의 pk값 가져오기
 
 
@@ -98,6 +98,8 @@ public class ExerciseRecordActivity extends AppCompatActivity implements ERSelec
 
     private void SaveToDB() {
         ArrayList<ExerciseData> list = new ArrayList<>();
+
+        record.setUserID(prefhelper.getPK());
 
         service.recordExercise(record).enqueue(new Callback<List<Integer>>() {
             @Override

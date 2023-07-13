@@ -147,9 +147,10 @@ public class EditRoutineActivity extends AppCompatActivity {
             } else if (routine.getExercises().size() <= 0) {
                 Toast.makeText(this, "운동이 없어요", Toast.LENGTH_SHORT).show();
             } else {
-                routine.setStartTime(TimeToStringD(startTime));
-                routine.setEndTime(TimeToStringD(endTime));
-                UpdateToDB();
+                Toast.makeText(this, "아직 동작 X", Toast.LENGTH_SHORT).show();
+//                routine.setStartTime(TimeToStringD(startTime));
+//                routine.setEndTime(TimeToStringD(endTime));
+//                UpdateToDB();
             }
         });
     }
