@@ -45,7 +45,7 @@ public class MyProfileActivity extends AppCompatActivity {
     TextView Pname,Pgender,Pheight,Pweight,Plocatoin;
     TextView Psqaut,Pbench,Pdeadlift;
     Map<String, Object> userDefault;
-    String PK; //전역 변수로 바꿈 (넘겨받은 pk)
+    String myPK,PK;
     String OtherName;
 
     @Override
@@ -75,7 +75,7 @@ public class MyProfileActivity extends AppCompatActivity {
 
         Intent intent = getIntent();//넘겨받은 pk를 담은 번들
         PK = intent.getStringExtra("PK");//넘겨 받은 PK
-        String myPK = String.valueOf(UserTB.getPK());// 로컬 내 PK
+        myPK = String.valueOf(UserTB.getPK());// 로컬 내 PK
         /** 마이 프로필*/
         if(PK.equals(myPK) ){ // 내 pk이면 마이 프로필
             Log.d("프로필에서 로컬pk와 넘겨받은pk",PK + " " + myPK);
@@ -143,11 +143,10 @@ public class MyProfileActivity extends AppCompatActivity {
             //상세 프로필일때 화면 구성
             setOtherProfileView();
 
-            //TODO 상대 pk -> 상대 프로필 정보 가져오기 + 화면에 뿌려주기
+            // 상대 pk -> 상대 프로필 정보 가져오기 + 화면에 뿌려주기
             getOtherProfile(userKey);
 
-
-            //TODO 화면 전환
+            // 화면 전환
             OtherViewChangeBlock();
 
         }
@@ -289,6 +288,7 @@ public class MyProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MyProfileActivity.this, ReviewsRecdAtivity.class);
+                intent.putExtra("PK",PK);
                 startActivity(intent);
             }
         });
@@ -314,6 +314,16 @@ public class MyProfileActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        /** 받은 후기 */
+        binding.ReviewsRecd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MyProfileActivity.this, ReviewsRecdAtivity.class);
+                intent.putExtra("PK",PK);
+                startActivity(intent);
+            }
+        });
+        /** 신고 내역 */
     }
 
 

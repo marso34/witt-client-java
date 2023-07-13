@@ -431,7 +431,7 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
 
             Cursor cursor = db.rawQuery(sql, null);
 
-            ArrayList<ReviewListData> reviewListData = new ArrayList<>();//reviewListData r 대문자에서 소문자로 바꿈
+            ArrayList<ReviewListData> reviewListData = new ArrayList<>();
 
             while(cursor.moveToNext()) {
                 ReviewListData e = new ReviewListData(         // 순서 잘 지킬 것, 나중에 수정
