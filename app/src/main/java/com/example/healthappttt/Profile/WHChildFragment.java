@@ -2,6 +2,7 @@ package com.example.healthappttt.Profile;
 
 import static org.chromium.base.ContextUtils.getApplicationContext;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -15,12 +16,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.example.healthappttt.Data.PreferenceHelper;
 import com.example.healthappttt.Data.SQLiteUtil;
 import com.example.healthappttt.Data.User.BlackListData;
 import com.example.healthappttt.Data.User.ReviewListData;
+import com.example.healthappttt.Data.User.UserKey;
 import com.example.healthappttt.Data.User.WittListData;
 import com.example.healthappttt.R;
 import com.example.healthappttt.User.BlockUserAdapter;
+import com.example.healthappttt.interface_.ServiceApi;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -28,6 +32,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class WHChildFragment extends Fragment {
 
@@ -37,8 +45,11 @@ public class WHChildFragment extends Fragment {
     ArrayList<BlackListData> BlackList;
     ArrayList<ReviewListData> ReviewList;
     private List<String> dateList;
+    WittListData wittListData;
     BlockUserAdapter WittHistoryAdapter;
 
+    private ServiceApi apiService;
+    private PreferenceHelper UserTB;
     SQLiteUtil sqLiteUtil;
     LinearLayoutManager linearLayoutManager;
     private RecyclerView recyclerView;
@@ -48,7 +59,7 @@ public class WHChildFragment extends Fragment {
     Calendar calendar= Calendar.getInstance();
     Date today = calendar.getTime();
     Date oneWeekAgo, oneMonthAgo, oneYearAgo;
-
+    String myPK,PK;
 
     public WHChildFragment() {}
 
@@ -71,16 +82,36 @@ public class WHChildFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        UserTB = new PreferenceHelper("UserTB", getContext());
+
+        Intent intent = getActivity().getIntent();
+        PK = intent.getStringExtra("PK");//넘겨 받은 PK
+        myPK = String.valueOf(UserTB.getPK());// 로컬 내 PK
+
         filteredList = new ArrayList<>();
         oneWeekAgoList = new ArrayList<>();//1주                   날짜 비교하여 넣어지는 리스트
         oneMonthAgoList = new ArrayList<>();//1개월
         oneYearAgoList = new ArrayList<>();//1년
 
-        sqLiteUtil = SQLiteUtil.getInstance(); // SQLiteUtil 객체 생성
-        sqLiteUtil.setInitView(getContext(),"Witt_History_TB");//위트내역 목록 로컬 db
-        WittList = sqLiteUtil.SelectWittHistoryUser();//SELECT * FROM Witt_History_TB ORDER BY TS DESC
-        WittHistoryAdapter = new BlockUserAdapter(BlackList,ReviewList, WittList ,getActivity());
-        datePicker(WittList);// 데이터 날짜별로 1주,1달,1년으로 구분 작업
+        if (PK.equals(myPK)) { //나의 위트 내역
+            Log.d("나의 위트내역 ", PK + " - " + myPK);
+            sqLiteUtil = SQLiteUtil.getInstance(); // SQLiteUtil 객체 생성
+            sqLiteUtil.setInitView(getContext(),"Witt_History_TB");//위트내역 목록 로컬 db
+            WittList = sqLiteUtil.SelectWittHistoryUser();//SELECT * FROM Witt_History_TB ORDER BY TS DESC
+
+            setView();
+        } else { //상대 위트 내역
+//            Log.d("상대 위트내역 상대 pk: ", PK + " - " + myPK);
+//            apiService = RetrofitClient.getClient().create(ServiceApi.class);
+//            WittList = new ArrayList<>();
+//            int PKI = Integer.parseInt(PK);
+//            UserKey userKey = new UserKey(PKI);
+//
+//            getWittHistory(userKey);
+        }
+
+
+
 //        Log.d("filerWittList1",filerWittList1.get(0).getTS());
 //        Log.d("filerWittList2",filerWittList2.get(0).getTS());
 //        Log.d("filerWittList3",filerWittList3.get(0).getTS());
@@ -94,7 +125,19 @@ public class WHChildFragment extends Fragment {
         recyclerView = view.findViewById(R.id.wh_recyclerView);
         searchView = getActivity().findViewById(R.id.black_search);
 
-        switch (period) {
+//        if (!PK.equals(myPK)) {
+//            Log.d("상대 위트내역 상대 pk: ", PK + " - " + myPK);
+//            apiService = RetrofitClient.getClient().create(ServiceApi.class);
+//            WittList = new ArrayList<>();
+//            int PKI = Integer.parseInt(PK);
+//            UserKey userKey = new UserKey(PKI);
+//
+//            getWittHistory(userKey);
+//        }
+
+
+
+            switch (period) {
             case 0 :
                 recyclerView.setAdapter(WittHistoryAdapter);
                 SearchAction(WittList);
@@ -185,7 +228,7 @@ public class WHChildFragment extends Fragment {
         WittHistoryAdapter.notifyDataSetChanged(); // 어댑터에 변경된 데이터 설정
         updating = false;
     }
-        public void searchFilter(String searchText,ArrayList<WittListData> List) {
+    public void searchFilter(String searchText,ArrayList<WittListData> List) {
         filteredList.clear();
 
         for(int i = 0; i < List.size(); i++){
@@ -246,6 +289,50 @@ public class WHChildFragment extends Fragment {
 
 
         }
+    }
+
+    private void getWittHistory(UserKey userKey) {
+        Call<List<WittListData>> call = apiService.getWittHistory(userKey);
+        call.enqueue(new Callback<List<WittListData>>() {
+            @Override
+            public void onResponse(Call<List<WittListData>> call, Response<List<WittListData>> response) {
+                if (response.isSuccessful()){
+                    List<WittListData> resWittList = response.body();
+                    if(resWittList != null){
+                        for(WittListData Witt : resWittList){
+                            Log.d("WittList데이터", String.valueOf(Witt.getUSER_FK()));
+                            int RECORD_PK = Witt.getRECORD_PK();
+                            int USER_FK = Witt.getUSER_FK();
+                            int OUser_FK = Witt.getOUser_FK();
+                            String TS = Witt.getTS();
+                            String User_NM = Witt.getUser_NM();
+                            byte[] User_Img = Witt.getUser_Img();
+
+                            wittListData = new WittListData(RECORD_PK,USER_FK,OUser_FK,TS,User_NM,User_Img);
+                            Log.d("WittHistory 프로필에서", String.valueOf(Witt.getUser_NM()));
+                            Log.d("WittHistory 프로필에서", String.valueOf(Witt.getTS()));
+                            //SaveWittList(wittList);//로컬db에 받은 후기 저장 매서드
+                            WittList.add(wittListData);
+                        }
+                        setView();
+                    } else { Log.d("getWittHistory","리스트가 null");}
+                }else{
+                    Log.e("getWittHistory", "API 요청 실패. 응답 코드: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<WittListData>> call, Throwable t) {
+                Log.e("getWittHistory", "API 요청실패, 에러메세지: " + t.getMessage());
+            }
+        });
+    }
+
+    public void setView() {
+        WittHistoryAdapter = new BlockUserAdapter(BlackList,ReviewList, WittList ,getActivity());
+        Log.d("널인지 확인: ", String.valueOf(WittHistoryAdapter.getItemCount()));
+        datePicker(WittList);// 데이터 날짜별로 1주,1달,1년으로 구분 작업
+
     }
 
 }

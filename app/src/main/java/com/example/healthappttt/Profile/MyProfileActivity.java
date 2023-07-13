@@ -297,6 +297,7 @@ public class MyProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MyProfileActivity.this, WittHistoryActivity.class);
+                intent.putExtra("PK",PK);
                 startActivity(intent);
             }
         });
@@ -323,7 +324,19 @@ public class MyProfileActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        /** 위트 내역 */
+        //위트 내역
+//        WittHistory_btn.setOnClickListener(new View.OnClickListener(){
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(MyProfileActivity.this, WittHistoryActivity.class);
+//                intent.putExtra("PK",PK);
+//                startActivity(intent);
+//            }
+//        });
         /** 신고 내역 */
+
+
     }
 
 
