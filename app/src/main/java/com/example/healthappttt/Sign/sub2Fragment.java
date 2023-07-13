@@ -31,7 +31,6 @@ import com.example.healthappttt.MainActivity;
 import com.example.healthappttt.R;
 import com.example.healthappttt.interface_.ServiceApi;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -284,7 +283,7 @@ public class sub2Fragment extends Fragment {
                     Log.d("shared 로컬 저장 회원가입 pk:", String.valueOf(userKey));
 
                     Intent intent = new Intent(getActivity(), MainActivity.class);
-                    intent.putExtra("userKey",userKey);
+                    intent.putExtra("userKey",String.valueOf(userKey));
                     startActivity(intent);
                     Log.d(TAG, "sendTokenToServer success");
                 } else {

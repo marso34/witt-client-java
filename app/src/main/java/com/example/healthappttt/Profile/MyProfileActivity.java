@@ -25,6 +25,7 @@ import com.example.healthappttt.Data.PreferenceHelper;
 import com.example.healthappttt.Data.RetrofitClient;
 import com.example.healthappttt.Data.User.UserClass;
 import com.example.healthappttt.Data.User.UserKey;
+import com.example.healthappttt.Data.WittSendData;
 import com.example.healthappttt.R;
 import com.example.healthappttt.Routine.RoutineActivity;
 import com.example.healthappttt.Routine.RoutineAdapter;
@@ -39,6 +40,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -52,13 +54,15 @@ public class MyProfileActivity extends AppCompatActivity {
     private ServiceApi apiService;
     private UserClass userClass;
     private RoutineAdapter adapter;
-
+    private WittSendData wittSendData;
+  
     ImageButton block_btn,Reviews_btn,WittHistory_btn;
     Button PEdit;
     ImageView ProfileImg;
     TextView Pname,Pgender,Pheight,Pweight,Plocatoin;
     TextView Psqaut,Pbench,Pdeadlift;
     Map<String, Object> userDefault;
+    Map<String,Object> OuserDefault;
     String myPK,PK;
     String OtherName;
 
@@ -160,6 +164,7 @@ public class MyProfileActivity extends AppCompatActivity {
             // 상대 pk -> 상대 프로필 정보 가져오기 + 화면에 뿌려주기
             getOtherProfile(userKey);
             getOtherRoutine(userKey.getPk()); // 상대방 루틴
+
             // 화면 전환
             OtherViewChangeBlock();
 
@@ -211,6 +216,8 @@ public class MyProfileActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Map<String,Object>> call, Response<Map<String,Object>> response) {
                 Map<String,Object> data = response.body();
+                OuserDefault = data;
+                Log.d("OuserDefault", String.valueOf(data.get("USER_NM")));
                 if (data != null) {
                     // 데이터 추출
                     String User_NM = data.get("USER_NM").toString();
@@ -230,7 +237,6 @@ public class MyProfileActivity extends AppCompatActivity {
                     Pheight.setText(height + "cm");Pweight.setText(weight+ "kg");
                     Psqaut.setText(String.valueOf(squatValue));Pbench.setText(String.valueOf(benchValue));
                     Pdeadlift.setText(String.valueOf(deadValue));Plocatoin.setText(GYM_NM);
-                    Log.d("gender",gender);
                     if( gender.equals("0.0")) {
                         Pgender.setText("남자");
                         Pgender.setTextColor(Color.parseColor("#0000FF")); // 파란색
@@ -383,7 +389,42 @@ public class MyProfileActivity extends AppCompatActivity {
 //        });
         /** 신고 내역 */
 
+        /** 위트 보내기 ! */
+        binding.WittBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 내 pk, 상대방 pk, 내 이름, 상대방 이름 순서로 보내야함
+//                Integer.valueOf(PK); 상대방 pk
+//                OuserDefault.get("USER_NM").toString();상대방 이름
+//                UserTB.getPK(); 내 pk
+//                UserTB.getUser_NM();내 이름
+                wittSendData = new WittSendData(UserTB.getPK(),Integer.valueOf(PK),UserTB.getUser_NM(),OuserDefault.get("USER_NM").toString());
+                getWittUserData(wittSendData);
 
+
+            }
+        });
+
+    }
+    private void getWittUserData(WittSendData wittSendData) {
+        Call<ResponseBody> call = apiService.makeChatRoom(wittSendData);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if(response.isSuccessful()){
+                    Log.d("onResponse","성공");
+                    Toast.makeText(MyProfileActivity.this, "채팅방이 생성되었습니다!", Toast.LENGTH_SHORT).show();
+                    finish();
+                } else {
+                     Log.d("onResponse","실패");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
     }
 
 

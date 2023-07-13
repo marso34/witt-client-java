@@ -488,36 +488,36 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         return null;
     }
     public List<MSG> SelectAllMSG(String userKey,int chatRoomId){
-        List<MSG> messages = new ArrayList<>();
-
-        String[] columns = {"MSG","CHAT_ROOM_FK","TS","MYFLAG"};
-        String selection = "USER_FK=? AND CHAT_ROOM_FK=?";
-        String[] selectionArgs = {userKey,String.valueOf(chatRoomId)};
-        String orderBy = "TS ASC"; // 시간 순으로 정렬
-        Cursor cursor = db.query("CHAT_MSG_TB", columns, selection, selectionArgs, null, null, orderBy);
-        if (cursor != null && cursor.moveToFirst()) {
-            do {
-                String message = "값 없음";
-                String TS = "";
-                String mfl = "1";
-                int MSGIndex = cursor.getColumnIndex("MSG");
-                int mf =  cursor.getColumnIndex("MYFLAG");
-                int TSIndex = cursor.getColumnIndex("TS");
-                if (MSGIndex != -1) {
-                    message = cursor.getString(MSGIndex);
-                    // 메시지 처리 로직 작성
-                } else {
-                    // 컬럼이 존재하지 않을 경우 처리 로직 작성
-                }
-                if(TSIndex != -1){
-                    TS = cursor.getString(TSIndex);
-                }
-                if(mf != -1)
-                {
-                    mfl = cursor.getString(mf);
-                }
-                messages.add(new MSG(Integer.parseInt(mfl),chatRoomId,message,TS));
-            } while (cursor.moveToNext());
+        List<MSG> messages = null;
+        if (table.equals("CHAT_MSG_TB")) {
+            messages = new ArrayList<>();
+            String sql = "SELECT MSG, CHAT_ROOM_FK, TS, MYFLAG FROM CHAT_MSG_TB WHERE USER_FK = ? AND CHAT_ROOM_FK = ? ORDER BY TS ASC";
+            String[] selectionArgs = {userKey, String.valueOf(chatRoomId)};
+            Cursor cursor = db.rawQuery(sql, selectionArgs);
+            if (cursor != null && cursor.moveToFirst()) {
+                do {
+                    String message = "값 없음";
+                    String TS = "";
+                    String mfl = "1";
+                    int MSGIndex = cursor.getColumnIndex("MSG");
+                    int mf =  cursor.getColumnIndex("MYFLAG");
+                    int TSIndex = cursor.getColumnIndex("TS");
+                    if (MSGIndex != -1) {
+                        message = cursor.getString(MSGIndex);
+                        // 메시지 처리 로직 작성
+                    } else {
+                        // 컬럼이 존재하지 않을 경우 처리 로직 작성
+                    }
+                    if(TSIndex != -1){
+                        TS = cursor.getString(TSIndex);
+                    }
+                    if(mf != -1)
+                    {
+                        mfl = cursor.getString(mf);
+                    }
+                    messages.add(new MSG(Integer.parseInt(mfl),chatRoomId,message,TS));
+                } while (cursor.moveToNext());
+            }
         }
         return messages;
     }
