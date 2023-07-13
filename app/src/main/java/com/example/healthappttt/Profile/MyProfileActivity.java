@@ -347,7 +347,7 @@ public class MyProfileActivity extends AppCompatActivity {
         binding.WittBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //내 이름, 내 pk, 상대방 pk,상대방 이름 보내야함
+                // 내 pk, 상대방 pk, 내 이름, 상대방 이름 순서로 보내야함
 //                Integer.valueOf(PK); 상대방 pk
 //                OuserDefault.get("USER_NM").toString();상대방 이름
 //                UserTB.getPK(); 내 pk
