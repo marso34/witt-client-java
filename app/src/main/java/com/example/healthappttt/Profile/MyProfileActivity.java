@@ -17,9 +17,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.example.healthappttt.Data.Exercise.ExerciseData;
 import com.example.healthappttt.Data.Exercise.GetRoutine;
-import com.example.healthappttt.Data.Exercise.RoutineComparator;
 import com.example.healthappttt.Data.Exercise.RoutineData;
 import com.example.healthappttt.Data.PreferenceHelper;
 import com.example.healthappttt.Data.RetrofitClient;
@@ -34,7 +32,6 @@ import com.example.healthappttt.interface_.ServiceApi;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -231,7 +228,6 @@ public class MyProfileActivity extends AppCompatActivity {
 
                     Log.d("getOtherProfile 이름:", User_NM);
                     OtherName = User_NM;
-
                     //받아온 상대 정보 뿌려주기
                     Pname.setText(User_NM);
                     Pheight.setText(height + "cm");Pweight.setText(weight+ "kg");

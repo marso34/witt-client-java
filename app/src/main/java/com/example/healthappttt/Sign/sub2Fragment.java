@@ -2,6 +2,7 @@ package com.example.healthappttt.Sign;
 
 import static android.content.ContentValues.TAG;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -285,6 +286,8 @@ public class sub2Fragment extends Fragment {
                     Intent intent = new Intent(getActivity(), MainActivity.class);
                     intent.putExtra("userKey",String.valueOf(userKey));
                     startActivity(intent);
+                    Activity activity = getActivity();
+                    activity.finish();
                     Log.d(TAG, "sendTokenToServer success");
                 } else {
                     // 서버로 데이터 전송 실패

@@ -103,9 +103,6 @@ public class subFragment extends Fragment implements OnMapReadyCallback, Locatio
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_sub, container, false);
 
-        // Initialize Places API
-        Places.initialize(requireContext(), getString(R.string.google_places_api_key));
-        placesClient = Places.createClient(requireContext());
 
         // Initialize views
         searchEditText = view.findViewById(R.id.searchEditText);
@@ -119,52 +116,59 @@ public class subFragment extends Fragment implements OnMapReadyCallback, Locatio
         // Initialize search results
         searchResults = new ArrayList<>();
 
-        // Initialize fused location client
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext());
+
 
         // Create location request
-        locationRequest = LocationRequest.create();
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        locationRequest.setInterval(10000); // Update location every 10 seconds
+
         if ( Build.VERSION.SDK_INT >= 23 &&
                 ContextCompat.checkSelfPermission( getContext(), Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
             ActivityCompat.requestPermissions( getActivity(), new String[] {
                     Manifest.permission.ACCESS_FINE_LOCATION}, 0 );
+
         }
         else {
-            // Create location callback
-            locationCallback = new LocationCallback() {
-                @Override
-                public void onLocationResult(LocationResult locationResult) {
-                    if (locationResult == null) {
-                        return;
-                    }
-                    for (Location location : locationResult.getLocations()) {
-                        // Update current location
-                        updateCurrentLocation(location);
-                    }
-                }
-            };
-            // Listen to text changes in the search EditText
-            searchEditText.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    // Not used
-                }
 
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    // Perform search when text changes
-                    performSearch(s.toString());
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-                    // Not used
-                }
-            });
         }
+        // Initialize fused location client
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext());
+        // Initialize Places API
+        Places.initialize(requireContext(), getString(R.string.google_places_api_key));
+        placesClient = Places.createClient(requireContext());
+        locationRequest = LocationRequest.create();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setInterval(10000); // Update location every 10 seconds
+        // Create location callback
+        locationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                if (locationResult == null) {
+                    return;
+                }
+                for (Location location : locationResult.getLocations()) {
+                    // Update current location
+                    updateCurrentLocation(location);
+                }
+            }
+        };
 
+        // Listen to text changes in the search EditText
+        searchEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // Not used
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // Perform search when text changes
+                performSearch(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // Not used
+            }
+        });
         skip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
