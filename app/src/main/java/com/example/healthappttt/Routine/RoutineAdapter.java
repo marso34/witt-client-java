@@ -152,7 +152,6 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
             holder.endTimeView.setText(TimeToString(routines.get(position).getEndTime()));
 
             if (attribute == 0) { // 내 루틴
-
             } else if (attribute > 0) { // 운동 기록
                 holder.ClickLayout.setVisibility(View.VISIBLE);
                 holder.EditBtn.setVisibility(View.GONE);
