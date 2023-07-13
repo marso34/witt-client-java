@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
             userKey = new UserKey(Integer.parseInt(uk));
         }
         else Log.d(TAG, "onCreate: 유저키 없음");
-        Log.d(TAG, "onCreateuserkey: "+uk);
+        Log.d("sub2에서 받은pk:", String.valueOf(userKey));
         apiService = RetrofitClient.getClient().create(ServiceApi.class); // create메서드로 api서비스 인터페이스의 구현제 생성
 
 
