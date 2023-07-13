@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -322,53 +323,24 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/exercise_3"
-                >
+                app:layout_constraintTop_toBottomOf="@+id/exercise_3">
 
-                <View
-                    android:id="@+id/view0"
-                    android:layout_width="0dp"
-                    android:layout_height="10dp"
-                    android:layout_weight="1"
-                     />
-
-                <!--            오늘의 루틴 UI-->
-                <TableLayout
-                    android:id="@+id/today_routine"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:background="@drawable/rectangle"
-                    app:layout_constraintTop_toBottomOf="@id/view0"
-                    android:paddingVertical="20dp"
-                    android:paddingLeft="17dp"
-                    android:visibility="gone">
-
-                    <TableRow>
-
-                        <TextView
-                            style="@style/profile_style"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="월요일 · 오후 6:00 - 오후 7:00" />
-
-                    </TableRow>
-
-                    <!--                <TableRow>-->
-                    <!--                    오늘 루틴의 부위, 이름, 횟수, 세트-->
-                    <!--                </TableRow>-->
-
-                </TableLayout>
+                    android:overScrollMode="never"
+                    android:nestedScrollingEnabled="false" />
+<!--                tools:listitem="@layout/adapter_routine"-->
 
             </LinearLayout>
-
-
 
             <LinearLayout
                 android:id="@+id/evaluation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/rectangle"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/rounded_top"
                 android:orientation="vertical"
                 app:layout_constraintTop_toBottomOf="@+id/aaa">
 
@@ -389,9 +361,7 @@
                     android:text="받은 후기가 없어요"
                     android:textColor="@color/darksyment" />
 
-
             </LinearLayout>
-
 
             <View
                 android:id="@+id/view1"

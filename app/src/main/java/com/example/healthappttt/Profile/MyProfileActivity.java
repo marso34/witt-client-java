@@ -15,7 +15,12 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.example.healthappttt.Data.Exercise.ExerciseData;
+import com.example.healthappttt.Data.Exercise.GetRoutine;
+import com.example.healthappttt.Data.Exercise.RoutineComparator;
+import com.example.healthappttt.Data.Exercise.RoutineData;
 import com.example.healthappttt.Data.PreferenceHelper;
 import com.example.healthappttt.Data.RetrofitClient;
 import com.example.healthappttt.Data.User.UserClass;
@@ -23,10 +28,16 @@ import com.example.healthappttt.Data.User.UserKey;
 import com.example.healthappttt.Data.WittSendData;
 import com.example.healthappttt.R;
 import com.example.healthappttt.Routine.RoutineActivity;
+import com.example.healthappttt.Routine.RoutineAdapter;
 import com.example.healthappttt.databinding.ActivityMyprofileBinding;
 import com.example.healthappttt.interface_.ServiceApi;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import okhttp3.ResponseBody;
@@ -42,7 +53,9 @@ public class MyProfileActivity extends AppCompatActivity {
     private PreferenceHelper UserTB;
     private ServiceApi apiService;
     private UserClass userClass;
+    private RoutineAdapter adapter;
     private WittSendData wittSendData;
+  
     ImageButton block_btn,Reviews_btn,WittHistory_btn;
     Button PEdit;
     ImageView ProfileImg;
@@ -150,7 +163,7 @@ public class MyProfileActivity extends AppCompatActivity {
 
             // 상대 pk -> 상대 프로필 정보 가져오기 + 화면에 뿌려주기
             getOtherProfile(userKey);
-
+            getOtherRoutine(userKey.getPk()); // 상대방 루틴
 
             // 화면 전환
             OtherViewChangeBlock();
@@ -186,8 +199,15 @@ public class MyProfileActivity extends AppCompatActivity {
         binding.Oprofile.setVisibility(View.VISIBLE);
         binding.routineTb.setVisibility(View.VISIBLE);
         binding.report.setVisibility(View.VISIBLE);
-        binding.todayRoutine.setVisibility(View.VISIBLE);
+        binding.aaa.setVisibility(View.VISIBLE);
         binding.SendWitt.setVisibility(View.VISIBLE);
+    }
+
+    private void setRecyclerView(ArrayList<RoutineData> routines) {
+        adapter = new RoutineAdapter(this, routines, -1);  // attribute = code가 내 코드면 0, 아니면 -1
+        binding.recyclerView.setHasFixedSize(true);
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        binding.recyclerView.setAdapter(adapter);
     }
 
     public void getOtherProfile(UserKey userKey) {
@@ -226,12 +246,38 @@ public class MyProfileActivity extends AppCompatActivity {
                     }
 
                 }else { Log.d("getOtherProfile","프로필 데이터 null");}
-
-
             }
             @Override
             public void onFailure(Call<Map<String,Object>> call, Throwable t) {
                 Log.d("getOtherProfile","API 요청 실패" + t);
+            }
+        });
+    }
+
+    private void getOtherRoutine(int userKey) {
+        Date currentDate = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(currentDate);
+
+        apiService.selectRoutine(new GetRoutine(userKey, calendar.get(Calendar.DAY_OF_WEEK) - 1)).enqueue(new Callback<List<RoutineData>>() {
+            @Override
+            public void onResponse(Call<List<RoutineData>> call, Response<List<RoutineData>> response) {
+                if (response.isSuccessful()) {
+                    Log.d("성공", "루틴 불러오기 성공");
+
+                    ArrayList<RoutineData> routines = (ArrayList<RoutineData>) response.body();
+                    for (int i = 0; i < response.body().size(); i++)
+                        routines.get(i).setExercises(response.body().get(i).getExercises());
+
+                    setRecyclerView(routines);
+                } else {
+                    Log.d("실패", "루틴 불러오기 실패");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<RoutineData>> call, Throwable t) {
+                Log.d("실패", t.getMessage());
             }
         });
     }
