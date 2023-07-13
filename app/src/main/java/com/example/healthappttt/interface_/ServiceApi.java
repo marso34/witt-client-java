@@ -17,6 +17,7 @@ import com.example.healthappttt.Data.User.UserProfile;
 import com.example.healthappttt.Data.User.WittListData;
 import com.example.healthappttt.Data.User.email;
 import com.example.healthappttt.Data.UserInfo;
+import com.example.healthappttt.Data.WittSendData;
 import com.example.healthappttt.Data.pkData;
 
 import java.util.List;
@@ -93,10 +94,14 @@ public interface ServiceApi {
     @POST("messages")
     Call<MSG> sendMessage(@Body MSG message);
 
+    @POST("/makeChatRoom")
+    Call<ResponseBody> makeChatRoom(@Body WittSendData wittSendData);
+
     @FormUrlEncoded
     @POST("upload/image")
     Call<UploadResponse> uploadImage(
             @Field("imageUrl") String imageUrl,
             @Field("userId") String userId
     );
+
 }
