@@ -10,12 +10,12 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.healthappttt.Chat.ChattingFragment;
 import com.example.healthappttt.Data.PreferenceHelper;
 import com.example.healthappttt.Data.RetrofitClient;
 import com.example.healthappttt.Data.User.UserClass;
@@ -367,9 +367,8 @@ public class MyProfileActivity extends AppCompatActivity {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if(response.isSuccessful()){
                     Log.d("onResponse","성공");
-
-                    Intent intent = new Intent(MyProfileActivity.this, ChattingFragment.class);
-                    startActivity(intent);
+                    Toast.makeText(MyProfileActivity.this, "채팅방이 생성되었습니다!", Toast.LENGTH_SHORT).show();
+                    finish();
                 } else {
                      Log.d("onResponse","실패");
                 }
