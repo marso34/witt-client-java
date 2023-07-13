@@ -35,6 +35,15 @@ public class ExerciseData implements Serializable {
         this.volume = 0;    // 무게 or 속도 (유산소)
         this.cntOrDis = 0;
     }
+
+    public ExerciseData(String exerciseName, int cat, int index) {
+        this.exerciseName = exerciseName;
+        this.cat = cat;
+        this.index = index;
+        this.setOrTime = 0;      // 세트 카운트 or 시간(유산소)
+        this.volume = 0;    // 무게 or 속도 (유산소)
+        this.cntOrDis = 0;
+    }
     public ExerciseData(int parentID, String exerciseName, int cat, int setOrTime, int volume, int cntOrDis, int index) {
         this.parentID = parentID;
         this.exerciseName = exerciseName;
@@ -55,7 +64,6 @@ public class ExerciseData implements Serializable {
         this.cntOrDis = cntOrDis;
         this.index = index;
     }
-
 
     public ExerciseData(String exerciseName, int cat, int setOrTime, int volume, int cntOrDis, int index) {
         this.exerciseName = exerciseName;

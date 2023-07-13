@@ -76,6 +76,7 @@ public class RoutineFragment extends Fragment {
 
         if (getArguments() != null) {
             code = getArguments().getInt("code");
+            Log.d("루틴 프래그먼트", "상대 키 테스트 " + code);
         } else {
             prefhelper = new PreferenceHelper("UserTB", getContext());
             code = prefhelper.getPK(); // 나중에 PreferenceHelper 이용해서 유저pk로 수정

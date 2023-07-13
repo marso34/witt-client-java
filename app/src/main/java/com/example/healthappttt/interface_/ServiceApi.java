@@ -62,14 +62,11 @@ public interface ServiceApi {
     @POST("/routine/CreateRoutine")
     Call<List<Integer>> createRoutine(@Body RoutineData data);
 
-//    @POST("/routine/CreateExercise")
-//    Call<List<ExerciseResponse>> createExercise(@Body List<RoutineExerciseData> data);
-
     @POST("/routine/DeleteRoutine")
     Call<Integer> deleteRoutine(@Body pkData data);
 
     @POST("/routine/UpdateRoutine")
-    Call<Integer> updateRoutine(@Body RoutineData data);
+    Call<List<Integer>> updateRoutine(@Body RoutineData data);
 
     @POST("/routine/SelectRoutine")
     Call<List<RoutineData>> selectRoutine(@Body GetRoutine data);

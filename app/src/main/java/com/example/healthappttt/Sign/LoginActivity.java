@@ -19,11 +19,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.healthappttt.MainActivity;
 import com.example.healthappttt.Data.RetrofitClient;
 import com.example.healthappttt.Data.User.email;
+import com.example.healthappttt.MainActivity;
 import com.example.healthappttt.R;
+import com.example.healthappttt.interface_.DataReceiverService;
 import com.example.healthappttt.interface_.ServiceApi;
+import com.example.healthappttt.interface_.ServiceTracker;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -79,17 +81,18 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             @Override
             public void onClick(View view) {
                 signIn();
-//                GoMain("184");
+//                GoMain("338");
             }
         });
-
+        int runningServices = ServiceTracker.countRunningServices(this, DataReceiverService.class);
+        Log.d("loginActivity", "Running services: " + runningServices);
         //updateUI(GoogleSignIn.getLastSignedInAccount(this));
     }
 
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityResult.launch(signInIntent); // startActivityForResult 대체 방법
-//        startActivityForResult(signInIntent, RC_SIGN_IN);
+        startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 //
 //    @Override

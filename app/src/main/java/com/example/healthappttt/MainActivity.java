@@ -51,6 +51,7 @@ import com.example.healthappttt.databinding.ActivityMainBinding;
 import com.example.healthappttt.interface_.AlarmRecever;
 import com.example.healthappttt.interface_.DataReceiverService;
 import com.example.healthappttt.interface_.ServiceApi;
+import com.example.healthappttt.interface_.ServiceTracker;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -95,8 +96,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         login = 1;
-        socketSingleton = SocketSingleton.getInstance();
-        socketSingleton.initialize(getBaseContext());
+
         String uk = getIntent().getStringExtra("userKey");
         SharedPreferences sharedPref = getSharedPreferences("myPref", Context.MODE_PRIVATE);
         String url  = sharedPref.getString("URL", "");
@@ -112,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
         sqLiteUtil = SQLiteUtil.getInstance(); //sqllite 객체
         prefhelper = new PreferenceHelper("UserTB",this);
         getuserProfile(userKey); //유저키
+
         final LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         // MyService 실행
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && ContextCompat.checkSelfPermission(this, Manifest.permission.FOREGROUND_SERVICE) != PackageManager.PERMISSION_GRANTED) {
@@ -133,10 +134,6 @@ public class MainActivity extends AppCompatActivity {
                 .requestEmail()
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-
-
-        socketSingleton = SocketSingleton.getInstance();
-        socketSingleton.initialize(getBaseContext());
 
         if ( Build.VERSION.SDK_INT >= 23 &&
                 ContextCompat.checkSelfPermission( getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
@@ -233,7 +230,8 @@ public class MainActivity extends AppCompatActivity {
                 }
 
             }
-
+            int runningServices = ServiceTracker.countRunningServices(this, DataReceiverService.class);
+            Log.d("MainActivity", "Running services: " + runningServices);
             return true;
         });
 
@@ -267,15 +265,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(login == 0) {
+        setAlarmTimer();
+        if (login == 0 && serviceIntent != null) {
             stopService(serviceIntent);
             serviceIntent = null;
-
             Log.d(TAG, "메인 종료");
-        }
-        else {
-            setAlarmTimer();
-            Thread.currentThread().interrupt();
         }
     }
     private void setAlarmTimer() {
@@ -295,14 +289,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     private void signOut() {
-        socketSingleton.disconnect();
         mGoogleSignInClient.signOut()
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         login = 0;
+                        DataReceiverService.setNormalExit(true);
                         stopService(serviceIntent);
-
                         // Update UI after sign out
                         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                         startActivity(intent);
@@ -329,6 +322,7 @@ public class MainActivity extends AppCompatActivity {
                         UserProfile userProfile = profileList.get(0); // 첫번째 UserProfile 객체를 가져온다.
                             prefhelper.putProfile(userProfile); // 로컬에 UserProfile 객체를 저장한다.
                         Log.d(TAG, "onResponse:ll "+userProfile.getUSER_PK());
+                        socketSingleton = SocketSingleton.getInstance(getBaseContext());
 //             Log.d("Profile", "USER_PK: " + USER_PK + ", Email: " + Email + ", IP: " + IP + ", Platform: " + Platform + ", User_NM: " + User_NM + ", User_Img: " + User_Img + "PW: " + PW);
 
                     } else {
@@ -354,11 +348,13 @@ public class MainActivity extends AppCompatActivity {
     }
     //API 요청 후 응답을 SQLite로 차단테이블 데이터 로컬 저장
     private void getBlackList(UserKey userKey) {
+        Log.d(TAG, "getBlackList: a");
         Call<List<BlackListData>> call = apiService.getBlackList(userKey);
         call.enqueue(new Callback<List<BlackListData>>() {
             @Override
             public void onResponse(Call<List<BlackListData>> call, Response<List<BlackListData>> response) {
                 if (response.isSuccessful()) {
+                    Log.d(TAG, "ssss: a");
                     List<BlackListData> BuserList = response.body();
                     Log.d(TAG, String.valueOf(BuserList));
                     if (BuserList != null) {

@@ -30,6 +30,7 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
     private String table;
 
     private SQLiteUtil() {
+
     }
 
     public static SQLiteUtil getInstance() {
@@ -57,6 +58,11 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
             Log.e(table, " 데이터 베이스를 열 수 없음");
         }
     }
+
+    // 생성자 등 필요한 코드 작성
+
+    // 다른 메서드들
+
     /**
      * 이 메소드는 Witt_History_TB 데이터를 삽입하는 메서드입니다. ( 서버 유저테이블+Ex_Record )
      */
@@ -142,6 +148,7 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         } finally {
             db.close();
         }
+
     }
 
 
@@ -465,7 +472,7 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
                 WittListData e = new WittListData(         // 순서 잘 지킬 것, 나중에 수정
 
                         cursor.getInt(0),           //RECORD_PK
-                        cursor.getInt(1),           //User_FK
+                        cursor.getInt(1),           //
                         cursor.getInt(2),           //OUser_FK
                         cursor.getString(3),        // TS
                         cursor.getString(4),        //User_NM

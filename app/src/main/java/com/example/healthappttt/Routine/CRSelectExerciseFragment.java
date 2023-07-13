@@ -125,14 +125,19 @@ public class CRSelectExerciseFragment extends Fragment {
             // selectExercises를 이용해서 운동 리시트에 이미 체크한 운동을 처리
             int[] schedule = getArguments().getIntArray("schedule");
             RoutineData routine = (RoutineData) getArguments().getSerializable("routine");
-            selectExerciseIndex = new ArrayList<>();
 
-            if (routine.getExercises() != null) {
-                for (ExerciseData e : routine.getExercises())
-                    selectExerciseIndex.add((e.getCat() + " " + e.getExerciseName()));
+            if (routine != null) {
+                Log.d("테스트2", "ddd");
+
+                if (routine.getExercises() != null) {
+                    Log.d("테스트", routine.getExercises().size() + "");
+
+                    for (ExerciseData e : routine.getExercises())
+                        selectExerciseIndex.add((e.getStrCat() + " " + e.getExerciseName()));
+                }
+
+                setRoutineTime(routine.getDayOfWeek(), routine.getStartTime(), routine.getEndTime());
             }
-
-            setRoutineTime(routine.getDayOfWeek(), routine.getStartTime(), routine.getEndTime());
         }
 
         parseExercise();
@@ -173,6 +178,7 @@ public class CRSelectExerciseFragment extends Fragment {
 
                 ArrayList<ExerciseData> selectExercises = new ArrayList<>();
 
+                int i = 0;
                 for (String str : selectExerciseIndex) {
                     String strCat = str.substring(0, str.indexOf(" "));
                     String name = str.substring(str.indexOf(" ")+1);
@@ -189,7 +195,8 @@ public class CRSelectExerciseFragment extends Fragment {
                         case "유산소" : cat = 0x40; break;
                     }
 
-                    selectExercises.add(new ExerciseData(name, cat));
+                    selectExercises.add(new ExerciseData(name, cat, i));
+                    i++;
                 }
 
                 mListener.onRoutineAddEx(selectExercises);
@@ -263,6 +270,7 @@ public class CRSelectExerciseFragment extends Fragment {
     }
 
     private void setRecyclerView() {
+        Log.d("리사이클러 뷰 할당", selectExerciseIndex.size() + "");
         adapter = new ExerciseListPAdapter(getContext(), searchList, selectExerciseIndex);
 
         recyclerView.setHasFixedSize(true);
