@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
     //유저키를 UserKey 자료형으로 받음 ( 유동적으로 로그인에서 넘겨준 pk값이 들어가야함 )
     UserKey userKey;
     private SQLiteUtil reviewsqLiteUtil,blacksqLiteUtil,wittsqLiteUtil;
-    private String name_TB = "UserTB";
+    //private String name_TB = "UserTB";
 
     private SQLiteUtil sqLiteUtil;
     private boolean isConnected = false;  // 소켓 연결 여부 확인
@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         sqLiteUtil = SQLiteUtil.getInstance(); //sqllite 객체
-        prefhelper = new PreferenceHelper(name_TB,this);
+        prefhelper = new PreferenceHelper("UserTB",this);
         getuserProfile(userKey); //유저키
 
         final LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -247,13 +247,11 @@ public class MainActivity extends AppCompatActivity {
                 //showUserInfoPopup(useremail); // 자신의 이메일 정보를 보여주는 팝업
             Intent intent = new Intent(MainActivity.this, MyProfileActivity.class);
             intent.putExtra("PK", uk);
-            //Log.d("main에서 넘겨주는 myPK",uk);
+            Log.d("main에서 넘겨주는 myPK",uk);
             startActivity(intent);
         });
 
         //api 요청 인터페이스 가져오기
-
-        //로그인했을때 넘겨받는 정보를 파라미터로 넣는다.  email or phone_num 비교해서 해당하는 유저의 키를 받아온다.
         //유저의 pk를 그대로 받을수있으면 필요가 없음 다른방향( 다른유저의 키를 가져오는 느낌)으로 가야함
         Log.d("prefhelper", "USER_PK:" + prefhelper.getPK()); //저장된 유저의 pk값 가져오기
 
@@ -372,7 +370,7 @@ public class MainActivity extends AppCompatActivity {
 
                             SaveBlackList(BlackList);//로컬db에 차단목록 저장 매서드
                         }
-                    }
+                    } else { Log.d("getBlackList","리스트가 null");}
                 } else {
                     Log.e("getBlackList", "API 요청 실패. 응답 코드: " + response.code());
                 }
@@ -412,7 +410,7 @@ public class MainActivity extends AppCompatActivity {
                             Log.d("ReviewList_main에서 객체화한거",Review.getText_Con());
                             SaveReviewList(ReviewList);//로컬db에 받은 후기 저장 매서드
                         }
-                    }
+                    } else { Log.d("getReviewList","리스트가 null");}
                 }else {
                     Log.e("getReviewList", "API 요청 실패. 응답 코드: " + response.code());
                 }
@@ -446,7 +444,7 @@ public class MainActivity extends AppCompatActivity {
                             Log.d("WittHistory_main에서", String.valueOf(Witt.getTS()));
                             SaveWittList(wittList);//로컬db에 받은 후기 저장 매서드
                         }
-                    }
+                    } else { Log.d("getWittHistory","리스트가 null");}
                 }else{
                     Log.e("getWittHistory", "API 요청 실패. 응답 코드: " + response.code());
                 }

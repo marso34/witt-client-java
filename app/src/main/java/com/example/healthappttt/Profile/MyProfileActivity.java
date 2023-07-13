@@ -16,57 +16,66 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.healthappttt.Data.PreferenceHelper;
+import com.example.healthappttt.Data.RetrofitClient;
 import com.example.healthappttt.Data.User.UserClass;
+import com.example.healthappttt.Data.User.UserKey;
 import com.example.healthappttt.R;
+import com.example.healthappttt.Routine.RoutineActivity;
 import com.example.healthappttt.databinding.ActivityMyprofileBinding;
+import com.example.healthappttt.interface_.ServiceApi;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class MyProfileActivity extends AppCompatActivity {
 
     private ActivityMyprofileBinding binding;
     private ActivityResultLauncher<Intent> editProfileLauncher;
-    private static final String name_TB = "membership";
-    private PreferenceHelper membership;
     private PreferenceHelper UserTB;
+    private ServiceApi apiService;
     private UserClass userClass;
     ImageButton block_btn,Reviews_btn,WittHistory_btn;
     Button PEdit;
     ImageView ProfileImg;
-    TextView name,gender,Pheight,Pweight;
+    TextView Pname,Pgender,Pheight,Pweight,Plocatoin;
     TextView Psqaut,Pbench,Pdeadlift;
     Map<String, Object> userDefault;
+    String myPK,PK;
+    String OtherName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_myprofile);
 
+        apiService = RetrofitClient.getClient().create(ServiceApi.class); // create메서드로 api서비스 인터페이스의 구현제 생성
         binding = ActivityMyprofileBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        //prefhelper = new PreferenceHelper("default_user_info",this);
 
         Reviews_btn = findViewById(R.id.Reviews_Recd);
         WittHistory_btn = findViewById(R.id.WittHistory);
         //텍스트
-        name = findViewById(R.id.name);
-        gender = findViewById(R.id.gender);
+        Pname = findViewById(R.id.name);
+        Pgender = findViewById(R.id.gender);
         Pheight = findViewById(R.id.Pheight);
         Pweight = findViewById(R.id.Pweight);
         Psqaut = findViewById(R.id.Psqaut);
         Pbench = findViewById(R.id.Pbench);
         Pdeadlift = findViewById(R.id.Pdeadlift);
-        //이미지
+        //이미지,헬스장
         ProfileImg = findViewById(R.id.ProfileImg);
+        Plocatoin = findViewById(R.id.MyLocation);
 //-------------------------------------------------------------------------------------
         UserTB = new PreferenceHelper("UserTB",this);
-        membership = new PreferenceHelper("membership",this);
 
         Intent intent = getIntent();//넘겨받은 pk를 담은 번들
-        String PK = intent.getStringExtra("PK");//넘겨 받은 PK
-        String myPK = String.valueOf(UserTB.getPK());// 로컬 내 PK
+        PK = intent.getStringExtra("PK");//넘겨 받은 PK
+        myPK = String.valueOf(UserTB.getPK());// 로컬 내 PK
         /** 마이 프로필*/
         if(PK.equals(myPK) ){ // 내 pk이면 마이 프로필
             Log.d("프로필에서 로컬pk와 넘겨받은pk",PK + " " + myPK);
@@ -75,14 +84,14 @@ public class MyProfileActivity extends AppCompatActivity {
             PEdit = findViewById(R.id.PEdit);//내 프로필에만 존재
 
             userDefault = new HashMap<>();// 회원가입시 입력했던 데이터들 로컬에서 받기
-            userDefault.put("name",membership.getUserData().get("name"));
-            userDefault.put("gender",membership.getUserData().get("gender"));
-            userDefault.put("height", membership.getUserData().get("height"));
-            userDefault.put("weight", membership.getUserData().get("weight"));
-            userDefault.put("squatValue",membership.getUserData().get("squatValue"));
-            userDefault.put("benchValue", membership.getUserData().get("benchValue"));
-            userDefault.put("deadValue", membership.getUserData().get("deadValue"));
-            userDefault.put("totalValue",membership.getUserData().get("totalValue"));
+            userDefault.put("User_NM", UserTB.getUserData().get("User_NM"));
+            userDefault.put("gender", UserTB.getUserData().get("gender"));
+            userDefault.put("height", UserTB.getUserData().get("height"));
+            userDefault.put("weight", UserTB.getUserData().get("weight"));
+            userDefault.put("squatValue", UserTB.getUserData().get("squatValue"));
+            userDefault.put("benchValue", UserTB.getUserData().get("benchValue"));
+            userDefault.put("deadValue", UserTB.getUserData().get("deadValue"));
+            userDefault.put("totalValue", UserTB.getUserData().get("totalValue"));
 
 
             setDefault(userDefault); //로컬 데이터를를 화면에 세팅
@@ -102,10 +111,10 @@ public class MyProfileActivity extends AppCompatActivity {
 //                        int EbenchValue = result.getData().getIntExtra("benchValue",0);
 //                        int EdeadValue = result.getData().getIntExtra("deadValue",0);
 //                        int Egender = result.getData().getIntExtra("gender",0);
-                            userDefault = membership.getUserData();// edit에서 저장되고 돌아온 후 로컬에서 다시 데이터 불러옴
+                            userDefault = UserTB.getUserData();// edit에서 저장되고 돌아온 후 로컬에서 다시 데이터 불러옴
 
                             //화면에 연결
-                            binding.name.setText(userDefault.get("name").toString());
+                            binding.name.setText(userDefault.get("User_NM").toString());
                             binding.Pheight.setText(userDefault.get("height").toString() + "cm");
                             binding.Pweight.setText(userDefault.get("weight").toString() + "kg");
                             binding.Psqaut.setText(userDefault.get("squatValue").toString());
@@ -121,19 +130,24 @@ public class MyProfileActivity extends AppCompatActivity {
 
 
                         }else if(result.getResultCode() == Activity.RESULT_CANCELED){
-                            userDefault = membership.getUserData();
+                            userDefault = UserTB.getUserData();
                             setDefault(userDefault);
                             Log.d("Profile","그냥 뒤로가처리 후 기본값 설정됨");
                         }
                     });
         /** 상세 프로필*/
         }else { // 내 pk가 아니면 상대 프로필
-            Log.d("메인에서 넘겨받은 pk: ",PK);
-
+            Log.d("메인에서 넘겨받은 상대 pk: ",PK);
+            int PKI = Integer.parseInt(PK);
+            UserKey userKey = new UserKey(PKI);
             //상세 프로필일때 화면 구성
             setOtherProfileView();
 
-            //TODO 상대 프로필 정보 가져오기 + 화면에 뿌려주기
+            // 상대 pk -> 상대 프로필 정보 가져오기 + 화면에 뿌려주기
+            getOtherProfile(userKey);
+
+            // 화면 전환
+            OtherViewChangeBlock();
 
         }
 
@@ -151,7 +165,6 @@ public class MyProfileActivity extends AppCompatActivity {
 //        membership.putUserDefault(userDefault);
         //----------------------testcase//
 
-        //버튼
 
 
 
@@ -171,27 +184,72 @@ public class MyProfileActivity extends AppCompatActivity {
         binding.SendWitt.setVisibility(View.VISIBLE);
     }
 
+    public void getOtherProfile(UserKey userKey) {
+        Call<Map<String,Object>> call = apiService.getOtherProfile(userKey);
+        call.enqueue(new Callback<Map<String,Object>>() {
+            @Override
+            public void onResponse(Call<Map<String,Object>> call, Response<Map<String,Object>> response) {
+                Map<String,Object> data = response.body();
+                if (data != null) {
+                    // 데이터 추출
+                    String User_NM = data.get("USER_NM").toString();
+                    String gender = data.get("Gender").toString();
+                    int height = (int) Double.parseDouble(data.get("User_HT").toString());
+                    int weight = (int) Double.parseDouble(data.get("User_WT").toString());
+                    int squatValue = (int) Double.parseDouble(data.get("Bench").toString());
+                    int benchValue = (int) Double.parseDouble(data.get("Squat").toString());
+                    int deadValue = (int) Double.parseDouble(data.get("DeadLift").toString());
+                    String GYM_NM = data.get("GYM_NM").toString();
+
+                    Log.d("getOtherProfile 이름:", User_NM);
+                    OtherName = User_NM;
+
+                    //받아온 상대 정보 뿌려주기
+                    Pname.setText(User_NM);
+                    Pheight.setText(height + "cm");Pweight.setText(weight+ "kg");
+                    Psqaut.setText(String.valueOf(squatValue));Pbench.setText(String.valueOf(benchValue));
+                    Pdeadlift.setText(String.valueOf(deadValue));Plocatoin.setText(GYM_NM);
+                    Log.d("gender",gender);
+                    if( gender.equals("0.0")) {
+                        Pgender.setText("남자");
+                        Pgender.setTextColor(Color.parseColor("#0000FF")); // 파란색
+                    } else{
+                        Pgender.setText("여자");
+                        Pgender.setTextColor(Color.parseColor("#FFC0CB")); // 핑크색
+                    }
+
+                }else { Log.d("getOtherProfile","프로필 데이터 null");}
+
+
+            }
+            @Override
+            public void onFailure(Call<Map<String,Object>> call, Throwable t) {
+                Log.d("getOtherProfile","API 요청 실패" + t);
+            }
+        });
+    }
+
     //기본 사용자 정보 세팅
     public void setDefault( Map<String, Object> data ) {
-        name.setText(data.get("name").toString());//이름
+        Pname.setText(data.get("User_NM").toString());//이름
         Pheight.setText(data.get("height").toString() + "cm");
-        Pweight.setText(data.get("weight").toString()+ "kg");
+        Pweight.setText(data.get("weight").toString() + "kg");
         Psqaut.setText(data.get("squatValue").toString());
         Pbench.setText(data.get("benchValue").toString());
         Pdeadlift.setText(data.get("deadValue").toString());
 //        ProfileImg.setImageURI((Uri) data.get("image")); 이미지 처리 미완
 
         if( data.get("gender").toString().equals("0")) {
-            gender.setText("남자");
-            gender.setTextColor(Color.parseColor("#0000FF")); // 파란색
+            Pgender.setText("남자");
+            Pgender.setTextColor(Color.parseColor("#0000FF")); // 파란색
         } else{
-            gender.setText("여자");
-            gender.setTextColor(Color.parseColor("#FFC0CB")); // 핑크색
+            Pgender.setText("여자");
+            Pgender.setTextColor(Color.parseColor("#FFC0CB")); // 핑크색
         }
 
     }
 
-    //화면전환
+    //화면전환(마이프로필)
     public void ViewChangeBlock() {
         //수정하기
         PEdit.setOnClickListener(new View.OnClickListener() {
@@ -230,6 +288,7 @@ public class MyProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MyProfileActivity.this, ReviewsRecdAtivity.class);
+                intent.putExtra("PK",PK);
                 startActivity(intent);
             }
         });
@@ -238,12 +297,47 @@ public class MyProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MyProfileActivity.this, WittHistoryActivity.class);
+                intent.putExtra("PK",PK);
                 startActivity(intent);
             }
         });
 
     }
+    //화면 전환(상세 프로필)
+    public void OtherViewChangeBlock() {
+        /** 상대 루틴 */
+        binding.totalRoutine.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MyProfileActivity.this, RoutineActivity.class);
+                intent.putExtra("code",Integer.valueOf(PK)); //pk
+                intent.putExtra("name",OtherName);//이름
+                startActivity(intent);
+            }
+        });
+        /** 받은 후기 */
+        binding.ReviewsRecd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MyProfileActivity.this, ReviewsRecdAtivity.class);
+                intent.putExtra("PK",PK);
+                startActivity(intent);
+            }
+        });
+        /** 위트 내역 */
+        //위트 내역
+//        WittHistory_btn.setOnClickListener(new View.OnClickListener(){
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(MyProfileActivity.this, WittHistoryActivity.class);
+//                intent.putExtra("PK",PK);
+//                startActivity(intent);
+//            }
+//        });
+        /** 신고 내역 */
 
+
+    }
 
 
 }

@@ -164,6 +164,7 @@ public class subFragment extends Fragment implements OnMapReadyCallback, Locatio
                 }
             });
         }
+
         skip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -30,7 +30,6 @@ import retrofit2.Response;
 public class MyProfileEdit extends AppCompatActivity {
 
     private ActivityMyProfileEditBinding binding;
-    private PreferenceHelper membershippref;
     private PreferenceHelper UserTB;
     private ServiceApi apiService;
 
@@ -53,7 +52,7 @@ public class MyProfileEdit extends AppCompatActivity {
         binding = ActivityMyProfileEditBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        membershippref = new PreferenceHelper("membership",this);
+        UserTB = new PreferenceHelper("membership",this);
         UserTB = new PreferenceHelper("UserTB",MyProfileEdit.this);
         apiService = RetrofitClient.getClient().create(ServiceApi.class);
 
@@ -64,7 +63,7 @@ public class MyProfileEdit extends AppCompatActivity {
         //초기값 넣어주기 이름, 키, 몸무게 / 성별 / 이미지 / 3대 운동량
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            name = extras.getString("name");
+            name = extras.getString("User_NM");
             height = extras.getInt("height");
             weight = extras.getInt("weight");
             gender = extras.getInt("gender");
@@ -134,7 +133,7 @@ public class MyProfileEdit extends AppCompatActivity {
                  * 로컬 저장하는 로직 + 서버db 저장 + (내 프로필로 데이터 넘겨주기) -> 돌아갔을 때 업데이트되어 보여짐
                  */
                 UpdateDefault = new HashMap<>();
-                UpdateDefault.put("name",binding.Ename.getText().toString());
+                UpdateDefault.put("User_NM",binding.Ename.getText().toString());
                 UpdateDefault.put("height", Integer.valueOf(String.valueOf(binding.Eheight.getText())));
                 UpdateDefault.put("weight", Integer.valueOf(String.valueOf(binding.Eweight.getText())));
                 UpdateDefault.put("squatValue", squatValue1.get());
@@ -147,7 +146,7 @@ public class MyProfileEdit extends AppCompatActivity {
                     UpdateDefault.put("gender",1);
                 }
 
-                membershippref.putUserDefault(UpdateDefault); // 로컬 저장
+                UserTB.putUserDefault(UpdateDefault); // 로컬 저장
 
                 UpdateDefault.put("myPK",UserTB.getPK()); // 키는 서버에서 필요해서 따로 추가
                 EditProfile(UpdateDefault); //서버 db 수정 TODO 뭔가 이상함 서버 코드 수정 필요
