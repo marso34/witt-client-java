@@ -154,11 +154,13 @@ public class ChatActivity extends AppCompatActivity{
             public void run() {
                 try {
                     sqLiteUtil.setInitView(getApplicationContext(), "CHAT_MSG_TB");
-                    messageList.clear();
                     List<MSG> TM = sqLiteUtil.SelectAllMSG(userKey, Integer.parseInt(chatRoomId));
-                    messageList.addAll(TM);
-                    messageListAdapter.notifyDataSetChanged();
-                    messageRecyclerView.scrollToPosition(messageList.size() - 1);
+                    if(TM != null) {
+                        messageList.clear();
+                        messageList.addAll(TM);
+                        messageListAdapter.notifyDataSetChanged();
+                        messageRecyclerView.scrollToPosition(messageList.size() - 1);
+                    }
                 } finally {
                     latch.countDown();
                 }
