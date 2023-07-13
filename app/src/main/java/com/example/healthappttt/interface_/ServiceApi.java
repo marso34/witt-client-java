@@ -82,7 +82,7 @@ public interface ServiceApi {
 
 
     @POST("/saveUser")
-    Call<ResponseBody> sendData(@Body UserClass data);
+    Call<Integer> sendData(@Body UserClass data);
 
     @POST("/getUserInfo/{useremail}")
     Call<GetUserInfo> getUserInfo(@Path("useremail") String useremail);

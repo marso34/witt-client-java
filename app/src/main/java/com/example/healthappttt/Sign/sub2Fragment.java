@@ -2,6 +2,7 @@ package com.example.healthappttt.Sign;
 
 import static android.content.ContentValues.TAG;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -26,6 +27,7 @@ import com.example.healthappttt.Data.User.MannerInfo;
 import com.example.healthappttt.Data.User.PhoneInfo;
 import com.example.healthappttt.Data.User.UserClass;
 import com.example.healthappttt.Data.User.UserData;
+import com.example.healthappttt.MainActivity;
 import com.example.healthappttt.R;
 import com.example.healthappttt.interface_.ServiceApi;
 
@@ -110,6 +112,8 @@ public class sub2Fragment extends Fragment {
         squatTextView = view.findViewById(R.id.SquatValue);
         benchTextView = view.findViewById(R.id.BebchValue);
         deadliftTextView = view.findViewById(R.id.DeadValue);
+
+//        prefhelper = new PreferenceHelper("UserTB", getContext());
 
         Button squatUpButton = view.findViewById(R.id.SquatUpBtn);
         Button squatDownButton = view.findViewById(R.id.SquatDownBtn);
@@ -265,13 +269,23 @@ public class sub2Fragment extends Fragment {
     private void sendTokenToServer(String email, String name) {
         ServiceApi apiService = RetrofitClient.getClient().create(ServiceApi.class);
 
-        Call<ResponseBody> call = apiService.sendData(new UserClass(getUserDT(),getPhoneInfo(),getMannerInfo(),getLocInfo(),getExPerInfo(),getBodyInfo()));
+        Call<Integer> call = apiService.sendData(new UserClass(getUserDT(),getPhoneInfo(),getMannerInfo(),getLocInfo(),getExPerInfo(),getBodyInfo()));
 
-        call.enqueue(new Callback<ResponseBody>() {
+        call.enqueue(new Callback<Integer>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            public void onResponse(Call<Integer> call, Response<Integer> response) {
                 if (response.isSuccessful()) {
                     //shared
+                    int userKey = response.body();
+
+                    UserClass sharedUser = new UserClass(getUserDT(),getPhoneInfo(),getMannerInfo(),getLocInfo(),getExPerInfo(),getBodyInfo());
+
+                    prefhelper.putMembership(sharedUser);
+                    Log.d("shared 로컬 저장 회원가입 pk:", String.valueOf(userKey));
+
+                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                    intent.putExtra("userKey",userKey);
+                    startActivity(intent);
                     Log.d(TAG, "sendTokenToServer success");
                 } else {
                     // 서버로 데이터 전송 실패
@@ -281,7 +295,7 @@ public class sub2Fragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(Call<Integer> call, Throwable t) {
                 Toast.makeText(getActivity(), "서버로부터 응답이 없습니다.", Toast.LENGTH_SHORT).show();
                 Log.e(TAG, "sendTokenToServer error: " + t.getMessage());
             }
