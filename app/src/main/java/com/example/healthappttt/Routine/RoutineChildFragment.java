@@ -147,7 +147,7 @@ public class RoutineChildFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        if (code == prefhelper.getPK()) { // 내 루틴 표시, 나중에 PreferenceHelper 이용해서 유저pk로 수정
+        if (code == prefhelper.getPK()) { // 내 루틴 표시
             sqLiteUtil = SQLiteUtil.getInstance();
             sqLiteUtil.setInitView(getContext(), "RT_TB");
 
@@ -177,7 +177,7 @@ public class RoutineChildFragment extends Fragment {
                             routines.get(i).setExercises(response.body().get(i).getExercises());
 
                         setRecyclerView(-1);
-                        adapter.notifyDataSetChanged();
+//                        adapter.notifyDataSetChanged();
                     } else {
                         Toast.makeText(getContext(), "루틴 불러오기 실패!!!", Toast.LENGTH_SHORT).show();
                         Log.d("실패", "루틴 불러오기 실패");

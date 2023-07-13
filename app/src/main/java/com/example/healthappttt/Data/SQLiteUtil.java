@@ -472,7 +472,7 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
                 WittListData e = new WittListData(         // 순서 잘 지킬 것, 나중에 수정
 
                         cursor.getInt(0),           //RECORD_PK
-                        cursor.getInt(1),           //User_FK
+                        cursor.getInt(1),           //
                         cursor.getInt(2),           //OUser_FK
                         cursor.getString(3),        // TS
                         cursor.getString(4),        //User_NM
