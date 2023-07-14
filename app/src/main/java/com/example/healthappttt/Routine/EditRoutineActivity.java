@@ -77,9 +77,8 @@ public class EditRoutineActivity extends AppCompatActivity {
 
         init();
 
-        if (routine != null) {
+        if (routine != null)
             setRecyclerView();
-        }
 
         binding.dayOfWeek.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -240,6 +239,8 @@ public class EditRoutineActivity extends AppCompatActivity {
                     Toast.makeText(EditRoutineActivity.this, "수정 성공", Toast.LENGTH_SHORT).show();
 
                     List<Integer> list = response.body();
+
+                    // list[0] != 404
 
                     for (int id : list)
                         Log.d("반환 pk", id + "");

@@ -58,15 +58,12 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
             Log.e(table, " 데이터 베이스를 열 수 없음");
         }
     }
-
-    // 생성자 등 필요한 코드 작성
-
+    
     // 다른 메서드들
 
     /**
      * 이 메소드는 Witt_History_TB 데이터를 삽입하는 메서드입니다. ( 서버 유저테이블+Ex_Record )
      */
-
     public void insertWH(WittListData WittList){
         ContentValues values = new ContentValues();
 
@@ -261,8 +258,7 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
     public void deleteFromBlackListTable(int pk) {
         db.execSQL("DELETE FROM BLACK_LIST_TB WHERE BL_PK =" + pk);
     }
-
-
+    
     public void Update(RoutineData routine) {
         ContentValues values = new ContentValues();
 
@@ -282,6 +278,8 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
     public void Update(int RECORD_PK, int OUser_FK, int Start_Time, String End_Time, String Run_Time, int CAT, int PROMISE_FK, String TS) {
         ContentValues values = new ContentValues();
 
+        // 이 코드는 사용 안 할 수도 있음. 하더라도 수정 필요
+        
         if (table.equals("RECORD_TB")) {
             values.put("PK", RECORD_PK);
             values.put("OUser_FK", OUser_FK);
@@ -522,7 +520,6 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         return messages;
     }
 
-
     public List<MSG> SelectMSG(String userKey,int myFlag, int chatRoomId) {
         List<MSG> messages = new ArrayList<>();
 
@@ -565,5 +562,4 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
 
         return messages;
     }
-
 }
