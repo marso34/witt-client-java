@@ -6,8 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".Profile.ReviewsRecdAtivity"
     android:orientation="vertical"
-    android:padding="20dp"
-    >
+    android:padding="20dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,26 +18,13 @@
             style="@style/profile_style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="받은 후기"
+            android:text="신고 내역"
             android:textSize="27dp"/>
-
-        <TextView
-            android:id="@+id/listCnt"
-            android:layout_width="20dp"
-            android:layout_height="24dp"
-            android:layout_marginLeft="5dp"
-            android:background="@drawable/circle"
-            android:gravity="center"
-            android:text="2"
-            android:textColor="#677489"
-            android:textSize="20dp" />
 
     </LinearLayout>
 
-
-
     <androidx.appcompat.widget.SearchView
-        android:id="@+id/review_search"
+        android:id="@+id/report_search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/mainbackground"
@@ -48,15 +34,10 @@
         app:queryHint="이름(초성) 검색"
         />
 
-
-
-
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/Review_recycle"
+        android:id="@+id/report_recycle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scrollbars="vertical"
-        android:scrollbarFadeDuration="0"
         tools:listitem="@layout/adapter_blockuser" />
 
 </LinearLayout>

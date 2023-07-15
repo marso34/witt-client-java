@@ -374,16 +374,23 @@ public class MyProfileActivity extends AppCompatActivity {
             }
         });
         /** 위트 내역 */
-        //위트 내역
-//        WittHistory_btn.setOnClickListener(new View.OnClickListener(){
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(MyProfileActivity.this, WittHistoryActivity.class);
-//                intent.putExtra("PK",PK);
-//                startActivity(intent);
-//            }
-//        });
+        WittHistory_btn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MyProfileActivity.this, WittHistoryActivity.class);
+                intent.putExtra("PK",PK);
+                startActivity(intent);
+            }
+        });
         /** 신고 내역 */
+        binding.RPTBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MyProfileActivity.this, ReportHistoryActivity.class);
+                intent.putExtra("PK",PK);
+                startActivity(intent);
+            }
+        });
 
         /** 위트 보내기 ! */
         binding.WittBtn.setOnClickListener(new View.OnClickListener() {

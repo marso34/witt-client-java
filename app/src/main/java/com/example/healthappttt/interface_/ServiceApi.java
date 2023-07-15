@@ -9,6 +9,7 @@ import com.example.healthappttt.Data.Exercise.RoutineData;
 import com.example.healthappttt.Data.User.BlackListData;
 import com.example.healthappttt.Data.User.GetUserInfo;
 import com.example.healthappttt.Data.User.NearUsersData;
+import com.example.healthappttt.Data.User.ReportHistory;
 import com.example.healthappttt.Data.User.ReviewListData;
 import com.example.healthappttt.Data.User.UploadResponse;
 import com.example.healthappttt.Data.User.UserClass;
@@ -59,6 +60,9 @@ public interface ServiceApi {
 
     @POST("/profile/getOtherProfile")// 상세 프로필 가져오기
     Call<Map<String,Object>> getOtherProfile(@Body UserKey userKey);
+
+    @POST("/profile/getReport")//신고 내역
+    Call<List<ReportHistory>> getReport(@Body UserKey userKey);
 
     @POST("/routine/CreateRoutine")
     Call<List<Integer>> createRoutine(@Body RoutineData data);

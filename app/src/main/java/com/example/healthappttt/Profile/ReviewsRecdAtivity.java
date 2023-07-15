@@ -14,6 +14,7 @@ import com.example.healthappttt.Data.PreferenceHelper;
 import com.example.healthappttt.Data.RetrofitClient;
 import com.example.healthappttt.Data.SQLiteUtil;
 import com.example.healthappttt.Data.User.BlackListData;
+import com.example.healthappttt.Data.User.ReportHistory;
 import com.example.healthappttt.Data.User.ReviewListData;
 import com.example.healthappttt.Data.User.UserKey;
 import com.example.healthappttt.Data.User.WittListData;
@@ -36,6 +37,7 @@ public class ReviewsRecdAtivity extends AppCompatActivity {
     androidx.appcompat.widget.SearchView searchView;
     TextView listCnt;
     ArrayList<BlackListData> BlackList;
+    ArrayList<ReportHistory> ReportList;
     ArrayList<ReviewListData> ReviewList, filteredList;
     ReviewListData ReviewListdata;
     ArrayList<WittListData> WittList;
@@ -108,7 +110,7 @@ public class ReviewsRecdAtivity extends AppCompatActivity {
 
 
     public void setView() {
-        ReviewAdapter = new BlockUserAdapter(BlackList,ReviewList,WittList, this);//어뎁터에 차단 목록 생성
+        ReviewAdapter = new BlockUserAdapter(BlackList,ReviewList,WittList,ReportList ,this);//어뎁터에 차단 목록 생성
 
         ReviewCnt = String.valueOf(ReviewList.size());//리뷰 리스트 개수 표시
         Log.d("리뷰리스트 개수: ", ReviewCnt);
@@ -164,7 +166,7 @@ public class ReviewsRecdAtivity extends AppCompatActivity {
                         setView();
                     } else { Log.d("getReviewList","리스트가 null");}
                 }else {
-                    Log.e("getReviewList", "API 요청 실패. 응답 코드: " + response.code());
+                    Log.e("getReviewList", "응답 오류 응답 코드: " + response.code());
                 }
             }
             @Override

@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.healthappttt.Data.User.BlackListData;
+import com.example.healthappttt.Data.User.ReportHistory;
 import com.example.healthappttt.Data.User.ReviewListData;
 import com.example.healthappttt.Data.SQLiteUtil;
 import com.example.healthappttt.Data.User.WittListData;
@@ -24,6 +25,7 @@ public class BlackActivity extends AppCompatActivity {
     ArrayList<BlackListData> BlackList, filteredList;
     ArrayList<ReviewListData> ReviewList;
     ArrayList<WittListData> WittList;
+    ArrayList<ReportHistory> ReportList;
     BlockUserAdapter BlackAdapter;
     RecyclerView recyclerView;
     LinearLayoutManager linearLayoutManager;
@@ -41,7 +43,7 @@ public class BlackActivity extends AppCompatActivity {
         sqLiteUtil.setInitView(this,"BLACK_LIST_TB");//차단 목록 로컬 db
         BlackList = sqLiteUtil.SelectBlackUser();//SELECT * FROM BLACK_LIST_TB
 
-        BlackAdapter = new BlockUserAdapter(BlackList,ReviewList, WittList ,this);//어뎁터에 차단 목록 생성
+        BlackAdapter = new BlockUserAdapter(BlackList,ReviewList, WittList, ReportList,this);//어뎁터에 차단 목록 생성
         linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(BlackAdapter);
