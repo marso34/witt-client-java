@@ -35,7 +35,7 @@ public class SocketSingleton {
     private Context context;
     private SQLiteUtil sqLiteUtil;
     private ChatActivity chatActivity;
-    private int chatSendFlag = -1;
+    private int chatPk = -1;
     private PreferenceHelper preferenceHelper;
     private static int alarmID = 100;
 
@@ -105,20 +105,18 @@ public class SocketSingleton {
                         int CRI = Integer.parseInt(chatRoomId);
                         SqlLiteSaveMessage(preferenceHelper.getPK(), 2, message, CRI);
                         mSocket.emit("completeMessage");
-                        if (chatActivity != null) {
-                            if(chatActivity.getChatRoomId().equals(chatRoomId))
-                             if(!chatActivity.getUpdatingMSG()) {
-                                 chatActivity.setUpdatingMSG(true);
-                                 new Thread(new Runnable() {
-                                     @Override
-                                     public void run() {
-                                         Log.d(TAG, "run: " + chatActivity.getUpdatingMSG());
-                                         chatActivity.getAllMSG();
-
-                                     }
-                                 }).start();
-                             }
-                        }
+                            if(chatActivity != null && chatActivity.getChatRoomId().equals(chatRoomId)) {
+                                if (!chatActivity.getUpdatingMSG()) {
+                                    chatActivity.setUpdatingMSG(true);
+                                    new Thread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Log.d(TAG, "run: " + chatActivity.getUpdatingMSG());
+                                            chatActivity.getAllMSG(1);
+                                        }
+                                    }).start();
+                                }
+                            }
                         else {
                             createNotificationChannel();
                             showCustomNotification(chatRoomId,message); // 채팅 메시지 알림 표시
@@ -132,11 +130,39 @@ public class SocketSingleton {
     }
 
     public void sendMessage(JSONObject message) {
-        chatSendFlag = -1;
         Log.d("SocketSingleton", "sendMessage: Sending message");
         mSocket.emit("sendMessage", message);
     }
 
+    public void returnSignal() {
+        mSocket.on("receiveReturn", new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+                JSONObject data = (JSONObject) args[0];
+                try {
+                    String signal = data.getString("signal");
+                    chatPk = Integer.parseInt(signal);
+                    Log.d(TAG, "chatpk받기"+chatPk);
+                    sqLiteUtil.setInitView(context.getApplicationContext(), "CHAT_MSG_TB");
+                    sqLiteUtil.Update(preferenceHelper.getPK(),chatPk);
+                    if(chatActivity != null) {
+                        if (!chatActivity.getSendUpdatingMSG()) {
+                            chatActivity.setSendUpdatingMSG(true);
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Log.d(TAG, "run: " + chatActivity.getSendUpdatingMSG());
+                                    chatActivity.getAllMSG(2);
+                                }
+                            }).start();
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
     public void SqlLiteSaveMessage(int userKey, int myFlag, String message, int chatRoomId) {
         sqLiteUtil.setInitView(context.getApplicationContext(), "CHAT_MSG_TB");
         sqLiteUtil.insert(userKey, myFlag, message, chatRoomId, 1);
@@ -153,20 +179,7 @@ public class SocketSingleton {
         mSocket.emit("insertSocket", data);
     }
 
-    public void returnSignal() {
-        mSocket.on("receiveReturn", new Emitter.Listener() {
-            @Override
-            public void call(Object... args) {
-                JSONObject data = (JSONObject) args[0];
-                try {
-                    String signal = data.getString("signal");
-                    chatSendFlag = Integer.parseInt(signal);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
+
 
     public Socket getSocket() {
         return mSocket;

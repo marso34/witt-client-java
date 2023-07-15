@@ -90,9 +90,18 @@ public class DBHelper extends SQLiteOpenHelper {
                 + "CHAT_ROOM_FK INT, "
                 + "MSG  VARCHAR(1500), "
                 + "TS  VARCHAR(30),"
-                + "READ INT"
+                + "SUCCESS INT"
                 + ");";
         db.execSQL(createTableQuery);
+
+        String createChat_Room_TableQuery = "CREATE TABLE if not exists CHAT_ROOM_TB ("
+                + "CHAT_ROOM_PK INTEGER primary key,"
+                + "LAST_MSG_INDEX INT,"
+                + "FAV INT ,"
+                + "TS  VARCHAR(30)"
+                + ");";
+        db.execSQL(createChat_Room_TableQuery);
+
     }
 
     @Override
