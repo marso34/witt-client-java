@@ -67,7 +67,7 @@ public interface ServiceApi {
     Call<Integer> deleteRoutine(@Body pkData data);
 
     @POST("/routine/UpdateRoutine")
-    Call<List<Integer>> updateRoutine(@Body RoutineData data);
+    Call<Integer> updateRoutine(@Body RoutineData data);
 
     @POST("/routine/SelectRoutine")
     Call<List<RoutineData>> selectRoutine(@Body GetRoutine data);

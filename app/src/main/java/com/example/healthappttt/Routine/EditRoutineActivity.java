@@ -146,10 +146,10 @@ public class EditRoutineActivity extends AppCompatActivity {
             } else if (routine.getExercises().size() <= 0) {
                 Toast.makeText(this, "운동이 없어요", Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(this, "아직 동작 X", Toast.LENGTH_SHORT).show();
-//                routine.setStartTime(TimeToStringD(startTime));
-//                routine.setEndTime(TimeToStringD(endTime));
-//                UpdateToDB();
+//                Toast.makeText(this, "아직 동작 X", Toast.LENGTH_SHORT).show();
+                routine.setStartTime(TimeToStringD(startTime));
+                routine.setEndTime(TimeToStringD(endTime));
+                UpdateToDB();
             }
         });
     }
@@ -232,19 +232,16 @@ public class EditRoutineActivity extends AppCompatActivity {
     }
 
     private void UpdateToDB() {
-        service.updateRoutine(routine).enqueue(new Callback<List<Integer>>() {
+        service.updateRoutine(routine).enqueue(new Callback<Integer>() {
             @Override
-            public void onResponse(Call<List<Integer>> call, Response<List<Integer>> response) {
+            public void onResponse(Call<Integer> call, Response<Integer> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(EditRoutineActivity.this, "수정 성공", Toast.LENGTH_SHORT).show();
 
-                    List<Integer> list = response.body();
-
-                    // list[0] != 404
-
-                    for (int id : list)
+                    int id = response.body();
                         Log.d("반환 pk", id + "");
 
+                    // 여기에 추가한 운동에 id 삽입
 //                    UpdateToDev();
                     Terminate(true, 0); // 루틴 수정을 의미
                 } else {
@@ -255,7 +252,7 @@ public class EditRoutineActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<List<Integer>> call, Throwable t) {
+            public void onFailure(Call<Integer> call, Throwable t) {
                 Toast.makeText(EditRoutineActivity.this, "서버 연결에 실패", Toast.LENGTH_SHORT).show();
                 Log.d("실패", t.getMessage());
                 Terminate(false); // 루틴 수정 액티비티 종료
