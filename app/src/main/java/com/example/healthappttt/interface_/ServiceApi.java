@@ -51,7 +51,6 @@ public interface ServiceApi {
     @POST("/profile/deleteFromServer") //차단하기에서 차단 항목 삭제하는 api
     Call<Integer> deleteFromServer(@Body UserKey BL_PK);
 
-
     @POST("/profile/getWittHistory")//위트 내역 리스트 가져오기
     Call<List<WittListData>> getWittHistory(@Body UserKey userKey);
 
@@ -63,6 +62,9 @@ public interface ServiceApi {
 
     @POST("/profile/getReport")//신고 내역
     Call<List<ReportHistory>> getReport(@Body UserKey userKey);
+
+    @POST("/profile/deleteUser")//탈퇴 하기
+    Call deleteUser(@Body UserKey userKey);
 
     @POST("/routine/CreateRoutine")
     Call<List<Integer>> createRoutine(@Body RoutineData data);

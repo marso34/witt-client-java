@@ -1,6 +1,7 @@
 package com.example.healthappttt.Profile;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -21,12 +22,14 @@ import com.example.healthappttt.Data.Exercise.GetRoutine;
 import com.example.healthappttt.Data.Exercise.RoutineData;
 import com.example.healthappttt.Data.PreferenceHelper;
 import com.example.healthappttt.Data.RetrofitClient;
+import com.example.healthappttt.Data.SQLiteUtil;
 import com.example.healthappttt.Data.User.UserClass;
 import com.example.healthappttt.Data.User.UserKey;
 import com.example.healthappttt.Data.WittSendData;
 import com.example.healthappttt.R;
 import com.example.healthappttt.Routine.RoutineActivity;
 import com.example.healthappttt.Routine.RoutineAdapter;
+import com.example.healthappttt.Sign.LoginActivity;
 import com.example.healthappttt.databinding.ActivityMyprofileBinding;
 import com.example.healthappttt.interface_.ServiceApi;
 
@@ -48,6 +51,7 @@ public class MyProfileActivity extends AppCompatActivity {
     private ActivityMyprofileBinding binding;
     private ActivityResultLauncher<Intent> editProfileLauncher;
     private PreferenceHelper UserTB;
+    private SQLiteUtil sqLiteUtil;
     private ServiceApi apiService;
     private UserClass userClass;
     private RoutineAdapter adapter;
@@ -350,6 +354,18 @@ public class MyProfileActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        /** 설정 */
+
+
+
+        /** 탈퇴하기  */
+
+        binding.quit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                quitPopup();
+            }
+        });
 
     }
     //화면 전환(상세 프로필)
@@ -429,6 +445,53 @@ public class MyProfileActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void quitPopup() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View view = getLayoutInflater().inflate(R.layout.my_popup_layout, null);
+
+        TextView username = view.findViewById(R.id.tv_user_info_name);
+        TextView useremail = view.findViewById(R.id.tv_user_info_email);
+        Button btnclose = view.findViewById(R.id.btn_user_info_close);//취소
+        Button btndelte = view.findViewById(R.id.btn_user_info_delete);//탈퇴
+
+        username.setText(UserTB.getEmail());
+        useremail.setText(UserTB.getUser_NM());
+
+        builder.setView(view);
+        AlertDialog dialog = builder.create();
+
+        UserKey UserKey = new UserKey(Integer.parseInt(myPK));
+
+        btnclose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();//팝업 닫기
+                Toast.makeText(MyProfileActivity.this, "휴~", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        btndelte.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            //TODO 실제로 삭제되는지 확인 해야함 TEST -- goamin("7")로 테스트 할것
+            apiService.deleteUser(UserKey);//서버 디비에서 해당 키 삭제
+
+            UserTB.deleteUserTB();//로컬 shared 삭제
+            sqLiteUtil = SQLiteUtil.getInstance();
+            sqLiteUtil.DropUser(MyProfileActivity.this);
+
+            Toast.makeText(MyProfileActivity.this, "탈퇴완료", Toast.LENGTH_SHORT).show();
+
+            Intent intent = new Intent(MyProfileActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+            }
+        });
+
+        dialog.show();
+    }
+
 
 
 }
