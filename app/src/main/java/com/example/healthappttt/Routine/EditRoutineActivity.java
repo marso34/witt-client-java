@@ -43,6 +43,7 @@ public class EditRoutineActivity extends AppCompatActivity {
     private SQLiteUtil sqLiteUtil;
 
     private RoutineData routine;
+    private ArrayList<Integer> deletePk;
     private int runTime, startTime, endTime;
 
     @Override
@@ -74,6 +75,7 @@ public class EditRoutineActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         routine = (RoutineData) intent.getSerializableExtra("routine");
+        deletePk = new ArrayList<>();
 
         init();
 
@@ -225,24 +227,31 @@ public class EditRoutineActivity extends AppCompatActivity {
     }
 
     private void setRecyclerView() {
-        adapter = new ExerciseInputAdapter(routine.getExercises(), true);
+        adapter = new ExerciseInputAdapter(routine.getExercises(), deletePk,true);
         binding.recyclerView.setHasFixedSize(true);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerView.setAdapter(adapter);
     }
 
     private void UpdateToDB() {
+
         service.updateRoutine(routine).enqueue(new Callback<Integer>() {
             @Override
             public void onResponse(Call<Integer> call, Response<Integer> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(EditRoutineActivity.this, "수정 성공", Toast.LENGTH_SHORT).show();
 
-                    int id = response.body();
-                        Log.d("반환 pk", id + "");
+                    int id = response.body(), cnt = 0;
 
-                    // 여기에 추가한 운동에 id 삽입
-//                    UpdateToDev();
+                    for (ExerciseData e : routine.getExercises()) {
+                        if (e.getID() == 0) {
+                            Log.d("반환 pk", id + "");
+                            e.setID(id++);
+                            e.setParentID(routine.getID());
+                        }
+                    }
+
+                    UpdateToDev();
                     Terminate(true, 0); // 루틴 수정을 의미
                 } else {
                     Toast.makeText(EditRoutineActivity.this, "서버 연결에 실패", Toast.LENGTH_SHORT).show();
@@ -266,7 +275,12 @@ public class EditRoutineActivity extends AppCompatActivity {
         sqLiteUtil.setInitView(this, "EX_TB");
 
         for (ExerciseData e: routine.getExercises())
-            sqLiteUtil.Update(e);
+            sqLiteUtil.UpdateOrInsert(e);
+
+        for (int pk: deletePk) {
+            Log.d("삭제할 것들", pk + " 테스트");
+            sqLiteUtil.delete(pk);
+        }
     }
 
     private void Terminate(boolean isSuccess) {

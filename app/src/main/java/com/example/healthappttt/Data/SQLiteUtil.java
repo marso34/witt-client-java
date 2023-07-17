@@ -297,19 +297,29 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         }
     } // 운동 기록을 수정할 수 있게 할지는 아직 모름
 
-    public void Update(ExerciseData exercise) {
+    public void UpdateOrInsert(ExerciseData exercise) {
         ContentValues values = new ContentValues();
 
-        if (table.equals("EX_TB")) {
-            values.put("Set_Or_Time", exercise.getSetOrTime());
-            values.put("Volume", exercise.getVolume());
-            values.put("Cnt_Or_Dis", exercise.getCntOrDis());
-            values.put("Sort_Index", exercise.getIndex());
+        values.put("PK", exercise.getID());
+        values.put("RT_FK", exercise.getParentID());
+        values.put("Ex_NM", exercise.getExerciseName());
+        values.put("Set_Or_Time", exercise.getSetOrTime());
+        values.put("Volume", exercise.getVolume());
+        values.put("Cnt_Or_Dis", exercise.getCntOrDis());
+        values.put("Sort_Index", exercise.getIndex());
+        values.put("CAT", exercise.getCat());
 
+        Cursor cursor = db.query(table, null,  "PK = ?", new String[]{String.valueOf(exercise.getID())}, null, null, null);
+        if (cursor.moveToFirst()) {
+            // 존재하면 업데이트 수행
             int result = db.update(table, values, "PK = ?", new String[]{String.valueOf(exercise.getID())});
-            Log.d(table, result + "성공");
+            Log.d(table, result + "업데이트 성공");
+            cursor.close();
         } else {
-            Log.d(table, " 메서드 형식 오류");
+            // 존재하지 않으면 삽입 수행
+            long result = db.insert(table, null, values);
+            Log.d(table, result + "삽입 성공");
+            cursor.close();
         }
     }
 
