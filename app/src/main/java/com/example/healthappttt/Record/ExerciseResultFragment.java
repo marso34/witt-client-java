@@ -90,7 +90,7 @@ public class ExerciseResultFragment extends Fragment {
         binding.restTime.setText(parse(RestTime));
 
         binding.nextBtn.setOnClickListener(v -> {
-            getActivity().finish();
+            requireActivity().finish();
         });
     }
 

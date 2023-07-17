@@ -226,7 +226,7 @@ public class sub2Fragment extends Fragment {
                         "Location Name: " + loName +
                         "Values:" + squatValue +" "+ benchValue + " " + deadliftValue;
                 // Display the message
-                Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
+                Toast.makeText(requireActivity(), message, Toast.LENGTH_LONG).show();
 
                 /**
                  * TO DO : 같은 핸드폰(Device model)이면 로컬저장 X
@@ -283,22 +283,21 @@ public class sub2Fragment extends Fragment {
                     prefhelper.putMembership(sharedUser);
                     Log.d("shared 로컬 저장 회원가입 pk:", String.valueOf(userKey));
 
-                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                    Intent intent = new Intent(requireActivity(), MainActivity.class);
                     intent.putExtra("userKey",String.valueOf(userKey));
                     startActivity(intent);
-                    Activity activity = getActivity();
-                    activity.finish();
+                    requireActivity().finish();
                     Log.d(TAG, "sendTokenToServer success");
                 } else {
                     // 서버로 데이터 전송 실패
-                    Toast.makeText(getActivity(), "로그인 실패", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireActivity(), "로그인 실패", Toast.LENGTH_SHORT).show();
                     Log.d(TAG, "sendTokenToServer fail");
                 }
             }
 
             @Override
             public void onFailure(Call<Integer> call, Throwable t) {
-                Toast.makeText(getActivity(), "서버로부터 응답이 없습니다.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireActivity(), "서버로부터 응답이 없습니다.", Toast.LENGTH_SHORT).show();
                 Log.e(TAG, "sendTokenToServer error: " + t.getMessage());
             }
         });
