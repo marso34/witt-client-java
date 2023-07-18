@@ -255,7 +255,7 @@ public class sub2Fragment extends Fragment {
     }
     private MannerInfo getMannerInfo(){
         return new MannerInfo(150,150,150);
-    }
+    } // 매너 테이블에 디폴트 값 넣고 그냥 생성하면 되잖아?
     private LocInfo getLocInfo(){
         return new LocInfo(latitude,longitude,loName,gymLatitude,gymLongitude);
     }
