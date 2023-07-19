@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Chat.ReportActivity">
+
+
+    <LinearLayout
+        android:id="@+id/rrr"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginVertical="40dp">
+
+        <TextView
+            android:id="@+id/reportname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="김도현님을"
+            style="@style/chat_title"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="신고하는 이유를 선택해주세요"
+            style="@style/chat_title"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="부당하거나 허위 신고는 위트 사용 제재 대상이에요 "
+            android:fontFamily="@font/spoqa_han_sans_neo"
+            android:textSize="12dp"
+            android:textColor="#677489"
+            android:layout_marginBottom="56dp"/>
+
+
+
+        <CheckedTextView
+            android:id="@+id/RPT_ck1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="전문 휘트니스 PT업자 같아요."
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/rectangle"
+            android:elevation="3dp"
+            android:paddingTop="9dp"
+            android:paddingLeft="16dp"
+            android:paddingBottom="11dp"
+            android:paddingHorizontal="16dp"
+            android:gravity="center"
+            style="@style/report"/>
+        <CheckedTextView
+            android:id="@+id/RPT_ck2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="비매너 사용자에요."
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/rectangle"
+            android:elevation="3dp"
+            android:paddingTop="9dp"
+            android:paddingLeft="16dp"
+            android:paddingBottom="11dp"
+            android:paddingHorizontal="16dp"
+            android:gravity="center"
+            style="@style/report"/>
+        <CheckedTextView
+            android:id="@+id/RPT_ck3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="욕설을 해요."
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/rectangle"
+            android:elevation="3dp"
+            android:paddingTop="9dp"
+            android:paddingLeft="16dp"
+            android:paddingBottom="11dp"
+            android:paddingHorizontal="16dp"
+            android:gravity="center"
+            style="@style/report"/>
+        <CheckedTextView
+            android:id="@+id/RPT_ck4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="성희롱을 해요."
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/rectangle"
+            android:elevation="3dp"
+            android:paddingTop="9dp"
+            android:paddingLeft="16dp"
+            android:paddingBottom="11dp"
+            android:paddingHorizontal="16dp"
+            android:gravity="center"
+            style="@style/report"/>
+        <CheckedTextView
+            android:id="@+id/RPT_ck5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="종교활동을 강요해요."
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/rectangle"
+            android:elevation="3dp"
+            android:paddingTop="9dp"
+            android:paddingLeft="16dp"
+            android:paddingBottom="11dp"
+            android:paddingHorizontal="16dp"
+            android:gravity="center"
+            style="@style/report"/>
+
+        <CheckedTextView
+            android:id="@+id/RPT_ck8"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="폭력을 사용해요."
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/rectangle"
+            android:elevation="3dp"
+            android:paddingTop="9dp"
+            android:paddingLeft="16dp"
+            android:paddingBottom="11dp"
+            android:paddingHorizontal="16dp"
+            android:gravity="center"
+            style="@style/report"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/rounded_top"
+            android:layout_marginTop="40dp"
+            android:paddingVertical="12dp"
+            android:paddingHorizontal="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="다른 문제가 있어요"
+                style="@style/report"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="자세하게 적어주면 위트팀에서 문제를 해결할게요"
+                android:fontFamily="@font/spoqa_han_sans_neo"
+                android:textSize="12dp"
+                android:textColor="#677489"
+                android:layout_marginBottom="24dp"/>
+
+            <EditText
+                android:id="@+id/RPT_txt"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:hint="여기에 적어주세요 (선택사항) "
+                android:gravity="top"
+                android:paddingVertical="9dp"
+                android:paddingHorizontal="16dp"
+                android:background="@drawable/rectangle"
+                android:backgroundTint="#F2F5F9"
+                android:layout_marginBottom="24dp"/>
+
+            <Button
+                android:id="@+id/GO_RPT"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/rectangle"
+                android:backgroundTint="@color/Signature"
+                android:gravity="center"
+                android:text="신고하기"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>
