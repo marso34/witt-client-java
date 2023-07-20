@@ -96,7 +96,7 @@ public interface ServiceApi {
     Call<MSG> sendMessage(@Body MSG message);
 
     @POST("/makeChatRoom")
-    Call<ResponseBody> makeChatRoom(@Body WittSendData wittSendData);
+    Call<Integer> makeChatRoom(@Body WittSendData wittSendData);
 
     @FormUrlEncoded
     @POST("upload/image")

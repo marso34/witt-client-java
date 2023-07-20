@@ -97,6 +97,7 @@ public class DBHelper extends SQLiteOpenHelper {
         String createChat_Room_TableQuery = "CREATE TABLE if not exists CHAT_ROOM_TB ("
                 + "CHAT_ROOM_PK INTEGER primary key,"
                 + "LAST_MSG_INDEX INT,"
+                + "OTHER_USER_NM,"
                 + "FAV INT ,"
                 + "TS  VARCHAR(30)"
                 + ");";

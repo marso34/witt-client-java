@@ -27,6 +27,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -63,6 +65,7 @@ public class ChatActivity extends AppCompatActivity{
             setupSQLiteUtil();
             setupListeners();
             getMessagesFromServer();
+
         }
     private void initViews() {
         messageRecyclerView = findViewById(R.id.chatRecyclerView);
@@ -117,6 +120,19 @@ public class ChatActivity extends AppCompatActivity{
             }
         });
     }
+
+    public String extractName(String inputString) {
+        String namePattern = "!!~(.*?)~!!"; // 정규표현식 패턴: !!~(이름)~!!
+        Pattern pattern = Pattern.compile(namePattern);
+        Matcher matcher = pattern.matcher(inputString);
+
+        if (matcher.find()) {
+            return matcher.group(1)+"님이 위트를 보냈습니다."; // 매칭된 그룹(이름) 반환
+        } else {
+            return null; // 이름이 매칭되지 않으면 빈 문자열 반환
+        }
+    }
+
     private void getMessagesFromServer() {
         setupSQLiteUtil();
         apiService = RetrofitClient.getClient().create(ServiceApi.class);
@@ -131,9 +147,16 @@ public class ChatActivity extends AppCompatActivity{
                         sqLiteUtil.deleteChatRoom(Integer.parseInt(chatRoomId));
                         for (MSG msg : msgList) {
                             sqLiteUtil.setInitView(getApplicationContext(), "CHAT_MSG_TB");
+                            String name1 = extractName(msg.getMessage());
+                            if (name1 != null) {
+                                sqLiteUtil.insert(Integer.parseInt(userKey), msg.getMyFlag(),name1, Integer.parseInt(chatRoomId), 1);
+
+                            } else {
+                                sqLiteUtil.insert(Integer.parseInt(userKey), msg.getMyFlag(),msg.getMessage(), Integer.parseInt(chatRoomId), 1);
+
+                            }
                             Log.d(TAG, "onResponse: msg"+msg.getMessage());
-                            sqLiteUtil.insert(Integer.parseInt(userKey), msg.getMyFlag(), msg.getMessage(), Integer.parseInt(chatRoomId), 1);
-                        }
+                              }
                     }
                     updatingMSG = true;
                    sendUpdatingMSG  = true;
