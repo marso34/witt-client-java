@@ -79,7 +79,7 @@ public interface ServiceApi {
 
 //    ----------------------------------------------------------------------------------------------
     @POST("/getMSGFromServer")
-    Call<List<MSG>> getMSGFromServer(@Body pkData pk);
+    Call<List<MSG>> getMSGFromServer(@Body getMSGKey data);
 
     @POST("/GetNearUsers")
     Call<List<UserInfo>> GetNearUsers(@Body NearUsersData data);

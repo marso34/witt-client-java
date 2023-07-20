@@ -118,6 +118,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         String createTableQuery = "DROP TABLE if exists CHAT_MSG_TB";
         db.execSQL(createTableQuery);
+
         onCreate(db);
     }
 }

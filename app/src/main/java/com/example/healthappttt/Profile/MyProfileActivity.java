@@ -99,12 +99,14 @@ public class MyProfileActivity extends AppCompatActivity {
 
         Intent intent = getIntent();//넘겨받은 pk를 담은 번들
         PK = intent.getStringExtra("PK");//넘겨 받은 PK
-        dayOfWeek = intent.getIntExtra("dayOfWeek",calendar.get(Calendar.DAY_OF_WEEK) - 1);
-  
+
         Date currentDate = new Date();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(currentDate);
-        
+
+        dayOfWeek = intent.getIntExtra("dayOfWeek",calendar.get(Calendar.DAY_OF_WEEK) - 1);
+
+
         myPK = String.valueOf(UserTB.getPK());// 로컬 내 PK
         /** 마이 프로필*/
         if(PK.equals(myPK) ){ // 내 pk이면 마이 프로필
