@@ -19,10 +19,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.healthappttt.Data.Chat.MSG;
 import com.example.healthappttt.Data.Chat.SocketSingleton;
+import com.example.healthappttt.Data.Chat.getMSGKey;
 import com.example.healthappttt.Data.PreferenceHelper;
 import com.example.healthappttt.Data.RetrofitClient;
 import com.example.healthappttt.Data.SQLiteUtil;
-import com.example.healthappttt.Data.pkData;
 import com.example.healthappttt.R;
 import com.example.healthappttt.interface_.ServiceApi;
 
@@ -32,6 +32,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -54,6 +56,7 @@ public class ChatActivity extends AppCompatActivity{
     private SQLiteUtil sqLiteUtil;
     private ServiceApi apiService;
     private boolean updatingMSG = false;
+    private boolean sendUpdatingMSG  = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,35 +117,61 @@ public class ChatActivity extends AppCompatActivity{
             public void onClick(View v) {
                 String messageText = messageEditText.getText().toString();
                 if (!messageText.isEmpty()) {
-                    sendMessageToServer(messageText);
-                    socketSingleton.SqlLiteSaveMessage(Integer.parseInt(userKey),1,messageText,Integer.parseInt(chatRoomId));
-                    getAllMSG();
                     messageEditText.setText("");
+                    sqLiteUtil.setInitView(getApplicationContext(), "CHAT_MSG_TB");
+                    int chatPk = sqLiteUtil.insert(Integer.parseInt(userKey), 1, messageText, Integer.parseInt(chatRoomId), 0);
+                    Log.d(TAG, "chatPk보내기"+chatPk);
+                    sendMessageToServer(messageText,chatPk);
+
                 }
             }
         });
     }
+
+    public String extractName(String inputString) {
+        String namePattern = "!!~(.*?)~!!"; // 정규표현식 패턴: !!~(이름)~!!
+        Pattern pattern = Pattern.compile(namePattern);
+        Matcher matcher = pattern.matcher(inputString);
+
+        if (matcher.find()) {
+            return matcher.group(1)+"님이 위트를 보냈습니다."; // 매칭된 그룹(이름) 반환
+        } else {
+            return null; // 이름이 매칭되지 않으면 빈 문자열 반환
+        }
+    }
+
     private void getMessagesFromServer() {
         setupSQLiteUtil();
         apiService = RetrofitClient.getClient().create(ServiceApi.class);
-        Call<List<MSG>> call = apiService.getMSGFromServer(new pkData(Integer.parseInt(userKey)));
+        Call<List<MSG>> call = apiService.getMSGFromServer(new getMSGKey(Integer.parseInt(userKey),Integer.parseInt(chatRoomId)));
         call.enqueue(new Callback<List<MSG>>() {
             @Override
             public void onResponse(Call<List<MSG>> call, Response<List<MSG>> response) {
                 if (response.isSuccessful()) {
                     List<MSG> msgList = response.body();
                     if (msgList != null) {
+                        sqLiteUtil.setInitView(getApplicationContext(), "CHAT_MSG_TB");
+                        sqLiteUtil.deleteChatRoom(Integer.parseInt(chatRoomId));
                         for (MSG msg : msgList) {
-                            socketSingleton.SqlLiteSaveMessage(Integer.parseInt(userKey),2,msg.getMessage(),Integer.parseInt(chatRoomId));
+                            sqLiteUtil.setInitView(getApplicationContext(), "CHAT_MSG_TB");
+                            String name1 = extractName(msg.getMessage());
+                            if (name1 != null) {
+                                sqLiteUtil.insert(Integer.parseInt(userKey), msg.getMyFlag(),name1, Integer.parseInt(chatRoomId), 1);
 
-                        }
+                            } else {
+                                sqLiteUtil.insert(Integer.parseInt(userKey), msg.getMyFlag(),msg.getMessage(), Integer.parseInt(chatRoomId), 1);
+
+                            }
+                            Log.d(TAG, "onResponse: msg"+msg.getMessage());
+                              }
                     }
-                    getAllMSG();
+                    updatingMSG = true;
+                   sendUpdatingMSG  = true;
+                    getAllMSG(3);
                 } else {
                     Log.e(TAG, "getMessagesFromServer: API 요청 실패. 응답 코드: " + response.code());
                 }
             }
-
             @Override
             public void onFailure(Call<List<MSG>> call, Throwable t) {
                 Log.e(TAG, "getMessagesFromServer: API 요청 실패: " + t.getMessage());
@@ -153,8 +182,7 @@ public class ChatActivity extends AppCompatActivity{
     public String getChatRoomId(){
         return chatRoomId;
     }
-    public void getAllMSG() {
-
+    public void getAllMSG(int sendOrReceive) {
         final CountDownLatch latch = new CountDownLatch(1);
 
         runOnUiThread(new Runnable() {
@@ -180,10 +208,16 @@ public class ChatActivity extends AppCompatActivity{
         } catch (InterruptedException e) {
             e.printStackTrace();
         } finally {
-            updatingMSG = false;
+            if(sendOrReceive == 1)
+                updatingMSG = false;
+            else if (sendOrReceive ==2)
+                sendUpdatingMSG = false;
+            else if (sendOrReceive == 3){
+                updatingMSG = false;
+                sendUpdatingMSG = false;
+            }
         }
 // 작업이 모두 끝난 후에 실행될 코드
-
     }
     public boolean getUpdatingMSG(){
         return updatingMSG;
@@ -191,13 +225,20 @@ public class ChatActivity extends AppCompatActivity{
     public void setUpdatingMSG(boolean t){
         this.updatingMSG = t;
     }
-    private void sendMessageToServer(String messageText) {
+    public boolean getSendUpdatingMSG(){
+        return sendUpdatingMSG;
+    }
+    public void setSendUpdatingMSG(boolean t){
+        this.sendUpdatingMSG = t;
+    }
+    private void sendMessageToServer(String messageText, int chatPk) {
         try {
             JSONObject data = new JSONObject();
             data.put("myUserKey", userKey);
             data.put("otherUserKey", Integer.parseInt(otherUserKey));
             data.put("chatRoomId", Integer.parseInt(chatRoomId));
             data.put("messageText", messageText);
+            data.put("chatPk",chatPk);
             socketSingleton.sendMessage(data);
         } catch (JSONException e) {
             e.printStackTrace();

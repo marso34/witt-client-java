@@ -81,7 +81,7 @@ public class BlockUserAdapter extends RecyclerView.Adapter<BlockUserAdapter.View
     @NonNull
     @Override
     public BlockUserAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_blockuser,null);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_blockuser,parent, false);
         ViewHolder viewHolder = new ViewHolder(view);
         return viewHolder;
     }

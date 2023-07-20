@@ -23,7 +23,7 @@ public class UserClass {
     public UserClass(UserData userData, PhoneInfo phoneInfo, MannerInfo mannerInfo, LocInfo locInfo, ExPerfInfo exPerfInfo, BodyInfo bodyInfo) {
         this.userData = userData;
         this.phoneInfo = phoneInfo;
-        this.mannerInfo = mannerInfo;
+        this.mannerInfo = mannerInfo; // 회원가입 할 때 유저 매너를 보낼 이유가 없는데 왜 보내? 매너 테이블에 디폴트 값 넣고 그냥 생성해야지
         this.locInfo = locInfo;
         this.exPerfInfo = exPerfInfo;
         this.bodyInfo = bodyInfo;

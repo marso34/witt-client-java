@@ -155,7 +155,7 @@ public class HomeChildFragment extends Fragment {
 
 
     private void setRecyclerView() {
-        adapter = new UserAdapter(getContext(), (ArrayList<UserInfo>) UserList); // 나중에 routine
+        adapter = new UserAdapter(getContext(), (ArrayList<UserInfo>) UserList, day_of_week); // 나중에 routine
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
@@ -251,7 +251,5 @@ public class HomeChildFragment extends Fragment {
 
         return distance;
     }
-
-
 }
 

@@ -21,14 +21,19 @@ public class MSG {
     private String message;
     @SerializedName("timeStamp")
     private String timestamp = "0000-00-00 00:00:00";
+    private int success = -1;
 
-    public MSG(int myFlag, int chatRoomId, String message, String timestamp) {
+
+    public MSG(int myFlag, int chatRoomId, String message, String timestamp,int success) {
         this.myFlag = myFlag;
         this.chatRoomId = chatRoomId;
         this.message = message;
         this.timestamp = timestamp;
+        this.success = success;
     }
-
+    public int getSuccess(){
+        return success;
+    }
     public int getChatRoomId() {
         return chatRoomId;
     }

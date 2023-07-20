@@ -1,9 +1,14 @@
 package com.example.healthappttt.Chat;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,12 +29,17 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
         public TextView nameTextView;
         public TextView messageTextView;
         public TextView timeTextView;
+        public ImageView sendingView;
+        LinearLayout parentLayout; // 부모 뷰의 ID에 맞게 수정하세요
 
         public MessageViewHolder(View itemView) {
             super(itemView);
             nameTextView = itemView.findViewById(R.id.nameTextView);
             messageTextView = itemView.findViewById(R.id.messageTextView);
             timeTextView = itemView.findViewById(R.id.timeTextView);
+            sendingView = itemView.findViewById(R.id.sending);
+            parentLayout = itemView.findViewById(R.id.msg); // 부모 뷰의 ID에 맞게 수정하세요
+
         }
     }
     public MessageListAdapter(List<MSG> messageList, String username, String otherUserName) {
@@ -59,10 +69,12 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
         MSG message = messageList.get(position);
         holder.messageTextView.setText(message.getMessage());
         holder.timeTextView.setText(DateUtils.getRelativeTimeSpanString(message.getTimestamp()));
-
         if (message.getMyFlag() == 1) {
             // 보낸 메시지인 경우
             holder.messageTextView.setBackgroundResource(R.drawable.sent);
+            if(message.getSuccess() == 1)
+                holder.parentLayout.removeView(holder.sendingView);
+            else if (message.getSuccess() == -1) Log.d(TAG, "SUCCESS값 오류 -1나옴 ");
         } else {
             holder.nameTextView.setText(otherUserName);
             // 받은 메시지인 경우

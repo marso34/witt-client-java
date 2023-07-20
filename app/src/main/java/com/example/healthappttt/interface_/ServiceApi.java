@@ -3,6 +3,7 @@ package com.example.healthappttt.interface_;
 import com.example.healthappttt.Data.Chat.MSD;
 import com.example.healthappttt.Data.Chat.MSG;
 import com.example.healthappttt.Data.Chat.UserChat;
+import com.example.healthappttt.Data.Chat.getMSGKey;
 import com.example.healthappttt.Data.Exercise.GetRoutine;
 import com.example.healthappttt.Data.Exercise.RecordData;
 import com.example.healthappttt.Data.Exercise.RoutineData;
@@ -10,6 +11,7 @@ import com.example.healthappttt.Data.User.BlackListData;
 import com.example.healthappttt.Data.User.GetUserInfo;
 import com.example.healthappttt.Data.User.NearUsersData;
 import com.example.healthappttt.Data.User.ReportHistory;
+import com.example.healthappttt.Data.User.ReviewData;
 import com.example.healthappttt.Data.User.ReviewListData;
 import com.example.healthappttt.Data.User.UploadResponse;
 import com.example.healthappttt.Data.User.UserClass;
@@ -42,9 +44,6 @@ public interface ServiceApi {
     @POST("/profile/getBlackList")// 차단목록에서 차단 유저 리스트 가져오는 api
     Call<List<BlackListData>> getBlackList(@Body UserKey userKey);
 
-    @POST("/getMSGFromServer")
-    Call<List<MSG>> getMSGFromServer(@Body pkData pk);
-
     @POST("/profile/getReviewList") //받은 후기에서 후기 리스트 가져오는 api
     Call<List<ReviewListData>> getReviewList(@Body UserKey userKey);
 
@@ -69,6 +68,7 @@ public interface ServiceApi {
     @POST("/profile/updateRPT")//신고하기
     Call<String> updateRPT(@Body Map<String, Object> RPT);
 
+//    ----------------------------------------------------------------------------------------------
     @POST("/routine/CreateRoutine")
     Call<List<Integer>> createRoutine(@Body RoutineData data);
 
@@ -76,13 +76,21 @@ public interface ServiceApi {
     Call<Integer> deleteRoutine(@Body pkData data);
 
     @POST("/routine/UpdateRoutine")
-    Call<List<Integer>> updateRoutine(@Body RoutineData data);
+    Call<Integer> updateRoutine(@Body RoutineData data);
 
     @POST("/routine/SelectRoutine")
     Call<List<RoutineData>> selectRoutine(@Body GetRoutine data);
 
     @POST("/record/RecordExercise")
     Call<List<Integer>> recordExercise(@Body RecordData data);
+//    ----------------------------------------------------------------------------------------------
+
+    @POST("/review/SendReivew")
+    Call<Integer> sendReivew(@Body ReviewData data);
+
+//    ----------------------------------------------------------------------------------------------
+    @POST("/getMSGFromServer")
+    Call<List<MSG>> getMSGFromServer(@Body getMSGKey data);
 
     @POST("/GetNearUsers")
     Call<List<UserInfo>> GetNearUsers(@Body NearUsersData data);
@@ -104,7 +112,7 @@ public interface ServiceApi {
     Call<MSG> sendMessage(@Body MSG message);
 
     @POST("/makeChatRoom")
-    Call<ResponseBody> makeChatRoom(@Body WittSendData wittSendData);
+    Call<Integer> makeChatRoom(@Body WittSendData wittSendData);
 
     @FormUrlEncoded
     @POST("upload/image")

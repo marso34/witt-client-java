@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.healthappttt.Chat.ReviewActivity;
 import com.example.healthappttt.Data.Exercise.GetRoutine;
 import com.example.healthappttt.Data.Exercise.RecordData;
 import com.example.healthappttt.Data.Exercise.RoutineData;
@@ -187,7 +188,7 @@ public class RoutineChildFragment extends Fragment {
                 @Override
                 public void onFailure(Call<List<RoutineData>> call, Throwable t) {
                     Toast.makeText(getContext(), "서버 연결 실패..", Toast.LENGTH_SHORT).show();
-                    Log.d("실패", t.getMessage());
+                    Log.d("서버 연결 실패", t.getMessage());
                 }
             });
         }
@@ -195,6 +196,10 @@ public class RoutineChildFragment extends Fragment {
         binding.addRoutine.setOnClickListener(v -> {
             Intent intent = new Intent(getContext(), CreateRoutineActivity.class);
             intent.putExtra("dayOfWeek", dayOfWeek);
+//            Intent intent = new Intent(getContext(), ReviewActivity.class);
+//            intent.putExtra("name", "김도현");
+//            intent.putExtra("code", 1);
+
             startActivityResult.launch(intent);
         });
     }

@@ -22,6 +22,7 @@ import java.util.ArrayList;
 
 public class ExerciseInputAdapter extends RecyclerView.Adapter<ExerciseInputAdapter.MainViewHolder> {
     private ArrayList<ExerciseData> exercises;
+    private ArrayList<Integer> deletePk;
     private boolean isEdit;
 
     public ExerciseInputAdapter(ArrayList<ExerciseData> exercises) { // 드래그 앤 드롭 추가할 것 // ui 전체적으로 수정 필요
@@ -29,8 +30,9 @@ public class ExerciseInputAdapter extends RecyclerView.Adapter<ExerciseInputAdap
         this.isEdit = false;
     }
 
-    public ExerciseInputAdapter(ArrayList<ExerciseData> exercises, boolean isEdit) {
+    public ExerciseInputAdapter(ArrayList<ExerciseData> exercises, ArrayList<Integer> deletePk, boolean isEdit) {
         this.exercises = exercises;
+        this.deletePk = deletePk;
         this.isEdit = isEdit;
     }
 
@@ -142,7 +144,7 @@ public class ExerciseInputAdapter extends RecyclerView.Adapter<ExerciseInputAdap
         holder.CatView.setBackgroundColor(Color.parseColor(this.exercises.get(position).getColor())); // 부위 바탕 색
         holder.NameView.setText(this.exercises.get(position).getExerciseName()); // 운동 이름
 
-        if (isEdit) {
+        if (isEdit) { // 운동 수정의 경우, 초기값 할당
             holder.EditVolume.setText(Integer.toString(this.exercises.get(position).getVolume()));
             holder.EditCount.setText(Integer.toString(this.exercises.get(position).getCntOrDis()));
             holder.EditSet.setText(Integer.toString(this.exercises.get(position).getSetOrTime()));
@@ -154,9 +156,9 @@ public class ExerciseInputAdapter extends RecyclerView.Adapter<ExerciseInputAdap
     public int getItemCount() { return exercises.size(); }
 
     public void removeItem(int position) {
+        if (exercises.get(position).getID() != 0)
+            deletePk.add(exercises.get(position).getID());
         exercises.remove(position);
         notifyItemRemoved(position);
-
-        Log.d("운동 크기", exercises.size() + "");
     }
 }
