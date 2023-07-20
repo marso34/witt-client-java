@@ -43,6 +43,7 @@ public class EditRoutineActivity extends AppCompatActivity {
     private SQLiteUtil sqLiteUtil;
 
     private RoutineData routine;
+    private ArrayList<Integer> deletePk;
     private int runTime, startTime, endTime;
 
     @Override
@@ -74,12 +75,12 @@ public class EditRoutineActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         routine = (RoutineData) intent.getSerializableExtra("routine");
+        deletePk = new ArrayList<>();
 
         init();
 
-        if (routine != null) {
+        if (routine != null)
             setRecyclerView();
-        }
 
         binding.dayOfWeek.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -147,10 +148,10 @@ public class EditRoutineActivity extends AppCompatActivity {
             } else if (routine.getExercises().size() <= 0) {
                 Toast.makeText(this, "운동이 없어요", Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(this, "아직 동작 X", Toast.LENGTH_SHORT).show();
-//                routine.setStartTime(TimeToStringD(startTime));
-//                routine.setEndTime(TimeToStringD(endTime));
-//                UpdateToDB();
+//                Toast.makeText(this, "아직 동작 X", Toast.LENGTH_SHORT).show();
+                routine.setStartTime(TimeToStringD(startTime));
+                routine.setEndTime(TimeToStringD(endTime));
+                UpdateToDB();
             }
         });
     }
@@ -226,25 +227,31 @@ public class EditRoutineActivity extends AppCompatActivity {
     }
 
     private void setRecyclerView() {
-        adapter = new ExerciseInputAdapter(routine.getExercises(), true);
+        adapter = new ExerciseInputAdapter(routine.getExercises(), deletePk,true);
         binding.recyclerView.setHasFixedSize(true);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerView.setAdapter(adapter);
     }
 
     private void UpdateToDB() {
-        service.updateRoutine(routine).enqueue(new Callback<List<Integer>>() {
+
+        service.updateRoutine(routine).enqueue(new Callback<Integer>() {
             @Override
-            public void onResponse(Call<List<Integer>> call, Response<List<Integer>> response) {
+            public void onResponse(Call<Integer> call, Response<Integer> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(EditRoutineActivity.this, "수정 성공", Toast.LENGTH_SHORT).show();
 
-                    List<Integer> list = response.body();
+                    int id = response.body(), cnt = 0;
 
-                    for (int id : list)
-                        Log.d("반환 pk", id + "");
+                    for (ExerciseData e : routine.getExercises()) {
+                        if (e.getID() == 0) {
+                            Log.d("반환 pk", id + "");
+                            e.setID(id++);
+                            e.setParentID(routine.getID());
+                        }
+                    }
 
-//                    UpdateToDev();
+                    UpdateToDev();
                     Terminate(true, 0); // 루틴 수정을 의미
                 } else {
                     Toast.makeText(EditRoutineActivity.this, "서버 연결에 실패", Toast.LENGTH_SHORT).show();
@@ -254,7 +261,7 @@ public class EditRoutineActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<List<Integer>> call, Throwable t) {
+            public void onFailure(Call<Integer> call, Throwable t) {
                 Toast.makeText(EditRoutineActivity.this, "서버 연결에 실패", Toast.LENGTH_SHORT).show();
                 Log.d("실패", t.getMessage());
                 Terminate(false); // 루틴 수정 액티비티 종료
@@ -268,7 +275,12 @@ public class EditRoutineActivity extends AppCompatActivity {
         sqLiteUtil.setInitView(this, "EX_TB");
 
         for (ExerciseData e: routine.getExercises())
-            sqLiteUtil.Update(e);
+            sqLiteUtil.UpdateOrInsert(e);
+
+        for (int pk: deletePk) {
+            Log.d("삭제할 것들", pk + " 테스트");
+            sqLiteUtil.delete(pk);
+        }
     }
 
     private void Terminate(boolean isSuccess) {

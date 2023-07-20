@@ -7,7 +7,9 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -24,6 +26,7 @@ import android.widget.TextView;
 
 import com.example.healthappttt.Data.Exercise.ExerciseData;
 import com.example.healthappttt.R;
+import com.example.healthappttt.databinding.FragmentErRecordingBinding;
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -35,14 +38,8 @@ import java.util.TimerTask;
  * create an instance of this fragment.
  */
 public class ERRecordingFragment extends Fragment {
-    private LinearLayout StopWatch;           // 스톱워치, 타이머 레이아웃
-    private TextView RunTimeTxt, RunTimeView; // 운동 시간 보여주는 뷰
-    private TextView RestTimeTxt, RestTimeView; // 휴식시간 보여주는 뷰
-    private RecyclerView recyclerView;
+    FragmentErRecordingBinding binding;
     private ExerciseRecordAdapter adapter;
-    private CardView StopBtn;  // 종료 버튼
-    private TextView StopBtnTxt;
-
     private ProgressBar AdapterProgressBar;
     private TextView AdapterTxtView;
 
@@ -50,9 +47,7 @@ public class ERRecordingFragment extends Fragment {
     private TimerTask timerTask;
 
     private Boolean isRunning;
-    private long startTime; // 운동 시작 시간
-    private long clickTime;  // 총 운동 시간과 휴식 시간을
-    private long pauseTime; // 계산하기 위한 시간 -> 스톱워치 눌렀을 때 현재 시간을 저장
+    private long startTime, clickTime, pauseTime; // 운동 시작 시간// 총 운동 시간과 휴식 시간을 // 계산하기 위한 시간 -> 스톱워치 눌렀을 때 현재 시간을 저장
     private int runTime;    // 총 운동 시간
 
     private ArrayList<ExerciseData> exercises;
@@ -124,14 +119,7 @@ public class ERRecordingFragment extends Fragment {
         // Inflate the layout for this fragment
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_er_recording, container, false);
 
-        StopWatch    = view.findViewById(R.id.stopWatch);
-        RunTimeTxt   = view.findViewById(R.id.runTimeTxt);
-        RunTimeView  = view.findViewById(R.id.runTimeView);
-        RestTimeTxt  = view.findViewById(R.id.restTimeTxt);
-        RestTimeView = view.findViewById(R.id.restTimeView);
-        recyclerView = view.findViewById(R.id.recyclerView);
-        StopBtn      = view.findViewById(R.id.stopBtn);  // 종료 버튼
-        StopBtnTxt   = view.findViewById(R.id.stopTxt);
+        binding = FragmentErRecordingBinding.inflate(inflater);
 
         exercises = new ArrayList<>();
         recordExercises = new ArrayList<>();
@@ -150,10 +138,52 @@ public class ERRecordingFragment extends Fragment {
         if (exercises != null)
             setRecyclerView();
 
-        StopWatch.setOnClickListener(v -> StartStopWatch());
-        StopBtn.setOnClickListener(v -> EndRocording());
+        return binding.getRoot();
+    }
 
-        return view;
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                AlertDialog.Builder alert_ex = new AlertDialog.Builder(getContext());
+                alert_ex.setMessage("운동이 기록되지 않습니다");
+                alert_ex.setPositiveButton("예", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        isRunning = false;
+                        pauseTime = 0; // 스톱버튼 누를 시 전부 초기화
+                        if (timerTask != null) {
+                            timerTask.cancel();
+                            TimerCall.purge();
+                        }
+                        requireActivity().finish();
+                    }
+                });
+                alert_ex.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+//                  // 아니오 누를 시 아무것도 안 함
+                    }
+                });
+                alert_ex.setTitle("운동을 끝내시겠습니까?");
+                AlertDialog alert = alert_ex.create();
+                alert.show();
+
+            }
+        });
+
+        binding.stopWatch.setOnClickListener(v -> StartStopWatch());
+        binding.stopBtn.setOnClickListener(v -> EndRocording());
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        binding = null;
     }
 
     private void init() {
@@ -168,9 +198,9 @@ public class ERRecordingFragment extends Fragment {
 
     private void setRecyclerView() {
         adapter = new ExerciseRecordAdapter(exercises);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(adapter);
+        binding.recyclerView.setHasFixedSize(true);
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.recyclerView.setAdapter(adapter);
 
         if (adapter != null) {
             adapter.setOnExerciseClickListener(new ExerciseRecordAdapter.OnExerciseClick() {
@@ -207,13 +237,13 @@ public class ERRecordingFragment extends Fragment {
             startTime = clickTime = System.currentTimeMillis();
             isRunning = true;
 
-            StopBtnTxt.setTextColor(Color.parseColor("#ffffff"));
-            StopBtnTxt.setBackgroundColor(Color.parseColor("#05c78c"));
+            binding.stopTxt.setTextColor(Color.parseColor("#ffffff"));
+            binding.stopTxt.setBackgroundColor(Color.parseColor("#05c78c"));
 
-            RunTimeTxt.setTextColor(Color.parseColor("#1B202D"));
-            RunTimeView.setTextColor(Color.parseColor("#1B202D"));
-            RestTimeTxt.setTextColor(Color.parseColor("#9AA5B8"));
-            RestTimeView.setTextColor(Color.parseColor("#9AA5B8"));
+            binding.runTimeTxt.setTextColor(Color.parseColor("#1B202D"));
+            binding.runTimeView.setTextColor(Color.parseColor("#1B202D"));
+            binding.restTimeTxt.setTextColor(Color.parseColor("#9AA5B8"));
+            binding.restTimeView.setTextColor(Color.parseColor("#9AA5B8"));
 
             TimerCall = new Timer();
             timerTask = new TimerTask() {
@@ -229,16 +259,16 @@ public class ERRecordingFragment extends Fragment {
 
             if (isRunning) {
                 clickTime += (System.currentTimeMillis() - pauseTime);
-                RunTimeTxt.setTextColor(Color.parseColor("#1B202D"));  // 나중에 메서드화
-                RunTimeView.setTextColor(Color.parseColor("#1B202D"));
-                RestTimeTxt.setTextColor(Color.parseColor("#9AA5B8"));
-                RestTimeView.setTextColor(Color.parseColor("#9AA5B8"));
+                binding.runTimeTxt.setTextColor(Color.parseColor("#1B202D"));  // 나중에 메서드화
+                binding.runTimeView.setTextColor(Color.parseColor("#1B202D"));
+                binding.restTimeTxt.setTextColor(Color.parseColor("#9AA5B8"));
+                binding.restTimeView.setTextColor(Color.parseColor("#9AA5B8"));
             } else {
                 pauseTime = System.currentTimeMillis();
-                RunTimeTxt.setTextColor(Color.parseColor("#9AA5B8"));
-                RunTimeView.setTextColor(Color.parseColor("#9AA5B8"));
-                RestTimeTxt.setTextColor(Color.parseColor("#1B202D"));
-                RestTimeView.setTextColor(Color.parseColor("#1B202D"));
+                binding.runTimeTxt.setTextColor(Color.parseColor("#9AA5B8"));
+                binding.runTimeView.setTextColor(Color.parseColor("#9AA5B8"));
+                binding.restTimeTxt.setTextColor(Color.parseColor("#1B202D"));
+                binding.restTimeView.setTextColor(Color.parseColor("#1B202D"));
             }
         }
     }
@@ -253,6 +283,7 @@ public class ERRecordingFragment extends Fragment {
                     isRunning = false;
                     pauseTime = 0; // 스톱버튼 누를 시 전부 초기화
                     timerTask.cancel();
+                    TimerCall.purge();
 
                     mListener.onRecordExercises(startTime, System.currentTimeMillis(), runTime, recordExercises); // 시작시간, 종료시간(현재시간), 운동시간, 운동
                 }
@@ -297,8 +328,8 @@ public class ERRecordingFragment extends Fragment {
             @SuppressLint("DefaultLocale") String result = String.format("%02d:%02d:%02d", hour, min, sec);
             @SuppressLint("DefaultLocale") String result2 = String.format("%02d:%02d:%02d", restHour, restMin, restSec);
 
-            RunTimeView.setText(result);
-            RestTimeView.setText(result2);
+            binding.runTimeView.setText(result);
+            binding.restTimeView.setText(result2);
 
             if (AdapterProgressBar != null) { // 이 부분은 수정 필요
                 int progress = AdapterProgressBar.getProgress();
@@ -325,5 +356,4 @@ public class ERRecordingFragment extends Fragment {
             }
         }
     };
-
 }

@@ -13,73 +13,81 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginHorizontal="16dp"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="86dp"
-            android:text="위트 파트너를 선택해주세요"
-            android:textColor="@color/Standard"
-            android:textSize="18dp"
-            android:textStyle="bold" />
-
-        <androidx.cardview.widget.CardView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="0dp">
+            android:background="@drawable/rounded_bottom"
+            android:orientation="vertical">
 
-            <LinearLayout
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="86dp"
+                android:layout_marginHorizontal="16dp"
+                android:text="위트 파트너를 선택해주세요"
+                android:textColor="@color/Standard"
+                android:textSize="18dp"
+                android:textStyle="bold" />
+
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:background="@color/Background_1">
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp">
 
-                <ImageView
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
-                    android:layout_marginLeft="17dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/baseline_search_24"
-                    app:tint="@color/Background_3" />
-
-                <EditText
-                    android:id="@+id/search"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="44dp"
-                    android:layout_weight="1"
-                    android:layout_marginLeft="16dp"
-                    android:background="@color/transparent"
-                    android:singleLine="true"
-                    android:scrollHorizontally="true"
-                    android:hint="이름(초성) 검색"
-                    android:textColorHint="@color/Background_3"
-                    android:textSize="16sp" />
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:background="@color/Background_1">
 
-                <ImageView
-                    android:id="@+id/removeTxt"
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_gravity="center"
-                    android:visibility="invisible"
-                    android:src="@drawable/baseline_close_24"
-                    app:tint="@color/Background_3" />
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_marginLeft="17dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/baseline_search_24"
+                        app:tint="@color/Background_3" />
 
-            </LinearLayout>
+                    <EditText
+                        android:id="@+id/search"
+                        android:layout_width="match_parent"
+                        android:layout_height="44dp"
+                        android:layout_weight="1"
+                        android:layout_marginLeft="16dp"
+                        android:background="@color/transparent"
+                        android:singleLine="true"
+                        android:scrollHorizontally="true"
+                        android:hint="이름(초성) 검색"
+                        android:textColorHint="@color/Background_3"
+                        android:textSize="16sp" />
 
-        </androidx.cardview.widget.CardView>
+                    <ImageView
+                        android:id="@+id/removeTxt"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_gravity="center"
+                        android:visibility="invisible"
+                        android:src="@drawable/baseline_close_24"
+                        app:tint="@color/Background_3" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:clipToPadding="false"
-            android:paddingBottom="200dp"/>
+            tools:listitem="@layout/adapter_user_gen"/>
 
     </LinearLayout>
 

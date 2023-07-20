@@ -21,12 +21,20 @@
             android:paddingHorizontal="16dp"
             android:background="@drawable/rounded_bottom">
 
+            <Switch
+                android:id="@+id/switch_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:textOn="On"
+                android:textOff="Off" />
+
+
             <LinearLayout
                 android:id="@+id/stopWatch"
                 android:layout_width="match_parent"
                 android:layout_height="156dp"
-                android:orientation="vertical"
-                android:background="@color/Background_1">
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"

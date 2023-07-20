@@ -12,27 +12,23 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:paddingBottom="100dp"
-                android:background="#F2F5F9"
-                >
+                android:orientation="vertical">
 
                 <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                     android:id="@+id/swipe_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="#F2F5F9">
+                    android:layout_height="match_parent">
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recyclerView2"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="#F2F5F9"
-                        tools:listitem="@layout/adapter_user" />
+                        android:paddingBottom="100dp"
+                        android:clipToPadding="false"
+                        tools:listitem="@layout/adapter_user"/>
+
                 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
             </LinearLayout>
-
-
 
 </FrameLayout>

@@ -58,15 +58,12 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
             Log.e(table, " 데이터 베이스를 열 수 없음");
         }
     }
-
-    // 생성자 등 필요한 코드 작성
-
+    
     // 다른 메서드들
 
     /**
      * 이 메소드는 Witt_History_TB 데이터를 삽입하는 메서드입니다. ( 서버 유저테이블+Ex_Record )
      */
-
     public void insertWH(WittListData WittList){
         ContentValues values = new ContentValues();
 
@@ -269,6 +266,7 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
     public void deleteFromBlackListTable(int pk) {
         db.execSQL("DELETE FROM BLACK_LIST_TB WHERE BL_PK =" + pk);
     }
+    
     public void deleteChatRoom(int chatRoomPk) {
         db.execSQL("DELETE FROM CHAT_MSG_TB WHERE CHAT_ROOM_FK =" + chatRoomPk);
     }
@@ -293,6 +291,8 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
     public void Update(int RECORD_PK, int OUser_FK, int Start_Time, String End_Time, String Run_Time, int CAT, int PROMISE_FK, String TS) {
         ContentValues values = new ContentValues();
 
+        // 이 코드는 사용 안 할 수도 있음. 하더라도 수정 필요
+        
         if (table.equals("RECORD_TB")) {
             values.put("PK", RECORD_PK);
             values.put("OUser_FK", OUser_FK);
@@ -310,19 +310,29 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         }
     } // 운동 기록을 수정할 수 있게 할지는 아직 모름
 
-    public void Update(ExerciseData exercise) {
+    public void UpdateOrInsert(ExerciseData exercise) {
         ContentValues values = new ContentValues();
 
-        if (table.equals("EX_TB")) {
-            values.put("Set_Or_Time", exercise.getSetOrTime());
-            values.put("Volume", exercise.getVolume());
-            values.put("Cnt_Or_Dis", exercise.getCntOrDis());
-            values.put("Sort_Index", exercise.getIndex());
+        values.put("PK", exercise.getID());
+        values.put("RT_FK", exercise.getParentID());
+        values.put("Ex_NM", exercise.getExerciseName());
+        values.put("Set_Or_Time", exercise.getSetOrTime());
+        values.put("Volume", exercise.getVolume());
+        values.put("Cnt_Or_Dis", exercise.getCntOrDis());
+        values.put("Sort_Index", exercise.getIndex());
+        values.put("CAT", exercise.getCat());
 
+        Cursor cursor = db.query(table, null,  "PK = ?", new String[]{String.valueOf(exercise.getID())}, null, null, null);
+        if (cursor.moveToFirst()) {
+            // 존재하면 업데이트 수행
             int result = db.update(table, values, "PK = ?", new String[]{String.valueOf(exercise.getID())});
-            Log.d(table, result + "성공");
+            Log.d(table, result + "업데이트 성공");
+            cursor.close();
         } else {
-            Log.d(table, " 메서드 형식 오류");
+            // 존재하지 않으면 삽입 수행
+            long result = db.insert(table, null, values);
+            Log.d(table, result + "삽입 성공");
+            cursor.close();
         }
     }
 
@@ -620,5 +630,4 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
 //
 //        return messages;
 //    }
-
 }

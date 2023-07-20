@@ -32,6 +32,9 @@
         </receiver>
 
         <activity
+            android:name=".Chat.ReviewActivity"
+            android:exported="false" />
+        <activity
             android:name=".Routine.AddExerciseActivity"
             android:exported="false" />
 
@@ -169,6 +172,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
 
         <receiver
             android:name=".interface_.BootReceiver"

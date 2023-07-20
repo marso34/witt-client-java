@@ -5,13 +5,20 @@ import android.os.Bundle;
 
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.healthappttt.Data.Chat.UserChat;
+import com.example.healthappttt.Data.Exercise.RoutineData;
 import com.example.healthappttt.R;
+import com.example.healthappttt.Routine.RoutineAdapter;
+import com.example.healthappttt.User.UserGenAdapter;
+
+import java.util.ArrayList;
 
 import io.reactivex.rxjava3.annotations.NonNull;
 
@@ -24,7 +31,9 @@ public class ERSelectUserFragment extends Fragment {
     private CardView NextBtn;
 
     private RecyclerView recyclerView;
-//    private ?????Adapter adapter;
+    private UserGenAdapter adapter;
+
+    ArrayList<UserChat> test;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -96,6 +105,22 @@ public class ERSelectUserFragment extends Fragment {
 
         NextBtn.setOnClickListener(v -> mListener.onSelectUser());
 
+        setRecyclerView();
+
         return view;
+    }
+
+    private void setRecyclerView() {
+        test = new ArrayList<>();
+        test.add(new UserChat("3ddddddddddddddd", "3", ""));
+        test.add(new UserChat("3ddd", "3", ""));
+        test.add(new UserChat("3ddddddddd", "3", ""));
+        test.add(new UserChat("3ddddddddddddddddddd", "3", ""));
+
+
+        adapter = new UserGenAdapter(getContext(), test, 3);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(adapter);
     }
 }

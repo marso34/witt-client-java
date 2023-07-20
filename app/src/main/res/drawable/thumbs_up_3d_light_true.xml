@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <!-- Drop Shadow Stack -->
+    <item>
+        <shape>
+            <padding
+                android:bottom="1dp"
+                android:left="1dp"
+                android:right="1dp"
+                android:top="1dp" />
+            <corners android:radius="20dp"/>
+            <solid android:color="@color/Signature" />
+        </shape>
+    </item>
+    <item>
+        <shape>
+            <padding
+                android:bottom="19dp"
+                android:left="19dp"
+                android:right="19dp"
+                android:top="19dp" />
+            <corners android:radius="20dp"/>
+            <solid android:color="@color/white" />
+        </shape>
+    </item>
+
+    <!-- Background -->
+    <item
+        android:drawable="@drawable/thumbs_up_3d_light"
+        android:width="100dp"
+        android:height="100dp"/>
+
+</layer-list>

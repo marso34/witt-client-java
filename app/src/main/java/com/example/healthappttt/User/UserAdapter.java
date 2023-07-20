@@ -30,7 +30,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
     private UserInfo userInfo;
     private Context mContext;
     private UserInfo thisUser;
-    private String dayOfWeek;
+    private int dayOfWeek;
     FirebaseFirestore db;
 
     static class MainViewHolder extends RecyclerView.ViewHolder {
@@ -57,9 +57,10 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
            }
     }
 
-    public UserAdapter(Context mContext, ArrayList<UserInfo> myDataset) {
+    public UserAdapter(Context mContext, ArrayList<UserInfo> myDataset, int dayOfWeek) {
         this.mDataset = myDataset;
         this.mContext = mContext;
+        this.dayOfWeek = dayOfWeek; // 프로필 호출할 때 필요한 데이터, 삭제하면 안 됨
     }
 
     @Override
@@ -82,7 +83,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
         UserInfo userInfo = mDataset.get(position);
         Log.d("유저 이름!", userInfo.getName());
         Log.d("유저 PK!", String.valueOf(userInfo.getUserKey()));
-        getCurrentWeek();
+//        getCurrentWeek();
 
       //  Log.d(TAG, "onBindViewHolder: "+ userInfo.getUserName().toString());
         holder.Name.setText(userInfo.getName().toString());
@@ -134,6 +135,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
                 Intent intent = new Intent(mContext, MyProfileActivity.class);
 
                 intent.putExtra("PK",adapterUserKey);
+                intent.putExtra("dayOfWeek", dayOfWeek);
 //                intent.putExtra("post",finalProfilefile);--?
                 mContext.startActivity(intent);
             }
@@ -174,22 +176,22 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(currentDate);
 
-        switch (calendar.get(Calendar.DAY_OF_WEEK) - 1) {
-            case 0:
-                dayOfWeek = "sun"; break; // 일
-            case 1:
-                dayOfWeek = "mon";break; // 월
-            case 2:
-                dayOfWeek = "tue";break; // 화
-            case 3:
-                dayOfWeek = "wed"; break; // 수
-            case 4:
-                dayOfWeek = "thu";break; // 목
-            case 5:
-                dayOfWeek = "fri";break; // 금
-            case 6:
-                dayOfWeek = "sat";break; // 토
-        }
+//        switch (calendar.get(Calendar.DAY_OF_WEEK) - 1) {
+//            case 0:
+//                dayOfWeek = "sun"; break; // 일
+//            case 1:
+//                dayOfWeek = "mon";break; // 월
+//            case 2:
+//                dayOfWeek = "tue";break; // 화
+//            case 3:
+//                dayOfWeek = "wed"; break; // 수
+//            case 4:
+//                dayOfWeek = "thu";break; // 목
+//            case 5:
+//                dayOfWeek = "fri";break; // 금
+//            case 6:
+//                dayOfWeek = "sat";break; // 토
+//        }
     }
     @Override
     public int getItemCount() {

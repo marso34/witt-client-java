@@ -68,6 +68,9 @@ public class MyProfileActivity extends AppCompatActivity {
     Map<String,Object> OuserDefault;
     String myPK,PK;
     String OtherName;
+
+    int dayOfWeek;
+
     String otherUserKey;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +99,12 @@ public class MyProfileActivity extends AppCompatActivity {
 
         Intent intent = getIntent();//넘겨받은 pk를 담은 번들
         PK = intent.getStringExtra("PK");//넘겨 받은 PK
+        dayOfWeek = intent.getIntExtra("dayOfWeek",calendar.get(Calendar.DAY_OF_WEEK) - 1);
+  
+        Date currentDate = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(currentDate);
+        
         myPK = String.valueOf(UserTB.getPK());// 로컬 내 PK
         /** 마이 프로필*/
         if(PK.equals(myPK) ){ // 내 pk이면 마이 프로필
@@ -258,11 +267,7 @@ public class MyProfileActivity extends AppCompatActivity {
     }
 
     private void getOtherRoutine(int userKey) {
-        Date currentDate = new Date();
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(currentDate);
-
-        apiService.selectRoutine(new GetRoutine(userKey, calendar.get(Calendar.DAY_OF_WEEK) - 1)).enqueue(new Callback<List<RoutineData>>() {
+        apiService.selectRoutine(new GetRoutine(userKey, dayOfWeek)).enqueue(new Callback<List<RoutineData>>() {
             @Override
             public void onResponse(Call<List<RoutineData>> call, Response<List<RoutineData>> response) {
                 if (response.isSuccessful()) {
