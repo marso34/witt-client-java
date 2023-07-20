@@ -17,8 +17,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.healthappttt.Data.PreferenceHelper;
+import com.example.healthappttt.Data.RetrofitClient;
 import com.example.healthappttt.Data.SQLiteUtil;
 import com.example.healthappttt.Data.User.BlackListData;
+import com.example.healthappttt.Data.User.ReportHistory;
 import com.example.healthappttt.Data.User.ReviewListData;
 import com.example.healthappttt.Data.User.UserKey;
 import com.example.healthappttt.Data.User.WittListData;
@@ -44,6 +46,7 @@ public class WHChildFragment extends Fragment {
     private ArrayList<WittListData> oneWeekAgoList, oneMonthAgoList, oneYearAgoList;
     ArrayList<BlackListData> BlackList;
     ArrayList<ReviewListData> ReviewList;
+    ArrayList<ReportHistory> ReportList;
     private List<String> dateList;
     WittListData wittListData;
     BlockUserAdapter WittHistoryAdapter;
@@ -101,13 +104,13 @@ public class WHChildFragment extends Fragment {
 
             setView();
         } else { //상대 위트 내역
-//            Log.d("상대 위트내역 상대 pk: ", PK + " - " + myPK);
-//            apiService = RetrofitClient.getClient().create(ServiceApi.class);
-//            WittList = new ArrayList<>();
-//            int PKI = Integer.parseInt(PK);
-//            UserKey userKey = new UserKey(PKI);
-//
-//            getWittHistory(userKey);
+            Log.d("상대 위트내역 상대 pk: ", PK + " - " + myPK);
+            apiService = RetrofitClient.getClient().create(ServiceApi.class);
+            WittList = new ArrayList<>();
+            int PKI = Integer.parseInt(PK);
+            UserKey userKey = new UserKey(PKI);
+
+            getWittHistory(userKey);
         }
 
 
@@ -121,7 +124,7 @@ public class WHChildFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ViewGroup view  = (ViewGroup) inflater.inflate(R.layout.activity_whchild_fragment, container,false);
+        ViewGroup view = (ViewGroup) inflater.inflate(R.layout.activity_whchild_fragment, container, false);
         recyclerView = view.findViewById(R.id.wh_recyclerView);
         searchView = getActivity().findViewById(R.id.black_search);
 
@@ -136,24 +139,23 @@ public class WHChildFragment extends Fragment {
 //        }
 
 
-
-            switch (period) {
-            case 0 :
+        switch (period) {
+            case 0:
                 recyclerView.setAdapter(WittHistoryAdapter);
                 SearchAction(WittList);
                 break;
-            case 1 :
-                WittHistoryAdapter = new BlockUserAdapter(oneWeekAgoList,getActivity(),1);
+            case 1:
+                WittHistoryAdapter = new BlockUserAdapter(oneWeekAgoList, getActivity(), 1);
                 recyclerView.setAdapter(WittHistoryAdapter);
                 SearchAction(oneWeekAgoList);
                 break;
-            case 2 :
-                WittHistoryAdapter = new BlockUserAdapter(oneMonthAgoList,getActivity(),2);
+            case 2:
+                WittHistoryAdapter = new BlockUserAdapter(oneMonthAgoList, getActivity(), 2);
                 recyclerView.setAdapter(WittHistoryAdapter);
                 SearchAction(oneMonthAgoList);
                 break;
-            case 3 :
-                WittHistoryAdapter = new BlockUserAdapter(oneYearAgoList,getActivity(),3);
+            case 3:
+                WittHistoryAdapter = new BlockUserAdapter(oneYearAgoList, getActivity(), 3);
                 recyclerView.setAdapter(WittHistoryAdapter);
                 SearchAction(oneYearAgoList);
                 break;
@@ -161,36 +163,38 @@ public class WHChildFragment extends Fragment {
 
 
         setRecyclerView();
-        SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.wh_swipe_layout);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                final Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
-                        int visibleItemCount = layoutManager.getChildCount();
-                        int totalItemCount = layoutManager.getItemCount();
-                        int firstVisibleItemPosition = ((LinearLayoutManager)layoutManager).findFirstVisibleItemPosition();
-                        int lastVisibleItemPosition = ((LinearLayoutManager)layoutManager).findLastVisibleItemPosition();
+        if (PK.equals(myPK)) {
+            SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.wh_swipe_layout);
+            swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
+                            int visibleItemCount = layoutManager.getChildCount();
+                            int totalItemCount = layoutManager.getItemCount();
+                            int firstVisibleItemPosition = ((LinearLayoutManager) layoutManager).findFirstVisibleItemPosition();
+                            int lastVisibleItemPosition = ((LinearLayoutManager) layoutManager).findLastVisibleItemPosition();
 
-                        if(totalItemCount - 3 <= lastVisibleItemPosition && !updating){
-                            postsUpdate(true);
+                            if (totalItemCount - 3 <= lastVisibleItemPosition && !updating) {
+                                postsUpdate(true);
+                            }
+    //
+                            if (0 < firstVisibleItemPosition) {
+                                topScrolled = false;
+                            }
+                            swipeRefreshLayout.setRefreshing(false);
                         }
-//
-                        if(0 < firstVisibleItemPosition){
-                            topScrolled = false;
-                        }
-                        swipeRefreshLayout.setRefreshing(false);
-                    }
-                }, 500);
+                    }, 500);
+                }
+            });
+            RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
+            int totalItemCount = layoutManager.getItemCount();
+            if (totalItemCount < 1 && !updating) {//총 아이템 수가 1보다 작고 업데이트 안될때 초기 계시물 로드
+                postsUpdate(false);
             }
-        });
-        RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
-        int totalItemCount = layoutManager.getItemCount();
-        if(totalItemCount < 1 && !updating){//총 아이템 수가 1보다 작고 업데이트 안될때 초기 계시물 로드
-            postsUpdate(false);
         }
 
         return view;
@@ -292,40 +296,60 @@ public class WHChildFragment extends Fragment {
     }
 
     private void getWittHistory(UserKey userKey) {
-        Call<List<WittListData>> call = apiService.getWittHistory(userKey);
-        call.enqueue(new Callback<List<WittListData>>() {
-            @Override
-            public void onResponse(Call<List<WittListData>> call, Response<List<WittListData>> response) {
-                if (response.isSuccessful()){
-                    List<WittListData> resWittList = response.body();
-                    if(resWittList != null){
-                        for(WittListData Witt : resWittList){
-                            Log.d("WittList데이터", String.valueOf(Witt.getUSER_FK()));
-                            int RECORD_PK = Witt.getRECORD_PK();
-                            int USER_FK = Witt.getUSER_FK();
-                            int OUser_FK = Witt.getOUser_FK();
-                            String TS = Witt.getTS();
-                            String User_NM = Witt.getUser_NM();
-                            byte[] User_Img = Witt.getUser_Img();
 
-                            wittListData = new WittListData(RECORD_PK,USER_FK,OUser_FK,TS,User_NM,User_Img);
-                            Log.d("WittHistory 프로필에서", String.valueOf(Witt.getUser_NM()));
-                            Log.d("WittHistory 프로필에서", String.valueOf(Witt.getTS()));
-                            //SaveWittList(wittList);//로컬db에 받은 후기 저장 매서드
-                            WittList.add(wittListData);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Call<List<WittListData>> call = apiService.getWittHistory(userKey);
+                    call.enqueue(new Callback<List<WittListData>>() {
+                        @Override
+                        public void onResponse(Call<List<WittListData>> call, Response<List<WittListData>> response) {
+                            if (response.isSuccessful()){
+                                List<WittListData> resWittList = response.body();
+                                if(resWittList != null){
+                                    for(WittListData Witt : resWittList){
+                                        Log.d("WittList데이터", String.valueOf(Witt.getUSER_FK()));
+                                        int RECORD_PK = Witt.getRECORD_PK();
+                                        int USER_FK = Witt.getUSER_FK();
+                                        int OUser_FK = Witt.getOUser_FK();
+                                        String TS = Witt.getTS();
+                                        String User_NM = Witt.getUser_NM();
+                                        byte[] User_Img = Witt.getUser_Img();
+
+                                        wittListData = new WittListData(RECORD_PK,USER_FK,OUser_FK,TS,User_NM,User_Img);
+                                        Log.d("WittHistory 프로필에서", String.valueOf(Witt.getUser_NM()));
+                                        Log.d("WittHistory 프로필에서", String.valueOf(Witt.getTS()));
+                                        //SaveWittList(wittList);//로컬db에 받은 후기 저장 매서드
+                                        WittList.add(wittListData);
+                                        Log.d("WittList 추가: ","완료");
+                                    }
+
+                                } else { Log.d("getWittHistory","리스트가 null");}
+                            }else{
+                                Log.e("getWittHistory", "API 요청 실패. 응답 코드: " + response.code());
+                            }
                         }
-                        setView();
-                    } else { Log.d("getWittHistory","리스트가 null");}
-                }else{
-                    Log.e("getWittHistory", "API 요청 실패. 응답 코드: " + response.code());
+
+                        @Override
+                        public void onFailure(Call<List<WittListData>> call, Throwable t) {
+                            Log.e("getWittHistory", "API 요청실패, 에러메세지: " + t.getMessage());
+                        }
+                    });
+                }catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
+        }).start();
 
-            @Override
-            public void onFailure(Call<List<WittListData>> call, Throwable t) {
-                Log.e("getWittHistory", "API 요청실패, 에러메세지: " + t.getMessage());
-            }
-        });
+        try {
+            Log.d("쓰레드 잠들기:","0.3초");
+            Thread.sleep(300);
+            setView();
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     public void setView() {

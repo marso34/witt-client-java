@@ -2,7 +2,25 @@
     android:layout_width="300dp"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:gravity="center"
+    android:background="@drawable/rectangle">
+
+    <ImageView
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:background="@drawable/ic_baseline_info_24"
+        android:backgroundTint="#F44336"/>
+
+    <TextView
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="탈퇴 시, 계정은 삭제되며 복구되지 않습니다."
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:textAlignment="center"
+        android:textSize="18dp"
+        android:padding="8dp"/>
 
     <TextView
         android:id="@+id/tv_user_info_name"
@@ -10,7 +28,8 @@
         android:layout_height="wrap_content"
         android:text="UserChat Name"
         android:textSize="16sp"
-        android:gravity="center"/>
+        android:gravity="center"
+        android:padding="2dp"/>
 
     <TextView
         android:id="@+id/tv_user_info_email"
@@ -18,15 +37,36 @@
         android:layout_height="wrap_content"
         android:text="user@example.com"
         android:textSize="14sp"
-        android:gravity="center"/>
+        android:gravity="center"
+        android:padding="2dp"/>
 
-    <Button
-        android:id="@+id/btn_user_info_close"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Close"
-        android:padding="12dp"
-        android:layout_marginTop="24dp"
-        android:layout_gravity="center_horizontal"/>
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:layout_gravity="center_horizontal"-->
+<!--        android:padding="12dp"-->
+<!--        android:layout_marginTop="24dp"-->
+<!--        android:weightSum="2">-->
+
+        <Button
+            android:id="@+id/btn_user_info_delete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="확인"
+            android:background="@drawable/rectangle"
+            android:backgroundTint="#F44336"
+            android:layout_marginTop="10dp"/>
+
+        <Button
+            android:id="@+id/btn_user_info_close"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="취소"
+            android:background="@drawable/rectangle"/>
+
+
+<!--    </LinearLayout>-->
+
 
 </LinearLayout>

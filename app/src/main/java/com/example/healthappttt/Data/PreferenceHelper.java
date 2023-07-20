@@ -58,13 +58,7 @@ public class PreferenceHelper
 
         edit.apply();
     }
-//    차단목록 추가 매서드
-//    public void putBlackList( String name) {
-//        SharedPreferences.Editor edit = app_prefs.edit();
-//        edit.putString("BlackUser"+name,name);
-//        Log.d("putblacklist에 저장:",getBlackUser(name));
-//        edit.apply();
-//    }
+
     public void putMembership(UserClass userClass) {
         SharedPreferences.Editor edit = app_prefs.edit();
         UserData userData = userClass.getUserInfo();
@@ -168,6 +162,13 @@ public class PreferenceHelper
         Log.d("putUserDefault","유저 기본 정보 로컬 저장 완료 ");
 
     }
+
+    public void deleteUserTB() {
+        SharedPreferences.Editor editor = app_prefs.edit();
+        editor.clear();
+        editor.apply();
+    }
+
 //    public int getGender() { return app_prefs.getInt("gender",00); }
 //    public int getheight() { return app_prefs.getInt("height",00); }
 //    public int getweight() { return app_prefs.getInt("weight",00); }
@@ -177,37 +178,3 @@ public class PreferenceHelper
 //    public String getimage() { return app_prefs.getString("image","nothing");}
 
 }
-//----------------------------------------------------------------------
-
-
-//    public void putIsLogin(boolean loginOrOut)
-//    {
-//        SharedPreferences.Editor edit = app_prefs.edit();
-//        edit.putBoolean(INTRO, loginOrOut);
-//        edit.apply();
-//    }
-//
-//    public void putName(String loginOrOut)
-//    {
-//        SharedPreferences.Editor edit = app_prefs.edit();
-//        edit.putString(NAME, loginOrOut);
-//        edit.apply();
-//    }
-//
-//    public String getName()
-//    {
-//        return app_prefs.getString(NAME, "");
-//    }
-//
-//    public void putHobby(String loginOrOut)
-//    {
-//        SharedPreferences.Editor edit = app_prefs.edit();
-//        edit.putString(HOBBY, loginOrOut);
-//        edit.apply();
-//    }
-//
-//    public String getHobby()
-//    {
-//        return app_prefs.getString(HOBBY, "");
-//    }
-

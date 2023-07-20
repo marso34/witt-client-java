@@ -2,11 +2,16 @@ package com.example.healthappttt.Chat;
 
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
+import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -43,6 +48,7 @@ public class ChatActivity extends AppCompatActivity{
     private String userKey;
     private EditText messageEditText;
     private ImageButton sendButton;
+    private ImageView menu;
     private SocketSingleton socketSingleton;
     private String otherUserName;
     private String chatRoomId;
@@ -65,12 +71,13 @@ public class ChatActivity extends AppCompatActivity{
             setupSQLiteUtil();
             setupListeners();
             getMessagesFromServer();
-
+            clickmenu();
         }
     private void initViews() {
         messageRecyclerView = findViewById(R.id.chatRecyclerView);
         messageEditText = findViewById(R.id.messageBox);
         sendButton = findViewById(R.id.sendButton);
+        menu = findViewById(R.id.menu);
     }
     @Override
     public void onBackPressed() {
@@ -86,10 +93,10 @@ public class ChatActivity extends AppCompatActivity{
 
     private void retrieveIntentData() {
         preferenceHelper = new PreferenceHelper("UserTB", this);
-        userKey = String.valueOf(preferenceHelper.getPK());
+        userKey = String.valueOf(preferenceHelper.getPK());//TODO 내 키
         otherUserName = getIntent().getStringExtra("otherUserName");
         chatRoomId = getIntent().getStringExtra("ChatRoomId");
-        otherUserKey = getIntent().getStringExtra("otherUserKey");
+        otherUserKey = getIntent().getStringExtra("otherUserKey"); //TODO 상대 키
         Log.d(TAG, "onCreate: otherUserKey " + otherUserKey);
     }
 
@@ -236,6 +243,39 @@ public class ChatActivity extends AppCompatActivity{
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    public void clickmenu() {
+        menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(ChatActivity.this);
+                View dialogView = getLayoutInflater().inflate(R.layout.chat_menu_popup, null);
+
+                if( dialogView == null) {
+                    Log.d("chat", " 다이얼로그 널이야");
+                }
+                builder.setView(dialogView);
+                AlertDialog alertDialog = builder.create();
+                alertDialog.getWindow().setGravity(Gravity.BOTTOM);
+                alertDialog.show();
+
+                Button reportBtn = dialogView.findViewById(R.id.report_btn);
+                reportBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                    Intent intent = new Intent(ChatActivity.this,ReportActivity.class);
+                    intent.putExtra("otherUserName",otherUserName);
+                    intent.putExtra("otherUserKey",otherUserKey);
+                    intent.putExtra("mypk",String.valueOf(userKey) );
+                    startActivity(intent);
+                    alertDialog.cancel();
+                    finish();
+                    }
+                });
+
+            }
+        });
     }
 
 }

@@ -587,6 +587,20 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         return messages;
     }
 
+    public void DropUser(Context context) {
+
+        DBHelper dbHelper = new DBHelper(context, "Witt", null, 1);
+        db = dbHelper.getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT name FROM sqlite_master WHERE type='table'", null);
+        while (cursor.moveToNext()) {
+            String tableName = cursor.getString(0);
+            if (!tableName.equals("sqlite_sequence")) { //시스템 테이블 제외하고 모든 테이블 삭제
+                db.execSQL("DROP TABLE IF EXISTS " + tableName);
+            }
+        }
+        cursor.close();
+
+    }
 
 //    public List<MSG> SelectMSG(String userKey,int myFlag, int chatRoomId) {
 //        List<MSG> messages = new ArrayList<>();

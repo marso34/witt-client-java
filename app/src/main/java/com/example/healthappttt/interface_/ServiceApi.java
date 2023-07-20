@@ -10,6 +10,7 @@ import com.example.healthappttt.Data.Exercise.RoutineData;
 import com.example.healthappttt.Data.User.BlackListData;
 import com.example.healthappttt.Data.User.GetUserInfo;
 import com.example.healthappttt.Data.User.NearUsersData;
+import com.example.healthappttt.Data.User.ReportHistory;
 import com.example.healthappttt.Data.User.ReviewData;
 import com.example.healthappttt.Data.User.ReviewListData;
 import com.example.healthappttt.Data.User.UploadResponse;
@@ -57,6 +58,16 @@ public interface ServiceApi {
 
     @POST("/profile/getOtherProfile")// 상세 프로필 가져오기
     Call<Map<String,Object>> getOtherProfile(@Body UserKey userKey);
+
+    @POST("/profile/getReport")//신고 내역
+    Call<List<ReportHistory>> getReport(@Body UserKey userKey);
+
+    @POST("/profile/deleteUser")//탈퇴 하기
+    Call deleteUser(@Body UserKey userKey);
+
+    @POST("/profile/updateRPT")//신고하기
+    Call<String> updateRPT(@Body Map<String, Object> RPT);
+
 //    ----------------------------------------------------------------------------------------------
     @POST("/routine/CreateRoutine")
     Call<List<Integer>> createRoutine(@Body RoutineData data);
