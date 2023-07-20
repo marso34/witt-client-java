@@ -9,6 +9,7 @@ import com.example.healthappttt.Data.Exercise.RoutineData;
 import com.example.healthappttt.Data.User.BlackListData;
 import com.example.healthappttt.Data.User.GetUserInfo;
 import com.example.healthappttt.Data.User.NearUsersData;
+import com.example.healthappttt.Data.User.ReviewData;
 import com.example.healthappttt.Data.User.ReviewListData;
 import com.example.healthappttt.Data.User.UploadResponse;
 import com.example.healthappttt.Data.User.UserClass;
@@ -41,15 +42,11 @@ public interface ServiceApi {
     @POST("/profile/getBlackList")// 차단목록에서 차단 유저 리스트 가져오는 api
     Call<List<BlackListData>> getBlackList(@Body UserKey userKey);
 
-    @POST("/getMSGFromServer")
-    Call<List<MSG>> getMSGFromServer(@Body pkData pk);
-
     @POST("/profile/getReviewList") //받은 후기에서 후기 리스트 가져오는 api
     Call<List<ReviewListData>> getReviewList(@Body UserKey userKey);
 
     @POST("/profile/deleteFromServer") //차단하기에서 차단 항목 삭제하는 api
     Call<Integer> deleteFromServer(@Body UserKey BL_PK);
-
 
     @POST("/profile/getWittHistory")//위트 내역 리스트 가져오기
     Call<List<WittListData>> getWittHistory(@Body UserKey userKey);
@@ -59,7 +56,7 @@ public interface ServiceApi {
 
     @POST("/profile/getOtherProfile")// 상세 프로필 가져오기
     Call<Map<String,Object>> getOtherProfile(@Body UserKey userKey);
-
+//    ----------------------------------------------------------------------------------------------
     @POST("/routine/CreateRoutine")
     Call<List<Integer>> createRoutine(@Body RoutineData data);
 
@@ -74,6 +71,14 @@ public interface ServiceApi {
 
     @POST("/record/RecordExercise")
     Call<List<Integer>> recordExercise(@Body RecordData data);
+//    ----------------------------------------------------------------------------------------------
+
+    @POST("/review/SendReivew")
+    Call<Integer> sendReivew(@Body ReviewData data);
+
+//    ----------------------------------------------------------------------------------------------
+    @POST("/getMSGFromServer")
+    Call<List<MSG>> getMSGFromServer(@Body pkData pk);
 
     @POST("/GetNearUsers")
     Call<List<UserInfo>> GetNearUsers(@Body NearUsersData data);
