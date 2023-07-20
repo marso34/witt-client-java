@@ -3,6 +3,7 @@ package com.example.healthappttt.interface_;
 import com.example.healthappttt.Data.Chat.MSD;
 import com.example.healthappttt.Data.Chat.MSG;
 import com.example.healthappttt.Data.Chat.UserChat;
+import com.example.healthappttt.Data.Chat.getMSGKey;
 import com.example.healthappttt.Data.Exercise.GetRoutine;
 import com.example.healthappttt.Data.Exercise.RecordData;
 import com.example.healthappttt.Data.Exercise.RoutineData;
@@ -42,7 +43,7 @@ public interface ServiceApi {
     Call<List<BlackListData>> getBlackList(@Body UserKey userKey);
 
     @POST("/getMSGFromServer")
-    Call<List<MSG>> getMSGFromServer(@Body pkData pk);
+    Call<List<MSG>> getMSGFromServer(@Body getMSGKey pk);
 
     @POST("/profile/getReviewList") //받은 후기에서 후기 리스트 가져오는 api
     Call<List<ReviewListData>> getReviewList(@Body UserKey userKey);
@@ -95,7 +96,7 @@ public interface ServiceApi {
     Call<MSG> sendMessage(@Body MSG message);
 
     @POST("/makeChatRoom")
-    Call<ResponseBody> makeChatRoom(@Body WittSendData wittSendData);
+    Call<Integer> makeChatRoom(@Body WittSendData wittSendData);
 
     @FormUrlEncoded
     @POST("upload/image")

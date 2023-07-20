@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F2F5F9"
     tools:context=".Home.HomeChildFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -13,17 +14,21 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:paddingBottom="100dp"
+                android:background="#F2F5F9"
                 >
+
                 <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                     android:id="@+id/swipe_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerView2"
-                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    tools:listitem="@layout/adapter_user"
-                   />
+                    android:background="#F2F5F9">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerView2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#F2F5F9"
+                        tools:listitem="@layout/adapter_user" />
                 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
             </LinearLayout>
