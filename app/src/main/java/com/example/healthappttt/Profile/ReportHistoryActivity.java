@@ -35,7 +35,7 @@ public class ReportHistoryActivity extends AppCompatActivity {
     //BlockUserAdapter ReportAdapter;
 
 
-    TextLineAdpater textLineAdpater;
+
     RecyclerView recyclerView;
     LinearLayoutManager linearLayoutManager;
     int PK;
@@ -90,13 +90,13 @@ public class ReportHistoryActivity extends AppCompatActivity {
 
     }
 
-    public void setView() {
-        textLineAdpater = new TextLineAdpater(ReportList);
-        linearLayoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setAdapter(textLineAdpater);
-        textLineAdpater.notifyDataSetChanged();
-    }
+//    public void setView() {
+//        textLineAdpater = new TextLineAdpater(ReportList);
+//        linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+//        recyclerView.setLayoutManager(linearLayoutManager);
+//        recyclerView.setAdapter(textLineAdpater);
+//        textLineAdpater.notifyDataSetChanged();
+//    }
 
     public void selectCONT(ArrayList<ReportHistory> ReportList ){
         TextView listCnt0 = findViewById(R.id.listCnt0);
