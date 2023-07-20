@@ -62,7 +62,6 @@ public class ChattingFragment extends Fragment {
 
     // 서버에서 유저 목록을 가져오는 메소드입니다.
     private void getUsersFromServer() {
-
         // 서버로부터 유저 목록을 가져와서 List<UserChat>로 반환합니다.
         ServiceApi apiService = RetrofitClient.getClient().create(ServiceApi.class);
         Log.d(TAG, "getUsersFromServer: "+String.valueOf(prefhelper.getPK()));

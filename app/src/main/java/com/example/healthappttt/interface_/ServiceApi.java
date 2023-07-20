@@ -3,6 +3,7 @@ package com.example.healthappttt.interface_;
 import com.example.healthappttt.Data.Chat.MSD;
 import com.example.healthappttt.Data.Chat.MSG;
 import com.example.healthappttt.Data.Chat.UserChat;
+import com.example.healthappttt.Data.Chat.getMSGKey;
 import com.example.healthappttt.Data.Exercise.GetRoutine;
 import com.example.healthappttt.Data.Exercise.RecordData;
 import com.example.healthappttt.Data.Exercise.RoutineData;
@@ -100,7 +101,7 @@ public interface ServiceApi {
     Call<MSG> sendMessage(@Body MSG message);
 
     @POST("/makeChatRoom")
-    Call<ResponseBody> makeChatRoom(@Body WittSendData wittSendData);
+    Call<Integer> makeChatRoom(@Body WittSendData wittSendData);
 
     @FormUrlEncoded
     @POST("upload/image")

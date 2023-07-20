@@ -48,13 +48,12 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
         MainViewHolder(@NonNull View itemView) {
             super(itemView);
             Name =  itemView.findViewById(R.id.UNE);
-             LocaName = itemView.findViewById(R.id.GT);
-           photoImageVIew = itemView.findViewById(R.id.PRI);
+            LocaName = itemView.findViewById(R.id.GT);
+            photoImageVIew = itemView.findViewById(R.id.PRI);
             PreferredTime = itemView.findViewById(R.id.GoodTime);
             recyclerView = itemView.findViewById(R.id.recyclerView);
             ExerciseNames = new ArrayList<>();
             Adapter = new AreaAdapter(mContext,ExerciseNames);
-
            }
     }
 

@@ -37,5 +37,11 @@ public class SubActivity extends AppCompatActivity
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.ContentLayout, fragment).commit();      // Fragment로 사용할 MainActivity내의 layout공간을 선택합니다.
     }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish(); // 액티비티 종료
+    }
+
 }
 

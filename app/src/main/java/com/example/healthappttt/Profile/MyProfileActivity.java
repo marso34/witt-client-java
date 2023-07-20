@@ -1,5 +1,7 @@
 package com.example.healthappttt.Profile;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
@@ -17,10 +19,12 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.example.healthappttt.Data.Chat.SocketSingleton;
 import com.example.healthappttt.Data.Exercise.GetRoutine;
 import com.example.healthappttt.Data.Exercise.RoutineData;
 import com.example.healthappttt.Data.PreferenceHelper;
 import com.example.healthappttt.Data.RetrofitClient;
+import com.example.healthappttt.Data.SQLiteUtil;
 import com.example.healthappttt.Data.User.UserClass;
 import com.example.healthappttt.Data.User.UserKey;
 import com.example.healthappttt.Data.WittSendData;
@@ -30,6 +34,9 @@ import com.example.healthappttt.Routine.RoutineAdapter;
 import com.example.healthappttt.databinding.ActivityMyprofileBinding;
 import com.example.healthappttt.interface_.ServiceApi;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -37,7 +44,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -65,6 +71,7 @@ public class MyProfileActivity extends AppCompatActivity {
 
     int dayOfWeek;
 
+    String otherUserKey;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,11 +99,12 @@ public class MyProfileActivity extends AppCompatActivity {
 
         Intent intent = getIntent();//넘겨받은 pk를 담은 번들
         PK = intent.getStringExtra("PK");//넘겨 받은 PK
-
+        dayOfWeek = intent.getIntExtra("dayOfWeek",calendar.get(Calendar.DAY_OF_WEEK) - 1);
+  
         Date currentDate = new Date();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(currentDate);
-        dayOfWeek = intent.getIntExtra("dayOfWeek",calendar.get(Calendar.DAY_OF_WEEK) - 1);
+        
         myPK = String.valueOf(UserTB.getPK());// 로컬 내 PK
         /** 마이 프로필*/
         if(PK.equals(myPK) ){ // 내 pk이면 마이 프로필
@@ -231,6 +239,7 @@ public class MyProfileActivity extends AppCompatActivity {
                     int squatValue = (int) Double.parseDouble(data.get("Bench").toString());
                     int benchValue = (int) Double.parseDouble(data.get("Squat").toString());
                     int deadValue = (int) Double.parseDouble(data.get("DeadLift").toString());
+                    otherUserKey =  data.get("USER_PK").toString();
                     String GYM_NM = data.get("GYM_NM").toString();
 
                     Log.d("getOtherProfile 이름:", User_NM);
@@ -405,14 +414,21 @@ public class MyProfileActivity extends AppCompatActivity {
         });
 
     }
+
     private void getWittUserData(WittSendData wittSendData) {
-        Call<ResponseBody> call = apiService.makeChatRoom(wittSendData);
-        call.enqueue(new Callback<ResponseBody>() {
+        Call<Integer> call = apiService.makeChatRoom(wittSendData);
+        call.enqueue(new Callback<Integer>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            public void onResponse(Call<Integer> call, Response<Integer> response) {
                 if(response.isSuccessful()){
                     Log.d("onResponse","성공");
                     Toast.makeText(MyProfileActivity.this, "채팅방이 생성되었습니다!", Toast.LENGTH_SHORT).show();
+
+                    SQLiteUtil sqLiteUtil = SQLiteUtil.getInstance();
+                    sqLiteUtil.setInitView(getApplicationContext(), "CHAT_MSG_TB");
+                    int chatPk = sqLiteUtil.insert(UserTB.getPK(), 1, "!%$$#@@$%^!!~"+UserTB.getUser_NM()+"~!!^%$@@#$$%!", response.body(),0);
+                    Log.d(TAG, "chatPk보내기"+otherUserKey);
+                    sendMessageToServer("!%$$#@@$%^!!~"+UserTB.getUser_NM()+"~!!^%$@@#$$%!",response.body());
                     finish();
                 } else {
                      Log.d("onResponse","실패");
@@ -420,10 +436,27 @@ public class MyProfileActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(Call<Integer> call, Throwable t) {
 
             }
         });
+    }
+    private void sendMessageToServer(String messageText, int chatPk) {
+        try {
+            JSONObject data = new JSONObject();
+            data.put("myUserKey", UserTB.getPK());
+            double a= Double.parseDouble(otherUserKey);
+
+            data.put("otherUserKey", (int) a);
+            data.put("chatRoomId", chatPk);
+            data.put("messageText", messageText);
+            data.put("chatPk",1);
+            SocketSingleton socketSingleton = SocketSingleton.getInstance(this);
+
+            socketSingleton.sendMessage(data);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
 

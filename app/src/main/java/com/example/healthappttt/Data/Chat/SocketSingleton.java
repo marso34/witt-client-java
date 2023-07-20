@@ -2,10 +2,13 @@ package com.example.healthappttt.Data.Chat;
 
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
+import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
 import android.widget.RemoteViews;
@@ -17,11 +20,15 @@ import com.example.healthappttt.Chat.ChatActivity;
 import com.example.healthappttt.Data.PreferenceHelper;
 import com.example.healthappttt.Data.SQLiteUtil;
 import com.example.healthappttt.R;
+import com.example.healthappttt.interface_.AlarmRecevier;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.URISyntaxException;
+import java.util.Calendar;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import io.socket.client.IO;
 import io.socket.client.Socket;
@@ -35,10 +42,10 @@ public class SocketSingleton {
     private Context context;
     private SQLiteUtil sqLiteUtil;
     private ChatActivity chatActivity;
-    private int chatSendFlag = -1;
+    private int chatPk = -1;
     private PreferenceHelper preferenceHelper;
     private static int alarmID = 100;
-
+    private static int i;
     private SocketSingleton(Context context) {
         try {
             this.context = context;
@@ -90,6 +97,18 @@ public class SocketSingleton {
         });
     }
 
+    public String extractName(String inputString) {
+        String namePattern = "!!~(.*?)~!!"; // 정규표현식 패턴: !!~(이름)~!!
+        Pattern pattern = Pattern.compile(namePattern);
+        Matcher matcher = pattern.matcher(inputString);
+
+        if (matcher.find()) {
+            return matcher.group(1)+"님이 위트를 보냈습니다."; // 매칭된 그룹(이름) 반환
+        } else {
+            return null; // 이름이 매칭되지 않으면 빈 문자열 반환
+        }
+    }
+
     private void receiveMessage() {
         mSocket.on("receiveMessage", new Emitter.Listener() {
             @Override
@@ -98,30 +117,39 @@ public class SocketSingleton {
                 JSONObject data = (JSONObject) args[0];
                 String message;
                 String chatRoomId;
+                boolean flag = false;
                 try {
                     message = data.getString("message");
                     chatRoomId = data.getString("chatRoomId");
+                    if(extractName(message) != null) {
+                        Intent receiverIntent = new Intent(context, AlarmRecevier.class);
+                        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, i++, receiverIntent, PendingIntent.FLAG_IMMUTABLE);
+                        Calendar calendar = Calendar.getInstance();
+                        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+                        alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
+                        flag = true;
+                    }
                     if (chatRoomId != null) {
                         int CRI = Integer.parseInt(chatRoomId);
                         SqlLiteSaveMessage(preferenceHelper.getPK(), 2, message, CRI);
                         mSocket.emit("completeMessage");
-                        if (chatActivity != null) {
-                            if(chatActivity.getChatRoomId().equals(chatRoomId))
-                             if(!chatActivity.getUpdatingMSG()) {
-                                 chatActivity.setUpdatingMSG(true);
-                                 new Thread(new Runnable() {
-                                     @Override
-                                     public void run() {
-                                         Log.d(TAG, "run: " + chatActivity.getUpdatingMSG());
-                                         chatActivity.getAllMSG();
-
-                                     }
-                                 }).start();
-                             }
-                        }
+                            if(chatActivity != null && chatActivity.getChatRoomId().equals(chatRoomId)) {
+                                if (!chatActivity.getUpdatingMSG()) {
+                                    chatActivity.setUpdatingMSG(true);
+                                    new Thread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Log.d(TAG, "run: " + chatActivity.getUpdatingMSG());
+                                            chatActivity.getAllMSG(1);
+                                        }
+                                    }).start();
+                                }
+                            }
                         else {
-                            createNotificationChannel();
-                            showCustomNotification(chatRoomId,message); // 채팅 메시지 알림 표시
+                            if(flag == false) {
+                                createNotificationChannel();
+                                showCustomNotification(chatRoomId, message); // 채팅 메시지 알림 표시
+                            }
                         }
                     }
                 } catch (JSONException e) {
@@ -132,11 +160,39 @@ public class SocketSingleton {
     }
 
     public void sendMessage(JSONObject message) {
-        chatSendFlag = -1;
         Log.d("SocketSingleton", "sendMessage: Sending message");
         mSocket.emit("sendMessage", message);
     }
 
+    public void returnSignal() {
+        mSocket.on("receiveReturn", new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+                JSONObject data = (JSONObject) args[0];
+                try {
+                    String signal = data.getString("signal");
+                    chatPk = Integer.parseInt(signal);
+                    Log.d(TAG, "chatpk받기"+chatPk);
+                    sqLiteUtil.setInitView(context.getApplicationContext(), "CHAT_MSG_TB");
+                    sqLiteUtil.Update(preferenceHelper.getPK(),chatPk);
+                    if(chatActivity != null) {
+                        if (!chatActivity.getSendUpdatingMSG()) {
+                            chatActivity.setSendUpdatingMSG(true);
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Log.d(TAG, "run: " + chatActivity.getSendUpdatingMSG());
+                                    chatActivity.getAllMSG(2);
+                                }
+                            }).start();
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
     public void SqlLiteSaveMessage(int userKey, int myFlag, String message, int chatRoomId) {
         sqLiteUtil.setInitView(context.getApplicationContext(), "CHAT_MSG_TB");
         sqLiteUtil.insert(userKey, myFlag, message, chatRoomId, 1);
@@ -153,20 +209,7 @@ public class SocketSingleton {
         mSocket.emit("insertSocket", data);
     }
 
-    public void returnSignal() {
-        mSocket.on("receiveReturn", new Emitter.Listener() {
-            @Override
-            public void call(Object... args) {
-                JSONObject data = (JSONObject) args[0];
-                try {
-                    String signal = data.getString("signal");
-                    chatSendFlag = Integer.parseInt(signal);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
+
 
     public Socket getSocket() {
         return mSocket;
