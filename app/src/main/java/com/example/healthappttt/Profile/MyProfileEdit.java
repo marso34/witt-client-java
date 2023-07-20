@@ -149,7 +149,7 @@ public class MyProfileEdit extends AppCompatActivity {
                 UserTB.putUserDefault(UpdateDefault); // 로컬 저장
 
                 UpdateDefault.put("myPK",UserTB.getPK()); // 키는 서버에서 필요해서 따로 추가
-                EditProfile(UpdateDefault); //서버 db 수정 TODO 뭔가 이상함 서버 코드 수정 필요
+                EditProfile(UpdateDefault); //서버 db 수정
 
                 setResult(RESULT_OK, intent);//응답코드 -1
                 finish();//스택에서 제거

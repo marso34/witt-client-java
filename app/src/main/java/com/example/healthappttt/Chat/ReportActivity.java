@@ -1,38 +1,72 @@
 package com.example.healthappttt.Chat;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckedTextView;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.healthappttt.Data.RetrofitClient;
 import com.example.healthappttt.R;
+import com.example.healthappttt.interface_.ServiceApi;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ReportActivity extends AppCompatActivity {
 
-    CheckedTextView[] checkedTextViews; //체크박스들 모음
-    int selection;
-    Button GO_RPT;
-    EditText txt;
+    private ServiceApi apiService;
+    private CheckedTextView[] checkedTextViews; //체크박스들 모음
+    private int selection, mypk,otherUserKey;
+    private Button GO_RPT;
+    private TextView reportname;
+    private EditText txt;
+    private String otherUserName;
+    private Map<String, Object> RPTMap; //서버로 보내는 데이터
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_report);
+
+        apiService = RetrofitClient.getClient().create(ServiceApi.class);
         selection = 0;
 
-        setCheckview();
-        setCheckedTextViewListeners();
-        RPTclick();
+        Intent intent = getIntent();
+        otherUserName = intent.getStringExtra("otherUserName");
+        otherUserKey = Integer.parseInt(intent.getStringExtra("otherUserKey"));
+        mypk = Integer.parseInt(intent.getStringExtra("mypk"));
+
+        Log.d("mypk", String.valueOf(mypk));
+
+        RPTMap = new HashMap<>();
+        RPTMap.put("mypk",mypk);
+        RPTMap.put("otherpk",otherUserKey);
+
+
+        setview();// 체크 뷰 및 다른 뷰 정의
+        setCheckedTextViewListeners(); //체크박스 클릭 이벤트 처리
+        RPTclick(); //신고하기
 
     }
 
-    public void setCheckview() {
+    public void setview() {
         GO_RPT = findViewById(R.id.GO_RPT);
         txt = findViewById(R.id.RPT_txt);
+        reportname = findViewById(R.id.reportname);
+        reportname.setText(otherUserName + "님을");
+
 
         checkedTextViews = new CheckedTextView[] {
                 findViewById(R.id.RPT_ck1),
@@ -69,10 +103,6 @@ public class ReportActivity extends AppCompatActivity {
 
         for (CheckedTextView checkedTextView : checkedTextViews) { //체크리스트 하나하나 onclick리스너 등록
             checkedTextView.setOnClickListener(checkedListener);
-//            if(checkedTextViews[0] == checkedTextView){
-//
-//            }
-
         }
     }
 
@@ -80,43 +110,39 @@ public class ReportActivity extends AppCompatActivity {
         GO_RPT.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                boolean isAnyChecked = false;
 
-                for(CheckedTextView checkedTextView : checkedTextViews){
-                    if(!checkedTextView.isChecked() && txt.getText() == null) { //모두 안적었을때
-                        v.setClickable(false);
-                        Toast.makeText(ReportActivity.this, "신고 내용을 하나 이상 체크해주세요", Toast.LENGTH_SHORT).show(); }
-//                    }else if() {
-//                        //TODO 체크표시를 안하고 텍스트만 적었을때
-//                        Log.d("ReportActivity : ", "체크표시를 안하고 텍스트만 적었을때");
-//                    }else if(){
-//                        //TODO 체크표시만하고 텍스트만 적었을때
-//                        Log.d("ReportActivity : ","체크표시만하고 텍스트만 적었을때" );
-//                    }else() {
-//                        //TODO 둘다 적었을때
-//                        Log.d("ReportActivity : ","둘다 적었을때");
-//                    }
+                for (CheckedTextView checkedTextView : checkedTextViews) {
+                    if (checkedTextView.isChecked()) {
+                        isAnyChecked = true;
+                        break; // 체크된 항목이 하나라도 있으면 반복문 중단
+                    }
                 }
 
-//                setCheckBit(checkedTextViews);
-//                Log.d("ReportActivity 10진수: ", String.valueOf(selection));
-//
-//                if(txt.getText() != null){
-//                    //TODO 서버 db에 체크박스 저장
-//                    Intent email = new Intent(Intent.ACTION_SEND);
-//                    email.setType("plane/text");
-//                    String[] address = {"hwstar1204@gmail.com"};
-//                    email.putExtra(Intent.EXTRA_EMAIL,address);
-//                    email.putExtra(Intent.EXTRA_SUBJECT,"Witt 신고");
-//                    email.putExtra(Intent.EXTRA_TEXT,txt.getText());
-//                    startActivity(email);
-//                    finish();
-//                }else {
-//                    //TODO 서버 db에 체크박스 저장
-//                }
+                if (!isAnyChecked) {//하나도 체크되지 않은 경우
+                    if(txt.getText() == null){//체크도 안하고 텍스트도 안적었을 경우
+                        v.setClickable(false);
+                        Toast.makeText(ReportActivity.this, "신고 내용을 하나 이상 체크해주세요", Toast.LENGTH_SHORT).show();
+                    }else { //체크는 안하고 텍스트만 적은 경우 -> 이메일 전송 후 창 닫기
+                        Log.d("ReportActivity : ", "체크표시를 안하고 텍스트만 적었을때");
+                        sendEmail();
+                    }
+                } else if (txt.getText() != null) {
+                    //TODO 서버db에 저장
+                    setCheckBit(checkedTextViews);
+                    RPT(RPTMap, false);
+                    Log.d("ReportActivity : ","체크표시하고 텍스트 안적었을때" );
+                    finish();
+                }else {
+                    Log.d("ReportActivity : ","둘다 적었을때");
 
+                    //TODO 서버db에 저장
+                    setCheckBit(checkedTextViews);
+                    RPT(RPTMap, true);
 
-
+                }
             }
+
         });
     }
     /** 체크된 박스들 비트연산  */
@@ -132,16 +158,47 @@ public class ReportActivity extends AppCompatActivity {
             }
         }
         selection >>= 1;
+        RPTMap.put("CONT",selection);
     }
-//10진수 풀어서 1001 이면 true false false true 나오도록  -> 신고 내역에서 활용할것
-//                tes(selection);
-    public void tes(int num) {
-        int length = (int) (Math.log(num) / Math.log(2)) + 1;
-        for (int i = length - 1; i >= 0; i--) {
-            int digit = (num >> i) & 1;
-            boolean result = (digit == 1);
-            System.out.println(digit + " -> " + result);
-        }
+
+    public void sendEmail() {
+        Intent email = new Intent(Intent.ACTION_SEND);
+        email.setType("plane/text");
+        String[] address = {"hwstar1204@gmail.com"};
+        email.putExtra(Intent.EXTRA_EMAIL,address);
+        email.putExtra(Intent.EXTRA_SUBJECT,"Witt 신고");
+        email.putExtra(Intent.EXTRA_TEXT,txt.getText());
+        startActivity(email);
+        finish();
+    }
+
+    public void RPT(Map<String, Object> RPTMap, boolean i) {
+
+
+
+        Call<String> call = apiService.updateRPT(RPTMap);
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if (response.isSuccessful()) {
+                    String d= response.body();
+                    Log.d("서버에서 보내온 텍스트: ", d);
+                    Log.d("ReportActivity ","신고성공");
+                    //email 전송
+                    if(i){sendEmail();}
+
+                } else {
+                    // 요청이 실패했을 때의 처리 로직
+                    Log.d("ReportActivity ","신고실패");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Log.d("ReportActivity ", "서버 응답 실패. 상태코드:?");
+            }
+        });
+
     }
 
 

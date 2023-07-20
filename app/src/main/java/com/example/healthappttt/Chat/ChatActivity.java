@@ -3,6 +3,7 @@ package com.example.healthappttt.Chat;
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -210,24 +211,27 @@ public class ChatActivity extends AppCompatActivity{
                 AlertDialog.Builder builder = new AlertDialog.Builder(ChatActivity.this);
                 View dialogView = getLayoutInflater().inflate(R.layout.chat_menu_popup, null);
 
-                Button reportBtn = findViewById(R.id.report_btn);
-
+                if( dialogView == null) {
+                    Log.d("chat", " 다이얼로그 널이야");
+                }
                 builder.setView(dialogView);
                 AlertDialog alertDialog = builder.create();
                 alertDialog.getWindow().setGravity(Gravity.BOTTOM);
                 alertDialog.show();
 
-//                reportBtn.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        //Intent intent = new Intent(ChatActivity.this,ReportActivity.class)
-//                     intent.putExtra("otherUserName",user.getUserNM());
-//                    intent.putExtra("otherUserKey",user.getOtherUserKey());
-//                      intent.putExtra("mypk",String.valueOf(preferenceHelper.getPK()) );
-//                    //TODO 사용자 신고 엑티비티로 내pk와 상대 pk 넘겨주고
-//                    //TODO 체크박스 누르고 글쓰고 신고하기 하면 서버db에 저장
-//                    }
-//                });
+                Button reportBtn = dialogView.findViewById(R.id.report_btn);
+                reportBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                    Intent intent = new Intent(ChatActivity.this,ReportActivity.class);
+                    intent.putExtra("otherUserName",otherUserName);
+                    intent.putExtra("otherUserKey",otherUserKey);
+                    intent.putExtra("mypk",String.valueOf(userKey) );
+                    startActivity(intent);
+                    alertDialog.cancel();
+                    finish();
+                    }
+                });
 
             }
         });

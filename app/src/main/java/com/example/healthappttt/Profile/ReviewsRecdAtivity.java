@@ -110,7 +110,7 @@ public class ReviewsRecdAtivity extends AppCompatActivity {
 
 
     public void setView() {
-        ReviewAdapter = new BlockUserAdapter(BlackList,ReviewList,WittList,ReportList ,this);//어뎁터에 차단 목록 생성
+        ReviewAdapter = new BlockUserAdapter(BlackList,ReviewList,WittList ,this);//어뎁터에 차단 목록 생성
 
         ReviewCnt = String.valueOf(ReviewList.size());//리뷰 리스트 개수 표시
         Log.d("리뷰리스트 개수: ", ReviewCnt);

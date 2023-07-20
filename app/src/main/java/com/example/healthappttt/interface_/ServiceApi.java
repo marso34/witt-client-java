@@ -66,6 +66,9 @@ public interface ServiceApi {
     @POST("/profile/deleteUser")//탈퇴 하기
     Call deleteUser(@Body UserKey userKey);
 
+    @POST("/profile/updateRPT")//신고하기
+    Call<String> updateRPT(@Body Map<String, Object> RPT);
+
     @POST("/routine/CreateRoutine")
     Call<List<Integer>> createRoutine(@Body RoutineData data);
 

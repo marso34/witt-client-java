@@ -43,7 +43,7 @@ public class BlackActivity extends AppCompatActivity {
         sqLiteUtil.setInitView(this,"BLACK_LIST_TB");//차단 목록 로컬 db
         BlackList = sqLiteUtil.SelectBlackUser();//SELECT * FROM BLACK_LIST_TB
 
-        BlackAdapter = new BlockUserAdapter(BlackList,ReviewList, WittList, ReportList,this);//어뎁터에 차단 목록 생성
+        BlackAdapter = new BlockUserAdapter(BlackList,ReviewList, WittList,this);//어뎁터에 차단 목록 생성
         linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(BlackAdapter);

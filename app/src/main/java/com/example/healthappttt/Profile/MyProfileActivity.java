@@ -62,7 +62,7 @@ public class MyProfileActivity extends AppCompatActivity {
     ImageView ProfileImg;
     TextView Pname,Pgender,Pheight,Pweight,Plocatoin;
     TextView Psqaut,Pbench,Pdeadlift;
-    Map<String, Object> userDefault;
+    Map<String,Object> userDefault;
     Map<String,Object> OuserDefault;
     String myPK,PK;
     String OtherName;
@@ -119,10 +119,10 @@ public class MyProfileActivity extends AppCompatActivity {
 
             // MyprofileEdit에서 넘어온 데이터 처리
             editProfileLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
-                    result -> {
-                        // result 에는 resultCode 가 있다.
-                        // resultCode 의 값으로, 여러가지 구분해서 사용이 가능.
-                        if (result.getResultCode() == RESULT_OK){
+                result -> {
+                    // result 에는 resultCode 가 있다.
+                    // resultCode 의 값으로, 여러가지 구분해서 사용이 가능.
+                    if (result.getResultCode() == RESULT_OK){
 //                        String Ename = result.getData().getStringExtra("name");
 //                        int Eheight = result.getData().getIntExtra("height",0);
 //                        int Eweight = result.getData().getIntExtra("weight",0);
@@ -130,30 +130,30 @@ public class MyProfileActivity extends AppCompatActivity {
 //                        int EbenchValue = result.getData().getIntExtra("benchValue",0);
 //                        int EdeadValue = result.getData().getIntExtra("deadValue",0);
 //                        int Egender = result.getData().getIntExtra("gender",0);
-                            userDefault = UserTB.getUserData();// edit에서 저장되고 돌아온 후 로컬에서 다시 데이터 불러옴
+                        userDefault = UserTB.getUserData();// edit에서 저장되고 돌아온 후 로컬에서 다시 데이터 불러옴
 
-                            //화면에 연결
-                            binding.name.setText(userDefault.get("User_NM").toString());
-                            binding.Pheight.setText(userDefault.get("height").toString() + "cm");
-                            binding.Pweight.setText(userDefault.get("weight").toString() + "kg");
-                            binding.Psqaut.setText(userDefault.get("squatValue").toString());
-                            binding.Pbench.setText(userDefault.get("benchValue").toString());
-                            binding.Pdeadlift.setText(userDefault.get("deadValue").toString());
-                            if(userDefault.get("gender").equals(0)) {
-                                binding.gender.setText("남자");
-                                binding.gender.setTextColor(Color.parseColor("#0000FF")); // 파란색
-                            }else {
-                                binding.gender.setText("여자");
-                                binding.gender.setTextColor(Color.parseColor("#FFC0CB")); // 핑크색
-                            }
-
-
-                        }else if(result.getResultCode() == Activity.RESULT_CANCELED){
-                            userDefault = UserTB.getUserData();
-                            setDefault(userDefault);
-                            Log.d("Profile","그냥 뒤로가처리 후 기본값 설정됨");
+                        //화면에 연결
+                        binding.name.setText(userDefault.get("User_NM").toString());
+                        binding.Pheight.setText(userDefault.get("height").toString() + "cm");
+                        binding.Pweight.setText(userDefault.get("weight").toString() + "kg");
+                        binding.Psqaut.setText(userDefault.get("squatValue").toString());
+                        binding.Pbench.setText(userDefault.get("benchValue").toString());
+                        binding.Pdeadlift.setText(userDefault.get("deadValue").toString());
+                        if(userDefault.get("gender").equals(0)) {
+                            binding.gender.setText("남자");
+                            binding.gender.setTextColor(Color.parseColor("#0000FF")); // 파란색
+                        }else {
+                            binding.gender.setText("여자");
+                            binding.gender.setTextColor(Color.parseColor("#FFC0CB")); // 핑크색
                         }
-                    });
+
+
+                    }else if(result.getResultCode() == Activity.RESULT_CANCELED){
+                        userDefault = UserTB.getUserData();
+                        setDefault(userDefault);
+                        Log.d("Profile","그냥 뒤로가처리 후 기본값 설정됨");
+                    }
+                });
         /** 상세 프로필*/
         }else { // 내 pk가 아니면 상대 프로필
             Log.d("메인에서 넘겨받은 상대 pk: ",PK);

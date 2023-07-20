@@ -3,20 +3,18 @@ package com.example.healthappttt.Profile;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.healthappttt.Data.RetrofitClient;
-import com.example.healthappttt.Data.User.BlackListData;
 import com.example.healthappttt.Data.User.ReportHistory;
-import com.example.healthappttt.Data.User.ReviewListData;
 import com.example.healthappttt.Data.User.UserKey;
-import com.example.healthappttt.Data.User.WittListData;
 import com.example.healthappttt.R;
-import com.example.healthappttt.User.BlockUserAdapter;
+import com.example.healthappttt.databinding.ActivityReportHistoryBinding;
 import com.example.healthappttt.interface_.ServiceApi;
 
 import java.util.ArrayList;
@@ -28,54 +26,37 @@ import retrofit2.Response;
 
 public class ReportHistoryActivity extends AppCompatActivity {
 
+    private ActivityReportHistoryBinding binding;
     private ServiceApi apiService;
 
-    androidx.appcompat.widget.SearchView searchView;
-    ArrayList<ReportHistory> ReportList,filteredList;
-    ReportHistory reportListdata;
 
-    ArrayList<BlackListData> BlackList;
-    ArrayList<WittListData> WittList;
-    ArrayList<ReviewListData> ReviewList;
+    ReportHistory reportHistory;
+    ArrayList<ReportHistory> ReportList;
+    //BlockUserAdapter ReportAdapter;
 
-    BlockUserAdapter ReportAdapter;
+
+    TextLineAdpater textLineAdpater;
     RecyclerView recyclerView;
     LinearLayoutManager linearLayoutManager;
-    String PK;
+    int PK;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_report_history);
-
+        binding = ActivityReportHistoryBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
         apiService = RetrofitClient.getClient().create(ServiceApi.class);
+        //recyclerView = findViewById(R.id.report_recycle);
 
-        searchView = findViewById(R.id.report_search);
-        recyclerView = findViewById(R.id.report_recycle);
-
-        filteredList = new ArrayList<>();
+        ReportList = new ArrayList<>();
 
         Intent intent = getIntent();
-        PK = intent.getStringExtra("PK");//넘겨 받은 PK
-        ReportList = new ArrayList<>();
-        int PKI = Integer.parseInt(PK);
-        UserKey userKey = new UserKey(PKI);
+        PK = Integer.parseInt(intent.getStringExtra("PK"));//넘겨 받은 PK
+        UserKey userKey = new UserKey(PK);
 
         getReportList(userKey);
 
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                searchFilter(newText);
-                return false;
-            }
-        });
     }
 
     private void getReportList(UserKey userKey) {
@@ -86,19 +67,16 @@ public class ReportHistoryActivity extends AppCompatActivity {
                 if(response.isSuccessful()) {
                     List<ReportHistory> list = response.body();
                     if(list != null) {
-                        for(ReportHistory report : list) {
-                            Log.d("reportlist 데이터: " , report.getUser_NM());
-                            int RPT_CAT_FK = report.getRPT_CAT_FK();
-                            String User_NM = report.getUser_NM();
-                            String CONT = report.getCONT();
-                            String TS = report.getTS();
-                            String GYM_NM = report.getGYM_NM();
-                            reportListdata = new ReportHistory(RPT_CAT_FK,User_NM,CONT,TS,GYM_NM);
+                        for (ReportHistory rpt : list) {
+                            // 처리 로직
+                            Log.d("ReportHistory데이터 ", String.valueOf(rpt.getCONT()));
+                            int CONT = rpt.getCONT();
+                            reportHistory = new ReportHistory(CONT);
 
-                            ReportList.add(reportListdata);
+                            ReportList.add(reportHistory);
                         }
-
-                        setView();
+                        selectCONT(ReportList);
+                        //setView();
 
                     } else { Log.d("getReportList","리스트가 null"); }
                 } else { Log.e("getReportList", "응답 오류 응답 코드: " + response.code()); }
@@ -113,22 +91,81 @@ public class ReportHistoryActivity extends AppCompatActivity {
     }
 
     public void setView() {
-        ReportAdapter = new BlockUserAdapter(BlackList, ReviewList, WittList, ReportList, this);
-
+        textLineAdpater = new TextLineAdpater(ReportList);
         linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setAdapter(ReportAdapter);
-        ReportAdapter.notifyDataSetChanged();
+        recyclerView.setAdapter(textLineAdpater);
+        textLineAdpater.notifyDataSetChanged();
     }
-    public void searchFilter(String searchText) {
-        filteredList.clear();
 
-        for(int i = 0; i < ReportList.size(); i++){
-            if(ReportList.get(i).getUser_NM().toLowerCase().contains(searchText.toLowerCase())) {
-                filteredList.add(ReportList.get(i));
+    public void selectCONT(ArrayList<ReportHistory> ReportList ){
+        TextView listCnt0 = findViewById(R.id.listCnt0);
+        TextView listCnt1 = findViewById(R.id.listCnt1);
+        TextView listCnt2 = findViewById(R.id.listCnt2);
+        TextView listCnt3 = findViewById(R.id.listCnt3);
+        TextView listCnt4 = findViewById(R.id.listCnt4);
+        TextView listCnt5 = findViewById(R.id.listCnt5);
+
+
+        int[] ReportCNT = {0,0,0,0,0,0};
+        for(ReportHistory cont : ReportList ) {
+            bitcl(cont.getCONT(),ReportCNT);
+        }
+
+        // 텍스트뷰들을 배열에 저장
+        TextView[] textViews = {listCnt0, listCnt1, listCnt2, listCnt3, listCnt4, listCnt5};
+
+        for (int i = 5; i >= 0; i--) {
+            String value = String.valueOf(ReportCNT[i]);
+            Log.d("value ",value); //TODO 값이상해 수정 하면될듯
+            TextView textView = textViews[i];
+            View view = binding.getRoot().findViewById(
+                i == 5 ? R.id.r0 :
+                i == 4 ? R.id.r1 :
+                i == 3 ? R.id.r2 :
+                i == 2 ? R.id.r3 :
+                i == 1 ? R.id.r4 :
+                R.id.r5
+            );
+
+            if (value.equals("0")) {
+                view.setVisibility(View.GONE);
+            } else {
+                textView.setText(value);
             }
         }
-        ReportAdapter.filterReportList(filteredList);
+
+//        listCnt0.setText(String.valueOf(ReportCNT[5]));
+//        listCnt1.setText(String.valueOf(ReportCNT[4]));
+//        listCnt2.setText(String.valueOf(ReportCNT[3]));
+//        listCnt3.setText(String.valueOf(ReportCNT[2]));
+//        listCnt4.setText(String.valueOf(ReportCNT[1]));
+//        listCnt5.setText(String.valueOf(ReportCNT[0]));
+
+        Log.d("비트연산 최종: ", String.valueOf(ReportCNT[0]) + String.valueOf(ReportCNT[1])+ String.valueOf(ReportCNT[2]) +
+                String.valueOf(ReportCNT[3]) + String.valueOf(ReportCNT[4]) + String.valueOf(ReportCNT[5])
+        );
+
+    }
+
+    //TODO 비트연산 << 해야할수도
+    public void bitcl(int num, int[] array) {
+        int length = (int) (Math.log(num) / Math.log(2)) + 1;
+        String binary = Integer.toBinaryString(num);
+        int n = 6;
+
+        String formatnum = String.format("%0"+ n+"d", Integer.parseInt(binary));
+        //비트연산
+        for (int i = 0; i < n; i++) {
+            char bit = formatnum.charAt(i);
+            if (bit == '1') {
+                array[i]++;
+            }
+        }
+        // 결과 출력
+        Log.d("비트연산 : ", String.valueOf(array[0]) + String.valueOf(array[1])+ String.valueOf(array[2]) +
+                String.valueOf(array[3]) + String.valueOf(array[4]) + String.valueOf(array[5])
+        );
     }
 
 

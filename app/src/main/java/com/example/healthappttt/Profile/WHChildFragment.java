@@ -353,7 +353,7 @@ public class WHChildFragment extends Fragment {
     }
 
     public void setView() {
-        WittHistoryAdapter = new BlockUserAdapter(BlackList,ReviewList, WittList,ReportList ,getActivity());
+        WittHistoryAdapter = new BlockUserAdapter(BlackList,ReviewList, WittList ,getActivity());
         Log.d("널인지 확인: ", String.valueOf(WittHistoryAdapter.getItemCount()));
         datePicker(WittList);// 데이터 날짜별로 1주,1달,1년으로 구분 작업
 

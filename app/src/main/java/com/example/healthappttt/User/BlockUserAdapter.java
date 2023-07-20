@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.healthappttt.Data.RetrofitClient;
@@ -22,7 +21,6 @@ import com.example.healthappttt.Data.User.ReviewListData;
 import com.example.healthappttt.Data.User.UserKey;
 import com.example.healthappttt.Data.User.WittListData;
 import com.example.healthappttt.Profile.BlackActivity;
-import com.example.healthappttt.Profile.ReportHistoryActivity;
 import com.example.healthappttt.Profile.ReviewsRecdAtivity;
 import com.example.healthappttt.Profile.WittHistoryActivity;
 import com.example.healthappttt.R;
@@ -49,14 +47,13 @@ public class BlockUserAdapter extends RecyclerView.Adapter<BlockUserAdapter.View
     ArrayList<ReviewListData> ReviewList;
     ArrayList<WittListData> WittList;
     ArrayList<ReportHistory> ReportList;
-    Activity activity, activity2;
-    Fragment fragment;
+    Activity activity;
     SQLiteUtil database;
     String Date_format;
     int c; //filterWittList1,2,3구분용
 
 //생성자 둘이 구분을 못해서 합치고 어떤 datalist가 null인지에 따라 객체화가 달라진다.
-    public BlockUserAdapter(ArrayList<BlackListData> blackList, ArrayList<ReviewListData> reviewList, ArrayList<WittListData> wittList, ArrayList<ReportHistory> reportList , Activity activity) {
+    public BlockUserAdapter(ArrayList<BlackListData> blackList, ArrayList<ReviewListData> reviewList, ArrayList<WittListData> wittList, Activity activity) {
         this.activity = activity;
         this.database = SQLiteUtil.getInstance();
 
@@ -68,36 +65,12 @@ public class BlockUserAdapter extends RecyclerView.Adapter<BlockUserAdapter.View
             this.ReviewList = reviewList;
         }else if(wittList != null) {
             this.WittList = wittList;
-        }else if(reportList != null) {
-            this.ReportList = reportList;
         }
         else {
             // 어떤 리스트도 주어지지 않은 경우 예외 처리 등을 수행\
             Log.d("Adapter","DataList가 모두 null이다. ");
         }
     }
-
-//    public BlockUserAdapter (MYLists<B> datalists, Activity activity){
-//        this.activity = activity;
-//        this.database = SQLiteUtil.getInstance();
-//
-//        this.BlockList = datalists;
-//
-//    }
-
-    public class MYLists<B> {
-        private B BlackListData;	// 제네릭 타입 변수
-
-        void setBL(B element) {	// 제네릭 파라미터 메소드
-            this.BlackListData = element;
-        }
-
-        B getBL() {	// 제네릭 타입 반환 메소드
-            return BlackListData;
-        }
-    }
-
-
 
     public BlockUserAdapter( ArrayList<WittListData> wittList, Activity activity, int c) {
         this.WittList = wittList;
@@ -210,25 +183,25 @@ public class BlockUserAdapter extends RecyclerView.Adapter<BlockUserAdapter.View
 //            }
 //
 //        }
-        /** 신고 내역 엑티비티일때 **/
-        else if(activity instanceof ReportHistoryActivity) {
-
-            TextView reportText = holder.itemView.findViewById(R.id.Review_text);
-            reportText.setVisibility(View.VISIBLE);//리뷰텍스트 보이게
-            ImageButton cancle = holder.itemView.findViewById(R.id.Block_cancel);
-            cancle.setEnabled(false); //삭제 버튼 작동 X
-
-
-
-            //텍스트 연결
-            if(ReportList.size() > 0) {
-                ReportHistory data = ReportList.get(position);
-                holder.Block_NM.setText(data.getUser_NM());
-                holder.Review_text.setText(data.getCONT());
-                holder.GYM.setText(data.getGYM_NM()); //헬스장 정보
-            }
-
-        }
+//        /** 신고 내역 엑티비티일때 **/
+//        else if(activity instanceof ReportHistoryActivity) {
+//
+//            TextView reportText = holder.itemView.findViewById(R.id.Review_text);
+//            reportText.setVisibility(View.VISIBLE);//리뷰텍스트 보이게
+//            ImageButton cancle = holder.itemView.findViewById(R.id.Block_cancel);
+//            cancle.setEnabled(false); //삭제 버튼 작동 X
+//
+//
+//
+//            //텍스트 연결
+//            if(ReportList.size() > 0) {
+//                ReportHistory data = ReportList.get(position);
+//                holder.Block_NM.setText(data.getUser_NM());
+//                holder.Review_text.setText(data.getCONT());
+//                holder.GYM.setText(data.getGYM_NM()); //헬스장 정보
+//            }
+//
+//        }
     }
 
     @Override
@@ -252,10 +225,7 @@ public class BlockUserAdapter extends RecyclerView.Adapter<BlockUserAdapter.View
 //         else if (fragment instanceof WHChildFragment) {
 //            Log.d("getItemCount", "WHChildFragment 아이템 개수: " + WittList.size());
 //            return WittList.size();}
-         else if (activity instanceof ReportHistoryActivity) {
-            Log.d("getItemCount","ReportHistoryActivity 아이템 개수: "+ReportList.size());
-            return ReportList.size();
-        }else {
+         else {
             Log.d("getItemCount", "어뎁터 아이템 개수 0");
             return 0;
         }
@@ -300,10 +270,10 @@ public class BlockUserAdapter extends RecyclerView.Adapter<BlockUserAdapter.View
         WittList = filteredList;
         notifyDataSetChanged();
     }
-    public void filterReportList(ArrayList<ReportHistory> filteredList){
-        ReportList = filteredList;
-        notifyDataSetChanged();
-    }
+//    public void filterReportList(ArrayList<ReportHistory> filteredList){
+//        ReportList = filteredList;
+//        notifyDataSetChanged();
+//    }
 
 //  adapter_blockuser 구성 요소들을 가리키는 뷰홀더
     public class ViewHolder extends RecyclerView.ViewHolder {

@@ -6,38 +6,249 @@
     android:layout_height="match_parent"
     tools:context=".Profile.ReviewsRecdAtivity"
     android:orientation="vertical"
-    android:padding="20dp">
+    android:backgroundTint="@color/back"
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_margin="25dp"
-        android:gravity="center">
+        android:background="@drawable/rounded_bottom"
+        android:gravity="left"
+        android:paddingTop="60dp"
+        android:paddingBottom="21dp"
+        android:paddingHorizontal="16dp"
+        android:layout_marginBottom="12dp">
         <TextView
             style="@style/profile_style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="신고 내역"
-            android:textSize="27dp"/>
+            android:textSize="20dp"/>
 
     </LinearLayout>
 
-    <androidx.appcompat.widget.SearchView
-        android:id="@+id/report_search"
+    <LinearLayout
+        android:id="@+id/r0"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/mainbackground"
-        android:backgroundTint="@color/lightgray"
-        app:iconifiedByDefault="false"
-        app:queryBackground="@null"
-        app:queryHint="이름(초성) 검색"
-        />
+        android:orientation="horizontal"
+        android:paddingTop="9dp"
+        android:paddingLeft="16dp"
+        android:paddingBottom="11dp"
+        android:paddingHorizontal="16dp"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/rectangle">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/report_recycle"
+        <TextView
+            android:id="@+id/ReportText0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="전문 휘트니스 PT업자 같아요"
+            style="@style/report"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/listCnt0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="3"
+            android:textColor="@color/Signature"
+            style="@style/report"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/r1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:listitem="@layout/adapter_blockuser" />
+        android:orientation="horizontal"
+        android:paddingTop="9dp"
+        android:paddingLeft="16dp"
+        android:paddingBottom="11dp"
+        android:paddingHorizontal="16dp"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/rectangle">
+
+        <TextView
+            android:id="@+id/ReportText1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="비매너 사용자예요"
+            style="@style/report"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/listCnt1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="3"
+            android:textColor="@color/Signature"
+            style="@style/report"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/r2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="9dp"
+        android:paddingLeft="16dp"
+        android:paddingBottom="11dp"
+        android:paddingHorizontal="16dp"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/rectangle">
+
+        <TextView
+            android:id="@+id/ReportText2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="욕설을 해요"
+            style="@style/report"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/listCnt2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="3"
+            android:textColor="@color/Signature"
+            style="@style/report"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/r3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="9dp"
+        android:paddingLeft="16dp"
+        android:paddingBottom="11dp"
+        android:paddingHorizontal="16dp"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/rectangle">
+
+        <TextView
+            android:id="@+id/ReportText3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="성희롱을 해요"
+            style="@style/report"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/listCnt3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="3"
+            android:textColor="@color/Signature"
+            style="@style/report"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/r4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="9dp"
+        android:paddingLeft="16dp"
+        android:paddingBottom="11dp"
+        android:paddingHorizontal="16dp"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/rectangle">
+
+        <TextView
+            android:id="@+id/ReportText4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="종교활동을 강요해요"
+            style="@style/report"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/listCnt4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="3"
+            android:textColor="@color/Signature"
+            style="@style/report"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/r5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="9dp"
+        android:paddingLeft="16dp"
+        android:paddingBottom="11dp"
+        android:paddingHorizontal="16dp"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/rectangle">
+
+        <TextView
+            android:id="@+id/ReportText5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="폭력을 사용해요"
+            style="@style/report"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/listCnt5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="3"
+            android:textColor="@color/Signature"
+            style="@style/report"/>
+
+    </LinearLayout>
+
+
+<!--    <androidx.recyclerview.widget.RecyclerView-->
+<!--        android:id="@+id/report_recycle"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:padding="16dp"-->
+<!--        tools:listitem="@layout/activity_text_line_adpater" />-->
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="더 이상 표시할 내역이 없어요."
+        android:textColor="#677489"
+        android:textSize="12dp"
+        android:layout_marginTop="24dp"
+        android:gravity="center"/>
+
+
 
 </LinearLayout>
