@@ -44,7 +44,7 @@
             android:id="@+id/RPT_ck1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="전문 휘트니스 PT업자 같아요."
+            android:text="전문 피트니스 PT업자 같아요."
             android:layout_marginBottom="12dp"
             android:background="@drawable/rectangle"
             android:elevation="3dp"
