@@ -45,24 +45,24 @@
 
                     <TextView
                         android:id="@+id/userName"
+                        style="@style/Title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="ㅇㅇㅇ"
-                        style="@style/Title"/>
+                        android:text="ㅇㅇㅇ" />
 
                     <TextView
+                        style="@style/Title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="님과"
-                        style="@style/Title"/>
+                        android:text="님과" />
 
                 </LinearLayout>
 
                 <TextView
+                    style="@style/Title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="위트가 어떠셨나요?"
-                    style="@style/Title" />
+                    android:text="위트가 어떠셨나요?" />
 
             </LinearLayout>
 
@@ -84,15 +84,15 @@
                         android:id="@+id/goodCard"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
                         android:layout_marginHorizontal="16dp"
+                        android:layout_marginTop="16dp"
                         android:layout_marginBottom="12dp"
                         android:outlineSpotShadowColor="@color/Background_1"
+                        app:cardCornerRadius="20dp"
+                        app:cardElevation="10dp"
                         app:rippleColor="@color/Signature_Toggle"
                         app:strokeColor="@color/Signature"
-                        app:strokeWidth="0dp"
-                        app:cardElevation="10dp"
-                        app:cardCornerRadius="20dp">
+                        app:strokeWidth="0dp">
 
 
                         <ImageView
@@ -101,7 +101,7 @@
                             android:layout_height="100dp"
                             android:layout_margin="20dp"
                             android:alpha="0.2"
-                            android:src="@drawable/thumbs_up_3d_light"/>
+                            android:src="@drawable/thumbs_up_3d_light" />
 
                     </com.google.android.material.card.MaterialCardView>
 
@@ -112,20 +112,19 @@
                         android:layout_marginBottom="16dp"
                         android:outlineSpotShadowColor="@color/Background_1"
                         app:cardBackgroundColor="@color/Background_1"
-                        app:cardElevation="10dp"
-                        app:cardCornerRadius="14dp">
+                        app:cardCornerRadius="14dp"
+                        app:cardElevation="10dp">
 
                         <TextView
                             android:id="@+id/goodTxt"
+                            style="@style/CaptionB"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
                             android:layout_marginHorizontal="12dp"
+                            android:layout_marginTop="5dp"
                             android:layout_marginBottom="7dp"
-                            android:textColor="@color/Background_2"
-                            android:textSize="14sp"
-                            android:textStyle="bold"
-                            android:text="좋았어요!"/>
+                            android:text="좋았어요!"
+                            android:textColor="@color/Background_2" />
 
                     </com.google.android.material.card.MaterialCardView>
 
@@ -141,15 +140,15 @@
                         android:id="@+id/badCard"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
                         android:layout_marginHorizontal="16dp"
+                        android:layout_marginTop="16dp"
                         android:layout_marginBottom="12dp"
                         android:outlineSpotShadowColor="@color/Background_1"
+                        app:cardCornerRadius="20dp"
+                        app:cardElevation="10dp"
                         app:rippleColor="@color/Pink_Toggle"
                         app:strokeColor="@color/Caution"
-                        app:strokeWidth="0dp"
-                        app:cardElevation="10dp"
-                        app:cardCornerRadius="20dp">
+                        app:strokeWidth="0dp">
 
                         <ImageView
                             android:id="@+id/badImg"
@@ -157,7 +156,7 @@
                             android:layout_height="100dp"
                             android:layout_margin="20dp"
                             android:alpha="0.2"
-                            android:src="@drawable/thumbs_down_3d_light"/>
+                            android:src="@drawable/thumbs_down_3d_light" />
 
                     </com.google.android.material.card.MaterialCardView>
 
@@ -166,22 +165,21 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
-                        app:cardBackgroundColor="@color/Background_1"
                         android:outlineSpotShadowColor="@color/Background_1"
-                        app:cardElevation="10dp"
-                        app:cardCornerRadius="14dp">
+                        app:cardBackgroundColor="@color/Background_1"
+                        app:cardCornerRadius="14dp"
+                        app:cardElevation="10dp">
 
                         <TextView
                             android:id="@+id/badTxt"
+                            style="@style/CaptionB"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
                             android:layout_marginHorizontal="12dp"
+                            android:layout_marginTop="5dp"
                             android:layout_marginBottom="7dp"
-                            android:textColor="@color/Background_2"
-                            android:textSize="14sp"
-                            android:textStyle="bold"
-                            android:text="별로였어요!"/>
+                            android:text="별로였어요!"
+                            android:textColor="@color/Background_2" />
 
                     </com.google.android.material.card.MaterialCardView>
 
@@ -198,71 +196,72 @@
 
                 <CheckedTextView
                     android:id="@+id/goodCheck1"
+                    style="@style/Body"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="6dp"
                     android:layout_marginHorizontal="16dp"
-                    android:paddingTop="9dp"
-                    android:paddingHorizontal="16dp"
-                    android:paddingBottom="11dp"
+                    android:layout_marginVertical="6dp"
                     android:background="@drawable/rectangle_16dp"
-                    android:outlineSpotShadowColor="@color/Background_1"
-                    android:elevation="6dp"
                     android:checkMark="@drawable/checked_text_view"
+                    android:elevation="6dp"
                     android:gravity="center"
-                    android:text="친절하고 매너가 좋아요"
-                    style="@style/report"/>
+                    android:outlineSpotShadowColor="@color/Background_1"
+                    android:paddingHorizontal="16dp"
+                    android:paddingTop="9dp"
+                    android:paddingBottom="11dp"
+                    android:text="친절하고 매너가 좋아요" />
 
                 <CheckedTextView
                     android:id="@+id/goodCheck2"
+                    style="@style/Body"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="6dp"
                     android:layout_marginHorizontal="16dp"
-                    android:paddingTop="9dp"
-                    android:paddingHorizontal="16dp"
-                    android:paddingBottom="11dp"
+                    android:layout_marginVertical="6dp"
                     android:background="@drawable/rectangle_16dp"
-                    android:outlineSpotShadowColor="@color/Background_1"
-                    android:elevation="6dp"
                     android:checkMark="@drawable/checked_text_view"
+                    android:elevation="6dp"
                     android:gravity="center"
-                    android:text="시간약속을 잘 지켜요"
-                    style="@style/report"/>
+                    android:outlineSpotShadowColor="@color/Background_1"
+                    android:paddingHorizontal="16dp"
+                    android:paddingTop="9dp"
+                    android:paddingBottom="11dp"
+                    android:text="시간약속을 잘 지켜요" />
 
                 <CheckedTextView
                     android:id="@+id/goodCheck3"
+                    style="@style/Body"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="6dp"
                     android:layout_marginHorizontal="16dp"
-                    android:paddingTop="9dp"
-                    android:paddingHorizontal="16dp"
-                    android:paddingBottom="11dp"
+                    android:layout_marginVertical="6dp"
                     android:background="@drawable/rectangle_16dp"
-                    android:outlineSpotShadowColor="@color/Background_1"
-                    android:elevation="6dp"
                     android:checkMark="@drawable/checked_text_view"
+                    android:elevation="6dp"
                     android:gravity="center"
-                    android:text="응답이 빨라요"
-                    style="@style/report"/>
+                    android:outlineSpotShadowColor="@color/Background_1"
+                    android:paddingHorizontal="16dp"
+                    android:paddingTop="9dp"
+                    android:paddingBottom="11dp"
+                    android:text="응답이 빨라요" />
 
                 <CheckedTextView
                     android:id="@+id/goodCheck4"
+                    style="@style/Body"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="6dp"
                     android:layout_marginHorizontal="16dp"
-                    android:paddingTop="9dp"
-                    android:paddingHorizontal="16dp"
-                    android:paddingBottom="11dp"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginBottom="10dp"
                     android:background="@drawable/rectangle_16dp"
-                    android:outlineSpotShadowColor="@color/Background_1"
-                    android:elevation="6dp"
                     android:checkMark="@drawable/checked_text_view"
+                    android:elevation="6dp"
                     android:gravity="center"
-                    android:text="운동을 잘 알려줘요"
-                    style="@style/report"/>
+                    android:outlineSpotShadowColor="@color/Background_1"
+                    android:paddingHorizontal="16dp"
+                    android:paddingTop="9dp"
+                    android:paddingBottom="11dp"
+                    android:text="운동을 잘 알려줘요" />
 
             </LinearLayout>
 
@@ -275,164 +274,165 @@
 
                 <CheckBox
                     android:id="@+id/addBlacklist"
+                    style="@style/Body"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
+                    android:layout_gravity="center"
                     android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="6dp"
                     android:layout_marginBottom="18dp"
-                    android:paddingTop="9dp"
-                    android:paddingBottom="11dp"
                     android:background="@drawable/rectangle_16dp"
-                    android:outlineSpotShadowColor="@color/Background_1"
                     android:button="@drawable/check_box"
                     android:elevation="6dp"
-                    android:layout_gravity="center"
-                    android:text="이 분과는 다시는 운동하고 싶지 않아요"
-                    style="@style/report"/>
+                    android:outlineSpotShadowColor="@color/Background_1"
+                    android:paddingTop="9dp"
+                    android:paddingBottom="11dp"
+                    android:text="이 분과는 다시는 운동하고 싶지 않아요" />
 
                 <CheckedTextView
                     android:id="@+id/badCheck1"
+                    style="@style/Body"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="6dp"
                     android:layout_marginHorizontal="16dp"
-                    android:paddingTop="9dp"
-                    android:paddingHorizontal="16dp"
-                    android:paddingBottom="11dp"
+                    android:layout_marginVertical="6dp"
                     android:background="@drawable/rectangle_16dp"
-                    android:outlineSpotShadowColor="@color/Background_1"
-                    android:elevation="6dp"
                     android:checkMark="@drawable/checked_text_view"
                     android:checkMarkTint="@color/Caution"
+                    android:elevation="6dp"
                     android:gravity="center"
-                    android:text="원하지 않는 운동을 계속 강요해요"
-                    style="@style/report"/>
+                    android:outlineSpotShadowColor="@color/Background_1"
+                    android:paddingHorizontal="16dp"
+                    android:paddingTop="9dp"
+                    android:paddingBottom="11dp"
+                    android:text="원하지 않는 운동을 계속 강요해요" />
 
                 <CheckedTextView
                     android:id="@+id/badCheck2"
+                    style="@style/Body"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="6dp"
                     android:layout_marginHorizontal="16dp"
-                    android:paddingTop="9dp"
-                    android:paddingHorizontal="16dp"
-                    android:paddingBottom="11dp"
+                    android:layout_marginVertical="6dp"
                     android:background="@drawable/rectangle_16dp"
-                    android:outlineSpotShadowColor="@color/Background_1"
-                    android:elevation="6dp"
                     android:checkMark="@drawable/checked_text_view"
                     android:checkMarkTint="@color/Caution"
+                    android:elevation="6dp"
                     android:gravity="center"
-                    android:text="시간약속을 안 지켜요"
-                    style="@style/report"/>
+                    android:outlineSpotShadowColor="@color/Background_1"
+                    android:paddingHorizontal="16dp"
+                    android:paddingTop="9dp"
+                    android:paddingBottom="11dp"
+                    android:text="시간약속을 안 지켜요" />
 
                 <CheckedTextView
                     android:id="@+id/badCheck3"
+                    style="@style/Body"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="6dp"
                     android:layout_marginHorizontal="16dp"
-                    android:paddingTop="9dp"
-                    android:paddingHorizontal="16dp"
-                    android:paddingBottom="11dp"
+                    android:layout_marginVertical="6dp"
                     android:background="@drawable/rectangle_16dp"
-                    android:outlineSpotShadowColor="@color/Background_1"
-                    android:elevation="6dp"
                     android:checkMark="@drawable/checked_text_view"
                     android:checkMarkTint="@color/Caution"
+                    android:elevation="6dp"
                     android:gravity="center"
-                    android:text="채팅 메시지를 읽고도 답장이 없어요"
-                    style="@style/report"/>
+                    android:outlineSpotShadowColor="@color/Background_1"
+                    android:paddingHorizontal="16dp"
+                    android:paddingTop="9dp"
+                    android:paddingBottom="11dp"
+                    android:text="채팅 메시지를 읽고도 답장이 없어요" />
 
                 <CheckedTextView
                     android:id="@+id/badCheck4"
+                    style="@style/Body"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="6dp"
                     android:layout_marginHorizontal="16dp"
-                    android:paddingTop="9dp"
-                    android:paddingHorizontal="16dp"
-                    android:paddingBottom="11dp"
+                    android:layout_marginVertical="6dp"
                     android:background="@drawable/rectangle_16dp"
-                    android:outlineSpotShadowColor="@color/Background_1"
-                    android:elevation="6dp"
                     android:checkMark="@drawable/checked_text_view"
                     android:checkMarkTint="@color/Caution"
+                    android:elevation="6dp"
                     android:gravity="center"
-                    android:text="약속 시간을 명확하게 알려주지 않아요"
-                    style="@style/report"/>
+                    android:outlineSpotShadowColor="@color/Background_1"
+                    android:paddingHorizontal="16dp"
+                    android:paddingTop="9dp"
+                    android:paddingBottom="11dp"
+                    android:text="약속 시간을 명확하게 알려주지 않아요" />
 
                 <CheckedTextView
                     android:id="@+id/badCheck5"
+                    style="@style/Body"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="6dp"
                     android:layout_marginHorizontal="16dp"
-                    android:paddingTop="9dp"
-                    android:paddingHorizontal="16dp"
-                    android:paddingBottom="11dp"
+                    android:layout_marginVertical="6dp"
                     android:background="@drawable/rectangle_16dp"
-                    android:outlineSpotShadowColor="@color/Background_1"
-                    android:elevation="6dp"
                     android:checkMark="@drawable/checked_text_view"
                     android:checkMarkTint="@color/Caution"
+                    android:elevation="6dp"
                     android:gravity="center"
-                    android:text="약속 시간과 장소를 정한 후 운동 직전 취소했어요"
-                    style="@style/report"/>
+                    android:outlineSpotShadowColor="@color/Background_1"
+                    android:paddingHorizontal="16dp"
+                    android:paddingTop="9dp"
+                    android:paddingBottom="11dp"
+                    android:text="약속 시간과 장소를 정한 후 운동 직전 취소했어요" />
 
                 <CheckedTextView
                     android:id="@+id/badCheck6"
+                    style="@style/Body"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="6dp"
                     android:layout_marginHorizontal="16dp"
-                    android:paddingTop="9dp"
-                    android:paddingHorizontal="16dp"
-                    android:paddingBottom="11dp"
+                    android:layout_marginVertical="6dp"
                     android:background="@drawable/rectangle_16dp"
-                    android:outlineSpotShadowColor="@color/Background_1"
-                    android:elevation="6dp"
                     android:checkMark="@drawable/checked_text_view"
                     android:checkMarkTint="@color/Caution"
+                    android:elevation="6dp"
                     android:gravity="center"
-                    android:text="약속 장소에 나타나지 않았어요"
-                    style="@style/report"/>
+                    android:outlineSpotShadowColor="@color/Background_1"
+                    android:paddingHorizontal="16dp"
+                    android:paddingTop="9dp"
+                    android:paddingBottom="11dp"
+                    android:text="약속 장소에 나타나지 않았어요" />
 
                 <CheckedTextView
                     android:id="@+id/badCheck7"
+                    style="@style/Body"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="6dp"
                     android:layout_marginHorizontal="16dp"
-                    android:paddingTop="9dp"
-                    android:paddingHorizontal="16dp"
-                    android:paddingBottom="11dp"
+                    android:layout_marginVertical="6dp"
                     android:background="@drawable/rectangle_16dp"
-                    android:outlineSpotShadowColor="@color/Background_1"
-                    android:elevation="6dp"
                     android:checkMark="@drawable/checked_text_view"
                     android:checkMarkTint="@color/Caution"
+                    android:elevation="6dp"
                     android:gravity="center"
-                    android:text="반말을 사용해요"
-                    style="@style/report"/>
+                    android:outlineSpotShadowColor="@color/Background_1"
+                    android:paddingHorizontal="16dp"
+                    android:paddingTop="9dp"
+                    android:paddingBottom="11dp"
+                    android:text="반말을 사용해요" />
 
                 <CheckedTextView
                     android:id="@+id/badCheck8"
+                    style="@style/Body"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="6dp"
                     android:layout_marginHorizontal="16dp"
-                    android:paddingTop="9dp"
-                    android:paddingHorizontal="16dp"
-                    android:paddingBottom="11dp"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginBottom="10dp"
                     android:background="@drawable/rectangle_16dp"
-                    android:outlineSpotShadowColor="@color/Background_1"
-                    android:elevation="6dp"
                     android:checkMark="@drawable/checked_text_view"
                     android:checkMarkTint="@color/Caution"
+                    android:elevation="6dp"
                     android:gravity="center"
-                    android:text="불친절해요"
-                    style="@style/report"/>
+                    android:outlineSpotShadowColor="@color/Background_1"
+                    android:paddingHorizontal="16dp"
+                    android:paddingTop="9dp"
+                    android:paddingBottom="11dp"
+                    android:text="불친절해요" />
 
             </LinearLayout>
 
@@ -440,57 +440,57 @@
                 android:id="@+id/txtLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
-                android:paddingTop="12dp"
-                android:paddingHorizontal="16dp"
-                android:orientation="vertical"
-                android:elevation="8dp"
-                android:outlineSpotShadowColor="@color/Background_1"
+                android:layout_marginTop="46dp"
                 android:background="@drawable/rounded_top"
+                android:elevation="8dp"
+                android:orientation="vertical"
+                android:outlineSpotShadowColor="@color/Background_1"
+                android:paddingHorizontal="16dp"
+                android:paddingTop="12dp"
                 android:visibility="gone">
 
                 <TextView
                     android:id="@+id/txtTitle"
+                    style="@style/BodyB"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="따뜻한 후기를 보내요"
-                    style="@style/BodyB"/>
+                    android:text="따뜻한 후기를 보내요" />
 
                 <TextView
                     android:id="@+id/txtSubtitle"
+                    style="@style/Subtitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text="남겨주신 운동 후기는 상대방의 프로필에 공개되어요"
-                    style="@style/subtitle"/>
+                    android:text="남겨주신 운동 후기는 상대방의 프로필에 공개되어요" />
 
                 <EditText
                     android:id="@+id/txtEdit"
+                    style="@style/Body"
                     android:layout_width="match_parent"
                     android:layout_height="96dp"
                     android:layout_marginTop="24dp"
-                    android:paddingVertical="9dp"
-                    android:paddingHorizontal="16dp"
                     android:background="@drawable/rectangle"
                     android:backgroundTint="@color/Background_1"
                     android:gravity="top"
                     android:hint="여기에 적어주세요 (선택사항)"
-                    android:textColorHint="@color/Background_2"
-                    style="@style/Body"/>
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="9dp"
+                    android:textColorHint="@color/Background_2" />
 
                 <Button
                     android:id="@+id/send"
+                    style="@style/Title"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
                     android:layout_marginTop="24dp"
                     android:layout_marginBottom="48dp"
                     android:background="@drawable/rectangle_20dp"
                     android:backgroundTint="@color/Signature"
-                    android:outlineProvider="none"
                     android:gravity="center"
+                    android:outlineProvider="none"
                     android:text="후기 보내기"
-                    android:textColor="@color/white"
-                    style="@style/Title"/>
+                    android:textColor="@color/white" />
 
             </LinearLayout>
 

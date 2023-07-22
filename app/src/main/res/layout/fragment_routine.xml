@@ -37,7 +37,8 @@
 
                 app:tabMode="fixed"
                 app:tabGravity="fill"
-                tools:ignore="SpeakableTextPresentCheck" />
+                tools:ignore="SpeakableTextPresentCheck"
+                style="@style/Caption"/>
 
         </LinearLayout>
 
