@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -24,7 +24,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:layout_marginTop="56dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -46,28 +47,22 @@
                         android:id="@+id/userName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/Standard"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        android:text="ㅇㅇㅇ"/>
+                        android:text="ㅇㅇㅇ"
+                        style="@style/Title"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/Standard"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        android:text="님과"/>
+                        android:text="님과"
+                        style="@style/Title"/>
 
                 </LinearLayout>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/Standard"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:text="위트가 어떠셨나요?"/>
+                    android:text="위트가 어떠셨나요?"
+                    style="@style/Title" />
 
             </LinearLayout>
 
@@ -198,7 +193,6 @@
                 android:id="@+id/goodCheckBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="100dp"
                 android:orientation="vertical"
                 android:visibility="gone">
 
@@ -206,14 +200,14 @@
                     android:id="@+id/goodCheck1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="12dp"
+                    android:layout_marginVertical="6dp"
                     android:layout_marginHorizontal="16dp"
                     android:paddingTop="9dp"
                     android:paddingHorizontal="16dp"
                     android:paddingBottom="11dp"
                     android:background="@drawable/rectangle_16dp"
                     android:outlineSpotShadowColor="@color/Background_1"
-                    android:elevation="10dp"
+                    android:elevation="6dp"
                     android:checkMark="@drawable/checked_text_view"
                     android:gravity="center"
                     android:text="친절하고 매너가 좋아요"
@@ -223,14 +217,14 @@
                     android:id="@+id/goodCheck2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="12dp"
+                    android:layout_marginVertical="6dp"
                     android:layout_marginHorizontal="16dp"
                     android:paddingTop="9dp"
                     android:paddingHorizontal="16dp"
                     android:paddingBottom="11dp"
                     android:background="@drawable/rectangle_16dp"
                     android:outlineSpotShadowColor="@color/Background_1"
-                    android:elevation="10dp"
+                    android:elevation="6dp"
                     android:checkMark="@drawable/checked_text_view"
                     android:gravity="center"
                     android:text="시간약속을 잘 지켜요"
@@ -240,14 +234,14 @@
                     android:id="@+id/goodCheck3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="12dp"
+                    android:layout_marginVertical="6dp"
                     android:layout_marginHorizontal="16dp"
                     android:paddingTop="9dp"
                     android:paddingHorizontal="16dp"
                     android:paddingBottom="11dp"
                     android:background="@drawable/rectangle_16dp"
                     android:outlineSpotShadowColor="@color/Background_1"
-                    android:elevation="10dp"
+                    android:elevation="6dp"
                     android:checkMark="@drawable/checked_text_view"
                     android:gravity="center"
                     android:text="응답이 빨라요"
@@ -257,19 +251,18 @@
                     android:id="@+id/goodCheck4"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="12dp"
+                    android:layout_marginVertical="6dp"
                     android:layout_marginHorizontal="16dp"
                     android:paddingTop="9dp"
                     android:paddingHorizontal="16dp"
                     android:paddingBottom="11dp"
                     android:background="@drawable/rectangle_16dp"
                     android:outlineSpotShadowColor="@color/Background_1"
-                    android:elevation="10dp"
+                    android:elevation="6dp"
                     android:checkMark="@drawable/checked_text_view"
                     android:gravity="center"
                     android:text="운동을 잘 알려줘요"
                     style="@style/report"/>
-
 
             </LinearLayout>
 
@@ -277,21 +270,22 @@
                 android:id="@+id/badCheckBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="100dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <CheckBox
                     android:id="@+id/addBlacklist"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="12dp"
+                    android:layout_marginTop="6dp"
                     android:layout_marginHorizontal="16dp"
+                    android:layout_marginBottom="18dp"
                     android:paddingTop="9dp"
                     android:paddingBottom="11dp"
                     android:background="@drawable/rectangle_16dp"
                     android:outlineSpotShadowColor="@color/Background_1"
                     android:button="@drawable/check_box"
-                    android:elevation="10dp"
+                    android:elevation="6dp"
                     android:layout_gravity="center"
                     android:text="이 분과는 다시는 운동하고 싶지 않아요"
                     style="@style/report"/>
@@ -300,14 +294,14 @@
                     android:id="@+id/badCheck1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="12dp"
+                    android:layout_marginVertical="6dp"
                     android:layout_marginHorizontal="16dp"
                     android:paddingTop="9dp"
                     android:paddingHorizontal="16dp"
                     android:paddingBottom="11dp"
                     android:background="@drawable/rectangle_16dp"
                     android:outlineSpotShadowColor="@color/Background_1"
-                    android:elevation="10dp"
+                    android:elevation="6dp"
                     android:checkMark="@drawable/checked_text_view"
                     android:checkMarkTint="@color/Caution"
                     android:gravity="center"
@@ -318,14 +312,14 @@
                     android:id="@+id/badCheck2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="12dp"
+                    android:layout_marginVertical="6dp"
                     android:layout_marginHorizontal="16dp"
                     android:paddingTop="9dp"
                     android:paddingHorizontal="16dp"
                     android:paddingBottom="11dp"
                     android:background="@drawable/rectangle_16dp"
                     android:outlineSpotShadowColor="@color/Background_1"
-                    android:elevation="10dp"
+                    android:elevation="6dp"
                     android:checkMark="@drawable/checked_text_view"
                     android:checkMarkTint="@color/Caution"
                     android:gravity="center"
@@ -336,14 +330,14 @@
                     android:id="@+id/badCheck3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="12dp"
+                    android:layout_marginVertical="6dp"
                     android:layout_marginHorizontal="16dp"
                     android:paddingTop="9dp"
                     android:paddingHorizontal="16dp"
                     android:paddingBottom="11dp"
                     android:background="@drawable/rectangle_16dp"
                     android:outlineSpotShadowColor="@color/Background_1"
-                    android:elevation="10dp"
+                    android:elevation="6dp"
                     android:checkMark="@drawable/checked_text_view"
                     android:checkMarkTint="@color/Caution"
                     android:gravity="center"
@@ -354,14 +348,14 @@
                     android:id="@+id/badCheck4"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="12dp"
+                    android:layout_marginVertical="6dp"
                     android:layout_marginHorizontal="16dp"
                     android:paddingTop="9dp"
                     android:paddingHorizontal="16dp"
                     android:paddingBottom="11dp"
                     android:background="@drawable/rectangle_16dp"
                     android:outlineSpotShadowColor="@color/Background_1"
-                    android:elevation="10dp"
+                    android:elevation="6dp"
                     android:checkMark="@drawable/checked_text_view"
                     android:checkMarkTint="@color/Caution"
                     android:gravity="center"
@@ -372,14 +366,14 @@
                     android:id="@+id/badCheck5"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="12dp"
+                    android:layout_marginVertical="6dp"
                     android:layout_marginHorizontal="16dp"
                     android:paddingTop="9dp"
                     android:paddingHorizontal="16dp"
                     android:paddingBottom="11dp"
                     android:background="@drawable/rectangle_16dp"
                     android:outlineSpotShadowColor="@color/Background_1"
-                    android:elevation="10dp"
+                    android:elevation="6dp"
                     android:checkMark="@drawable/checked_text_view"
                     android:checkMarkTint="@color/Caution"
                     android:gravity="center"
@@ -390,14 +384,14 @@
                     android:id="@+id/badCheck6"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="12dp"
+                    android:layout_marginVertical="6dp"
                     android:layout_marginHorizontal="16dp"
                     android:paddingTop="9dp"
                     android:paddingHorizontal="16dp"
                     android:paddingBottom="11dp"
                     android:background="@drawable/rectangle_16dp"
                     android:outlineSpotShadowColor="@color/Background_1"
-                    android:elevation="10dp"
+                    android:elevation="6dp"
                     android:checkMark="@drawable/checked_text_view"
                     android:checkMarkTint="@color/Caution"
                     android:gravity="center"
@@ -408,14 +402,14 @@
                     android:id="@+id/badCheck7"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="12dp"
+                    android:layout_marginVertical="6dp"
                     android:layout_marginHorizontal="16dp"
                     android:paddingTop="9dp"
                     android:paddingHorizontal="16dp"
                     android:paddingBottom="11dp"
                     android:background="@drawable/rectangle_16dp"
                     android:outlineSpotShadowColor="@color/Background_1"
-                    android:elevation="10dp"
+                    android:elevation="6dp"
                     android:checkMark="@drawable/checked_text_view"
                     android:checkMarkTint="@color/Caution"
                     android:gravity="center"
@@ -426,14 +420,14 @@
                     android:id="@+id/badCheck8"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="12dp"
+                    android:layout_marginVertical="6dp"
                     android:layout_marginHorizontal="16dp"
                     android:paddingTop="9dp"
                     android:paddingHorizontal="16dp"
                     android:paddingBottom="11dp"
                     android:background="@drawable/rectangle_16dp"
                     android:outlineSpotShadowColor="@color/Background_1"
-                    android:elevation="10dp"
+                    android:elevation="6dp"
                     android:checkMark="@drawable/checked_text_view"
                     android:checkMarkTint="@color/Caution"
                     android:gravity="center"
@@ -442,8 +436,83 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/txtLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:paddingTop="12dp"
+                android:paddingHorizontal="16dp"
+                android:orientation="vertical"
+                android:elevation="8dp"
+                android:outlineSpotShadowColor="@color/Background_1"
+                android:background="@drawable/rounded_top"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/txtTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="따뜻한 후기를 보내요"
+                    style="@style/BodyB"/>
+
+                <TextView
+                    android:id="@+id/txtSubtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="남겨주신 운동 후기는 상대방의 프로필에 공개되어요"
+                    style="@style/subtitle"/>
+
+                <EditText
+                    android:id="@+id/txtEdit"
+                    android:layout_width="match_parent"
+                    android:layout_height="96dp"
+                    android:layout_marginTop="24dp"
+                    android:paddingVertical="9dp"
+                    android:paddingHorizontal="16dp"
+                    android:background="@drawable/rectangle"
+                    android:backgroundTint="@color/Background_1"
+                    android:gravity="top"
+                    android:hint="여기에 적어주세요 (선택사항)"
+                    android:textColorHint="@color/Background_2"
+                    style="@style/Body"/>
+
+                <Button
+                    android:id="@+id/send"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginBottom="48dp"
+                    android:background="@drawable/rectangle_20dp"
+                    android:backgroundTint="@color/Signature"
+                    android:outlineProvider="none"
+                    android:gravity="center"
+                    android:text="후기 보내기"
+                    android:textColor="@color/white"
+                    style="@style/Title"/>
+
+            </LinearLayout>
+
         </LinearLayout>
 
     </ScrollView>
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/tempBtn"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="48dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_gravity="bottom"
+        android:gravity="center"
+        android:background="@drawable/rectangle_20dp"
+        android:backgroundTint="@color/white"
+        android:outlineSpotShadowColor="@color/Background_1"
+        android:elevation="10dp"
+        android:textColor="@color/Background_2"
+        android:text="후기 보내기"
+        style="@style/Title"/>
+
+</FrameLayout>

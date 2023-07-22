@@ -35,13 +35,6 @@
             android:name=".Chat.ReviewActivity"
             android:exported="false" />
         <activity
-            android:name=".TextLineAdpater"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
             android:name=".Chat.ReportActivity"
             android:exported="true">
             <meta-data

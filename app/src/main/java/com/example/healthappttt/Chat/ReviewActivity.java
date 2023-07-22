@@ -34,13 +34,14 @@ public class ReviewActivity extends AppCompatActivity {
     private static final String Signature_Toggle = "#D9F7EE";
     private static final String Pink = "#F257AF";
     private static final String Pink_Toggle = "#fde6f3";
+    private static final String Body = "#4A5567";
 
     private ServiceApi service;
     private PreferenceHelper prefhelper;
 
     private int isGood; // > 0 good, < 0 bad, == 0 클릭 x
     private int pk, OtherPk, check_box;
-    private String text;
+    private String text = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,7 +101,21 @@ public class ReviewActivity extends AppCompatActivity {
         });
 
         binding.addBlacklist.setOnClickListener(v -> {
-            
+            if (binding.addBlacklist.isChecked()) {
+                binding.addBlacklist.setBackground(getDrawable(R.drawable.border_background_pink));
+                binding.addBlacklist.setTextColor(Color.parseColor(Pink));
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                    binding.addBlacklist.setOutlineSpotShadowColor(Color.parseColor(Pink));
+                }
+            } else {
+                binding.addBlacklist.setBackground(getDrawable(R.drawable.rectangle_16dp));
+                binding.addBlacklist.setTextColor(Color.parseColor(Body));
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                    binding.addBlacklist.setOutlineSpotShadowColor(Color.parseColor(Backgrount_1));
+                }
+            }
         });
 
         setCheckedTextViewListeners();
@@ -118,6 +133,7 @@ public class ReviewActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 ((CheckedTextView) v).setChecked(!((CheckedTextView) v).isChecked());
+                ((CheckedTextView) v).setTextColor(Color.parseColor(Signature));
 
                 if (((CheckedTextView) v).isChecked()) {
                     v.setBackground(getDrawable(R.drawable.border_background));
@@ -126,6 +142,7 @@ public class ReviewActivity extends AppCompatActivity {
                         v.setOutlineSpotShadowColor(Color.parseColor(Signature));
                 } else {
                     v.setBackground(getDrawable(R.drawable.rectangle_16dp));
+                    ((CheckedTextView) v).setTextColor(Color.parseColor(Body));
 
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
                         v.setOutlineSpotShadowColor(Color.parseColor(Backgrount_1));
@@ -140,11 +157,13 @@ public class ReviewActivity extends AppCompatActivity {
 
                 if (((CheckedTextView) v).isChecked()) {
                     v.setBackground(getDrawable(R.drawable.border_background_pink));
+                    ((CheckedTextView) v).setTextColor(Color.parseColor(Pink));
 
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
                         v.setOutlineSpotShadowColor(Color.parseColor(Pink));
                 } else {
                     v.setBackground(getDrawable(R.drawable.rectangle_16dp));
+                    ((CheckedTextView) v).setTextColor(Color.parseColor(Body));
 
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
                         v.setOutlineSpotShadowColor(Color.parseColor(Backgrount_1));
@@ -202,34 +221,94 @@ public class ReviewActivity extends AppCompatActivity {
     }
 
     private void initCheckedTextViews(boolean isGood) {
+        binding.txtLayout.setVisibility(View.VISIBLE);
+        binding.tempBtn.setVisibility(View.GONE);
+
         if (isGood) {
             binding.goodCheckBox.setVisibility(View.VISIBLE);
             binding.badCheckBox.setVisibility(View.GONE);
+            binding.addBlacklist.setChecked(false);
+            binding.addBlacklist.setBackground(getDrawable(R.drawable.rectangle_16dp));
+            binding.addBlacklist.setTextColor(Color.parseColor(Body));
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
+                binding.addBlacklist.setOutlineSpotShadowColor(Color.parseColor(Backgrount_1));
 
             for (CheckedTextView checkedTextView : badCheckedTextViews) {
                 checkedTextView.setChecked(false);
-
+                checkedTextView.setTextColor(Color.parseColor(Body));
                 checkedTextView.setBackground(getDrawable(R.drawable.rectangle_16dp));
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
                     checkedTextView.setOutlineSpotShadowColor(Color.parseColor(Backgrount_1));
             }
+
+            binding.txtTitle.setText("따뜻한 후기를 보내요");
+            binding.txtSubtitle.setText("남겨주신 운동 후기는 상대방의 프로필에 공개되어요");
         } else {
             binding.goodCheckBox.setVisibility(View.GONE);
             binding.badCheckBox.setVisibility(View.VISIBLE);
 
             for (CheckedTextView checkedTextView : goodCheckedTextViews) {
                 checkedTextView.setChecked(false);
-
+                checkedTextView.setTextColor(Color.parseColor(Body));
                 checkedTextView.setBackground(getDrawable(R.drawable.rectangle_16dp));
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
                     checkedTextView.setOutlineSpotShadowColor(Color.parseColor(Backgrount_1));
             }
+
+            binding.txtTitle.setText("아쉬웠던 점을 위트팀에게 알려주세요");
+            binding.txtSubtitle.setText("상대방에게 전달되지 않으니 안심하세요");
         }
     }
 
     private void sendToServer() {
+        if (isGood > 0) {
+            check_box = 0x8000;
+
+            for (int i = 0; i <  goodCheckedTextViews.length; i++) {
+                if (goodCheckedTextViews[i].isChecked()) {
+                    switch (i) {
+                        case 0: check_box |= 0x01; break;
+                        case 1: check_box |= 0x02; break;
+                        case 2: check_box |= 0x04; break;
+                        case 3: check_box |= 0x08; break;
+                        case 4: check_box |= 0x10; break;
+                        case 5: check_box |= 0x20; break;
+                        case 6: check_box |= 0x40; break;
+                    } // 실제로 사용은 3까지
+                }
+            }
+        } else if (isGood < 0) {
+            check_box = 0;
+
+            if (binding.addBlacklist.isChecked()) {
+//                차단목록 추가
+            }
+
+            for (int i = 0; i <  badCheckedTextViews.length; i++) {
+                if (badCheckedTextViews[i].isChecked()) {
+                    switch (i) {
+                        case 0: check_box |= 0x01; break;
+                        case 1: check_box |= 0x02; break;
+                        case 2: check_box |= 0x04; break;
+                        case 3: check_box |= 0x08; break;
+                        case 4: check_box |= 0x10; break;
+                        case 5: check_box |= 0x20; break;
+                        case 6: check_box |= 0x40; break;
+                        case 7: check_box |= 0x80; break;
+                        case 8: check_box |= 0x100; break;
+                        case 9: check_box |= 0x200; break;
+                    } // 실제로 사용은 7까지
+                }
+            }
+        } else {
+
+        }
+
+        text = String.valueOf(binding.txtEdit.getText());
+
         service.sendReivew(new ReviewData(OtherPk, pk, text, check_box)).enqueue(new Callback<Integer>() {
             @Override
             public void onResponse(Call<Integer> call, Response<Integer> response) {

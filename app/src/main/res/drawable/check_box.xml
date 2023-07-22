@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_checked= "false"
-        android:drawable = "@drawable/circle_20dp">
+        android:drawable = "@drawable/check_box_false">
     </item>
     <item android:state_checked= "true"
-        android:drawable = "@drawable/baseline_check_circle_24">
+        android:drawable = "@drawable/check_box_true">
     </item>
 </selector>
