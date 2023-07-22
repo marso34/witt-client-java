@@ -17,6 +17,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.example.healthappttt.Chat.ChatActivity;
+import com.example.healthappttt.Chat.ChattingFragment;
 import com.example.healthappttt.Data.PreferenceHelper;
 import com.example.healthappttt.Data.SQLiteUtil;
 import com.example.healthappttt.R;
@@ -46,6 +47,7 @@ public class SocketSingleton {
     private PreferenceHelper preferenceHelper;
     private static int alarmID = 100;
     private static int i;
+    ChattingFragment chatF;
     private SocketSingleton(Context context) {
         try {
             this.context = context;
@@ -127,6 +129,16 @@ public class SocketSingleton {
                         Calendar calendar = Calendar.getInstance();
                         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
                         alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
+                        if(!chatF.chatflag) {
+                            chatF.chatflag = true;
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+
+                                    chatF.getUsersFromServer();
+                                }
+                            }).start();
+                        }
                         flag = true;
                     }
                     if (chatRoomId != null) {
@@ -243,6 +255,12 @@ public class SocketSingleton {
             this.chatActivity = null;
         }
         this.chatActivity = chatActivity;
+    }
+    public void setChatFragment(ChattingFragment chatF) {
+        if (chatF == null) {
+            this.chatF = null;
+        }
+        this.chatF = chatF;
     }
     // 알림 채널 생성
     private void createNotificationChannel() {

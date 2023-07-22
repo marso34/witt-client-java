@@ -11,6 +11,7 @@ import android.database.sqlite.SQLiteException;
 import android.util.Log;
 
 import com.example.healthappttt.Data.Chat.MSG;
+import com.example.healthappttt.Data.Chat.UserChat;
 import com.example.healthappttt.Data.Exercise.ExerciseData;
 import com.example.healthappttt.Data.Exercise.RecordData;
 import com.example.healthappttt.Data.Exercise.RoutineData;
@@ -197,6 +198,7 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         } else {
             Log.d(table, "메서드 형식 오류");
         }
+        db.close();
     }
 
     /**
@@ -219,6 +221,7 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         } else {
             Log.d(table, "메서드 형식 오류");
         }
+        db.close();
     }
 
     /**
@@ -254,21 +257,47 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         } else {
             Log.d(table, "메서드 형식 오류");
         }
+        db.close();
     }
+    public void insert(List<UserChat> U){
 
+        ContentValues values = new ContentValues();
+        for(UserChat u : U) {
+            String timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
+
+            if (table.equals("CHAT_ROOM_TB")) {
+                values.put("CHAT_ROOM_PK", u.getChatRoomId());
+                values.put("LAST_MSG_INDEX", 1);
+                values.put("OTHER_USER_NM", u.getUserNM());
+                values.put("FAV", 0);
+                values.put("TS", timestamp);
+
+                long result = db.insert(table, null, values);
+                Log.d(table, result + "성공");
+            } else Log.d(table, "실패 삽입 챗티방");
+        }
+        db.close();
+    }
     public void delete(int PK) {
         String selection = "PK = ?";
         int result = db.delete(table, selection, new String[]{String.valueOf(PK)});
         Log.i(table, +result + "개 row delete 성공");
+        db.close();
     }
 
     //로컬 db에서 해당 pk를 가진 행을 삭제하는 매서드
     public void deleteFromBlackListTable(int pk) {
         db.execSQL("DELETE FROM BLACK_LIST_TB WHERE BL_PK =" + pk);
+        db.close();
     }
     
     public void deleteChatRoom(int chatRoomPk) {
         db.execSQL("DELETE FROM CHAT_MSG_TB WHERE CHAT_ROOM_FK =" + chatRoomPk);
+        db.close();
+        }
+    public void deleteChatRoom() {
+        db.execSQL("DELETE FROM CHAT_ROOM_TB");
+        db.close();
     }
 
     public void Update(RoutineData routine) {
@@ -285,6 +314,7 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         } else {
             Log.d(table, "메서드 형식 오류");
         }
+        db.close();
     }
 
 
@@ -308,6 +338,7 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         } else {
             Log.d(table, "메서드 형식 오류");
         }
+        db.close();
     } // 운동 기록을 수정할 수 있게 할지는 아직 모름
 
     public void UpdateOrInsert(ExerciseData exercise) {
@@ -334,6 +365,7 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
             Log.d(table, result + "삽입 성공");
             cursor.close();
         }
+        db.close();
     }
 
     public void Update(int userPk,int chatPk) {
@@ -372,6 +404,7 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         } else {
             Log.d(table, "메서드 형식 오류");
         }
+        db.close();
     }
 
 
@@ -399,7 +432,7 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         } else {
             Log.d(table, " 잘못된 메서드 호출");
         }
-
+        db.close();
         return null;
     }
 
@@ -429,7 +462,7 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         } else {
             Log.d(table, " 잘못된 메서드 호출");
         }
-
+        db.close();
         return null;
     }
 
@@ -463,7 +496,7 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         } else {
             Log.d(table, " 잘못된 메서드 호출");
         }
-
+        db.close();
         return null;
     }
 
@@ -489,6 +522,7 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         } else {
             Log.d(table, " 잘못된 메서드 호출");
         }
+        db.close();
         return null;
     }
   
@@ -518,6 +552,7 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         } else {
             Log.d(table, " 잘못된 메서드 호출");
         }
+        db.close();
         return null;
     }
     public ArrayList<WittListData> SelectWittHistoryUser() {
@@ -545,6 +580,7 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         } else {
             Log.d(table, " 잘못된 메서드 호출");
         }
+        db.close();
         return null;
     }
     public List<MSG> SelectAllMSG(String userKey,int chatRoomId){
@@ -584,8 +620,29 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
                 } while (cursor.moveToNext());
             }
         }
+        db.close();
         return messages;
     }
+    public int selectLastMsgPk(){
+        String sql = "SELECT MSG_PK FROM CHAT_MSG_TB ORDER BY TS ASC LIMIT 1 OFFSET (SELECT COUNT(*) - 1 FROM CHAT_MSG_TB)";
+        Cursor cursor = db.rawQuery(sql, null);
+        int MSG_PK =  -1;
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+
+                int MSG_PK_index = cursor.getColumnIndex("MSG_PK");
+                if (MSG_PK_index != -1) {
+                    MSG_PK = cursor.getInt(MSG_PK_index);
+                }
+            } while (cursor.moveToNext());
+
+        }
+        cursor.close();
+        db.close();
+        return MSG_PK;
+    }
+
+
 
     public void DropUser(Context context) {
 
@@ -599,6 +656,7 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
             }
         }
         cursor.close();
+        db.close();
 
     }
 

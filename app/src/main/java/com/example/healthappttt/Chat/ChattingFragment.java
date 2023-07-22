@@ -13,9 +13,11 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.healthappttt.Data.Chat.SocketSingleton;
 import com.example.healthappttt.Data.PreferenceHelper;
 import com.example.healthappttt.Data.RetrofitClient;
 import com.example.healthappttt.Data.Chat.UserChat;
+import com.example.healthappttt.Data.SQLiteUtil;
 import com.example.healthappttt.Data.User.UserKey;
 import com.example.healthappttt.R;
 import com.example.healthappttt.User.UserListAdapter;
@@ -34,15 +36,19 @@ public class ChattingFragment extends Fragment {
     private List<UserChat> userList;
     private PreferenceHelper prefhelper;
     private String name_TB = "UserTB";
+    private SQLiteUtil sqLiteUtil;
+    public boolean chatflag = false;
+    private SocketSingleton socketSingleton;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // 레이아웃을 inflate합니다.
         View view = inflater.inflate(R.layout.fragment_chatting, container, false);
         userList = new ArrayList<>();
-
+        sqLiteUtil = SQLiteUtil.getInstance();
         prefhelper = new PreferenceHelper(name_TB,getContext());
-
+        socketSingleton = SocketSingleton.getInstance(getContext());
+        socketSingleton.setChatFragment(this);
         // 리사이클러뷰를 초기화합니다.
         userlistRecyclerView = view.findViewById(R.id.recyclerView2);
         userlistRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -61,7 +67,7 @@ public class ChattingFragment extends Fragment {
     }
 
     // 서버에서 유저 목록을 가져오는 메소드입니다.
-    private void getUsersFromServer() {
+    public void getUsersFromServer() {
         // 서버로부터 유저 목록을 가져와서 List<UserChat>로 반환합니다.
         ServiceApi apiService = RetrofitClient.getClient().create(ServiceApi.class);
         Log.d(TAG, "getUsersFromServer: "+String.valueOf(prefhelper.getPK()));
@@ -71,13 +77,17 @@ public class ChattingFragment extends Fragment {
             public void onResponse(Call<List<UserChat>> call, Response<List<UserChat>> response) {
                 if (response.isSuccessful()) {
                     List<UserChat> users = response.body();
-                    userList.addAll(users);
-                    userListAdapter.notifyDataSetChanged();
-
+                    sqLiteUtil.setInitView(getContext(),"CHAT_ROOM_TB");
+                    sqLiteUtil.deleteChatRoom();
+                    sqLiteUtil.setInitView(getContext(),"CHAT_ROOM_TB");
+                    sqLiteUtil.insert(users);
                     // userList에 데이터가 추가된 후에 실행되어야 하는 로직을 여기에 작성합니다.
                     for (int i = 0; i < userList.size(); ++i) {
                         Log.d("chatUSERLIST22", userList.get(i).getOtherUserKey());
                     }
+                    userList.addAll(users);
+                    userListAdapter.notifyDataSetChanged();
+                    chatflag = false;
                 } else {
                     Toast.makeText(getContext(), "Failed to retrieve user list", Toast.LENGTH_SHORT).show();
                 }
@@ -88,6 +98,6 @@ public class ChattingFragment extends Fragment {
                 Toast.makeText(getContext(), "Failed to retrieve user list", Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 }
+
