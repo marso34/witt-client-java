@@ -16,8 +16,10 @@ import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.healthappttt.Chat.ChatActivity;
+import com.example.healthappttt.Data.Chat.MSG;
 import com.example.healthappttt.Data.Chat.SocketSingleton;
 import com.example.healthappttt.Data.Chat.UserChat;
+import com.example.healthappttt.Data.PreferenceHelper;
 import com.example.healthappttt.Data.SQLiteUtil;
 import com.example.healthappttt.R;
 
@@ -36,6 +38,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserLi
     private SocketSingleton socketSingleton;
     private SQLiteUtil sqLiteUtil;
     private Context context;
+    private PreferenceHelper preferenceHelper;
     private  UserChat user;
     public UserListAdapter(Context context, List<UserChat> userList) {
         this.userList = userList;
@@ -48,6 +51,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserLi
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.user_layout, parent, false);
         UserListViewHolder viewHolder = new UserListViewHolder(view);
         sqLiteUtil = SQLiteUtil.getInstance();
+        preferenceHelper = new PreferenceHelper("UserTB", context);
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -71,12 +75,13 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserLi
     public void onBindViewHolder(@NonNull UserListViewHolder holder, int position) {
         user = userList.get(position);
         holder.userName.setText(user.getUserNM());
-//        sqLiteUtil
-//        if(extractName(user.getLastChat()) == null)
-//            holder.lastChat.setText(user.getLastChat());
-//        else holder.lastChat.setText(extractName(user.getLastChat()));
-//        holder.lastChatTime.setText(extractDateTime(user.getLastChatTime()));
-        Log.d(TAG, "onBindViewHolder: "+String.valueOf(position));
+        sqLiteUtil.setInitView(context,"CHAT_MSG_TB");
+        MSG m = sqLiteUtil.selectLastMsg(userList.get(position).getChatRoomId(),String.valueOf(preferenceHelper.getPK()));
+        if(extractName(m.getMessage()) == null)
+            holder.lastChat.setText(m.getMessage());
+        else holder.lastChat.setText(extractName(m.getMessage()));
+        holder.lastChatTime.setText(extractDateTime(m.timestampString()));
+        Log.d(TAG, "onBindViewHolder: "+m.getMessage());
 
     }
     public String extractName(String inputString) {
@@ -100,25 +105,29 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserLi
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public  String extractDateTime(String dateString) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+    public String extractDateTime(String dateString) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        if(dateString == "-1"){
+            return "";
+        }
+        else {
+            // 문자열을 LocalDateTime 객체로 변환
+            LocalDateTime dateTime = LocalDateTime.parse(dateString, formatter);
 
-        // 문자열을 LocalDateTime 객체로 변환
-        LocalDateTime dateTime = LocalDateTime.parse(dateString, formatter);
+            // 현재 날짜 가져오기
+            LocalDate currentDate = LocalDate.now();
 
-        // 현재 날짜 가져오기
-        LocalDate currentDate = LocalDate.now();
-
-        if (dateTime.toLocalDate().isEqual(currentDate)) {
-            // 날짜가 오늘이면 시간과 분 추출
-            int hour = dateTime.getHour();
-            int minute = dateTime.getMinute();
-            return String.format("%02d:%02d", hour, minute);
-        } else {
-            // 날짜가 오늘이 아니면 월과 일 추출
-            int month = dateTime.getMonthValue();
-            int day = dateTime.getDayOfMonth();
-            return String.format("%02d %02d", month, day);
+            if (dateTime.toLocalDate().isEqual(currentDate)) {
+                // 날짜가 오늘이면 시간과 분 추출
+                int hour = dateTime.getHour();
+                int minute = dateTime.getMinute();
+                return String.format("%02d:%02d", hour, minute);
+            } else {
+                // 날짜가 오늘이 아니면 월과 일 추출
+                int month = dateTime.getMonthValue();
+                int day = dateTime.getDayOfMonth();
+                return String.format("%02d월 %02d일", month, day);
+            }
         }
     }
     public void setOnItemClickListener(OnItemClickListener listener) {

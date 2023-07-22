@@ -29,8 +29,11 @@ import com.example.healthappttt.interface_.ServiceApi;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.CountDownLatch;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -119,7 +122,7 @@ public class ChatActivity extends AppCompatActivity{
                 if (!messageText.isEmpty()) {
                     messageEditText.setText("");
                     sqLiteUtil.setInitView(getApplicationContext(), "CHAT_MSG_TB");
-                    int chatPk = sqLiteUtil.insert(Integer.parseInt(userKey), 1, messageText, Integer.parseInt(chatRoomId), 0);
+                    int chatPk = sqLiteUtil.insert(Integer.parseInt(userKey), 1, messageText, Integer.parseInt(chatRoomId), 0,new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date()));
                     Log.d(TAG, "chatPk보내기"+chatPk);
                     sendMessageToServer(messageText,chatPk);
 
@@ -156,18 +159,17 @@ public class ChatActivity extends AppCompatActivity{
                             sqLiteUtil.setInitView(getApplicationContext(), "CHAT_MSG_TB");
                             String name1 = extractName(msg.getMessage());
                             if (name1 != null) {
-                                sqLiteUtil.insert(Integer.parseInt(userKey), msg.getMyFlag(),name1, Integer.parseInt(chatRoomId), 1);
+                                sqLiteUtil.insert(Integer.parseInt(userKey), msg.getMyFlag(),name1, Integer.parseInt(chatRoomId), 1,msg.timestampString());
 
                             } else {
-                                sqLiteUtil.insert(Integer.parseInt(userKey), msg.getMyFlag(),msg.getMessage(), Integer.parseInt(chatRoomId), 1);
-
+                                sqLiteUtil.insert(Integer.parseInt(userKey), msg.getMyFlag(),msg.getMessage(), Integer.parseInt(chatRoomId), 1,msg.timestampString());
                             }
                             Log.d(TAG, "onResponse: msg"+msg.getMessage());
                               }
                     }
                     updatingMSG = true;
                    sendUpdatingMSG  = true;
-                    getAllMSG(3);
+                    getMSG(3);
                 } else {
                     Log.e(TAG, "getMessagesFromServer: API 요청 실패. 응답 코드: " + response.code());
                 }
@@ -182,7 +184,7 @@ public class ChatActivity extends AppCompatActivity{
     public String getChatRoomId(){
         return chatRoomId;
     }
-    public void getAllMSG(int sendOrReceive) {
+    public void getMSG(int sendOrReceive) {
         final CountDownLatch latch = new CountDownLatch(1);
 
         runOnUiThread(new Runnable() {

@@ -128,15 +128,15 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         return existingReviewPK;
     }
 
-    public int insert(int userKey, int myFlag, String message, int chatRoomId, int Success) {
+    public int insert(int userKey, int myFlag, String message, int chatRoomId, int Success,String ts) {
         int lastKey = -1;
         try {
             ContentValues values = new ContentValues();
             values.put("USER_FK", userKey);
             values.put("MSG", message);
             values.put("CHAT_ROOM_FK", chatRoomId);
-            String timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
-            values.put("TS", timestamp);
+
+            values.put("TS", ts);
             values.put("MYFLAG", myFlag);
             values.put("SUCCESS", Success);
             long rowId = db.insertOrThrow("CHAT_MSG_TB", null, values);
@@ -623,24 +623,41 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         db.close();
         return messages;
     }
-    public int selectLastMsgPk(){
-        String sql = "SELECT MSG_PK FROM CHAT_MSG_TB ORDER BY TS ASC LIMIT 1 OFFSET (SELECT COUNT(*) - 1 FROM CHAT_MSG_TB)";
-        Cursor cursor = db.rawQuery(sql, null);
-        int MSG_PK =  -1;
-        if (cursor != null && cursor.moveToFirst()) {
-            do {
+    // UserListAdapter.java (selectLastMsg 메서드 수정)
 
-                int MSG_PK_index = cursor.getColumnIndex("MSG_PK");
-                if (MSG_PK_index != -1) {
-                    MSG_PK = cursor.getInt(MSG_PK_index);
+    public MSG selectLastMsg(String chatRoomID, String userKey) {
+        String msg = "";
+        String TS = "-1";
+        if (table != null && table.equals("CHAT_MSG_TB")) {
+            Log.d(TAG, "selectLastMsgwwww:sssssaaaaa ");
+            String sql = "SELECT MSG, TS FROM CHAT_MSG_TB WHERE USER_FK = ? AND CHAT_ROOM_FK = ? AND MYFLAG = ? ORDER BY TS ASC LIMIT 1";
+            String[] selectionArgs = { userKey, chatRoomID, "2" };
+            Cursor cursor = db.rawQuery(sql, selectionArgs);
+            if (cursor != null && cursor.moveToFirst()) {
+                int MSGIndex = cursor.getColumnIndex("MSG");
+                Log.d(TAG, "cursor not null " + MSGIndex);
+                int TSIndex = cursor.getColumnIndex("TS");
+                if (MSGIndex != -1) {
+                    msg = cursor.getString(MSGIndex);
                 }
-            } while (cursor.moveToNext());
-
+                if (TSIndex != -1) {
+                    TS = cursor.getString(TSIndex);
+                }
+            } else {
+                // cursor 객체가 null인 경우 로그 출력 후 메서드 종료
+                Log.d(TAG, "cursor is null");
+                return new MSG(2, Integer.parseInt(chatRoomID), msg, TS, 1);
+            }
+            cursor.close();
         }
-        cursor.close();
-        db.close();
-        return MSG_PK;
+
+        // TS 값을 처리하는 로직 추가
+
+        Log.d(TAG, "selectLastMsg: " + msg + "ssssss" + TS);
+        return new MSG(2, Integer.parseInt(chatRoomID), msg, TS, 1);
     }
+
+
 
 
 

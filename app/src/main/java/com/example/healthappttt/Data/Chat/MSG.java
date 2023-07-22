@@ -62,9 +62,12 @@ public class MSG {
         }
 
         long timeStamp = date.getTime(); // 날짜 및 시간을 밀리초로 변환
-            System.out.println(timestamp);
+        Log.d(TAG, "getTimestamp: "+timeStamp);
             return timeStamp;
 
+    }
+    public String timestampString(){
+        return timestamp;
     }
 
     public void setTimestamp(String timestamp) {

@@ -39,11 +39,13 @@ import com.example.healthappttt.interface_.ServiceApi;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import retrofit2.Call;
@@ -450,7 +452,8 @@ public class MyProfileActivity extends AppCompatActivity {
 
                     SQLiteUtil sqLiteUtil = SQLiteUtil.getInstance();
                     sqLiteUtil.setInitView(getApplicationContext(), "CHAT_MSG_TB");
-                    int chatPk = sqLiteUtil.insert(UserTB.getPK(), 1, "!%$$#@@$%^!!~"+UserTB.getUser_NM()+"~!!^%$@@#$$%!", response.body(),0);
+                    String timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
+                    int chatPk = sqLiteUtil.insert(UserTB.getPK(), 1, "!%$$#@@$%^!!~"+UserTB.getUser_NM()+"~!!^%$@@#$$%!", response.body(),0,timestamp);
                     Log.d(TAG, "chatPk보내기"+otherUserKey);
                     sendMessageToServer("!%$$#@@$%^!!~"+UserTB.getUser_NM()+"~!!^%$@@#$$%!",response.body());
                     finish();
