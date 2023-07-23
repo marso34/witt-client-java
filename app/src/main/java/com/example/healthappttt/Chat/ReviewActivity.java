@@ -264,16 +264,18 @@ public class ReviewActivity extends AppCompatActivity {
     }
 
     private void sendToServer() {
+//        이 분과는 다시는 운동하고 싶지 않아요 // 이 부분은 차단 목록에 추가할까 생각중
+
         if (isGood > 0) {
-            check_box = 0x8000;
+            check_box = 0x8000; // 좋아요
 
             for (int i = 0; i <  goodCheckedTextViews.length; i++) {
                 if (goodCheckedTextViews[i].isChecked()) {
                     switch (i) {
-                        case 0: check_box |= 0x01; break;
-                        case 1: check_box |= 0x02; break;
-                        case 2: check_box |= 0x04; break;
-                        case 3: check_box |= 0x08; break;
+                        case 0: check_box |= 0x01; break; // 친절하고 매너가 좋아요
+                        case 1: check_box |= 0x02; break; // 시간약속을 잘 지켜요
+                        case 2: check_box |= 0x04; break; // 응답이 빨라요
+                        case 3: check_box |= 0x08; break; // 운동을 잘 알려줘요
                         case 4: check_box |= 0x10; break;
                         case 5: check_box |= 0x20; break;
                         case 6: check_box |= 0x40; break;
@@ -281,7 +283,7 @@ public class ReviewActivity extends AppCompatActivity {
                 }
             }
         } else if (isGood < 0) {
-            check_box = 0;
+            check_box = 0; // 별로예요
 
             if (binding.addBlacklist.isChecked()) {
 //                차단목록 추가
@@ -290,14 +292,14 @@ public class ReviewActivity extends AppCompatActivity {
             for (int i = 0; i <  badCheckedTextViews.length; i++) {
                 if (badCheckedTextViews[i].isChecked()) {
                     switch (i) {
-                        case 0: check_box |= 0x01; break;
-                        case 1: check_box |= 0x02; break;
-                        case 2: check_box |= 0x04; break;
-                        case 3: check_box |= 0x08; break;
-                        case 4: check_box |= 0x10; break;
-                        case 5: check_box |= 0x20; break;
-                        case 6: check_box |= 0x40; break;
-                        case 7: check_box |= 0x80; break;
+                        case 0: check_box |= 0x01; break; // 원하지 않는 운동을 계속 강요해요
+                        case 1: check_box |= 0x02; break; // 시간약속을 안 지켜요
+                        case 2: check_box |= 0x04; break; // 채팅 메시지를 읽고도 답장이 없어요
+                        case 3: check_box |= 0x08; break; // 약속 시간을 명확하게 알려주지 않아요
+                        case 4: check_box |= 0x10; break; // 약속 시간과 장소를 정한 후 운동 직전 취소했어요
+                        case 5: check_box |= 0x20; break; // 약속 장소에 나타나지 않았어요
+                        case 6: check_box |= 0x40; break; // 반말을 사용해요
+                        case 7: check_box |= 0x80; break; // 불친절해요
                         case 8: check_box |= 0x100; break;
                         case 9: check_box |= 0x200; break;
                     } // 실제로 사용은 7까지

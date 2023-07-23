@@ -33,7 +33,7 @@
 
         <activity
             android:name=".Chat.ReviewActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".Chat.ReportActivity"
             android:exported="true">
@@ -153,8 +153,8 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".Sign.SubActivity"
-            android:exported="false"
+            android:name=".Sign.SignUpActivity"
+            android:exported="true"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.app.lib_name"

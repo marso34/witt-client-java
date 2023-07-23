@@ -92,7 +92,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityResult.launch(signInIntent); // startActivityForResult 대체 방법
-        startActivityForResult(signInIntent, RC_SIGN_IN);
+//        startActivityForResult(signInIntent, RC_SIGN_IN); // 이제 사용 X
     }
 //
 //    @Override
@@ -188,10 +188,11 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     }
 
     private void sendData(String email,String name) {
-        Intent intent = new Intent(LoginActivity.this, SubActivity.class);
+        Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
         intent.putExtra("email", email);
         Log.d(TAG, "adadad"+email);
         intent.putExtra("name", name);
+        intent.putExtra("platform", 0); // 구글인지 네이버인지에 따라 다르게
         startActivity(intent);
         finish();
     }

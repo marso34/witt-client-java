@@ -23,6 +23,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -31,6 +32,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.healthappttt.Data.User.LocData;
 import com.example.healthappttt.R;
+import com.example.healthappttt.databinding.FragmentSuSelectGymBinding;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -62,73 +64,70 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class subFragment extends Fragment implements OnMapReadyCallback, LocationListener {
-    private EditText searchEditText;
-    private RecyclerView searchRecyclerView;
+public class SUSelectGymFragment extends Fragment implements OnMapReadyCallback, LocationListener {
+    FragmentSuSelectGymBinding binding;
+
     private LocationAdapter locationAdapter;
     private List<LocData> searchResults;
+
     private static final int PERMISSION_REQUEST_CODE = 1;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
-    private static final String ARG_EMAIL = "email";
+    private static final String ARG_LAT = "lat";
+    private static final String ARG_LON = "lon";
+    private static final String ARG_GYM = "gym";
+
     private FusedLocationProviderClient fusedLocationClient;
     private LocationRequest locationRequest;
     private LocationCallback locationCallback;
-    private String name;
-    private String email;
-    private MapView mapView;
-    private GoogleMap googleMap;
-    private Button skip;
+
     private double lat;
     private double lon;
-    private LocationManager locationManager;
+    private String gymName;
+
+
     PlacesClient placesClient;
+    private MapView mapView;
+    private GoogleMap googleMap;
+    private LocationManager locationManager;
+
     private Location location;
 
-    public static subFragment newInstance(String email) {
-        subFragment fragment = new subFragment();
+    public static SUSelectGymFragment newInstance(double lat, double lon, String gymName) {
+        SUSelectGymFragment fragment = new SUSelectGymFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_EMAIL, email);
+        args.putDouble(ARG_LAT, lat);
+        args.putDouble(ARG_LON, lon);
+        args.putString(ARG_GYM, gymName);
+
         fragment.setArguments(args);
         return fragment;
     }
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            email = getArguments().getString(ARG_EMAIL);
+            lat = getArguments().getDouble(ARG_LAT);
+            lon = getArguments().getDouble(ARG_LON);
+            gymName = getArguments().getString(ARG_GYM);
         }
-
     }
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_sub, container, false);
+//        View view = inflater.inflate(R.layout.fragment_su_select_gym, container, false);
+        binding = FragmentSuSelectGymBinding.inflate(inflater);
 
-
-        // Initialize views
-        searchEditText = view.findViewById(R.id.searchEditText);
-        searchRecyclerView = view.findViewById(R.id.searchRecyclerView);
-        skip = view.findViewById(R.id.move2);
-                // Set up RecyclerView
-        searchRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-        locationAdapter = new LocationAdapter();
-        searchRecyclerView.setAdapter(locationAdapter);
-
-        // Initialize search results
         searchResults = new ArrayList<>();
-
-
-
-        // Create location request
 
         if ( Build.VERSION.SDK_INT >= 23 &&
                 ContextCompat.checkSelfPermission( getContext(), Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
             ActivityCompat.requestPermissions( getActivity(), new String[] {
                     Manifest.permission.ACCESS_FINE_LOCATION}, 0 );
-
+        } else {
         }
-        else {
 
-        }
+
         // Initialize fused location client
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext());
         // Initialize Places API
@@ -152,7 +151,28 @@ public class subFragment extends Fragment implements OnMapReadyCallback, Locatio
         };
 
         // Listen to text changes in the search EditText
-        searchEditText.addTextChangedListener(new TextWatcher() {
+
+        return binding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        setRecyclerView();
+
+        binding.backBtn.setOnClickListener(v -> {
+            ((SignUpActivity) getActivity()).goToSelectGender(-1, -1, false);
+        });
+
+        binding.skip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((SignUpActivity) getActivity()).goToInputPerf(lat, lon, null, 0, 0);
+            }
+        });
+
+        binding.search.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 // Not used
@@ -169,13 +189,24 @@ public class subFragment extends Fragment implements OnMapReadyCallback, Locatio
                 // Not used
             }
         });
-        skip.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((SubActivity) getActivity()).replaceFragment(sub1Fragment.newInstance(email, lat, lon, 0.0, 0.0, "없음"));
-            }
+
+        binding.nextBtn.setOnClickListener(v -> {
+
         });
-        return view;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        binding = null;
+    }
+
+    private void setRecyclerView() {
+        locationAdapter = new LocationAdapter();
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+        binding.recyclerView.setAdapter(locationAdapter);
+
     }
 
     private void startLocationUpdates() {
@@ -228,6 +259,7 @@ public class subFragment extends Fragment implements OnMapReadyCallback, Locatio
 
         stopLocationUpdates();
     }
+
     private void performSearch(final String query) {
         searchResults.clear();
 
@@ -371,7 +403,7 @@ public class subFragment extends Fragment implements OnMapReadyCallback, Locatio
                     double longitude = latLng.longitude;
                     Log.d(TAG, "wwwwwww: "+latitude+"aaaa"+longitude);
                     // Perform any action with latitude and longitude values
-                    ((SubActivity) getActivity()).replaceFragment(sub1Fragment.newInstance(email, lat, lon, latitude, longitude, L.getName()));
+//                    ((SignUpActivity) getActivity()).replaceFragment(SUInputNameFragment.newInstance(email, lat, lon, latitude, longitude, L.getName()));
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
