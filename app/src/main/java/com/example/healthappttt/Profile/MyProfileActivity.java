@@ -190,8 +190,9 @@ public class MyProfileActivity extends AppCompatActivity {
         binding.Oprofile.setVisibility(View.VISIBLE);
         binding.totalRoutine.setVisibility(View.VISIBLE);
         binding.report.setVisibility(View.VISIBLE);
-        binding.aaa.setVisibility(View.VISIBLE);
+        binding.rt.setVisibility(View.VISIBLE);
         binding.SendWitt.setVisibility(View.VISIBLE);
+        binding.view3.setVisibility(View.VISIBLE);
     }
 
     private void setRecyclerView(ArrayList<RoutineData> routines) {
