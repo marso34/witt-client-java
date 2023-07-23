@@ -49,7 +49,7 @@ public class PreferenceHelper
         edit.putInt("Platform", upf.getPlatform());
         edit.putString("User_NM", upf.getUser_NM());
         edit.putString("PW", upf.getPW());
-
+        Log.d("putProfile","pk저장" );
         // User_Img 는 byte[] 타입이므로 Base64로 인코딩하여 저장
 //        if(upf.getUser_Img() != null) {
 //            String encodedImage = Base64.encodeToString(upf.getUser_Img(), Base64.DEFAULT);
@@ -132,7 +132,12 @@ public class PreferenceHelper
     public String getPW() {
         return app_prefs.getString("PW","__");
     }
-
+    //필요한 변수 setter 매소드 생성
+    public void setPK(int pk) {
+        app_prefs.edit().putInt("USER_PK",pk);
+        Log.d("setPK: ", String.valueOf(pk));
+    }
+    //
 
     public  Map<String, Object> getUserData() {
         Map<String, Object> userData = new HashMap<>();

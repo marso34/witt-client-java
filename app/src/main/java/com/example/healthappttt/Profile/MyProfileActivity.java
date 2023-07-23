@@ -1,9 +1,6 @@
 package com.example.healthappttt.Profile;
 
-import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
-
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -32,7 +29,6 @@ import com.example.healthappttt.Data.WittSendData;
 import com.example.healthappttt.R;
 import com.example.healthappttt.Routine.RoutineActivity;
 import com.example.healthappttt.Routine.RoutineAdapter;
-import com.example.healthappttt.Sign.LoginActivity;
 import com.example.healthappttt.databinding.ActivityMyprofileBinding;
 import com.example.healthappttt.interface_.ServiceApi;
 
@@ -63,7 +59,7 @@ public class MyProfileActivity extends AppCompatActivity {
     private WittSendData wittSendData;
   
     ImageButton block_btn,Reviews_btn,WittHistory_btn;
-    Button PEdit;
+    Button PEdit, cancel_profile;
     ImageView ProfileImg;
     TextView Pname,Pgender,Pheight,Pweight,Plocatoin;
     TextView Psqaut,Pbench,Pdeadlift;
@@ -84,8 +80,9 @@ public class MyProfileActivity extends AppCompatActivity {
         binding = ActivityMyprofileBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        Reviews_btn = findViewById(R.id.Reviews_Recd);
-        WittHistory_btn = findViewById(R.id.WittHistory);
+        //Reviews_btn = findViewById(R.id.Reviews_Recd);
+        //WittHistory_btn = findViewById(R.id.WittHistory);
+        cancel_profile = findViewById(R.id.cancel_profile);
         //텍스트
         Pname = findViewById(R.id.name);
         Pgender = findViewById(R.id.gender);
@@ -115,8 +112,8 @@ public class MyProfileActivity extends AppCompatActivity {
         if(PK.equals(myPK) ){ // 내 pk이면 마이 프로필
             Log.d("프로필에서 로컬pk와 넘겨받은pk",PK + " " + myPK);
 
-            block_btn = findViewById(R.id.block_btn); //내 프로필에만  존재
-            PEdit = findViewById(R.id.PEdit);//내 프로필에만 존재
+            //block_btn = findViewById(R.id.block_btn); //내 프로필에만  존재
+            //PEdit = findViewById(R.id.PEdit);//내 프로필에만 존재
 
             userDefault = new HashMap<>();// 회원가입시 입력했던 데이터들 로컬에서 받기
             userDefault.put("User_NM", UserTB.getUserData().get("User_NM"));
@@ -139,13 +136,7 @@ public class MyProfileActivity extends AppCompatActivity {
                     // result 에는 resultCode 가 있다.
                     // resultCode 의 값으로, 여러가지 구분해서 사용이 가능.
                     if (result.getResultCode() == RESULT_OK){
-//                        String Ename = result.getData().getStringExtra("name");
-//                        int Eheight = result.getData().getIntExtra("height",0);
-//                        int Eweight = result.getData().getIntExtra("weight",0);
-//                        int EsquatValue = result.getData().getIntExtra("squatValue",0);
-//                        int EbenchValue = result.getData().getIntExtra("benchValue",0);
-//                        int EdeadValue = result.getData().getIntExtra("deadValue",0);
-//                        int Egender = result.getData().getIntExtra("gender",0);
+
                         userDefault = UserTB.getUserData();// edit에서 저장되고 돌아온 후 로컬에서 다시 데이터 불러옴
 
                         //화면에 연결
@@ -186,23 +177,7 @@ public class MyProfileActivity extends AppCompatActivity {
             OtherViewChangeBlock();
 
         }
-
-        //testcase----------------------//
-//        userDefault = new HashMap<>();
-//        userDefault.put("name","이형원");
-//        userDefault.put("gender",0);
-//        userDefault.put("height", 175);
-//        userDefault.put("weight", 87);
-//        userDefault.put("squatValue", 80);
-//        userDefault.put("benchValue", 90);
-//        userDefault.put("deadValue", 100);
-//        userDefault.put("totalValue",270);
-//
-//        membership.putUserDefault(userDefault);
-        //----------------------testcase//
-
-
-
+        cancel_profile();
 
     }
 
@@ -211,10 +186,9 @@ public class MyProfileActivity extends AppCompatActivity {
         binding.myprofile.setVisibility(View.GONE);
         binding.black.setVisibility(View.GONE);
         binding.set.setVisibility(View.GONE);
-        binding.secession.setVisibility(View.GONE);
         //상세 프로필(text),루틴, 신고내역 오늘 루틴, 위트 보내기 보이게
         binding.Oprofile.setVisibility(View.VISIBLE);
-        binding.routineTb.setVisibility(View.VISIBLE);
+        binding.totalRoutine.setVisibility(View.VISIBLE);
         binding.report.setVisibility(View.VISIBLE);
         binding.aaa.setVisibility(View.VISIBLE);
         binding.SendWitt.setVisibility(View.VISIBLE);
@@ -318,7 +292,7 @@ public class MyProfileActivity extends AppCompatActivity {
     //화면전환(마이프로필)
     public void ViewChangeBlock() {
         //수정하기
-        PEdit.setOnClickListener(new View.OnClickListener() {
+        binding.PEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MyProfileActivity.this, MyProfileEdit.class);
@@ -342,7 +316,7 @@ public class MyProfileActivity extends AppCompatActivity {
         });
 
         //차단하기
-        block_btn.setOnClickListener(new View.OnClickListener(){
+        binding.black.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MyProfileActivity.this, BlackActivity.class);
@@ -350,7 +324,7 @@ public class MyProfileActivity extends AppCompatActivity {
             }
         });
         //받은 후기
-        Reviews_btn.setOnClickListener(new View.OnClickListener(){
+        binding.ReviewsReceived.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MyProfileActivity.this, ReviewsRecdAtivity.class);
@@ -359,7 +333,7 @@ public class MyProfileActivity extends AppCompatActivity {
             }
         });
         //위트 내역
-        WittHistory_btn.setOnClickListener(new View.OnClickListener(){
+        binding.WittHistory.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MyProfileActivity.this, WittHistoryActivity.class);
@@ -368,17 +342,15 @@ public class MyProfileActivity extends AppCompatActivity {
             }
         });
         /** 설정 */
-
-
-
-        /** 탈퇴하기  */
-
-        binding.quit.setOnClickListener(new View.OnClickListener() {
+        binding.set.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                quitPopup();
+                Intent intent = new Intent(MyProfileActivity.this,SettingActivity.class);
+                startActivity(intent);
             }
         });
+
+
 
     }
     //화면 전환(상세 프로필)
@@ -394,7 +366,7 @@ public class MyProfileActivity extends AppCompatActivity {
             }
         });
         /** 받은 후기 */
-        binding.ReviewsRecd.setOnClickListener(new View.OnClickListener() {
+        binding.ReviewsReceived.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MyProfileActivity.this, ReviewsRecdAtivity.class);
@@ -403,7 +375,7 @@ public class MyProfileActivity extends AppCompatActivity {
             }
         });
         /** 위트 내역 */
-        WittHistory_btn.setOnClickListener(new View.OnClickListener(){
+        binding.WittHistory.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MyProfileActivity.this, WittHistoryActivity.class);
@@ -412,7 +384,7 @@ public class MyProfileActivity extends AppCompatActivity {
             }
         });
         /** 신고 내역 */
-        binding.RPTBtn.setOnClickListener(new View.OnClickListener() {
+        binding.report.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MyProfileActivity.this, ReportHistoryActivity.class);
@@ -445,13 +417,11 @@ public class MyProfileActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Integer> call, Response<Integer> response) {
                 if(response.isSuccessful()){
-                    Log.d("onResponse","성공");
                     Toast.makeText(MyProfileActivity.this, "채팅방이 생성되었습니다!", Toast.LENGTH_SHORT).show();
 
                     SQLiteUtil sqLiteUtil = SQLiteUtil.getInstance();
                     sqLiteUtil.setInitView(getApplicationContext(), "CHAT_MSG_TB");
                     int chatPk = sqLiteUtil.insert(UserTB.getPK(), 1, "!%$$#@@$%^!!~"+UserTB.getUser_NM()+"~!!^%$@@#$$%!", response.body(),0);
-                    Log.d(TAG, "chatPk보내기"+otherUserKey);
                     sendMessageToServer("!%$$#@@$%^!!~"+UserTB.getUser_NM()+"~!!^%$@@#$$%!",response.body());
                     finish();
                 } else {
@@ -465,6 +435,7 @@ public class MyProfileActivity extends AppCompatActivity {
             }
         });
     }
+
     private void sendMessageToServer(String messageText, int chatPk) {
         try {
             JSONObject data = new JSONObject();
@@ -482,54 +453,77 @@ public class MyProfileActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-
-    private void quitPopup() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        View view = getLayoutInflater().inflate(R.layout.my_popup_layout, null);
-
-        TextView username = view.findViewById(R.id.tv_user_info_name);
-        TextView useremail = view.findViewById(R.id.tv_user_info_email);
-        Button btnclose = view.findViewById(R.id.btn_user_info_close);//취소
-        Button btndelte = view.findViewById(R.id.btn_user_info_delete);//탈퇴
-
-        username.setText(UserTB.getEmail());
-        useremail.setText(UserTB.getUser_NM());
-
-        builder.setView(view);
-        AlertDialog dialog = builder.create();
-
-        UserKey UserKey = new UserKey(Integer.parseInt(myPK));
-
-        btnclose.setOnClickListener(new View.OnClickListener() {
+    //뒤로가기
+    private  void cancel_profile() {
+        cancel_profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.dismiss();//팝업 닫기
-                Toast.makeText(MyProfileActivity.this, "휴~", Toast.LENGTH_SHORT).show();
+                finish();
             }
         });
-
-        btndelte.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            //TODO 실제로 삭제되는지 확인 해야함 TEST -- goamin("7")로 테스트 할것
-            apiService.deleteUser(UserKey);//서버 디비에서 해당 키 삭제
-
-            UserTB.deleteUserTB();//로컬 shared 삭제
-            sqLiteUtil = SQLiteUtil.getInstance();
-            sqLiteUtil.DropUser(MyProfileActivity.this);
-
-            Toast.makeText(MyProfileActivity.this, "탈퇴완료", Toast.LENGTH_SHORT).show();
-
-            Intent intent = new Intent(MyProfileActivity.this, LoginActivity.class);
-            startActivity(intent);
-            finish();
-            }
-        });
-
-        dialog.show();
-    }
-
-
-
+    } //TODO 상세 프로필에 나오도록 xml 변경
+    //받은 후기
+//    public void onClickReviewReceived(View view) {
+//        Intent intent = new Intent(MyProfileActivity.this, ReviewsRecdAtivity.class);
+//        intent.putExtra("PK",PK);
+//        startActivity(intent);
+//    }
+//    //위트 내역
+//    public void onClickWittHistory(View view) {
+//        Intent intent = new Intent(MyProfileActivity.this, WittHistoryActivity.class);
+//        intent.putExtra("PK",PK);
+//        startActivity(intent);
+//    }
+//    //차단목록
+//    public void onClickBlackList(View view) {
+//        Intent intent = new Intent(MyProfileActivity.this, BlackActivity.class);
+//        startActivity(intent);
+//    }
+//    //설정하기
+//    public void onClickSetting(View view) {
+//        Intent intent = new Intent(MyProfileActivity.this,SettingActivity.class);
+//        startActivity(intent);
+//    }
+//    //상대 루틴
+//    public void onClickRoutine(View view) {
+//        Intent intent = new Intent(MyProfileActivity.this, RoutineActivity.class);
+//        intent.putExtra("code",Integer.valueOf(PK)); //pk
+//        intent.putExtra("name",OtherName);//이름
+//        startActivity(intent);
+//    }
+//    //신고 내역
+//    public void onClickReport(View view) {
+//        Intent intent = new Intent(MyProfileActivity.this, ReportHistoryActivity.class);
+//        intent.putExtra("PK",PK);
+//        startActivity(intent);
+//    }
+//
+//
+//    //내 정보 수정
+//    public void onClickProfileEdit(View view) {
+//        Intent intent = new Intent(MyProfileActivity.this, MyProfileEdit.class);
+//
+//        Bundle bundle = new Bundle();
+//        for (Map.Entry<String, Object> entry : userDefault.entrySet()) {
+//            String key = entry.getKey();
+//            Object value = entry.getValue();
+//
+//            if (value instanceof String) {
+//                bundle.putString(key, (String) value);
+//            } else if (value instanceof Integer) {
+//                bundle.putInt(key, (Integer) value);
+//            }
+//            // 다른 데이터 타입에 따라 추가적인 처리
+//        }
+//
+//        intent.putExtras(bundle);
+//        editProfileLauncher.launch(intent);
+//    }
+//    //위트 보내기
+//    public void onClickSendWitt(View view) {
+//        Log.d("onClickSendWitt","위트보내기 눌림");
+//        wittSendData = new WittSendData(UserTB.getPK(),Integer.valueOf(PK),UserTB.getUser_NM(),OuserDefault.get("USER_NM").toString());
+//        getWittUserData(wittSendData);
+//    }
 }
 

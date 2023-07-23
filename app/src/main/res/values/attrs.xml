@@ -3,4 +3,13 @@
         <attr name="fullscreenBackgroundColor" format="color" />
         <attr name="fullscreenTextColor" format="color" />
     </declare-styleable>
+
+    <style name="CustomSwitchStyle">
+        <!-- 다른 기존 속성들 -->
+        <item name="sb_uncheck_color">@color/Box</item>
+        <item name="sb_checked_color">#03C78C</item>sb_button_color
+        <item name="sb_show_indicator">false</item>
+        <item name="sb_button_color">@color/white</item>
+        <item name="sb_background">@color/Box</item>
+    </style>
 </resources>

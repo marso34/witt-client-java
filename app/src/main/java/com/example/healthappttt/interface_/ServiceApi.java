@@ -63,7 +63,7 @@ public interface ServiceApi {
     Call<List<ReportHistory>> getReport(@Body UserKey userKey);
 
     @POST("/profile/deleteUser")//탈퇴 하기
-    Call deleteUser(@Body UserKey userKey);
+    Call<String> deleteUser(@Body Map<String, Object> DROP);
 
     @POST("/profile/updateRPT")//신고하기
     Call<String> updateRPT(@Body Map<String, Object> RPT);
