@@ -200,26 +200,28 @@ public class SocketSingleton {
                     Log.d(TAG, "chatpk받기"+chatPk+"ㅁㅁ"+ signal + "ts" + ts);
                     sqLiteUtil.setInitView(context.getApplicationContext(), "CHAT_MSG_TB");
                     MSG m = sqLiteUtil.SelectMSG(String.valueOf(preferenceHelper.getPK()),Integer.parseInt(signal));
-                    Log.d(TAG, "call:aaa "+m.getMessage());
-                    sqLiteUtil.setInitView(context.getApplicationContext(), "CHAT_MSG_TB");
-                    sqLiteUtil.deleteMSG(Integer.parseInt(signal));
-                    sqLiteUtil.setInitView(context.getApplicationContext(), "CHAT_MSG_TB");
-                    sqLiteUtil.insert(Integer.parseInt(chatPk),preferenceHelper.getPK(),1,m.getMessage(),m.getChatRoomId(),1,ts);
-                    if(chatActivity != null) {
-                        if (!chatActivity.getSendUpdatingMSG()) {
-                            chatActivity.setSendUpdatingMSG(true);
-                            new Thread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Log.d(TAG, "run: " + chatActivity.getSendUpdatingMSG());
-                                    chatActivity.getMSG(2);
-                                }
-                            }).start();
+                    if(m != null) {
+                        sqLiteUtil.setInitView(context.getApplicationContext(), "CHAT_MSG_TB");
+                        sqLiteUtil.deleteMSG(Integer.parseInt(signal));
+                        sqLiteUtil.setInitView(context.getApplicationContext(), "CHAT_MSG_TB");
+                        sqLiteUtil.insert(Integer.parseInt(chatPk), preferenceHelper.getPK(), 1, m.getMessage(), m.getChatRoomId(), 1, ts);
+                        if (chatActivity != null) {
+                            if (!chatActivity.getSendUpdatingMSG()) {
+                                chatActivity.setSendUpdatingMSG(true);
+                                new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Log.d(TAG, "run: " + chatActivity.getSendUpdatingMSG());
+                                        chatActivity.getMSG(2);
+                                    }
+                                }).start();
+                            }
                         }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+
             }
         });
     }

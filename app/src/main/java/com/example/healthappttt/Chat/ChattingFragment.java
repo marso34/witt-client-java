@@ -42,37 +42,63 @@ public class ChattingFragment extends Fragment {
     private SQLiteUtil sqLiteUtil;
     public boolean chatflag = false;
     private SocketSingleton socketSingleton;
+    // TODO: Rename parameter arguments, choose names that match
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
+
+    // TODO: Rename and change types of parameters
+    private String mParam1;
+    private String mParam2;
+    public ChattingFragment() {
+    }
+
+    public static ChattingFragment newInstance(String param1, String param2) {
+        ChattingFragment fragment = new ChattingFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
+        fragment.setArguments(args);
+        return fragment;
+    }
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
+        }
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // 레이아웃을 inflate합니다.
         View view = inflater.inflate(R.layout.fragment_chatting, container, false);
         userList = new ArrayList<>();
         sqLiteUtil = SQLiteUtil.getInstance();
-        prefhelper = new PreferenceHelper(name_TB,getContext());
-        socketSingleton = SocketSingleton.getInstance(getContext());
+        sqLiteUtil.setEmptyDB();
+        prefhelper = new PreferenceHelper(name_TB,getActivity());
+        socketSingleton = SocketSingleton.getInstance(getActivity());
         socketSingleton.setChatFragment(this);
         // 리사이클러뷰를 초기화합니다.
         userlistRecyclerView = view.findViewById(R.id.recyclerView2);
-        userlistRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        userlistRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         // 유저 목록을 가져와서 userList에 저장합니다.
 
         // 어댑터를 초기화하고 userList를 설정합니다.
-        userListAdapter = new UserListAdapter(getContext(),userList);
+        userListAdapter = new UserListAdapter(getActivity(),userList);
         userlistRecyclerView.setAdapter(userListAdapter);
         getUsersFromServer();
         // 어댑터의 아이템 클릭 리스너를 설정합니다.
-        for (int i =0; i<userList.size();++i) {
-            Log.d("chatUSERLIST22", userList.get(i).getOtherUserKey());
-        }
         return view;
     }
+
     public void getLastMSG(String chatRoomId, String userKey) {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                sqLiteUtil.setInitView(getContext(), "CHAT_MSG_TB");
+                sqLiteUtil.setInitView(getActivity(), "CHAT_MSG_TB");
                 MSG m = sqLiteUtil.selectLastMsg(chatRoomId, userKey, 2);
 
                 // 메인 스레드로 UI 갱신 작업 보냄
@@ -104,28 +130,27 @@ public class ChattingFragment extends Fragment {
             @Override
             public void onResponse(Call<List<UserChat>> call, Response<List<UserChat>> response) {
                 if (response.isSuccessful()) {
+
                     List<UserChat> users = response.body();
                     sqLiteUtil.setInitView(getActivity(),"CHAT_ROOM_TB");
                     sqLiteUtil.deleteChatRoom();
                     sqLiteUtil.setInitView(getActivity(),"CHAT_ROOM_TB");
                     sqLiteUtil.insert(prefhelper.getPK(),users);
+
                     // userList에 데이터가 추가된 후에 실행되어야 하는 로직을 여기에 작성합니다.
-                    for (int i = 0; i < userList.size(); ++i) {
-                        Log.d("chatUSERLIST22", userList.get(i).getOtherUserKey());
-                    }
                     userList.clear();
                     userList.addAll(users);
                     userListAdapter.notifyDataSetChanged();
                     chatflag = false;
 
                 } else {
-                    Toast.makeText(getContext(), "Failed to retrieve user list", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Failed to retrieve user list", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<List<UserChat>> call, Throwable t) {
-                Toast.makeText(getContext(), "Failed to retrieve user list", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Failed to retrieve user list", Toast.LENGTH_SHORT).show();
             }
         });
     }

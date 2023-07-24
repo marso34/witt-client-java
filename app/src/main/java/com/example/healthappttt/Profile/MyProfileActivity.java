@@ -452,12 +452,28 @@ public class MyProfileActivity extends AppCompatActivity {
                     Log.d("onResponse","성공");
                     Toast.makeText(MyProfileActivity.this, "채팅방이 생성되었습니다!", Toast.LENGTH_SHORT).show();
                     SQLiteUtil sqLiteUtil = SQLiteUtil.getInstance();
-                    sqLiteUtil.setInitView(getApplicationContext(), "CHAT_MSG_TB");
-                     sqLiteUtil.insert(UserTB.getPK(), 1, "!%$$#@@$%^!!~"+UserTB.getUser_NM()+"~!!^%$@@#$$%!", response.body(),0,ts);
-                    Log.d(TAG, "chatPk보내기"+otherUserKey);
-                    //채팅방 로컬 저장 코드 넣기
-                    sendMessageToServer("!%$$#@@$%^!!~"+UserTB.getUser_NM()+"~!!^%$@@#$$%!",response.body());
-                    finish();
+                    int chatkey = -1;
+                    String ts  = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
+                    try {
+                        try {
+                            sqLiteUtil.setInitView(getApplicationContext(), "CHAT_MSG_TB");
+                            chatkey = sqLiteUtil.getLastMyMsgPK(String.valueOf(response.body()), myPK);
+                            chatkey = chatkey + 1;
+                        } finally {
+                            sqLiteUtil.setInitView(getApplicationContext(), "CHAT_MSG_TB");
+                            sqLiteUtil.insert(chatkey, Integer.parseInt(myPK), 1, "!%$$#@@$%^!!~" + UserTB.getUser_NM() + "~!!^%$@@#$$%!", response.body(), 0, ts);
+                            Log.d(TAG, "chatPk보내기" + chatkey + ts);
+                            Log.d(TAG, "chatPk보내기" + otherUserKey);
+                            //채팅방 로컬 저장 코드 넣기
+                            if (chatkey != -1) {
+                                sendMessageToServer("!%$$#@@$%^!!~" + UserTB.getUser_NM() + "~!!^%$@@#$$%!", response.body(), chatkey);
+
+                            }
+                        }
+                    }
+                    finally {
+                        finish();
+                    }
                 } else {
                      Log.d("onResponse","실패");
                 }
@@ -469,18 +485,17 @@ public class MyProfileActivity extends AppCompatActivity {
             }
         });
     }
-    private void sendMessageToServer(String messageText, int chatPk) {
+    private void sendMessageToServer(String messageText, int chatRoomPk,int chatPk) {
         try {
-            JSONObject data = new JSONObject();
-            data.put("myUserKey", UserTB.getPK());
-            double a= Double.parseDouble(otherUserKey);
-
-            data.put("otherUserKey", (int) a);
-            data.put("chatRoomId", chatPk);
-            data.put("messageText", messageText);
-            data.put("chatPk",1);
             SocketSingleton socketSingleton = SocketSingleton.getInstance(this);
-
+            JSONObject data = new JSONObject();
+            data.put("myUserKey", myPK);
+            data.put("otherUserKey", PK);
+            data.put("chatRoomId", chatRoomPk);
+            data.put("messageText", messageText);
+            data.put("chatPk",chatPk);
+            String ts  = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
+            data.put("TS",ts);
             socketSingleton.sendMessage(data);
         } catch (JSONException e) {
             e.printStackTrace();

@@ -23,6 +23,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import io.reactivex.rxjava3.annotations.NonNull;
 
@@ -73,11 +75,23 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
         }
         return new MessageViewHolder(view);
     }
+    public String extractName(String inputString) {
+        String namePattern = "!!~(.*?)~!!"; // 정규표현식 패턴: !!~(이름)~!!
+        Pattern pattern = Pattern.compile(namePattern);
+        Matcher matcher = pattern.matcher(inputString);
 
+        if (matcher.find()) {
+            return matcher.group(1)+"님이 위트를 보냈습니다."; // 매칭된 그룹(이름) 반환
+        } else {
+            return null; // 이름이 매칭되지 않으면 빈 문자열 반환
+        }
+    }
     @Override
     public void onBindViewHolder(@NonNull MessageViewHolder holder, int position) {
         MSG message = messageList.get(position);
-        holder.messageTextView.setText(message.getMessage());
+        if(extractName(message.getMessage())== null)
+            holder.messageTextView.setText(message.getMessage());
+        else  holder.messageTextView.setText(extractName(message.getMessage()));
         holder.timeTextView.setText(message.timestampString());
         if (message.getMyFlag() == 1) {
             // 보낸 메시지인 경우

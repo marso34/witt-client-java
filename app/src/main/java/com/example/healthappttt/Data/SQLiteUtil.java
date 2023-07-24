@@ -41,7 +41,10 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
 
         return instance;
     }
-
+    public void setEmptyDB(){
+        db.close();
+        db = null;
+    }
     public void setInitView(Context context, String tableName) {
         if((db == null || !db.isOpen())) {
             this.table = tableName;
@@ -342,7 +345,6 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         if (table.equals("CHAT_ROOM_TB")) {
             ContentValues values = new ContentValues();
             for (UserChat u : U) {
-
                 if (table.equals("CHAT_ROOM_TB")) {
                     values.put("USER_FK", userKey);
                     values.put("CHAT_ROOM_PK", u.getChatRoomId());
@@ -380,6 +382,7 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         if (table.equals("CHAT_ROOM_TB")) {
             db.execSQL("DELETE FROM CHAT_ROOM_TB");
             db.close();
+            Log.d(TAG, "deleteChatRoom: 성공");
         }
     }
 
