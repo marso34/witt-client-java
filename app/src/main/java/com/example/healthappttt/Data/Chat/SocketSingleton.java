@@ -123,7 +123,8 @@ public class SocketSingleton {
                 try {
                     message = data.getString("message");
                     chatRoomId = data.getString("chatRoomId");
-                    String TS = data.getString("TS");
+                    String TS = data.getString("timeStamp");
+                    String chat_Pk = data.getString("chatKey");
                     if(extractName(message) != null) {
                         Intent receiverIntent = new Intent(context, AlarmRecevier.class);
                         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, i++, receiverIntent, PendingIntent.FLAG_IMMUTABLE);
@@ -135,8 +136,7 @@ public class SocketSingleton {
                             new Thread(new Runnable() {
                                 @Override
                                 public void run() {
-
-                                    chatF.getUsersFromServer();
+                                    chatF.getLastMSG(chatRoomId,String.valueOf(preferenceHelper.getPK()));
                                 }
                             }).start();
                         }
@@ -144,7 +144,7 @@ public class SocketSingleton {
                     }
                     if (chatRoomId != null) {
                         int CRI = Integer.parseInt(chatRoomId);
-                        SqlLiteSaveMessage(preferenceHelper.getPK(), 2, message, CRI,TS);
+                        SqlLiteSaveMessage(Integer.parseInt(chat_Pk),preferenceHelper.getPK(), 2, message, CRI,TS);
                         mSocket.emit("completeMessage");
                             if(chatActivity != null && chatActivity.getChatRoomId().equals(chatRoomId)) {
                                 if (!chatActivity.getUpdatingMSG()) {
@@ -162,8 +162,18 @@ public class SocketSingleton {
                             if(flag == false) {
                                 createNotificationChannel();
                                 showCustomNotification(chatRoomId, message); // 채팅 메시지 알림 표시
+                                if(chatF!=null && !chatF.chatflag) {
+                                    chatF.chatflag = true;
+                                    new Thread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            chatF.getLastMSG(chatRoomId,String.valueOf(preferenceHelper.getPK()));
+                                        }
+                                    }).start();
+                                }
                             }
                         }
+
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -175,6 +185,7 @@ public class SocketSingleton {
     public void sendMessage(JSONObject message) {
         Log.d("SocketSingleton", "sendMessage: Sending message");
         mSocket.emit("sendMessage", message);
+
     }
 
     public void returnSignal() {
@@ -184,10 +195,16 @@ public class SocketSingleton {
                 JSONObject data = (JSONObject) args[0];
                 try {
                     String signal = data.getString("signal");
-                    chatPk = Integer.parseInt(signal);
-                    Log.d(TAG, "chatpk받기"+chatPk);
+                    String ts = data.getString("timeStamp");
+                    String chatPk = data.getString("chatKey");
+                    Log.d(TAG, "chatpk받기"+chatPk+"ㅁㅁ"+ signal + "ts" + ts);
                     sqLiteUtil.setInitView(context.getApplicationContext(), "CHAT_MSG_TB");
-                    sqLiteUtil.Update(preferenceHelper.getPK(),chatPk);
+                    MSG m = sqLiteUtil.SelectMSG(String.valueOf(preferenceHelper.getPK()),Integer.parseInt(signal));
+                    Log.d(TAG, "call:aaa "+m.getMessage());
+                    sqLiteUtil.setInitView(context.getApplicationContext(), "CHAT_MSG_TB");
+                    sqLiteUtil.deleteMSG(Integer.parseInt(signal));
+                    sqLiteUtil.setInitView(context.getApplicationContext(), "CHAT_MSG_TB");
+                    sqLiteUtil.insert(Integer.parseInt(chatPk),preferenceHelper.getPK(),1,m.getMessage(),m.getChatRoomId(),1,ts);
                     if(chatActivity != null) {
                         if (!chatActivity.getSendUpdatingMSG()) {
                             chatActivity.setSendUpdatingMSG(true);
@@ -206,9 +223,9 @@ public class SocketSingleton {
             }
         });
     }
-    public void SqlLiteSaveMessage(int userKey, int myFlag, String message, int chatRoomId,String ts) {
+    public void SqlLiteSaveMessage(int chatPk,int userKey, int myFlag, String message, int chatRoomId,String ts) {
         sqLiteUtil.setInitView(context.getApplicationContext(), "CHAT_MSG_TB");
-        sqLiteUtil.insert(userKey, myFlag, message, chatRoomId, 1,ts);
+        sqLiteUtil.insert(chatPk,userKey, myFlag, message, chatRoomId, 1,ts);
     }
 
     private void insertSocket() {

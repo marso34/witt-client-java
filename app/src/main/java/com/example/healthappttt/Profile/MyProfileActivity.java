@@ -432,8 +432,10 @@ public class MyProfileActivity extends AppCompatActivity {
 //                OuserDefault.get("USER_NM").toString();상대방 이름
 //                UserTB.getPK(); 내 pk
 //                UserTB.getUser_NM();내 이름
-                wittSendData = new WittSendData(UserTB.getPK(),Integer.valueOf(PK),UserTB.getUser_NM(),OuserDefault.get("USER_NM").toString());
-                getWittUserData(wittSendData);
+                String timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
+
+                wittSendData = new WittSendData(UserTB.getPK(),Integer.valueOf(PK),UserTB.getUser_NM(),OuserDefault.get("USER_NM").toString(),timestamp);
+                getWittUserData(wittSendData,timestamp);
 
 
             }
@@ -441,7 +443,7 @@ public class MyProfileActivity extends AppCompatActivity {
 
     }
 
-    private void getWittUserData(WittSendData wittSendData) {
+    private void getWittUserData(WittSendData wittSendData,String ts) {
         Call<Integer> call = apiService.makeChatRoom(wittSendData);
         call.enqueue(new Callback<Integer>() {
             @Override
@@ -449,12 +451,11 @@ public class MyProfileActivity extends AppCompatActivity {
                 if(response.isSuccessful()){
                     Log.d("onResponse","성공");
                     Toast.makeText(MyProfileActivity.this, "채팅방이 생성되었습니다!", Toast.LENGTH_SHORT).show();
-
                     SQLiteUtil sqLiteUtil = SQLiteUtil.getInstance();
                     sqLiteUtil.setInitView(getApplicationContext(), "CHAT_MSG_TB");
-                    String timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
-                    int chatPk = sqLiteUtil.insert(UserTB.getPK(), 1, "!%$$#@@$%^!!~"+UserTB.getUser_NM()+"~!!^%$@@#$$%!", response.body(),0,timestamp);
+                     sqLiteUtil.insert(UserTB.getPK(), 1, "!%$$#@@$%^!!~"+UserTB.getUser_NM()+"~!!^%$@@#$$%!", response.body(),0,ts);
                     Log.d(TAG, "chatPk보내기"+otherUserKey);
+                    //채팅방 로컬 저장 코드 넣기
                     sendMessageToServer("!%$$#@@$%^!!~"+UserTB.getUser_NM()+"~!!^%$@@#$$%!",response.body());
                     finish();
                 } else {

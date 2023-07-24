@@ -18,14 +18,20 @@ public class UserChat {
     @SerializedName("lastChatTime")
     private String lastChatTime;
 
-    public UserChat(String userNM, String otherUserKey, String chatRoomId, String lastChat, String lastChatTime) {
+    @SerializedName("timeStamp")
+    private String TS;
+
+    public UserChat(String userNM, String otherUserKey, String chatRoomId, String lastChat, String lastChatTime,String TS) {
         this.userNM = userNM;
         this.otherUserKey = otherUserKey;
         this.chatRoomId = chatRoomId;
         this.lastChat = lastChat;
         this.lastChatTime = lastChatTime;
+        this.TS = TS;
     }
-
+    public String getTS() {
+        return TS;
+    }
     public String getUserNM() {
         return userNM;
     }

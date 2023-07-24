@@ -31,12 +31,12 @@ public class SubActivity extends AppCompatActivity
                 .commit();
     }
 
-
     public void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.ContentLayout, fragment).commit();      // Fragment로 사용할 MainActivity내의 layout공간을 선택합니다.
     }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();

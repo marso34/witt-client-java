@@ -76,7 +76,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserLi
         user = userList.get(position);
         holder.userName.setText(user.getUserNM());
         sqLiteUtil.setInitView(context,"CHAT_MSG_TB");
-        MSG m = sqLiteUtil.selectLastMsg(userList.get(position).getChatRoomId(),String.valueOf(preferenceHelper.getPK()));
+        MSG m = sqLiteUtil.selectLastMsg(userList.get(position).getChatRoomId(),String.valueOf(preferenceHelper.getPK()),2);
         if(extractName(m.getMessage()) == null)
             holder.lastChat.setText(m.getMessage());
         else holder.lastChat.setText(extractName(m.getMessage()));
@@ -113,10 +113,8 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserLi
         else {
             // 문자열을 LocalDateTime 객체로 변환
             LocalDateTime dateTime = LocalDateTime.parse(dateString, formatter);
-
             // 현재 날짜 가져오기
             LocalDate currentDate = LocalDate.now();
-
             if (dateTime.toLocalDate().isEqual(currentDate)) {
                 // 날짜가 오늘이면 시간과 분 추출
                 int hour = dateTime.getHour();

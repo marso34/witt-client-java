@@ -3,6 +3,8 @@ package com.example.healthappttt.Chat;
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,10 +15,11 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.healthappttt.Data.Chat.MSG;
 import com.example.healthappttt.Data.Chat.SocketSingleton;
+import com.example.healthappttt.Data.Chat.UserChat;
 import com.example.healthappttt.Data.PreferenceHelper;
 import com.example.healthappttt.Data.RetrofitClient;
-import com.example.healthappttt.Data.Chat.UserChat;
 import com.example.healthappttt.Data.SQLiteUtil;
 import com.example.healthappttt.Data.User.UserKey;
 import com.example.healthappttt.R;
@@ -65,9 +68,34 @@ public class ChattingFragment extends Fragment {
         }
         return view;
     }
+    public void getLastMSG(String chatRoomId, String userKey) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                sqLiteUtil.setInitView(getContext(), "CHAT_MSG_TB");
+                MSG m = sqLiteUtil.selectLastMsg(chatRoomId, userKey, 2);
 
+                // 메인 스레드로 UI 갱신 작업 보냄
+                Handler handler = new Handler(Looper.getMainLooper());
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        for (UserChat uc : userList) {
+                            if (uc.getChatRoomId().equals(chatRoomId)) {
+                                uc.setLastChat(m.getMessage());
+                                uc.setLastChatTime(m.timestampString());
+                                break;
+                            }
+                        }
+                        userListAdapter.notifyDataSetChanged();
+                        chatflag = false;
+                    }
+                });
+            }
+        }).start();
+    }
     // 서버에서 유저 목록을 가져오는 메소드입니다.
-    public void getUsersFromServer() {
+    public void getUsersFromServer() {// 이건 챗프레그먼트 켜질때문 부르도록 다른곳에있는 이거 전부 getLastMSG로 바꾸기
         // 서버로부터 유저 목록을 가져와서 List<UserChat>로 반환합니다.
         ServiceApi apiService = RetrofitClient.getClient().create(ServiceApi.class);
         Log.d(TAG, "getUsersFromServer: "+String.valueOf(prefhelper.getPK()));
@@ -77,17 +105,19 @@ public class ChattingFragment extends Fragment {
             public void onResponse(Call<List<UserChat>> call, Response<List<UserChat>> response) {
                 if (response.isSuccessful()) {
                     List<UserChat> users = response.body();
-                    sqLiteUtil.setInitView(getContext(),"CHAT_ROOM_TB");
+                    sqLiteUtil.setInitView(getActivity(),"CHAT_ROOM_TB");
                     sqLiteUtil.deleteChatRoom();
-                    sqLiteUtil.setInitView(getContext(),"CHAT_ROOM_TB");
-                    sqLiteUtil.insert(users);
+                    sqLiteUtil.setInitView(getActivity(),"CHAT_ROOM_TB");
+                    sqLiteUtil.insert(prefhelper.getPK(),users);
                     // userList에 데이터가 추가된 후에 실행되어야 하는 로직을 여기에 작성합니다.
                     for (int i = 0; i < userList.size(); ++i) {
                         Log.d("chatUSERLIST22", userList.get(i).getOtherUserKey());
                     }
+                    userList.clear();
                     userList.addAll(users);
                     userListAdapter.notifyDataSetChanged();
                     chatflag = false;
+
                 } else {
                     Toast.makeText(getContext(), "Failed to retrieve user list", Toast.LENGTH_SHORT).show();
                 }

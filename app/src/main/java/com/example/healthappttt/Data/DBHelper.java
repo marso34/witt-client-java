@@ -84,7 +84,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(WittRecordsql);
 
         String createTableQuery = "CREATE TABLE if not exists CHAT_MSG_TB ("
-                +"MSG_PK INTEGER primary key,"
+                + "MSG_PK INTEGER,"
                 + "USER_FK INT,"
                 + "MYFLAG INT ,"
                 + "CHAT_ROOM_FK INT, "
@@ -95,10 +95,12 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(createTableQuery);
 
         String createChat_Room_TableQuery = "CREATE TABLE if not exists CHAT_ROOM_TB ("
+                + "USER_FK INT,"
                 + "CHAT_ROOM_PK INT primary key,"
                 + "LAST_MSG_INDEX INT,"
                 + "OTHER_USER_NM,"
                 + "FAV INT ,"
+                + "GYM_NM VARCHAR(30),"
                 + "TS  VARCHAR(30)"
                 + ");";
         db.execSQL(createChat_Room_TableQuery);

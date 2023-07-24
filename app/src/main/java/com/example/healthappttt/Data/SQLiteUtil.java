@@ -19,17 +19,13 @@ import com.example.healthappttt.Data.User.BlackListData;
 import com.example.healthappttt.Data.User.ReviewListData;
 import com.example.healthappttt.Data.User.WittListData;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class SQLiteUtil { // 싱글톤 패턴으로 구현
     private static volatile SQLiteUtil instance; // volatile 메인 메모리에 저장
     private SQLiteDatabase db;
     private String table;
-
     private SQLiteUtil() {
 
     }
@@ -47,16 +43,19 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
     }
 
     public void setInitView(Context context, String tableName) {
-        this.table = tableName;
+        if((db == null || !db.isOpen())) {
+            this.table = tableName;
 
-        DBHelper dbHelper = new DBHelper(context, "Witt", null, 1);
+            DBHelper dbHelper = new DBHelper(context, "Witt", null, 1);
+            try {
+                db = dbHelper.getWritableDatabase();
+                if((db == null || !db.isOpen()))
+                    dbHelper.onCreate(db);
 
-        try {
-            db = dbHelper.getWritableDatabase();
-            dbHelper.onCreate(db);
-        } catch (SQLiteException e) {
-            e.printStackTrace();
-            Log.e(table, " 데이터 베이스를 열 수 없음");
+            } catch (SQLiteException e) {
+                e.printStackTrace();
+                Log.e(table, " 데이터 베이스를 열 수 없음");
+            }
         }
     }
     
@@ -127,27 +126,20 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         cursor.close();
         return existingReviewPK;
     }
-
-    public int insert(int userKey, int myFlag, String message, int chatRoomId, int Success,String ts) {
-        int lastKey = -1;
+    public long insert(int userKey, int myFlag, String message, int chatRoomId, int Success,String ts) {
+        long lastKey = -1;
         try {
-            ContentValues values = new ContentValues();
-            values.put("USER_FK", userKey);
-            values.put("MSG", message);
-            values.put("CHAT_ROOM_FK", chatRoomId);
-
-            values.put("TS", ts);
-            values.put("MYFLAG", myFlag);
-            values.put("SUCCESS", Success);
-            long rowId = db.insertOrThrow("CHAT_MSG_TB", null, values);
-            if (rowId != -1) {
-                String getLastKeyQuery = "SELECT MSG_PK FROM CHAT_MSG_TB ORDER BY MSG_PK DESC LIMIT 1";
-                Cursor cursor = db.rawQuery(getLastKeyQuery, null);
-                if (cursor != null && cursor.moveToFirst()) {
-                    int lastKeyIndex = cursor.getColumnIndex("MSG_PK");
-                    lastKey = cursor.getInt(lastKeyIndex);
-                    cursor.close();
-                }
+            if (table != null &&table.equals("CHAT_MSG_TB")) {
+                Log.d(TAG, "insert : "+ts);
+                ContentValues values = new ContentValues();
+                values.put("USER_FK", userKey);
+                values.put("MSG", message);
+                values.put("CHAT_ROOM_FK", chatRoomId);
+                values.put("TS", ts);
+                values.put("MYFLAG", myFlag);
+                values.put("SUCCESS", Success);
+                long rowId =  db.insert("CHAT_MSG_TB", null, values);
+                lastKey = rowId;
             }
         } catch (SQLException e) {
             Log.e(TAG, "데이터베이스 오류: " + e.getMessage());
@@ -155,6 +147,93 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
             db.close();
             return lastKey;
         }
+
+    }
+    public int getLastMyMsgPK(String chatRoomId,String userKey) {
+        int lastMsgPK = -1;
+        try {
+            // MSG_PK 열의 마지막 튜플을 얻기 위한 쿼리를 작성합니다.
+            if (table != null && table.equals("CHAT_MSG_TB")) {
+                String query = "SELECT MAX(MSG_PK) FROM CHAT_MSG_TB WHERE USER_FK = ? AND CHAT_ROOM_FK = ? AND MYFLAG = ?";
+                String[] selectionArgs = {userKey, chatRoomId, "1"};
+                Cursor cursor = db.rawQuery(query, selectionArgs);
+                if (cursor.moveToFirst()) {
+                    lastMsgPK = cursor.getInt(0);
+                }
+                cursor.close();
+            }
+        }finally {
+            db.close();
+            return lastMsgPK;
+        }
+    }
+    public int getLastAllMsgPK(String chatRoomId,String userKey) {
+        int lastMsgPK = -1;
+        try {
+
+
+            // MSG_PK 열의 마지막 튜플을 얻기 위한 쿼리를 작성합니다.
+            if (table != null && table.equals("CHAT_MSG_TB")) {
+                String query = "SELECT MAX(MSG_PK) FROM CHAT_MSG_TB WHERE USER_FK = ? AND CHAT_ROOM_FK = ?";
+                String[] selectionArgs = {userKey, chatRoomId};
+                Cursor cursor = db.rawQuery(query, null);
+                if (cursor.moveToFirst()) {
+                    lastMsgPK = cursor.getInt(0);
+                }
+                cursor.close();
+            }
+        }finally {
+            db.close();
+            return lastMsgPK;
+        }
+
+    }
+    public int getLastOtherMsgPK(String chatRoomId,String userKey) {
+        int lastMsgPK = -1;
+        try {
+            // MSG_PK 열의 마지막 튜플을 얻기 위한 쿼리를 작성합니다.
+            if (table != null && table.equals("CHAT_MSG_TB")) {
+                String query = "SELECT MAX(MSG_PK) FROM CHAT_MSG_TB WHERE USER_FK = ? AND CHAT_ROOM_FK = ? AND MYFLAG = ?";
+                String[] selectionArgs = {userKey, chatRoomId, "2"};
+                Cursor cursor = db.rawQuery(query, selectionArgs);
+                if (cursor.moveToFirst()) {
+                    lastMsgPK = cursor.getInt(0);
+                }
+
+                cursor.close();
+                db.close();
+            }
+        }finally {
+            db.close();
+            return lastMsgPK;
+        }
+
+    }
+
+    public int insert(int chatPk,int userKey, int myFlag, String message, int chatRoomId, int Success,String ts) {
+        int lastKey = -1;
+        Log.d(TAG, "insert : " + chatPk);
+        Log.d(TAG, "insert : " + ts);
+            try {
+                if (table != null &&table.equals("CHAT_MSG_TB")) {
+                    ContentValues values = new ContentValues();
+                    values.put("MSG_PK", chatPk);
+                    values.put("USER_FK", userKey);
+                    values.put("MSG", message);
+                    values.put("CHAT_ROOM_FK", chatRoomId);
+
+                    values.put("TS", ts);
+                    values.put("MYFLAG", myFlag);
+                    values.put("SUCCESS", Success);
+                    long rowId = db.insertOrThrow("CHAT_MSG_TB", null, values);
+
+                    Log.d(TAG, "insert: 삽인완료" + lastKey);
+                }
+            }  finally {
+                db.close();
+                return lastKey;
+            }
+
     }
 
 
@@ -259,24 +338,25 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         }
         db.close();
     }
-    public void insert(List<UserChat> U){
+    public void insert(int userKey,List<UserChat> U){
+        if (table.equals("CHAT_ROOM_TB")) {
+            ContentValues values = new ContentValues();
+            for (UserChat u : U) {
 
-        ContentValues values = new ContentValues();
-        for(UserChat u : U) {
-            String timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
+                if (table.equals("CHAT_ROOM_TB")) {
+                    values.put("USER_FK", userKey);
+                    values.put("CHAT_ROOM_PK", u.getChatRoomId());
+                    values.put("LAST_MSG_INDEX", 1);
+                    values.put("OTHER_USER_NM", u.getUserNM());
+                    values.put("FAV", 0);
+                    values.put("TS", u.getTS());
 
-            if (table.equals("CHAT_ROOM_TB")) {
-                values.put("CHAT_ROOM_PK", u.getChatRoomId());
-                values.put("LAST_MSG_INDEX", 1);
-                values.put("OTHER_USER_NM", u.getUserNM());
-                values.put("FAV", 0);
-                values.put("TS", timestamp);
-
-                long result = db.insert(table, null, values);
-                Log.d(table, result + "성공");
-            } else Log.d(table, "실패 삽입 챗티방");
+                    long result = db.insert(table, null, values);
+                    Log.d(table, result + "성공");
+                } else Log.d(table, "실패 삽입 챗티방");
+            }
+            db.close();
         }
-        db.close();
     }
     public void delete(int PK) {
         String selection = "PK = ?";
@@ -294,12 +374,27 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
     public void deleteChatRoom(int chatRoomPk) {
         db.execSQL("DELETE FROM CHAT_MSG_TB WHERE CHAT_ROOM_FK =" + chatRoomPk);
         db.close();
+        Log.d(TAG, "deleteChatRoom: 삭제완료"+chatRoomPk);
         }
     public void deleteChatRoom() {
-        db.execSQL("DELETE FROM CHAT_ROOM_TB");
-        db.close();
+        if (table.equals("CHAT_ROOM_TB")) {
+            db.execSQL("DELETE FROM CHAT_ROOM_TB");
+            db.close();
+        }
     }
 
+    public void deleteMSG(int chatPk){
+        try {
+            if (table != null && table.equals("CHAT_MSG_TB")) {
+                db.execSQL("DELETE FROM CHAT_MSG_TB WHERE MSG_PK =" + chatPk);
+
+            }
+        }
+        finally {
+            db.close();
+        }
+
+    }
     public void Update(RoutineData routine) {
         ContentValues values = new ContentValues();
 
@@ -368,13 +463,15 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         db.close();
     }
 
-    public void Update(int userPk,int chatPk) {
+    public void Update(int signal,int userPk,int chatPk,String ts) {
         ContentValues values = new ContentValues();
-        if (table.equals("CHAT_MSG_TB")) {
+        if (table != null &&table.equals("CHAT_MSG_TB")) {
+            values.put("MSG_PK",chatPk);
             values.put("SUCCESS", 1);
+            values.put("TS",ts);
             int result = -1;
             try {
-                result = db.update("CHAT_MSG_TB", values, "USER_FK = ? AND MSG_PK = ?", new String[]{String.valueOf(userPk),String.valueOf(chatPk)});
+                result = db.update("CHAT_MSG_TB", values, "USER_FK = ? AND MSG_PK = ?", new String[]{String.valueOf(userPk),String.valueOf(signal)});
             } catch (SQLException e) {
                 Log.e(TAG, "데이터베이스 오류: " + e.getMessage());
             }
@@ -556,105 +653,191 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         return null;
     }
     public ArrayList<WittListData> SelectWittHistoryUser() {
-        if (table.equals("Witt_History_TB")) {
-            String sql = "SELECT * FROM Witt_History_TB ORDER BY TS DESC";//날짜별 내림차순으로 정렬하여 select
+        try {
+            if (table.equals("Witt_History_TB")) {
+                String sql = "SELECT * FROM Witt_History_TB ORDER BY TS DESC";//날짜별 내림차순으로 정렬하여 select
 
-            Cursor cursor = db.rawQuery(sql, null);
-            Log.d("커서 sqliteutil",cursor.getColumnName(0));
-            ArrayList<WittListData> wittListData = new ArrayList<>();
+                Cursor cursor = db.rawQuery(sql, null);
+                Log.d("커서 sqliteutil", cursor.getColumnName(0));
+                ArrayList<WittListData> wittListData = new ArrayList<>();
 
-            while(cursor.moveToNext()) {
-                WittListData e = new WittListData(         // 순서 잘 지킬 것, 나중에 수정
+                while (cursor.moveToNext()) {
+                    WittListData e = new WittListData(         // 순서 잘 지킬 것, 나중에 수정
 
-                        cursor.getInt(0),           //RECORD_PK
-                        cursor.getInt(1),           //
-                        cursor.getInt(2),           //OUser_FK
-                        cursor.getString(3),        // TS
-                        cursor.getString(4),        //User_NM
-                        cursor.getBlob(5)           //User_Img
-                );
-                wittListData.add(e);
-                Log.d("SQLite SelectWittHis", "위트내역 리스트 데이터: " + e.getTS());
+                            cursor.getInt(0),           //RECORD_PK
+                            cursor.getInt(1),           //
+                            cursor.getInt(2),           //OUser_FK
+                            cursor.getString(3),        // TS
+                            cursor.getString(4),        //User_NM
+                            cursor.getBlob(5)           //User_Img
+                    );
+                    wittListData.add(e);
+                    Log.d("SQLite SelectWittHis", "위트내역 리스트 데이터: " + e.getTS());
+                }
+                return wittListData;
+            } else {
+                Log.d(table, " 잘못된 메서드 호출");
             }
-            return wittListData;
-        } else {
-            Log.d(table, " 잘못된 메서드 호출");
         }
-        db.close();
-        return null;
+        finally {
+            db.close();
+            return null;
+        }
+
+    }
+    public MSG SelectMSG(String userKey,int chatPk){
+        MSG m = null;
+        try {
+            if (table != null && table.equals("CHAT_MSG_TB")) {
+                String sql = "SELECT MSG, CHAT_ROOM_FK, TS, MYFLAG,SUCCESS FROM CHAT_MSG_TB WHERE USER_FK = ? AND MSG_PK = ? ";
+                String[] selectionArgs = {userKey, String.valueOf(chatPk)};
+                Cursor cursor = db.rawQuery(sql, selectionArgs);
+                if (cursor != null && cursor.moveToFirst()) {
+                    do {
+                        int CHAT_ROOM_FK = -1;
+                        int CHAT_ROOM_Index = cursor.getColumnIndex("CHAT_ROOM_FK");
+                        String message = "값 없음";
+                        String TS = "";
+                        String mfl = "1";
+                        int successIndex = cursor.getColumnIndex("SUCCESS");
+                        int success = -1;
+                        int MSGIndex = cursor.getColumnIndex("MSG");
+                        int mf = cursor.getColumnIndex("MYFLAG");
+                        int TSIndex = cursor.getColumnIndex("TS");
+                        if (CHAT_ROOM_Index != -1) {
+                            CHAT_ROOM_FK = cursor.getInt(CHAT_ROOM_Index);
+                        }
+                        if (MSGIndex != -1) {
+                            message = cursor.getString(MSGIndex);
+
+                            // 메시지 처리 로직 작성
+                        } else {
+                            // 컬럼이 존재하지 않을 경우 처리 로직 작성
+                        }
+                        if (successIndex != -1) {
+                            success = cursor.getInt(successIndex);
+                        }
+                        if (TSIndex != -1) {
+                            TS = cursor.getString(TSIndex);
+                        }
+                        if (mf != -1) {
+                            mfl = cursor.getString(mf);
+                        }
+                        m = new MSG(chatPk, Integer.parseInt(mfl), CHAT_ROOM_FK, message, TS, success);
+                        Log.d(TAG, "SelectMSG: 값얻어옴");
+                    } while (cursor.moveToNext());
+                }
+
+            }
+        }finally {
+            db.close();
+            return m;
+        }
+
     }
     public List<MSG> SelectAllMSG(String userKey,int chatRoomId){
         List<MSG> messages = null;
-        if (table.equals("CHAT_MSG_TB")) {
-            messages = new ArrayList<>();
-            String sql = "SELECT MSG, CHAT_ROOM_FK, TS, MYFLAG,SUCCESS FROM CHAT_MSG_TB WHERE USER_FK = ? AND CHAT_ROOM_FK = ? ORDER BY TS ASC";
-            String[] selectionArgs = {userKey, String.valueOf(chatRoomId)};
-            Cursor cursor = db.rawQuery(sql, selectionArgs);
-            if (cursor != null && cursor.moveToFirst()) {
-                do {
-                    String message = "값 없음";
-                    String TS = "";
-                    String mfl = "1";
-                    int successIndex = cursor.getColumnIndex("SUCCESS");
-                    int success = -1;
-                    int MSGIndex = cursor.getColumnIndex("MSG");
-                    int mf =  cursor.getColumnIndex("MYFLAG");
-                    int TSIndex = cursor.getColumnIndex("TS");
-                    if (MSGIndex != -1) {
-                        message = cursor.getString(MSGIndex);
-                        // 메시지 처리 로직 작성
-                    } else {
-                        // 컬럼이 존재하지 않을 경우 처리 로직 작성
-                    }
-                    if(successIndex != -1){
-                        success = cursor.getInt(successIndex);
-                    }
-                    if(TSIndex != -1){
-                        TS = cursor.getString(TSIndex);
-                    }
-                    if(mf != -1)
-                    {
-                        mfl = cursor.getString(mf);
-                    }
-                    messages.add(new MSG(Integer.parseInt(mfl),chatRoomId,message,TS,success));
-                } while (cursor.moveToNext());
+        try {
+            if (table != null && table.equals("CHAT_MSG_TB")) {
+                messages = new ArrayList<>();
+                String sql = "SELECT MSG_PK,MSG, CHAT_ROOM_FK, TS, MYFLAG,SUCCESS FROM CHAT_MSG_TB WHERE USER_FK = ? AND CHAT_ROOM_FK = ? ORDER BY TS ,MSG_PK ";
+                String[] selectionArgs = {userKey, String.valueOf(chatRoomId)};
+                Cursor cursor = db.rawQuery(sql, selectionArgs);
+                if (cursor != null && cursor.moveToFirst()) {
+                    do {
+                        int MSG_PK = -1;
+                        int MSG_PK_Index = cursor.getColumnIndex("MSG_PK");
+                        String message = "값 없음";
+                        String TS = "";
+                        String mfl = "1";
+                        int successIndex = cursor.getColumnIndex("SUCCESS");
+                        int success = -1;
+                        int MSGIndex = cursor.getColumnIndex("MSG");
+                        int mf = cursor.getColumnIndex("MYFLAG");
+                        int TSIndex = cursor.getColumnIndex("TS");
+                        if (MSG_PK_Index != -1) {
+                            MSG_PK = cursor.getInt(MSG_PK_Index);
+                        }
+                        if (MSGIndex != -1) {
+                            message = cursor.getString(MSGIndex);
+                            // 메시지 처리 로직 작성
+                        } else {
+                            // 컬럼이 존재하지 않을 경우 처리 로직 작성
+                        }
+                        if (successIndex != -1) {
+                            success = cursor.getInt(successIndex);
+                        }
+                        if (TSIndex != -1) {
+                            TS = cursor.getString(TSIndex);
+                        }
+                        if (mf != -1) {
+                            mfl = cursor.getString(mf);
+                        }
+                        messages.add(new MSG(MSG_PK, Integer.parseInt(mfl), chatRoomId, message, TS, success));
+                    } while (cursor.moveToNext());
+                }
             }
+        }finally {
+            db.close();
+            return messages;
         }
-        db.close();
-        return messages;
     }
     // UserListAdapter.java (selectLastMsg 메서드 수정)
 
-    public MSG selectLastMsg(String chatRoomID, String userKey) {
+    public MSG selectLastMsg(String chatRoomID, String userKey,int allLastFlag) {
         String msg = "";
         String TS = "-1";
-        if (table != null && table.equals("CHAT_MSG_TB")) {
-            Log.d(TAG, "selectLastMsgwwww:sssssaaaaa ");
-            String sql = "SELECT MSG, TS FROM CHAT_MSG_TB WHERE USER_FK = ? AND CHAT_ROOM_FK = ? AND MYFLAG = ? ORDER BY TS ASC LIMIT 1";
-            String[] selectionArgs = { userKey, chatRoomID, "2" };
-            Cursor cursor = db.rawQuery(sql, selectionArgs);
-            if (cursor != null && cursor.moveToFirst()) {
-                int MSGIndex = cursor.getColumnIndex("MSG");
-                Log.d(TAG, "cursor not null " + MSGIndex);
-                int TSIndex = cursor.getColumnIndex("TS");
-                if (MSGIndex != -1) {
-                    msg = cursor.getString(MSGIndex);
+        int MSG_PK = -1;
+        int myFlag = -1;
+        try {
+            if (table != null && table.equals("CHAT_MSG_TB")) {
+                Log.d(TAG, "selectLastMsgwwww:sssssaaaaa ");
+                String sql = "";
+                String value = "";
+                if (allLastFlag == 1) {//all
+                    sql = "SELECT MSG_PK, MSG,MYFLAG, TS FROM CHAT_MSG_TB WHERE USER_FK = ? AND CHAT_ROOM_FK = ? AND SUCCESS = ? ORDER BY TS DESC,MSG_PK DESC LIMIT 1";
+                    value = "1";
+                } else if (allLastFlag == 2) {//other
+                    sql = "SELECT MSG_PK, MSG, TS FROM CHAT_MSG_TB WHERE USER_FK = ? AND CHAT_ROOM_FK = ? AND MYFLAG = ? ORDER BY TS DESC,MSG_PK DESC LIMIT 1";
+                    value = "2";
                 }
-                if (TSIndex != -1) {
-                    TS = cursor.getString(TSIndex);
+                String[] selectionArgs = {userKey, chatRoomID, value};
+                Cursor cursor = db.rawQuery(sql, selectionArgs);
+                if (cursor != null && cursor.moveToFirst()) {
+
+                    int myFlagIndex = -1;
+                    int MSGIndex = cursor.getColumnIndex("MSG");
+                    int MSG_PK_Index = cursor.getColumnIndex("MSG_PK");
+                    Log.d(TAG, "cursor not null " + MSGIndex);
+                    int TSIndex = cursor.getColumnIndex("TS");
+                    if (MSG_PK_Index != -1) {
+                        MSG_PK = cursor.getInt(MSG_PK_Index);
+                        Log.d(TAG, "selectLastMsg: pkmsg" + MSG_PK);
+                    }
+                    if(myFlagIndex != -1){
+                        myFlag = cursor.getInt(myFlagIndex);
+                    }
+                    if (MSGIndex != -1) {
+                        msg = cursor.getString(MSGIndex);
+                    }
+                    if (TSIndex != -1) {
+                        TS = cursor.getString(TSIndex);
+                    }
+                } else {
+                    // cursor 객체가 null인 경우 로그 출력 후 메서드 종료
+                    Log.d(TAG, "cursor is null");
+                    if(allLastFlag == 1)
+                        return new MSG(MSG_PK, myFlag, Integer.parseInt(chatRoomID), msg, TS, 1);
+                    else return new MSG(MSG_PK, 2, Integer.parseInt(chatRoomID), msg, TS, 1);
                 }
-            } else {
-                // cursor 객체가 null인 경우 로그 출력 후 메서드 종료
-                Log.d(TAG, "cursor is null");
-                return new MSG(2, Integer.parseInt(chatRoomID), msg, TS, 1);
+                cursor.close();
             }
-            cursor.close();
+        }finally {
+            db.close();
+            Log.d(TAG, "selectLastMsg: " + msg + "ssssss" + TS);
+            return new MSG(MSG_PK,2, Integer.parseInt(chatRoomID), msg, TS, 1);
         }
-
         // TS 값을 처리하는 로직 추가
-
-        Log.d(TAG, "selectLastMsg: " + msg + "ssssss" + TS);
-        return new MSG(2, Integer.parseInt(chatRoomID), msg, TS, 1);
     }
 
 

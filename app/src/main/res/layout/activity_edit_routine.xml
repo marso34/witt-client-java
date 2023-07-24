@@ -67,15 +67,15 @@
 
                     <RadioButton
                         android:id="@+id/tue"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_marginHorizontal="7.5dp"
                         android:background="@drawable/selector_dayofweek_button"
-                        android:textColor="@drawable/selector_dayofweek_text"
                         android:button="@null"
+                        android:text="화"
                         android:textAlignment="center"
-                        android:textSize="14sp"
-                        android:text="화"/>
+                        android:textColor="@drawable/selector_dayofweek_text"
+                        android:textSize="14sp" />
 
                     <RadioButton
                         android:id="@+id/wed"
