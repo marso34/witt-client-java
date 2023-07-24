@@ -2,7 +2,6 @@ package com.example.healthappttt.Routine;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
@@ -11,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -62,8 +60,9 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
 
     public static class MainViewHolder extends RecyclerView.ViewHolder {
         public LinearLayout RoutineLayout, ClickLayout, NullLayout;
-        public TextView startTimeView, endTimeView;
-        public ImageView EditBtn;
+        public ImageView TimeIcon, EditBtn;
+        public TextView TimeTxt;
+
         public RecyclerView recyclerView;
         public ExerciseAdapter adapter;
 
@@ -74,8 +73,8 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
             this.ClickLayout = view.findViewById(R.id.clickLayout);
             this.NullLayout = view.findViewById(R.id.nullLayout);
 
-            this.startTimeView = view.findViewById(R.id.startTime);
-            this.endTimeView = view.findViewById(R.id.endTime);
+            this.TimeIcon = view.findViewById(R.id.timeIcon);
+            this.TimeTxt = view.findViewById(R.id.timeTxt);
             this.EditBtn = view.findViewById(R.id.editBtn);
 
             this.recyclerView = view.findViewById(R.id.recyclerView);
@@ -87,7 +86,6 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
     public MainViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_routine, parent, false);
         final MainViewHolder mainViewHolder = new MainViewHolder(view);
-
 
         mainViewHolder.ClickLayout.setOnClickListener(v -> {
             int position = mainViewHolder.getAbsoluteAdapterPosition();
@@ -148,8 +146,8 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
             holder.NullLayout.setVisibility(View.GONE);
             holder.ClickLayout.setVisibility(View.GONE);
 
-            holder.startTimeView.setText(TimeToString(routines.get(position).getStartTime()));
-            holder.endTimeView.setText(TimeToString(routines.get(position).getEndTime()));
+//            holder.startTimeView.setText(TimeToString(routines.get(position).getStartTime()));
+//            holder.endTimeView.setText(TimeToString(routines.get(position).getEndTime())); // 시간 설정 방식 변경
 
             if (attribute == 0) { // 내 루틴
             } else if (attribute > 0) { // 운동 기록

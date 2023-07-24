@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.healthappttt.Data.Exercise.ExerciseData;
@@ -21,7 +22,8 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.MainVi
     ExerciseAdapter(ArrayList<ExerciseData> exercises) { this.exercises = exercises; }
 
     public static class MainViewHolder extends RecyclerView.ViewHolder {
-        public TextView CatView, NameView, DetailView;
+        public CardView CatView;
+        public TextView NameView, DetailView;
 
         public MainViewHolder(@NonNull View view) {
             super(view);
@@ -43,9 +45,9 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.MainVi
 
     @Override
     public void onBindViewHolder(@NonNull MainViewHolder holder, int position) {
-        holder.CatView.setText(this.exercises.get(position).getStrCat());
-        holder.CatView.setTextColor(Color.parseColor(this.exercises.get(position).getTextColor())); // 부위 텍스트 색
-        holder.CatView.setBackgroundColor(Color.parseColor(this.exercises.get(position).getColor())); // 부위 바탕 색
+//        holder.CatView.setText(this.exercises.get(position).getStrCat());
+//        holder.CatView.setTextColor(Color.parseColor(this.exercises.get(position).getTextColor())); // 부위 텍스트 색
+        holder.CatView.setCardBackgroundColor(Color.parseColor(this.exercises.get(position).getTextColor())); // 부위 바탕 색
         holder.NameView.setText(this.exercises.get(position).getExerciseName());
         holder.DetailView.setText(setDetailViewTxt(position));
     }
