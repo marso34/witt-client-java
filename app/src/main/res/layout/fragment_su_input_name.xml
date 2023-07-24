@@ -82,6 +82,7 @@
                 android:background="@drawable/rectangle"
                 android:backgroundTint="@color/Background_1"
                 android:textColorHint="@color/Background_2"
+                android:singleLine="true"
                 android:hint="이름을 적어주세요"
                 style="@style/Body"/>
 

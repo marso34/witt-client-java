@@ -118,6 +118,8 @@ public class ReviewActivity extends AppCompatActivity {
             }
         });
 
+        binding.send.setOnClickListener(v -> sendToServer());
+
         setCheckedTextViewListeners();
     }
 

@@ -77,15 +77,7 @@ public class SUInputNameFragment extends Fragment {
     public static SUInputNameFragment newInstance(String name) {
         SUInputNameFragment fragment = new SUInputNameFragment();
         Bundle args = new Bundle();
-
         args.putString(ARG_NAME, name);
-
-//        args.putString(ARG_EMAIL, email);
-//        args.putDouble(ARG_LATITUDE, latitude);
-//        args.putDouble(ARG_LONGITUDE, longitude);
-//        args.putDouble(ARG_GYM_LATITUDE, gymLatitude);
-//        args.putDouble(ARG_GYM_LONGITUDE, gymLongitude);
-//        args.putString(ARG_LO_NAME, LoName);
         fragment.setArguments(args);
         return fragment;
     }
@@ -127,8 +119,12 @@ public class SUInputNameFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        if (name != null)
+        if (name != null) {
             binding.name.setText(name);
+            isTrue = true;
+            binding.nextBtn.setBackground(getContext().getDrawable(R.drawable.rectangle_green_20dp));
+            binding.nextBtn.setTextColor(Color.parseColor(White));
+        }
 
         binding.name.addTextChangedListener(new TextWatcher() {
             @Override
@@ -168,7 +164,7 @@ public class SUInputNameFragment extends Fragment {
 //                    ((SignUpActivity) getActivity()).replaceFragment(SUInputPerfFragment.newInstance(email, latitude, longitude, gymLatitude, gymLongitude, loName, rtH, rtW, NameV.toString()));
                 // 새로 불러올 Fragment의 Instance를 Main으로 전달
             } else {
-                Toast.makeText(getActivity(), "빈칸이 있습니다", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getActivity(), "빈칸이 있습니다", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -179,10 +175,6 @@ public class SUInputNameFragment extends Fragment {
                 startActivityForResult(galleryIntent, GALLERY_REQUEST_CODE); // 나중에 수정
             }
         });
-
-
-
-
     }
 
     @Override
