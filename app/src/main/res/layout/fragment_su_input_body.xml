@@ -85,13 +85,25 @@
                             style="@style/Body"/>
 
                         <TextView
+                            android:id="@+id/heightUnit"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginLeft="8dp"
                             android:layout_marginRight="11dp"
-                            android:textColor="@color/Background_2"
+                            android:textColor="@color/Background_3"
                             android:text="cm"
+                            style="@style/Body"/>
+
+                        <TextView
+                            android:id="@+id/hide1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginRight="16dp"
+                            android:textColor="@color/Background_2"
+                            android:visibility="gone"
+                            android:text="비공개"
                             style="@style/Body"/>
 
                     </LinearLayout>
@@ -134,13 +146,25 @@
                             style="@style/Body"/>
 
                         <TextView
+                            android:id="@+id/weightUnit"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginLeft="8dp"
                             android:layout_marginRight="11dp"
-                            android:textColor="@color/Background_2"
+                            android:textColor="@color/Background_3"
                             android:text="kg"
+                            style="@style/Body"/>
+
+                        <TextView
+                            android:id="@+id/hide2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginRight="16dp"
+                            android:textColor="@color/Background_2"
+                            android:visibility="gone"
+                            android:text="비공개"
                             style="@style/Body"/>
 
                     </LinearLayout>
@@ -150,9 +174,10 @@
             </LinearLayout>
 
             <CheckBox
-                android:id="@+id/isPublic"
+                android:id="@+id/isPrivate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="6dp"
                 android:button="@drawable/check_box_g"
                 android:text="공개하지 않을래요"
                 style="@style/Body" />

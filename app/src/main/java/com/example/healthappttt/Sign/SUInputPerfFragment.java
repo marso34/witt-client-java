@@ -45,45 +45,16 @@ public class SUInputPerfFragment extends Fragment {
 
     private BottomSheetDialog bottomSheetDialog;
 
-
-//    private static final String ARG_LATITUDE = "latitude";
-//    private static final String ARG_LONGITUDE = "longitude";
-//    private static final String ARG_GYM_LATITUDE = "gymLatitude";
-//    private static final String ARG_GYM_LONGITUDE = "gymLongitude";
-//    private static final String ARG_LO_NAME = "lo_name";
-//    private static final String ARG_HEIGHT = "height";
-//    private static final String ARG_WEIGHT = "weight";
-//    private static final String ARG_NAME = "name";
-//    private static final String ARG_EMAIL = "email";
-
     private static final String ARG_BENCH = "bench";
     private static final String ARG_DEAD = "dead";
     private static final String ARG_SQUAT = "squat";
 
-
-    private static final int Platform = 0;
-
-
-    private TextView Sum3;
-    private int sum = 180;
-    private String email;
     private int squatValue = 0;
     private int benchValue = 0;
     private int deadliftValue = 0;
-    private int height = -1;
-    private int weight = -1;
-    private String name;
-    private double latitude;
-    private double longitude;
-    private double gymLatitude;
-    private double gymLongitude;
-    private String loName;
-    private TextView squatTextView;
-    private TextView benchTextView;
-    private TextView deadliftTextView;
-    private String phoneModel = Build.MODEL;
-    private String serialNumber = Build.SERIAL;
-    private PreferenceHelper prefhelper;
+
+//    private String phoneModel = Build.MODEL;
+//    private String serialNumber = Build.SERIAL;
 
     public static SUInputPerfFragment newInstance(int bench, int deadlift, int squat) {
         SUInputPerfFragment fragment = new SUInputPerfFragment();
@@ -91,16 +62,6 @@ public class SUInputPerfFragment extends Fragment {
         args.putInt(ARG_BENCH, bench);
         args.putInt(ARG_DEAD, deadlift);
         args.putInt(ARG_SQUAT, squat);
-
-//        args.putDouble(ARG_LATITUDE, latitude);
-//        args.putDouble(ARG_LONGITUDE, longitude);
-//        args.putDouble(ARG_GYM_LATITUDE, gymLatitude);
-//        args.putDouble(ARG_GYM_LONGITUDE, gymLongitude);
-//        args.putString(ARG_LO_NAME, loName);
-//        args.putInt(ARG_HEIGHT, height);
-//        args.putInt(ARG_WEIGHT, weight);
-//        args.putString(ARG_NAME, name);
-//        args.putString(ARG_EMAIL, email);
         fragment.setArguments(args);
         return fragment;
     }
@@ -108,22 +69,11 @@ public class SUInputPerfFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        prefhelper = new PreferenceHelper("UserTB",getContext());
 
         if (getArguments() != null) {
             benchValue = getArguments().getInt(ARG_BENCH);
             deadliftValue = getArguments().getInt(ARG_DEAD);
             squatValue = getArguments().getInt(ARG_SQUAT);
-
-//            latitude = getArguments().getDouble(ARG_LATITUDE);
-//            longitude = getArguments().getDouble(ARG_LONGITUDE);
-//            gymLatitude = getArguments().getDouble(ARG_GYM_LATITUDE);
-//            gymLongitude = getArguments().getDouble(ARG_GYM_LONGITUDE);;
-//            height = getArguments().getInt(ARG_HEIGHT);
-//            weight = getArguments().getInt(ARG_WEIGHT);
-//            name = getArguments().getString(ARG_NAME);
-//            loName = getArguments().getString(ARG_LO_NAME);
-//            email = getArguments().getString(ARG_EMAIL);
         }
     }
 

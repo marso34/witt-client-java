@@ -13,6 +13,7 @@ import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -21,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -51,6 +53,7 @@ import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.net.FetchPlaceRequest;
 import com.google.android.libraries.places.api.net.FetchPlaceResponse;
 import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.material.card.MaterialCardView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -96,7 +99,7 @@ public class SUSelectGymFragment extends Fragment implements OnMapReadyCallback,
     private boolean isSelected;
 
 
-    PlacesClient placesClient;
+    private PlacesClient placesClient;
     private MapView mapView;
     private GoogleMap googleMap;
     private LocationManager locationManager;
@@ -287,9 +290,9 @@ public class SUSelectGymFragment extends Fragment implements OnMapReadyCallback,
 
                     HttpUrl.Builder urlBuilder = HttpUrl.parse("https://maps.googleapis.com/maps/api/place/autocomplete/json").newBuilder();
                     urlBuilder.addQueryParameter("input", query);
-                    urlBuilder.addQueryParameter("types", "establishment");
+                    urlBuilder.addQueryParameter("types", "gym");
                     urlBuilder.addQueryParameter("location", String.valueOf(lat) + ", " + String.valueOf(lon)); // 현재 위치
-                    urlBuilder.addQueryParameter("radius", "50000");
+                    urlBuilder.addQueryParameter("radius", "10000");
                     urlBuilder.addQueryParameter("strictbounds", "true");
                     urlBuilder.addQueryParameter("components", "country:KR"); // 주소에 대한 국가 필터링
                     urlBuilder.addQueryParameter("key", getString(R.string.google_places_api_key)); // 실제 Places API 키로 대체
@@ -339,8 +342,14 @@ public class SUSelectGymFragment extends Fragment implements OnMapReadyCallback,
                 JSONObject prediction = predictions.getJSONObject(i);
                 JSONArray terms = prediction.getJSONArray("terms");
                 String buildingName = terms.getJSONObject(0).getString("value");
+
+                String address = "";
+                for (int j = terms.length()-2; j > 0 ; j--)
+                    address += " " + terms.getJSONObject(j).getString("value");
+                Log.d("주소", address);
+
                 String placeId = prediction.getString("place_id");
-                associatedLocations.add(new LocData(buildingName, placeId));
+                associatedLocations.add(new LocData(buildingName, placeId, address));
             }
 
             // Clear previous search results
@@ -365,30 +374,35 @@ public class SUSelectGymFragment extends Fragment implements OnMapReadyCallback,
         LocData L;
 
         class LocationViewHolder extends RecyclerView.ViewHolder {
+            MaterialCardView locationView;
             TextView locationTextView;
             TextView locationDetailView;
+            ImageView checkedView;
 
             LocationViewHolder(@NonNull View itemView) {
                 super(itemView);
 
+                locationView = itemView.findViewById(R.id.locationView);
                 locationTextView = itemView.findViewById(R.id.locationTextView);
                 locationDetailView = itemView.findViewById(R.id.locationDetailView);
+                checkedView = itemView.findViewById(R.id.checked);
 
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         // Handle location item click
                         L = searchResults.get(getAbsoluteAdapterPosition());
-                        Log.d(TAG, "onClicklll: "+L.getName()+"aaaa"+L.getId());
+                        Log.d(TAG, "onClicklll: "+ L.getName() + "aaaa" + L.getId());
                         getPlaceDetails(L.getId());
-//  ----------------------------------------------------------------------------------------------
+//  ------------------------------------------------------------------------------------------------
                         binding.selectGym.setText(L.getName());
                         binding.selectGym.setTextColor(Color.parseColor(Body));
                         binding.mapIcon.setColorFilter(Color.parseColor(Signature));
                         binding.nextBtn.setBackground(getContext().getDrawable(R.drawable.rectangle_green_20dp));
                         binding.nextBtn.setTextColor(Color.parseColor(White));
                         isSelected = true;
-//  ----------------------------------------------------------------------------------------------
+                        locationAdapter.notifyDataSetChanged();
+//  ------------------------------------------------------------------------------------------------
 //                        binding.mapIcon.tint
                         // Perform any action on location item click
                     }
@@ -406,9 +420,18 @@ public class SUSelectGymFragment extends Fragment implements OnMapReadyCallback,
 
         @Override
         public void onBindViewHolder(@NonNull LocationViewHolder holder, int position) {
-            L = searchResults.get(position);
-            holder.locationTextView.setText(L.getName());
-//            holder.locationDetailView.setText();
+            if (L != null && L.getId() == searchResults.get(position).getId()) {
+                Log.d(TAG, "test: "+L.getName()+"aaaa"+L.getId());
+
+                holder.locationView.setStrokeWidth(2);
+                holder.checkedView.setVisibility(View.VISIBLE);
+            } else {
+                holder.locationView.setStrokeWidth(0);
+                holder.checkedView.setVisibility(View.GONE);
+            }
+
+            holder.locationTextView.setText(searchResults.get(position).getName());
+            holder.locationDetailView.setText(searchResults.get(position).getAdress());
         }
 
         @Override
@@ -430,8 +453,6 @@ public class SUSelectGymFragment extends Fragment implements OnMapReadyCallback,
                     gymLat = latLng.latitude;
                     gymLon = latLng.longitude;
                     Log.d(TAG, "wwwwwww: " + gymLat + " aaaa " + gymLon);
-                    // Perform any action with latitude and longitude values
-//                    ((SignUpActivity) getActivity()).replaceFragment(SUInputNameFragment.newInstance(email, lat, lon, latitude, longitude, L.getName()));
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override

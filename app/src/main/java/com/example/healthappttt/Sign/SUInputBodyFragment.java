@@ -115,6 +115,10 @@ public class SUInputBodyFragment extends Fragment {
 
         binding.heightTxt.setText(height + "");
         binding.weightTxt.setText(weight + "");
+        checkIsPublic();
+
+        if (!isPublic)
+            binding.isPrivate.setChecked(true);
 
         binding.backBtn.setOnClickListener(v -> {
             ((SignUpActivity) getActivity()).goToInputName();
@@ -123,14 +127,9 @@ public class SUInputBodyFragment extends Fragment {
         binding.height.setOnClickListener(v -> setHeightAndWeight());
         binding.weight.setOnClickListener(v -> setHeightAndWeight());
 
-        binding.isPublic.setOnClickListener(v -> {
-            if (binding.isPublic.isChecked()) {
-                binding.isPublic.setTextColor(Color.parseColor(Signature));
-                isPublic = true;
-            } else {
-                binding.isPublic.setTextColor(Color.parseColor(Body));
-                isPublic = false;
-            }
+        binding.isPrivate.setOnClickListener(v -> {
+            isPublic = !binding.isPrivate.isChecked();
+            checkIsPublic();
         });
 
         binding.nextBtn.setOnClickListener(v -> {
@@ -147,7 +146,30 @@ public class SUInputBodyFragment extends Fragment {
         binding = null;
     }
 
+    private void checkIsPublic() {
+        if (isPublic) {
+            binding.isPrivate.setTextColor(Color.parseColor(Body));
+//  ------------------------------------------------------------------------------------------------
+            binding.weightTxt.setVisibility(View.VISIBLE);
+            binding.weightUnit.setVisibility(View.VISIBLE);
+            binding.heightTxt.setVisibility(View.VISIBLE);
+            binding.heightUnit.setVisibility(View.VISIBLE);
+            binding.hide1.setVisibility(View.GONE);
+            binding.hide2.setVisibility(View.GONE);
+        } else {
+            binding.isPrivate.setTextColor(Color.parseColor(Signature));
+//  ------------------------------------------------------------------------------------------------
+            binding.weightTxt.setVisibility(View.GONE);
+            binding.weightUnit.setVisibility(View.GONE);
+            binding.heightTxt.setVisibility(View.GONE);
+            binding.heightUnit.setVisibility(View.GONE);
+            binding.hide1.setVisibility(View.VISIBLE);
+            binding.hide2.setVisibility(View.VISIBLE);
+        }
+    }
+
     private void setHeightAndWeight() {
-        bottomSheetDialog.show();
+        if (isPublic)
+            bottomSheetDialog.show();
     }
 }

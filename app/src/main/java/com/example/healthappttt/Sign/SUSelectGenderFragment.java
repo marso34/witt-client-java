@@ -120,7 +120,6 @@ public class SUSelectGenderFragment extends Fragment {
                 ((SignUpActivity) getActivity()).goToSelectGym(gender);
             }
         });
-
     }
 
     @Override

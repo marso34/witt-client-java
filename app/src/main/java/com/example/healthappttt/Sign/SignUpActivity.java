@@ -55,6 +55,7 @@ public class SignUpActivity extends AppCompatActivity
         weight = 60;
         gender = -1;
         bench = deadlift = squat = 100; // 데이터 초기값
+        isPublic = true;
 
         setContentView(R.layout.activity_sign_up);
 
@@ -129,8 +130,6 @@ public class SignUpActivity extends AppCompatActivity
 //            Toast.makeText(requireActivity(), message, Toast.LENGTH_LONG).show();
     }
 
-
-
 //
     private UserData getUserDT() {
         return new UserData(email, platform, name,"face");
@@ -152,8 +151,12 @@ public class SignUpActivity extends AppCompatActivity
         return new ExPerfInfo(bench, squat, deadlift);
     }
 
-    private BodyInfo getBodyInfo(){
-        return new BodyInfo("1999-12-27", gender, height, weight);
+    private BodyInfo getBodyInfo() {
+        int temp;
+        if (isPublic)   temp = 1;
+        else            temp = 0;
+
+        return new BodyInfo("1999-12-27", gender, height, weight, temp);
     }
 //
     private void sendTokenToServer() {
