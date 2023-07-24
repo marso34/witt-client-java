@@ -363,34 +363,17 @@ public class SUSelectGymFragment extends Fragment implements OnMapReadyCallback,
 
     private class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.LocationViewHolder> {
         LocData L;
-        @NonNull
-        @Override
-        public LocationViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View itemView = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.select_healthroom, parent, false);
-            return new LocationViewHolder(itemView);
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull LocationViewHolder holder, int position) {
-            L = searchResults.get(position);
-            holder.locationTextView.setText(L.getName());
-        }
-
-        @Override
-        public int getItemCount() {
-            return searchResults.size();
-        }
 
         class LocationViewHolder extends RecyclerView.ViewHolder {
-
             TextView locationTextView;
+            TextView locationDetailView;
 
             LocationViewHolder(@NonNull View itemView) {
                 super(itemView);
-                locationTextView = itemView.findViewById(R.id.locationTextView);
 
-                // Set click listener for location item
+                locationTextView = itemView.findViewById(R.id.locationTextView);
+                locationDetailView = itemView.findViewById(R.id.locationDetailView);
+
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -411,6 +394,26 @@ public class SUSelectGymFragment extends Fragment implements OnMapReadyCallback,
                     }
                 });
             }
+        }
+
+        @NonNull
+        @Override
+        public LocationViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View itemView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.select_healthroom, parent, false);
+            return new LocationViewHolder(itemView);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull LocationViewHolder holder, int position) {
+            L = searchResults.get(position);
+            holder.locationTextView.setText(L.getName());
+//            holder.locationDetailView.setText();
+        }
+
+        @Override
+        public int getItemCount() {
+            return searchResults.size();
         }
 
         private void getPlaceDetails(String placeId) {
@@ -437,6 +440,5 @@ public class SUSelectGymFragment extends Fragment implements OnMapReadyCallback,
                 }
             });
         }
-
     }
 }
