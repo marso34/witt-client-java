@@ -121,7 +121,7 @@ public class SocketSingleton {
 //                        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 //                        alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
                         //채팅방 생성알림
-                        alarmManager.showCustomNotification("New","새로운 위트가 왔어요");
+                        alarmManager.onAlarm("New","새로운 위트가 왔어요");
                         if(!chatF.chatflag) {
                             chatF.chatflag = true;
                             new Thread(new Runnable() {
@@ -156,7 +156,7 @@ public class SocketSingleton {
                                 alarmManager.setSounds(3);
                                 sqLiteUtil.setInitView(context, "CHAT_ROOM_TB");
                                 String otherUserNM = sqLiteUtil.selectOtherUserName(String.valueOf(preferenceHelper.getPK()),chatRoomId);
-                                alarmManager.showCustomNotification(otherUserNM,message);
+                                alarmManager.onAlarm(otherUserNM,message);
                                 if(chatF!=null && !chatF.chatflag) {
                                     chatF.chatflag = true;
                                     new Thread(new Runnable() {
