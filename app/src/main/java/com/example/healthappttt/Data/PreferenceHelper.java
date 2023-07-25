@@ -135,8 +135,33 @@ public class PreferenceHelper
     //필요한 변수 setter 매소드 생성
     public void setPK(int pk) {
         app_prefs.edit().putInt("USER_PK",pk);
+        app_prefs.edit().apply();
         Log.d("setPK: ", String.valueOf(pk));
     }
+    public void setBodyInfo(int height, int weight) {
+        SharedPreferences.Editor edit = app_prefs.edit();
+        edit.putInt("height",height);
+        edit.putInt("weight",weight);
+        edit.apply();
+    }
+    public int getheight() {
+        return app_prefs.getInt("height",1);
+    }
+    public int getweight() {
+        return app_prefs.getInt("weight",1);
+    }
+
+    public int getsquatValue() {
+        return app_prefs.getInt("squatValue",1);
+    }
+    public int getbenchValue() {
+        return app_prefs.getInt("benchValue",1);
+    }
+    public int getdeadValue() {
+        return app_prefs.getInt("deadValue",1);
+    }
+
+
     //
 
     public  Map<String, Object> getUserData() {

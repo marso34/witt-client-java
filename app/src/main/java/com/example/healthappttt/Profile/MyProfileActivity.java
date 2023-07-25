@@ -86,8 +86,8 @@ public class MyProfileActivity extends AppCompatActivity {
         //텍스트
         Pname = findViewById(R.id.name);
         Pgender = findViewById(R.id.gender);
-        Pheight = findViewById(R.id.Pheight);
-        Pweight = findViewById(R.id.Pweight);
+//        Pheight = findViewById(R.id.Pheight);
+//        Pweight = findViewById(R.id.Pweight);
         Psqaut = findViewById(R.id.Psqaut);
         Pbench = findViewById(R.id.Pbench);
         Pdeadlift = findViewById(R.id.Pdeadlift);
@@ -116,7 +116,7 @@ public class MyProfileActivity extends AppCompatActivity {
             //PEdit = findViewById(R.id.PEdit);//내 프로필에만 존재
 
             userDefault = new HashMap<>();// 회원가입시 입력했던 데이터들 로컬에서 받기
-            userDefault.put("User_NM", UserTB.getUserData().get("User_NM"));
+            userDefault.put("User_NM", UserTB.getUserData().get("User_NM")); //TODO getter pref에 만들기
             userDefault.put("gender", UserTB.getUserData().get("gender"));
             userDefault.put("height", UserTB.getUserData().get("height"));
             userDefault.put("weight", UserTB.getUserData().get("weight"));
@@ -141,8 +141,8 @@ public class MyProfileActivity extends AppCompatActivity {
 
                         //화면에 연결
                         binding.name.setText(userDefault.get("User_NM").toString());
-                        binding.Pheight.setText(userDefault.get("height").toString() + "cm");
-                        binding.Pweight.setText(userDefault.get("weight").toString() + "kg");
+//                        binding.Pheight.setText(userDefault.get("height").toString() + "cm");
+//                        binding.Pweight.setText(userDefault.get("weight").toString() + "kg");
                         binding.Psqaut.setText(userDefault.get("squatValue").toString());
                         binding.Pbench.setText(userDefault.get("benchValue").toString());
                         binding.Pdeadlift.setText(userDefault.get("deadValue").toString());
@@ -226,8 +226,8 @@ public class MyProfileActivity extends AppCompatActivity {
                     OtherName = User_NM;
                     //받아온 상대 정보 뿌려주기
                     Pname.setText(User_NM);
-                    Pheight.setText(height + "cm");Pweight.setText(weight+ "kg");
-                    Psqaut.setText(String.valueOf(squatValue));Pbench.setText(String.valueOf(benchValue));
+//                    Pheight.setText(height + "cm");Pweight.setText(weight+ "kg");
+//                    Psqaut.setText(String.valueOf(squatValue));Pbench.setText(String.valueOf(benchValue));
                     Pdeadlift.setText(String.valueOf(deadValue));Plocatoin.setText(GYM_NM);
                     if( gender.equals("0.0")) {
                         Pgender.setText("남자");
@@ -273,8 +273,8 @@ public class MyProfileActivity extends AppCompatActivity {
     //기본 사용자 정보 세팅
     public void setDefault( Map<String, Object> data ) {
         Pname.setText(data.get("User_NM").toString());//이름
-        Pheight.setText(data.get("height").toString() + "cm");
-        Pweight.setText(data.get("weight").toString() + "kg");
+//        Pheight.setText(data.get("height").toString() + "cm");
+//        Pweight.setText(data.get("weight").toString() + "kg");
         Psqaut.setText(data.get("squatValue").toString());
         Pbench.setText(data.get("benchValue").toString());
         Pdeadlift.setText(data.get("deadValue").toString());
@@ -287,6 +287,16 @@ public class MyProfileActivity extends AppCompatActivity {
             Pgender.setText("여자");
             Pgender.setTextColor(Color.parseColor("#FFC0CB")); // 핑크색
         }
+
+
+        if(data.get("height").toString().equals("0")){
+            binding.height.setVisibility(View.GONE); binding.weight.setVisibility(View.GONE);
+            binding.cm.setText("비공개"); binding.kg.setText("비공개");
+        }else {
+            binding.height.setText(data.get("height").toString() );
+            binding.weight.setText(data.get("weight").toString() );
+        }
+
 
     }
 
@@ -313,6 +323,31 @@ public class MyProfileActivity extends AppCompatActivity {
 
                 intent.putExtras(bundle);
                 editProfileLauncher.launch(intent);
+            }
+        });
+
+        //TODO version 1 키, 몸무게 수정하기
+        binding.EditBody.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MyProfileActivity.this, EditBodyInfo.class);
+                intent.putExtra("PK",UserTB.getPK());
+                intent.putExtra("height",UserTB.getheight());
+                intent.putExtra("weight",UserTB.getweight());
+                startActivity(intent);
+
+            }
+        });
+        //TODO version 1 3대 운동 수정하기
+        binding.exercise3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MyProfileActivity.this, EditWeightVolumes.class);
+                intent.putExtra("PK",UserTB.getPK());
+                intent.putExtra("squatValue",UserTB.getsquatValue());
+                intent.putExtra("benchValue",UserTB.getbenchValue());
+                intent.putExtra("deadValue",UserTB.getdeadValue());
+                startActivity(intent);
             }
         });
 
@@ -463,6 +498,27 @@ public class MyProfileActivity extends AppCompatActivity {
             }
         });
     } //TODO 상세 프로필에 나오도록 xml 변경
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        //수정하고 뒤로갔을때 다시 보여줄 데이터
+        if(UserTB.getheight() == 0){
+            binding.height.setVisibility(View.GONE); binding.weight.setVisibility(View.GONE);
+            binding.cm.setText("비공개"); binding.kg.setText("비공개");
+        }else {
+            binding.height.setText(String.valueOf(UserTB.getheight()) );
+            binding.weight.setText(String.valueOf(UserTB.getweight()) );
+        }
+
+    }
+    //새로 추가함
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        binding = null;
+    }
     //받은 후기
 //    public void onClickReviewReceived(View view) {
 //        Intent intent = new Intent(MyProfileActivity.this, ReviewsRecdAtivity.class);

@@ -77,7 +77,8 @@
                         android:background="#00000000"
                         android:text="수정하기"
                         android:textColor="@color/syment"
-                        android:textSize="15dp"/>
+                        android:textSize="15dp"
+                        android:visibility="gone"/>
 
                 </androidx.appcompat.widget.Toolbar>
 
@@ -164,7 +165,7 @@
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_marginVertical="14dp"
-                        android:src="@drawable/ic_baseline_place_24" />
+                        android:src="@drawable/logo_test" />
 
                     <TextView
                         style="@style/profile_style"
@@ -198,6 +199,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/EditBody"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -229,6 +231,7 @@
                             android:gravity="right">
 
                             <TextView
+                                android:id="@+id/height"
                                 style="@style/profile_style"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -237,6 +240,7 @@
                                 android:textColor="@color/darksyment" />
 
                             <TextView
+                                android:id="@+id/cm"
                                 style="@style/profile_style"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -281,6 +285,7 @@
                             android:gravity="right">
 
                             <TextView
+                                android:id="@+id/weight"
                                 style="@style/profile_style"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -289,6 +294,7 @@
                                 android:textColor="@color/darksyment" />
 
                             <TextView
+                                android:id="@+id/kg"
                                 style="@style/profile_style"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -392,64 +398,64 @@
                 </TableLayout>
 
 
-                <TableLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="16dp"
-                    android:layout_marginTop="12dp">
+<!--                <TableLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginHorizontal="16dp"-->
+<!--                    android:layout_marginTop="12dp">-->
 
-                    <TableRow android:paddingVertical="13dp">
+<!--                    <TableRow android:paddingVertical="13dp">-->
 
-                        <TextView
-                            style="@style/profile_style"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="키" />
+<!--                        <TextView-->
+<!--                            style="@style/profile_style"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:text="키" />-->
 
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="0dp"
-                            android:layout_weight="1" />
+<!--                        <View-->
+<!--                            android:layout_width="0dp"-->
+<!--                            android:layout_height="0dp"-->
+<!--                            android:layout_weight="1" />-->
 
-                        <TextView
-                            android:id="@+id/Pheight"
-                            style="@style/profile_style"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="right"
-                            android:text="178cm"
-                            android:textColor="@color/syment" />
-                    </TableRow>
+<!--                        <TextView-->
+<!--                            android:id="@+id/Pheight"-->
+<!--                            style="@style/profile_style"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:gravity="right"-->
+<!--                            android:text="178cm"-->
+<!--                            android:textColor="@color/syment" />-->
+<!--                    </TableRow>-->
 
-                    <TableRow android:paddingVertical="13dp">
+<!--                    <TableRow android:paddingVertical="13dp">-->
 
-                        <TextView
-                            style="@style/profile_style"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="몸무게" />
+<!--                        <TextView-->
+<!--                            style="@style/profile_style"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:text="몸무게" />-->
 
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="0dp"
-                            android:layout_weight="1" />
+<!--                        <View-->
+<!--                            android:layout_width="0dp"-->
+<!--                            android:layout_height="0dp"-->
+<!--                            android:layout_weight="1" />-->
 
-                        <TextView
-                            android:id="@+id/Pweight"
-                            style="@style/profile_style"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="right"
-                            android:text="69kg"
-                            android:textColor="@color/syment" />
-                    </TableRow>
-
-
-
-                    <!--                여기까지 묶어야할 배경이 있음-->
+<!--                        <TextView-->
+<!--                            android:id="@+id/Pweight"-->
+<!--                            style="@style/profile_style"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:gravity="right"-->
+<!--                            android:text="69kg"-->
+<!--                            android:textColor="@color/syment" />-->
+<!--                    </TableRow>-->
 
 
-                </TableLayout>
+
+<!--                    &lt;!&ndash;                여기까지 묶어야할 배경이 있음&ndash;&gt;-->
+
+
+<!--                </TableLayout>-->
 
 
             </LinearLayout>

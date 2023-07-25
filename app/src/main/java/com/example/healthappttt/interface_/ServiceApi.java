@@ -56,6 +56,13 @@ public interface ServiceApi {
     @POST("/profile/EditProfile")// 수정된 프로필 정보 업데이트
     Call<String> EditProfile(@Body Map<String, Object> editData);
 
+    /* 수정하기 쪼개기 (키몸무게 / 3대운동) */
+    @POST("/profile/EditBodyInfo")// 수정된 키 몸무게 정보 업데이트
+    Call<String> EditBodyInfo(@Body Map<String, Object> BodyInfo);
+    //TODO 해야함
+    @POST("/profile/EditWeightVol")// 수정된 3대운동 정보 업데이트
+    Call<String> EditWeightVol(@Body Map<String, Object> WeightVol);
+    //-------------------------------------
     @POST("/profile/getOtherProfile")// 상세 프로필 가져오기
     Call<Map<String,Object>> getOtherProfile(@Body UserKey userKey);
 

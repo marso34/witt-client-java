@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Profile.EditBodyInfo"
+    android:orientation="vertical"
+    android:backgroundTint="#FFFFFF"
+    android:paddingHorizontal="16dp"
+    android:paddingVertical="40dp">
+
+    <Button
+        android:id="@+id/cancel_editbody"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:background="@drawable/baseline_arrow_back_ios_new_24"
+        android:backgroundTint="@color/Background_3"
+        android:layout_marginBottom="16dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="신체정보를 수정해요"
+        android:layout_marginBottom="8dp"
+        style="@style/chat_title"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="정확한 신체정보는 적절한 위트메이트를 소개해줘요"
+        android:fontFamily="@font/spoqa_han_sans_neo"
+        android:textSize="12dp"
+        android:textColor="#677489"
+        android:layout_marginBottom="56dp"/>
+
+
+
+<!--    <TableLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:stretchColumns="0,1">-->
+<!--        <TableRow>-->
+<!--            <TextView-->
+<!--                style="@style/profile_style"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:textColor="@color/syment"-->
+<!--                android:text="신장"-->
+<!--                android:layout_marginHorizontal="5dp"-->
+<!--                android:layout_column="0"-->
+<!--                android:layout_weight="1"/>-->
+
+<!--            <TextView-->
+<!--                style="@style/profile_style"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:textColor="@color/syment"-->
+<!--                android:text="체중"-->
+<!--                android:layout_marginHorizontal="5dp"-->
+<!--                android:layout_column="1"-->
+<!--                android:layout_weight="1"/>-->
+<!--        </TableRow>-->
+
+
+
+
+
+<!--        <TableRow-->
+<!--            android:layout_marginBottom="24dp">-->
+<!--            <EditText-->
+<!--                android:id="@+id/height"-->
+<!--                style="@style/profile_style"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:background="@drawable/rectangle"-->
+<!--                android:backgroundTint="@color/white"-->
+<!--                android:paddingHorizontal="16dp"-->
+<!--                android:layout_margin="5dp"-->
+<!--                android:paddingVertical="11dp"-->
+<!--                android:elevation="5dp"-->
+<!--                android:gravity="right"-->
+<!--                android:hint="cm"-->
+<!--                android:maxLength="3"-->
+<!--                android:inputType="number">-->
+
+<!--&lt;!&ndash;                <EditText&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:id="@+id/height"&ndash;&gt;-->
+<!--&lt;!&ndash;                    style="@style/profile_style"&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:layout_width="wrap_content"&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:layout_height="wrap_content"&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:gravity="right"&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:hint="cm"&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:background="@null"&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:textColor="@color/darksyment" />&ndash;&gt;-->
+
+<!--&lt;!&ndash;                <TextView&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:id="@+id/cm"&ndash;&gt;-->
+<!--&lt;!&ndash;                    style="@style/profile_style"&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:layout_width="wrap_content"&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:layout_height="wrap_content"&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:layout_marginLeft="8dp"&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:gravity="right"&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:text="cm"&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:textColor="#9AA5B8" />&ndash;&gt;-->
+
+<!--            </EditText>-->
+<!--            <EditText-->
+<!--                android:id="@+id/weight"-->
+<!--                style="@style/profile_style"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:background="@drawable/rectangle"-->
+<!--                android:backgroundTint="@color/white"-->
+<!--                android:paddingHorizontal="16dp"-->
+<!--                android:layout_margin="5dp"-->
+<!--                android:paddingVertical="11dp"-->
+<!--                android:elevation="5dp"-->
+<!--                android:gravity="right"-->
+<!--                android:hint="kg"-->
+<!--                android:maxLength="3"-->
+<!--                android:inputType="number">-->
+
+<!--&lt;!&ndash;                <EditText&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:id="@+id/weight"&ndash;&gt;-->
+<!--&lt;!&ndash;                    style="@style/profile_style"&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:layout_width="wrap_content"&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:layout_height="wrap_content"&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:gravity="right"&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:text="&#45;&#45;"&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:background="@null"&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:textColor="@color/darksyment" />&ndash;&gt;-->
+
+<!--&lt;!&ndash;                <TextView&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:id="@+id/kg"&ndash;&gt;-->
+<!--&lt;!&ndash;                    style="@style/profile_style"&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:layout_width="wrap_content"&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:layout_height="wrap_content"&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:layout_marginLeft="8dp"&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:gravity="right"&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:text="kg"&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:textColor="#9AA5B8" />&ndash;&gt;-->
+
+<!--            </EditText>-->
+<!--        </TableRow>-->
+
+
+
+
+<!--        <TableRow>-->
+
+<!--            <CheckBox-->
+<!--                android:id="@+id/checksecret"-->
+<!--                style="@style/profile_style"-->
+<!--                android:layout_width="80dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="공개하지 않을래요"-->
+<!--                android:textColor="@color/darksyment" />-->
+
+<!--        </TableRow>-->
+<!--    </TableLayout>-->
+
+
+
+
+
+
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                style="@style/profile_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/syment"
+                android:text="신장"
+                android:layout_marginHorizontal="5dp"
+                android:layout_column="0"
+                android:layout_weight="1"/>
+
+            <TextView
+                style="@style/profile_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/syment"
+                android:text="체중"
+                android:layout_marginHorizontal="5dp"
+                android:layout_column="1"
+                android:layout_weight="1"/>
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:weightSum="2">
+            <EditText
+                android:id="@+id/height"
+                style="@style/profile_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rectangle"
+                android:backgroundTint="@color/white"
+                android:paddingHorizontal="16dp"
+                android:layout_margin="5dp"
+                android:paddingVertical="11dp"
+                android:elevation="5dp"
+                android:gravity="right"
+                android:hint="cm"
+                android:maxLength="3"
+                android:inputType="number"
+                android:layout_weight="1">
+
+
+            </EditText>
+            <EditText
+                android:id="@+id/weight"
+                style="@style/profile_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rectangle"
+                android:backgroundTint="@color/white"
+                android:paddingHorizontal="16dp"
+                android:layout_margin="5dp"
+                android:paddingVertical="11dp"
+                android:elevation="5dp"
+                android:gravity="right"
+                android:hint="kg"
+                android:maxLength="3"
+                android:inputType="number"
+                android:layout_weight="1">
+
+            </EditText>
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <CheckBox
+                android:id="@+id/checksecret"
+                style="@style/profile_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="공개하지 않을래요"
+                android:textColor="@color/darksyment" />
+
+        </LinearLayout>
+
+
+
+
+    </LinearLayout>
+
+
+
+
+
+
+
+
+
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="bottom|center">
+
+<!--        <Button-->
+<!--            android:id="@+id/EditBtn"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:background="@drawable/rectangle"-->
+<!--            android:backgroundTint="@color/white"-->
+<!--            android:elevation="20dp"-->
+<!--            android:outlineSpotShadowColor="#9AA5B833"-->
+<!--            android:text="수정하기"-->
+<!--            android:textColor="@color/Background_2"-->
+<!--            android:textSize="20sp"-->
+<!--            android:textStyle="bold"-->
+<!--            android:layout_margin="3dp"/>-->
+
+        <Button
+            android:id="@+id/EditBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rectangle"
+            android:backgroundTint="@color/Signature"
+            android:elevation="12dp"
+            android:outlineSpotShadowColor="#05C78C33"
+            android:text="수정하기"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="5dp"/>
+    </LinearLayout>
+
+
+
+
+</LinearLayout>
