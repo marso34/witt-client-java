@@ -7,8 +7,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.healthappttt.Data.RetrofitClient;
 import com.example.healthappttt.Data.User.ReportHistory;
@@ -32,12 +30,9 @@ public class ReportHistoryActivity extends AppCompatActivity {
 
     ReportHistory reportHistory;
     ArrayList<ReportHistory> ReportList;
-    //BlockUserAdapter ReportAdapter;
-
-
-
-    RecyclerView recyclerView;
-    LinearLayoutManager linearLayoutManager;
+//   BlockUserAdapter ReportAdapter;
+//    RecyclerView recyclerView;
+//    LinearLayoutManager linearLayoutManager;
     int PK;
 
     @Override
@@ -113,11 +108,11 @@ public class ReportHistoryActivity extends AppCompatActivity {
         }
 
         // 텍스트뷰들을 배열에 저장
-        TextView[] textViews = {listCnt0, listCnt1, listCnt2, listCnt3, listCnt4, listCnt5};
+        TextView[] textViews = {listCnt5, listCnt4, listCnt3, listCnt2, listCnt1, listCnt0};
 
         for (int i = 5; i >= 0; i--) {
             String value = String.valueOf(ReportCNT[i]);
-            Log.d("value ",value); //TODO 값이상해 수정 하면될듯
+            Log.d("value ",value);
             TextView textView = textViews[i];
             View view = binding.getRoot().findViewById(
                 i == 5 ? R.id.r0 :
@@ -148,7 +143,7 @@ public class ReportHistoryActivity extends AppCompatActivity {
 
     }
 
-    //TODO 비트연산 << 해야할수도
+    //2진수 해석
     public void bitcl(int num, int[] array) {
         int length = (int) (Math.log(num) / Math.log(2)) + 1;
         String binary = Integer.toBinaryString(num);
@@ -156,16 +151,12 @@ public class ReportHistoryActivity extends AppCompatActivity {
 
         String formatnum = String.format("%0"+ n+"d", Integer.parseInt(binary));
         //비트연산
-        for (int i = 0; i < n; i++) {
+        for (int i = 5; 0 <= i; i--) {
             char bit = formatnum.charAt(i);
             if (bit == '1') {
                 array[i]++;
             }
         }
-        // 결과 출력
-        Log.d("비트연산 : ", String.valueOf(array[0]) + String.valueOf(array[1])+ String.valueOf(array[2]) +
-                String.valueOf(array[3]) + String.valueOf(array[4]) + String.valueOf(array[5])
-        );
     }
 
 

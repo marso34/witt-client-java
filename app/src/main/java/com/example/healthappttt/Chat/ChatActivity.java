@@ -97,10 +97,10 @@ public class ChatActivity extends AppCompatActivity{
 
     private void retrieveIntentData() {
         preferenceHelper = new PreferenceHelper("UserTB", this);
-        userKey = String.valueOf(preferenceHelper.getPK());//TODO 내 키
+        userKey = String.valueOf(preferenceHelper.getPK());
         otherUserName = getIntent().getStringExtra("otherUserName");
         chatRoomId = getIntent().getStringExtra("ChatRoomId");
-        otherUserKey = getIntent().getStringExtra("otherUserKey"); //TODO 상대 키
+        otherUserKey = getIntent().getStringExtra("otherUserKey");
         Log.d(TAG, "onCreate: otherUserKey " + otherUserKey);
     }
 

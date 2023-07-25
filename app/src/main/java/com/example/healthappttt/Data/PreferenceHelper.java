@@ -49,7 +49,7 @@ public class PreferenceHelper
         edit.putInt("Platform", upf.getPlatform());
         edit.putString("User_NM", upf.getUser_NM());
         edit.putString("PW", upf.getPW());
-
+        Log.d("putProfile","pk저장" );
         // User_Img 는 byte[] 타입이므로 Base64로 인코딩하여 저장
 //        if(upf.getUser_Img() != null) {
 //            String encodedImage = Base64.encodeToString(upf.getUser_Img(), Base64.DEFAULT);
@@ -132,7 +132,37 @@ public class PreferenceHelper
     public String getPW() {
         return app_prefs.getString("PW","__");
     }
+    //필요한 변수 setter 매소드 생성
+    public void setPK(int pk) {
+        app_prefs.edit().putInt("USER_PK",pk);
+        app_prefs.edit().apply();
+        Log.d("setPK: ", String.valueOf(pk));
+    }
+    public void setBodyInfo(int height, int weight) {
+        SharedPreferences.Editor edit = app_prefs.edit();
+        edit.putInt("height",height);
+        edit.putInt("weight",weight);
+        edit.apply();
+    }
+    public int getheight() {
+        return app_prefs.getInt("height",1);
+    }
+    public int getweight() {
+        return app_prefs.getInt("weight",1);
+    }
 
+    public int getsquatValue() {
+        return app_prefs.getInt("squatValue",1);
+    }
+    public int getbenchValue() {
+        return app_prefs.getInt("benchValue",1);
+    }
+    public int getdeadValue() {
+        return app_prefs.getInt("deadValue",1);
+    }
+
+
+    //
 
     public  Map<String, Object> getUserData() {
         Map<String, Object> userData = new HashMap<>();
