@@ -24,9 +24,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="홈"
-                android:textColor="@color/Standard"
-                android:textSize="24dp"
-                android:textStyle="bold" />
+                style="@style/Headline"/>
 
             <ImageView
                 android:layout_width="30dp"
@@ -62,10 +60,10 @@
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomNav"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="64dp"
             android:background="@drawable/rounded_top"
-            app:itemBackground="@color/transparent"
             android:layout_gravity="bottom"
+            app:itemBackground="@color/transparent"
             app:itemHorizontalTranslationEnabled="false"
             app:labelVisibilityMode="labeled"
             app:itemIconTint="@drawable/menu_selector_color"
@@ -79,13 +77,12 @@
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
         android:clickable="true"
         android:focusable="true"
         android:backgroundTint="#05c78c"
         android:src="@drawable/logo_test"
-        app:maxImageSize="62dp"
-        app:fabCustomSize="62dp"
+        app:maxImageSize="64dp"
+        app:fabCustomSize="64dp"
         app:elevation="0dp"
         app:layout_anchor="@id/bottomNav"
         app:layout_anchorGravity="center_horizontal|center"

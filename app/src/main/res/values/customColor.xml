@@ -15,20 +15,24 @@
     <color name="Signature_Selected">#0E8466</color>
     <color name="Signature_Toggle">#D9F7EE</color>
     <color name="Signature_Toggle2">#FDE6F3</color>
-    <color name="Signature_Toggle3">#E6F1FD</color>
     <color name="Signature_Toggle4">#EEE6FA</color>
     <color name="Red">#C71040</color>
     <color name="Red_Toggle">#F9E6EB</color>
-    <color name="Orangee">#fc673f</color>
+    <color name="Orange">#fc673f</color>
     <color name="Orange_Toggle">#ffefeb</color>
     <color name="Caution">#F257AF</color>
     <color name="Pink_Toggle">#fde6f3</color>
     <color name="Caution_Hover">#DD51A1</color>
     <color name="Caution_Selected">#9C417B</color>
+    <color name="Yellow">#F2BB57</color>
+    <color name="Yellow_Toggle">#FEF8EE</color>
     <color name="Notion">#579EF2</color>
+    <color name="Blue_Toggle">#E6F1FD</color>
     <color name="Notion_Hover">#5191DE</color>
     <color name="Notion_Selected">#3F6CA3</color>
-    <color name="Preference">#8C5ADB</color>
+    <color name="Purple">#8C5ADB</color>
+    <color name="Purple_Toggle">#EEE6FA</color>
+<!--    <color name="Preference">#8C5ADB</color>-->
     <color name="Preference_Hover">#8154C9</color>
     <color name="Preference_Selected">#5F4395</color>
 </resources>

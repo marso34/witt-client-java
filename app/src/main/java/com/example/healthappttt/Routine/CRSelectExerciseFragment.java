@@ -2,9 +2,11 @@ package com.example.healthappttt.Routine;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
@@ -20,6 +22,7 @@ import android.widget.TextView;
 import com.example.healthappttt.Data.Exercise.ExerciseData;
 import com.example.healthappttt.Data.Exercise.RoutineData;
 import com.example.healthappttt.R;
+import com.example.healthappttt.databinding.FragmentCrSelectExerciseBinding;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
@@ -30,13 +33,18 @@ import java.util.ArrayList;
  * create an instance of this fragment.
  */
 public class CRSelectExerciseFragment extends Fragment {
-    private TextView DirectInputBtn, ScheduleTxt, NextTxt;
-    private TabLayout tabLayout;
-    private CardView NextBtn;
+    FragmentCrSelectExerciseBinding binding;
 
-    private SearchView searchView;
+    private static final String Background_1 = "#F2F5F9";
+    private static final String Background_2 = "#D1D8E2";
+    private static final String Background_3 = "#9AA5B8";
+    private static final String Signature = "#05C78C";
+    private static final String Orange = "#FC673F";
+    private static final String Yellow = "#F2BB57";
+    private static final String Blue = "#579EF2";
+    private static final String Purple = "#8C5AD8";
+    private static final String White = "#ffffff";
 
-    private RecyclerView recyclerView;
     private ExerciseListPAdapter adapter;
 
     private ArrayList<ExerciseData> exercises;
@@ -45,12 +53,13 @@ public class CRSelectExerciseFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_TIME = "time";
+    private static final String ARG_ROUTINE = "routine";
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private int time;
+    private int dayOfWeek;
+    private RoutineData routine;
 
     private OnFragmentInteractionListener mListener;
 
@@ -78,16 +87,16 @@ public class CRSelectExerciseFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+     * @param time Parameter 1.
+     * @param routine Parameter 2.
      * @return A new instance of fragment addExerciseFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static CRSelectExerciseFragment newInstance(String param1, String param2) {
+    public static CRSelectExerciseFragment newInstance(int time, RoutineData routine) {
         CRSelectExerciseFragment fragment = new CRSelectExerciseFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putInt(ARG_TIME, time);
+        args.putSerializable(ARG_ROUTINE, routine);
         fragment.setArguments(args);
         return fragment;
     }
@@ -95,57 +104,78 @@ public class CRSelectExerciseFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+        if(getArguments() != null) {
+            time = getArguments().getInt(ARG_TIME);
+            routine = (RoutineData) getArguments().getSerializable(ARG_ROUTINE);
+            dayOfWeek = routine.getDayOfWeek();
+
+            exercises = new ArrayList<>();
+            selectExerciseIndex = new ArrayList<>();
+
+            if (routine.getExercises() != null) {
+                for (ExerciseData e : routine.getExercises())
+                    selectExerciseIndex.add((e.getStrCat() + " " + e.getExerciseName()));
+            }
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_cr_select_exercise, container, false);
+        binding = FragmentCrSelectExerciseBinding.inflate(inflater);
 
-        DirectInputBtn = view.findViewById(R.id.directInput);
-        ScheduleTxt = view.findViewById(R.id.schedule);
+        return binding.getRoot();
+    }
 
-        searchView = view.findViewById(R.id.search);
-
-        tabLayout = view.findViewById(R.id.tabLayout);
-        recyclerView = view.findViewById(R.id.recyclerView);
-
-        NextBtn = view.findViewById(R.id.nextBtn);
-        NextTxt = view.findViewById(R.id.nextTxt);
-
-        exercises = new ArrayList<>();
-        selectExerciseIndex = new ArrayList<>();
-
-        if (getArguments() != null) {
-//            selectExercises = (ArrayList<ExerciseData>) getArguments().getSerializable("exercises");
-            // selectExercises를 이용해서 운동 리시트에 이미 체크한 운동을 처리
-            int[] schedule = getArguments().getIntArray("schedule");
-            RoutineData routine = (RoutineData) getArguments().getSerializable("routine");
-
-            if (routine != null) {
-                Log.d("테스트2", "ddd");
-
-                if (routine.getExercises() != null) {
-                    Log.d("테스트", routine.getExercises().size() + "");
-
-                    for (ExerciseData e : routine.getExercises())
-                        selectExerciseIndex.add((e.getStrCat() + " " + e.getExerciseName()));
-                }
-
-                setRoutineTime(routine.getDayOfWeek(), routine.getStartTime(), routine.getEndTime());
-            }
-        }
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         parseExercise();
+
+        switch (time) {
+            case 0:
+                binding.timeIcon.setBackground(getContext().getDrawable(R.drawable.baseline_brightness_5_24));
+                binding.timeTxt.setText("아침");
+                binding.timeTxt.setTextColor(Color.parseColor(Orange));
+                binding.timeDetail.setText("오전 6시 ~ 오후 12시");
+                break;
+            case 1:
+                binding.timeIcon.setBackground(getContext().getDrawable(R.drawable.baseline_wb_sunny_24));
+                binding.timeTxt.setText("점심");
+                binding.timeTxt.setTextColor(Color.parseColor(Yellow));
+                binding.timeDetail.setText("오후 12시 ~ 오후 6시");
+                break;
+            case 2:
+                binding.timeIcon.setBackground(getContext().getDrawable(R.drawable.baseline_brightness_3_24));
+                binding.timeTxt.setText("저녁");
+                binding.timeTxt.setTextColor(Color.parseColor(Blue));
+                binding.timeDetail.setText("오후 6시 ~ 오전 12시");
+                break;
+            case 3:
+                binding.timeIcon.setBackground(getContext().getDrawable(R.drawable.baseline_flare_24));
+                binding.timeTxt.setText("새벽");
+                binding.timeTxt.setTextColor(Color.parseColor(Purple));
+                binding.timeDetail.setText("오전 12시 ~ 오전 6시");
+                break;
+        }
+
+        switch (dayOfWeek) {
+            case 0: binding.dayOfWeek.setText("일요일"); break;
+            case 1: binding.dayOfWeek.setText("월요일"); break;
+            case 2: binding.dayOfWeek.setText("화요일"); break;
+            case 3: binding.dayOfWeek.setText("수요일"); break;
+            case 4: binding.dayOfWeek.setText("목요일"); break;
+            case 5: binding.dayOfWeek.setText("금요일"); break;
+            case 6: binding.dayOfWeek.setText("토요일"); break;
+        }
 
         if (exercises != null)
             setRecyclerView();
 
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        binding.backBtn.setOnClickListener(v -> mListener.onRoutineAddEx(null));
+
+        binding.search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 return false;
@@ -158,24 +188,11 @@ public class CRSelectExerciseFragment extends Fragment {
             }
         });
 
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                recyclerView.smoothScrollToPosition(tab.getPosition());
-            }
+        binding.nextBtn.setOnClickListener(v -> {
+            Log.d("클릭", "추가하기 클릭");
 
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-            }
-        });
-
-        NextBtn.setOnClickListener(v -> {
             if (selectExerciseIndex.size() > 0) {
-
+                Log.d("성공1", selectExerciseIndex.size() + "");
                 ArrayList<ExerciseData> selectExercises = new ArrayList<>();
 
                 int i = 0;
@@ -202,8 +219,13 @@ public class CRSelectExerciseFragment extends Fragment {
                 mListener.onRoutineAddEx(selectExercises);
             }
         });
+    }
 
-        return view;
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        binding = null;
     }
 
     private void parseExercise() { // 나중에 xml 파싱으로
@@ -240,24 +262,6 @@ public class CRSelectExerciseFragment extends Fragment {
         searchList = (ArrayList<ExerciseData>) exercises.clone();
     }
 
-    private String TimeParse(String time) {
-        String hour = time.substring(0, time.indexOf(":"));
-        String minSec = time.substring(time.indexOf(":")+1);
-        String min = minSec.substring(0, minSec.indexOf(":"));
-        String am_pm = "오전";
-
-        int tempHour = Integer.parseInt(hour);
-
-        if (tempHour > 12) {
-            am_pm = "오후";
-            tempHour -= 12;
-        }
-
-        @SuppressLint("DefaultLocale") String result = String.format("%02d:%s", tempHour, min);
-
-        return am_pm + " " + result;
-    }
-
     private void searchExercise(String searchTxt) {
         searchList.clear();
 
@@ -273,28 +277,8 @@ public class CRSelectExerciseFragment extends Fragment {
         Log.d("리사이클러 뷰 할당", selectExerciseIndex.size() + "");
         adapter = new ExerciseListPAdapter(getContext(), searchList, selectExerciseIndex);
 
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(adapter);
-    }
-
-    private void setRoutineTime(int dayOfWeek, String startTime, String endTime) {
-        String DayOfWeek = "";
-
-        switch (dayOfWeek) {
-            case 0: DayOfWeek = "일요일"; break;
-            case 1: DayOfWeek = "월요일"; break;
-            case 2: DayOfWeek = "화요일"; break;
-            case 3: DayOfWeek = "수요일"; break;
-            case 4: DayOfWeek = "목요일"; break;
-            case 5: DayOfWeek = "금요일"; break;
-            case 6: DayOfWeek = "토요일"; break;
-        }
-
-        String StartTime = TimeParse(startTime);
-        String EndTime = TimeParse(endTime);
-        String result = DayOfWeek + " · " + StartTime + " - " + EndTime;
-
-        ScheduleTxt.setText(result);
+        binding.recyclerView.setHasFixedSize(true);
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.recyclerView.setAdapter(adapter);
     }
 }

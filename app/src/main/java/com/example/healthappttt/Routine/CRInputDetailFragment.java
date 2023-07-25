@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 import com.example.healthappttt.Data.Exercise.ExerciseData;
 import com.example.healthappttt.Data.Exercise.RoutineData;
 import com.example.healthappttt.R;
+import com.example.healthappttt.databinding.FragmentCrInputDetailBinding;
 
 import java.util.ArrayList;
 
@@ -29,29 +31,34 @@ import java.util.ArrayList;
  * create an instance of this fragment.
  */
 public class CRInputDetailFragment extends Fragment {
-    private TextView ResetBtn, ScheduleTxt;
-    private CardView NextBtn;
-    private TextView NextTxt;
+    FragmentCrInputDetailBinding binding;
 
-    private RecyclerView recyclerView;
+    private static final String Background_1 = "#F2F5F9";
+    private static final String Background_2 = "#D1D8E2";
+    private static final String Background_3 = "#9AA5B8";
+    private static final String Signature = "#05C78C";
+    private static final String Orange = "#FC673F";
+    private static final String Yellow = "#F2BB57";
+    private static final String Blue = "#579EF2";
+    private static final String Purple = "#8C5AD8";
+    private static final String White = "#ffffff";
+
     private ExerciseInputAdapter adapter;
-
     private ArrayList<ExerciseData> exercises;
 
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_ROUTINE = "routine";
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    int dayOfWeek;
+    private RoutineData routine;
 
     private OnFragmentInteractionListener mListener;
 
     public interface OnFragmentInteractionListener {
-        void onRoutineExDetail(ArrayList<ExerciseData> exercises);
+        void onRoutineExDetail(ArrayList<ExerciseData> exercises, boolean isFinish);
     }
 
     @Override
@@ -74,16 +81,14 @@ public class CRInputDetailFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+     * @param routine Parameter 1.
      * @return A new instance of fragment ExerciseDetailFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static CRInputDetailFragment newInstance(String param1, String param2) {
+    public static CRInputDetailFragment newInstance(RoutineData routine) {
         CRInputDetailFragment fragment = new CRInputDetailFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putSerializable(ARG_ROUTINE, routine);
         fragment.setArguments(args);
         return fragment;
     }
@@ -92,86 +97,85 @@ public class CRInputDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+//            time = getArguments().getInt(ARG_TIME);
+            routine = (RoutineData) getArguments().getSerializable(ARG_ROUTINE);
+            exercises = routine.getExercises();
+            dayOfWeek = routine.getDayOfWeek();
+
+            for (ExerciseData e : exercises)
+                Log.d("테스트", e.getExerciseName());
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_cr_input_detail, container, false);
+        binding = FragmentCrInputDetailBinding.inflate(inflater);
 
-        ResetBtn = view.findViewById(R.id.reset);
-        ScheduleTxt = view.findViewById(R.id.schedule);
-        recyclerView = view.findViewById(R.id.recyclerView);
+        return binding.getRoot();
+    }
 
-        NextBtn = view.findViewById(R.id.nextBtn);
-        NextTxt = view.findViewById(R.id.nextTxt);
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
-        exercises = new ArrayList<>();
+        switch (1) { // routine.getTime();
+            case 0:
+                binding.timeIcon.setBackground(getContext().getDrawable(R.drawable.baseline_brightness_5_24));
+                binding.timeTxt.setText("아침");
+                binding.timeTxt.setTextColor(Color.parseColor(Orange));
+                binding.timeDetail.setText("오전 6시 ~ 오후 12시");
+                break;
+            case 1:
+                binding.timeIcon.setBackground(getContext().getDrawable(R.drawable.baseline_wb_sunny_24));
+                binding.timeTxt.setText("점심");
+                binding.timeTxt.setTextColor(Color.parseColor(Yellow));
+                binding.timeDetail.setText("오후 12시 ~ 오후 6시");
+                break;
+            case 2:
+                binding.timeIcon.setBackground(getContext().getDrawable(R.drawable.baseline_brightness_3_24));
+                binding.timeTxt.setText("저녁");
+                binding.timeTxt.setTextColor(Color.parseColor(Blue));
+                binding.timeDetail.setText("오후 6시 ~ 오전 12시");
+                break;
+            case 3:
+                binding.timeIcon.setBackground(getContext().getDrawable(R.drawable.baseline_flare_24));
+                binding.timeTxt.setText("새벽");
+                binding.timeTxt.setTextColor(Color.parseColor(Purple));
+                binding.timeDetail.setText("오전 12시 ~ 오전 6시");
+                break;
+        }
 
-        if (getArguments() != null) {
-            RoutineData routine = (RoutineData) getArguments().getSerializable("routine");
-            exercises = routine.getExercises();
-            setRoutineTime(routine.getDayOfWeek(), routine.getStartTime(), routine.getEndTime());
+        switch (dayOfWeek) {
+            case 0: binding.dayOfWeek.setText("일요일"); break;
+            case 1: binding.dayOfWeek.setText("월요일"); break;
+            case 2: binding.dayOfWeek.setText("화요일"); break;
+            case 3: binding.dayOfWeek.setText("수요일"); break;
+            case 4: binding.dayOfWeek.setText("목요일"); break;
+            case 5: binding.dayOfWeek.setText("금요일"); break;
+            case 6: binding.dayOfWeek.setText("토요일"); break;
         }
 
         if (exercises != null)
             setRecyclerView();
 
-        NextTxt.setBackgroundColor(Color.parseColor("#05c78c"));
-        NextTxt.setTextColor(Color.parseColor("#ffffff"));
+        binding.backBtn.setOnClickListener(v -> mListener.onRoutineExDetail(exercises, false));
 
-        NextBtn.setOnClickListener(v -> {
-            mListener.onRoutineExDetail(exercises);
-        });
-
-        return view;
+        binding.nextBtn.setOnClickListener(v -> mListener.onRoutineExDetail(exercises, true));
     }
 
-    private void setRoutineTime(int dayOfWeek, String startTime, String endTime) {
-        String DayOfWeek = "";
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
 
-        switch (dayOfWeek) {
-            case 0: DayOfWeek = "일요일"; break;
-            case 1: DayOfWeek = "월요일"; break;
-            case 2: DayOfWeek = "화요일"; break;
-            case 3: DayOfWeek = "수요일"; break;
-            case 4: DayOfWeek = "목요일"; break;
-            case 5: DayOfWeek = "금요일"; break;
-            case 6: DayOfWeek = "토요일"; break;
-        }
-
-        String StartTime = TimeParse(startTime);
-        String EndTime = TimeParse(endTime);
-        String result = DayOfWeek + " · " + StartTime + " - " + EndTime;
-
-        ScheduleTxt.setText(result);
+        binding = null;
     }
 
-    private String TimeParse(String time) {
-        String hour = time.substring(0, time.indexOf(":"));
-        String minSec = time.substring(time.indexOf(":")+1);
-        String min = minSec.substring(0, minSec.indexOf(":"));
-        String am_pm = "오전";
-
-        int tempHour = Integer.parseInt(hour);
-
-        if (tempHour > 12) {
-            am_pm = "오후";
-            tempHour -= 12;
-        }
-
-        @SuppressLint("DefaultLocale") String result = String.format("%02d:%s", tempHour, min);
-
-        return am_pm + " " + result;
-    }
 
     private void setRecyclerView() {
-        adapter = new ExerciseInputAdapter(exercises);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(adapter);
+        adapter = new ExerciseInputAdapter(getContext(), exercises);
+        binding.recyclerView.setHasFixedSize(true);
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.recyclerView.setAdapter(adapter);
     }
 }

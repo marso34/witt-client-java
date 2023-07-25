@@ -227,7 +227,7 @@ public class EditRoutineActivity extends AppCompatActivity {
     }
 
     private void setRecyclerView() {
-        adapter = new ExerciseInputAdapter(routine.getExercises(), deletePk,true);
+        adapter = new ExerciseInputAdapter(this, routine.getExercises(), deletePk,true);
         binding.recyclerView.setHasFixedSize(true);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerView.setAdapter(adapter);

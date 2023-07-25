@@ -1,6 +1,7 @@
 package com.example.healthappttt.Routine;
 
 import android.graphics.Color;
+import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,10 +11,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.healthappttt.Data.Exercise.ExerciseData;
 import com.example.healthappttt.R;
+import com.google.android.material.card.MaterialCardView;
 
 import java.util.ArrayList;
 
@@ -21,6 +24,9 @@ public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapte
     private ArrayList<ExerciseData> exercises;
     private ArrayList<String> selectExerciseIndex;
     private String cat;
+
+    private static final String Signature = "#05C78C";
+    private static final String Body = "#4A5567";
 
     public ExerciseListAdapter(ArrayList<ExerciseData> exercises, ArrayList<String> selectExerciseIndex) {
         this.exercises = exercises;
@@ -32,9 +38,9 @@ public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapte
     }
 
     public static class MainViewHolder extends RecyclerView.ViewHolder {
-        public LinearLayout ExerciseLayout;
-        public TextView CatView, NameView;
-        public LinearLayout CheckBoxLayout;
+        public MaterialCardView ExerciseLayout;
+        public CardView CatView;
+        public TextView NameView;
         public ImageView CheckedImg;
 
         public boolean isChecked;
@@ -46,8 +52,6 @@ public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapte
 
             this.CatView = view.findViewById(R.id.exerciseCat);
             this.NameView = view.findViewById(R.id.exerciseName);
-
-            this.CheckBoxLayout = view.findViewById(R.id.checkbox);
             this.CheckedImg = view.findViewById(R.id.checked);
 
             this.isChecked = false;
@@ -66,11 +70,19 @@ public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapte
             mainViewHolder.isChecked = !mainViewHolder.isChecked;
 
             if (mainViewHolder.isChecked) {
-                mainViewHolder.CheckedImg.setVisibility(View.VISIBLE);
                 selectExerciseIndex.add(cat + " " + this.exercises.get(position).getExerciseName());
+
+                mainViewHolder.CheckedImg.setVisibility(View.VISIBLE);
+                mainViewHolder.ExerciseLayout.setStrokeWidth(1);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
+                    mainViewHolder.ExerciseLayout.setOutlineSpotShadowColor(Color.parseColor(Signature));
             } else {
-                mainViewHolder.CheckedImg.setVisibility(View.GONE);
                 selectExerciseIndex.remove(cat + " " + this.exercises.get(position).getExerciseName());
+
+                mainViewHolder.CheckedImg.setVisibility(View.GONE);
+                mainViewHolder.ExerciseLayout.setStrokeWidth(0);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
+                    mainViewHolder.ExerciseLayout.setOutlineSpotShadowColor(Color.parseColor(Body));
             }
         });
 
@@ -81,15 +93,17 @@ public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapte
     public void onBindViewHolder(@NonNull MainViewHolder holder, int position) {
         String name = this.exercises.get(position).getExerciseName();
 
-        holder.CatView.setText(cat); // 운동
-        holder.CatView.setTextColor(Color.parseColor(this.exercises.get(position).getTextColor())); // 부위 텍스트 색
-        holder.CatView.setBackgroundColor(Color.parseColor(this.exercises.get(position).getColor())); // 부위 바탕 색
+        holder.CatView.setCardBackgroundColor(Color.parseColor(this.exercises.get(position).getTextColor())); // 부위 바탕 색
         holder.NameView.setText(name);
 
         for (String e : selectExerciseIndex) {
             if (e.equals(cat + " " + name)) {
-                holder.CheckedImg.setVisibility(View.VISIBLE);
                 holder.isChecked = true;
+                holder.CheckedImg.setVisibility(View.VISIBLE);
+                holder.ExerciseLayout.setStrokeWidth(1);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
+                    holder.ExerciseLayout.setOutlineSpotShadowColor(Color.parseColor(Signature));
+
                 break;
             }
         }

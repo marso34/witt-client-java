@@ -5,60 +5,40 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingLeft="12dp"
-    android:paddingVertical="6dp"
-    android:orientation="vertical">
+    android:paddingVertical="4dp"
+    android:orientation="horizontal">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/exerciseCat"
+        android:layout_height="8dp"
+        android:layout_width="8dp"
+        android:layout_margin="8dp"
+        app:cardBackgroundColor="@color/black"
+        app:cardElevation="0dp"
+        app:cardCornerRadius="8dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="36dp"
-            android:layout_height="20dp"
-            android:layout_gravity="center"
-            app:cardElevation="0dp"
-            app:cardCornerRadius="25dp" >
-
-            <TextView
-                android:id="@+id/exerciseCat"
-                android:layout_height="wrap_content"
-                android:layout_width="36dp"
-                android:padding="3dp"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:background="#000000"
-                android:textColor="#ffffff"
-                android:text="부위"
-                android:textSize="11sp"
-                android:textStyle="bold"/>
-
-        </androidx.cardview.widget.CardView>
+        android:layout_marginLeft="4dp"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/exerciseName"
             android:layout_width="wrap_content"
             android:layout_height="24dp"
-            android:layout_weight="1"
-            android:layout_gravity="center"
-            android:layout_marginLeft="16dp"
             android:text="운동 이름"
-            android:textColor="@color/Standard"
-            android:textSize="14sp"
-            android:textStyle="bold" />
+            style="@style/Body"/>
+
+        <TextView
+            android:id="@+id/exerciseDetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="-kg · -회 · -세트"
+            style="@style/Subtitle"/>
 
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/exerciseDetail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="4dp"
-        android:layout_marginLeft="52dp"
-        android:text="-kg · -회 · -세트"
-        android:textSize="12sp"
-        android:textColor="@color/Subtitle"/>
 
 </LinearLayout>
 

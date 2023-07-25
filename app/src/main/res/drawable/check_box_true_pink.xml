@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+
+<!-- Drop Shadow Stack -->
+<item>
+    <shape>
+        <padding
+            android:bottom="10dp"
+            android:left="10dp"
+            android:right="10dp"
+            android:top="10dp" />
+        <corners android:radius="10dp"/>
+    </shape>
+</item>
+
+<!-- Background -->
+<item
+    android:drawable="@drawable/baseline_check_circle_24_p"
+    android:width="20dp"
+    android:height="20dp">
+    <color android:color="@color/Caution"/>
+</item>
+
+</layer-list>

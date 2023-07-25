@@ -70,8 +70,7 @@
 
         <activity
             android:name=".Chat.ReviewActivity"
-            android:exported="false" />
-
+            android:exported="true" />
         <activity
             android:name=".Chat.ReportActivity"
             android:exported="true">
@@ -154,7 +153,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".Routine.CreateRoutineActivity"
-            android:exported="false"
+            android:exported="true"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
@@ -191,9 +190,10 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".Sign.SubActivity"
-            android:exported="false"
-            android:screenOrientation="portrait">
+            android:name=".Sign.SignUpActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustNothing">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />

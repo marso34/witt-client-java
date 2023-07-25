@@ -33,7 +33,7 @@ public class CreateRoutineActivity extends AppCompatActivity implements CRSetTim
     private SQLiteUtil sqLiteUtil;
     private PreferenceHelper prefhelper;
 
-    private int dayOfWeek, startTime, endTime;
+    private int dayOfWeek, time, startTime, endTime;
     private RoutineData routine;
 
     @Override
@@ -41,16 +41,18 @@ public class CreateRoutineActivity extends AppCompatActivity implements CRSetTim
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_routine);
 
+        Intent intent = getIntent();
+        dayOfWeek = intent.getIntExtra("dayOfWeek", 0);
+        time = -1;
+
         service = RetrofitClient.getClient().create(ServiceApi.class);
         sqLiteUtil = SQLiteUtil.getInstance();
         prefhelper = new PreferenceHelper("UserTB",this);
 
         routine = new RoutineData();
+        routine.setDayOfWeek(dayOfWeek);
 
-        Intent intent = getIntent();
-        dayOfWeek = intent.getIntExtra("dayOfWeek", 0);
-
-        replaceFragment(new CRSetTimeFragment());
+        replaceFragment(CRSetTimeFragment.newInstance(time, dayOfWeek));
     }
 
     private String TimeToString(int Time) {
@@ -121,33 +123,6 @@ public class CreateRoutineActivity extends AppCompatActivity implements CRSetTim
             sqLiteUtil.insert(e, false);
     }
 
-    private void fragmentToSetTime() {
-        int[] schedule = new int[3];
-        schedule[0] = dayOfWeek;
-        schedule[1] = startTime;
-        schedule[2] = endTime;
-
-        Bundle bundle = new Bundle();
-        bundle.putIntArray("schedule", schedule);
-        replaceFragment(new CRSetTimeFragment(), bundle);
-    }
-
-    private void fragmentToAddEx() {
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("routine", routine);
-//        bundle.putSerializable("exercises", routine.getExercises());
-//        bundle.putIntArray("schedule", schedule);
-        replaceFragment(new CRSelectExerciseFragment(), bundle);
-    }
-
-    private void fragmentToExDetail() {
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("routine", routine);
-//        bundle.putSerializable("exercises", routine.getExercises());
-//        bundle.putIntArray("schedule", schedule);
-        replaceFragment(new CRInputDetailFragment(), bundle);
-    }
-
     private void Terminate(boolean isSuccess) {
         if (isSuccess) {
             Intent intent = new Intent();
@@ -173,49 +148,45 @@ public class CreateRoutineActivity extends AppCompatActivity implements CRSetTim
         fragmentTransaction.commit();
     }
 
-    private void replaceFragment (Fragment fragment, Bundle bundle) { //프래그먼트 설정
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        if( fragment.isAdded() )
-        {
-            // Fragment 가 이미 추가되어 있으면 삭제한 후, 새로운 Fragment 를 생성한다.
-            // 새로운 Fragment 를 생성하지 않으면 2번째 보여질 때에 Fragment 가 보여지지 않는 것 같습니다.
-            fragmentTransaction.remove( fragment );
-            fragment = new Fragment();
-        }
-        fragment.setArguments(bundle);
-        fragmentTransaction.replace(R.id.frame_layout, fragment);
-        fragmentTransaction.commit();
-    }
-
     @Override
-    public void onRoutineSetTime(int startTime, int endTime) {
-        this.startTime = startTime;
-        this.endTime = endTime;
+    public void onRoutineSetTime(int time) {
+        if (-1 < time && time < 4) {
+            this.time = time;
 
-        routine.setDayOfWeek(dayOfWeek);
-        routine.setStartTime(TimeToString(startTime));
-        routine.setEndTime(TimeToString(endTime));
+        routine.setStartTime("00:00:00");
+        routine.setEndTime("00:00:00");
 
-        fragmentToAddEx();
+            replaceFragment(CRSelectExerciseFragment.newInstance(time, routine));
+        } else {
+            Terminate();
+        }
     }  // SetRoutineTime에서 호출하는 메서드
 
     @Override
     public void onRoutineAddEx(ArrayList<ExerciseData> selectExercises) {
-        this.routine.setExercises(selectExercises);
+        if (selectExercises != null) {
+            this.routine.setExercises(selectExercises);
 
-        fragmentToExDetail();
+            replaceFragment(CRInputDetailFragment.newInstance(routine));
+        } else {
+            replaceFragment(CRSetTimeFragment.newInstance(time, dayOfWeek));
+        }
     } // AddExerciseFragment에서 호출하는 메서드
 
     @Override
-    public void onRoutineExDetail(ArrayList<ExerciseData> exercises) {
+    public void onRoutineExDetail(ArrayList<ExerciseData> exercises, boolean isFinish) {
         this.routine.setExercises(exercises);
 
-        SaveToDB(); // 받은 운동 정보 토대로 DB에 루틴, 운동 생성
+        if (isFinish)   SaveToDB(); // 받은 운동 정보 토대로 DB에 루틴, 운동 생성
+        else            replaceFragment(CRSelectExerciseFragment.newInstance(time, routine));
     } // ExerciseDetailFragment에서 호출하는 메서드
 
     @Override
     public void onBackPressed() {
+        Terminate();
+    } // 뒤로가기 버튼 눌렀을 때 루틴 입력을 취소할지, CreateRoutineActivity를 종료할 지 확인
+
+    private void Terminate() {
         AlertDialog.Builder alert_ex = new AlertDialog.Builder(this);
         alert_ex.setMessage("루틴 추가를 취소할까요?");
         alert_ex.setPositiveButton("예", new DialogInterface.OnClickListener() {
@@ -227,12 +198,12 @@ public class CreateRoutineActivity extends AppCompatActivity implements CRSetTim
         alert_ex.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                  // 아니오 누를 시 아무것도 안 함
+                // 아니오 누를 시 아무것도 안 함
             }
         });
         alert_ex.setTitle("테스트");
 
         AlertDialog alert = alert_ex.create();
         alert.show();
-    } // 뒤로가기 버튼 눌렀을 때 루틴 입력을 취소할지, CreateRoutineActivity를 종료할 지 확인
+    }
 }

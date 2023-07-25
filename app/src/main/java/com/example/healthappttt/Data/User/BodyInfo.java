@@ -16,11 +16,15 @@ public class BodyInfo {
     @SerializedName("weight")
     private int weight;
 
-    public BodyInfo(String birthday, int gender, int height, int weight) {
+    @SerializedName("isPublic")
+    private int isPublic;
+
+    public BodyInfo(String birthday, int gender, int height, int weight, int isPublic) {
         this.birthday = birthday;
         this.gender = gender;
         this.height = height;
         this.weight = weight;
+        this.isPublic = isPublic;
     }
 
     public String getBirthday() {
@@ -53,5 +57,13 @@ public class BodyInfo {
 
     public void setWeight(int weight) {
         this.weight = weight;
+    }
+
+    public void setIsPublic(int isPublic) {
+        this.isPublic = isPublic;
+    }
+
+    public int getIsPublic() {
+        return isPublic;
     }
 }

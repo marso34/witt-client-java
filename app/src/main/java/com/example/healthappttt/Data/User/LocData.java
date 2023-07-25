@@ -4,10 +4,13 @@ public class LocData {
     private String name;
     private String id;
 
+    private String adress;
 
-    public LocData(String name, String id) {
+
+    public LocData(String name, String id, String adress) {
         this.name = name;
         this.id = id;
+        this.adress = adress;
     }
 
     public String getName() {
@@ -18,4 +21,7 @@ public class LocData {
         return id;
     }
 
+    public String getAdress() {
+        return adress;
+    }
 }
