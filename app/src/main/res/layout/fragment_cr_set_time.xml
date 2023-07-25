@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -9,176 +9,329 @@
     tools:context=".Routine.CRSetTimeFragment">
 
     <!-- TODO: Update blank fragment layout -->
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="56dp">
+
+        <ImageView
+            android:id="@+id/backBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_arrow_back_ios_new_24"/>
+
+        <TextView
+            android:id="@+id/dayOfWeek"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingTop="5dp"
+            android:paddingHorizontal="12dp"
+            android:paddingBottom="7dp"
+            android:background="@drawable/rectangle_14dp"
+            android:outlineSpotShadowColor="@color/Background_1"
+            android:elevation="10dp"
+            android:textColor="@color/Subtitle"
+            android:text="일요일"
+            style="@style/Caption"/>
+
+    </androidx.appcompat.widget.Toolbar>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="56dp"
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/reset"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_marginTop="44dp"
-            android:text="초기화"
-            android:textColor="@color/Subtitle"
-            android:visibility="invisible"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="22dp"
-            android:text="운동 시간을 설정해주세요"
-            android:textColor="@color/Standard"
-            android:textSize="18dp"
-            android:textStyle="bold" />
+            android:layout_marginLeft="16dp"
+            android:text="운동 시간대를 설정해주세요"
+            style="@style/Title"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="50dp"
             android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="총 운동 시간"
-                android:textColor="@color/Subtitle" />
-
-            <TextView
-                android:id="@+id/runTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="0분"
-                android:textColor="@color/Standard"
-                android:textSize="24sp"
-                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="33dp"
-                android:gravity="center"
-                android:orientation="horizontal">
+                android:background="@drawable/rectangle_16dp"
+                android:elevation="10dp"
+                android:outlineSpotShadowColor="@color/Background_1"
+                android:orientation="vertical" >
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
+
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/morning"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="44dp"
-                    android:orientation="vertical">
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginVertical="6dp"
+                    android:outlineSpotShadowColor="@color/Background_1"
+                    app:strokeColor="@color/Orange"
+                    app:strokeWidth="0dp"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="10dp">
 
-                    <ImageView
-                        android:id="@+id/startTimeUP"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:background="@drawable/round_button_background_1"
-                        android:src="@drawable/ic_baseline_keyboard_arrow_up_24"
-                        app:tint="@color/Subtitle"/>
+                        android:paddingTop="9dp"
+                        android:paddingHorizontal="16dp"
+                        android:paddingBottom="11dp"
+                        android:orientation="horizontal"
+                        android:gravity="left">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="13dp"
-                        android:text="시작 시간"
-                        android:textColor="@color/Subtitle"
-                        android:textSize="14sp" />
+                        <ImageView
+                            android:id="@+id/morningIcon"
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:layout_gravity="center_vertical"
+                            android:src="@drawable/baseline_brightness_5_24"
+                            app:tint="@color/Orange"/>
 
-                    <TextView
-                        android:id="@+id/startTime"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="오후 01:00"
-                        android:textStyle="bold"
-                        android:textColor="@color/Standard"
-                        android:textSize="18sp" />
+                        <TextView
+                            android:id="@+id/morningTxt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="4dp"
+                            android:layout_gravity="center_vertical"
+                            android:textColor="@color/Orange"
+                            android:text="아침"
+                            style="@style/Caption"/>
 
-                    <ImageView
-                        android:id="@+id/startTimeDown"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:layout_gravity="center"
-                        android:background="@drawable/round_button_background_1"
-                        android:src="@drawable/ic_baseline_keyboard_arrow_down_24"
-                        app:tint="@color/Subtitle"/>
+                        <TextView
+                            android:id="@+id/morningDetail"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:layout_gravity="center_vertical"
+                            android:text="오전 6시 ~ 오후 12시"
+                            android:textColor="@color/Background_3"
+                            style="@style/Body"/>
 
-                </LinearLayout>
+                    </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/afternoon"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="44dp"
-                    android:orientation="vertical">
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginVertical="6dp"
+                    android:outlineSpotShadowColor="@color/Background_1"
+                    app:strokeColor="@color/Yellow"
+                    app:strokeWidth="0dp"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="10dp">
 
-                    <ImageView
-                        android:id="@+id/endTimeUP"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:background="@drawable/round_button_background_1"
-                        android:src="@drawable/ic_baseline_keyboard_arrow_up_24"
-                        app:tint="@color/Subtitle"/>
+                        android:paddingTop="9dp"
+                        android:paddingHorizontal="16dp"
+                        android:paddingBottom="11dp"
+                        android:orientation="horizontal"
+                        android:background="@drawable/rectangle_16dp"
+                        android:outlineSpotShadowColor="@color/Background_1"
+                        android:elevation="10dp"
+                        android:gravity="left">
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                        <ImageView
+                            android:id="@+id/afternoonIcon"
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:layout_gravity="center_vertical"
+                            android:src="@drawable/baseline_wb_sunny_24"
+                            app:tint="@color/Yellow"/>
+
+                        <TextView
+                            android:id="@+id/afternoonTxt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="4dp"
+                            android:layout_gravity="center_vertical"
+                            android:textColor="@color/Yellow"
+                            android:text="점심"
+                            style="@style/Caption"/>
+
+                        <TextView
+                            android:id="@+id/afternoonDetail"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:layout_gravity="center_vertical"
+                            android:text="오후 12시 ~ 오후 6시"
+                            android:textColor="@color/Background_3"
+                            style="@style/Body"/>
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/evening"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginVertical="6dp"
+                    android:outlineSpotShadowColor="@color/Background_1"
+                    app:strokeColor="@color/Orange"
+                    app:strokeWidth="0dp"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="10dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="13dp"
-                        android:text="종료 시간"
-                        android:textColor="@color/Subtitle"
-                        android:textSize="14sp" />
+                        android:paddingTop="9dp"
+                        android:paddingHorizontal="16dp"
+                        android:paddingBottom="11dp"
+                        android:orientation="horizontal"
+                        android:background="@drawable/rectangle_16dp"
+                        android:outlineSpotShadowColor="@color/Background_1"
+                        android:elevation="10dp"
+                        android:gravity="left">
 
-                    <TextView
-                        android:id="@+id/endTime"
-                        android:layout_width="wrap_content"
+                        <ImageView
+                            android:id="@+id/eveningIcon"
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:layout_gravity="center_vertical"
+                            android:src="@drawable/baseline_brightness_3_24"
+                            app:tint="@color/Notion"/>
+
+                        <TextView
+                            android:id="@+id/eveningTxt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="4dp"
+                            android:layout_gravity="center_vertical"
+                            android:textColor="@color/Notion"
+                            android:text="저녁"
+                            style="@style/Caption"/>
+
+                        <TextView
+                            android:id="@+id/eveningDetail"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:layout_gravity="center_vertical"
+                            android:text="오후 6시 ~ 오전 12시"
+                            android:textColor="@color/Background_3"
+                            style="@style/Body"/>
+
+                    </LinearLayout>
+
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/dawn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginVertical="6dp"
+                    android:outlineSpotShadowColor="@color/Background_1"
+                    app:strokeColor="@color/Orange"
+                    app:strokeWidth="0dp"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="10dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="오후 02:00"
-                        android:textStyle="bold"
-                        android:textColor="@color/Standard"
-                        android:textSize="18sp" />
+                        android:paddingTop="9dp"
+                        android:paddingHorizontal="16dp"
+                        android:paddingBottom="11dp"
+                        android:orientation="horizontal"
+                        android:background="@drawable/rectangle_16dp"
+                        android:outlineSpotShadowColor="@color/Background_1"
+                        android:elevation="10dp"
+                        android:gravity="left">
 
-                    <ImageView
-                        android:id="@+id/endTimeDown"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:layout_gravity="center"
-                        android:background="@drawable/round_button_background_1"
-                        android:src="@drawable/ic_baseline_keyboard_arrow_down_24"
-                        app:tint="@color/Subtitle"/>
+                        <ImageView
+                            android:id="@+id/dawnIcon"
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:layout_gravity="center_vertical"
+                            android:src="@drawable/baseline_flare_24"
+                            app:tint="@color/Purple"/>
 
-                </LinearLayout>
+                        <TextView
+                            android:id="@+id/dawnTxt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="4dp"
+                            android:layout_gravity="center_vertical"
+                            android:textColor="@color/Purple"
+                            android:text="새벽"
+                            style="@style/Caption"/>
+
+                        <TextView
+                            android:id="@+id/dawnDetail"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:layout_gravity="center_vertical"
+                            android:text="오전 12시 ~ 오전 6시"
+                            android:textColor="@color/Background_3"
+                            style="@style/Body"/>
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
 
             </LinearLayout>
+
 
         </LinearLayout>
 
     </LinearLayout>
 
-    <androidx.cardview.widget.CardView
+    <TextView
         android:id="@+id/nextBtn"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="48dp"
         android:layout_marginHorizontal="16dp"
-        android:layout_marginBottom="58dp"
-        app:cardCornerRadius="20dp"
-        app:cardElevation="0dp" >
+        android:layout_gravity="bottom"
+        android:gravity="center"
+        android:background="@drawable/rectangle_20dp"
+        android:outlineSpotShadowColor="@color/Background_1"
+        android:elevation="12dp"
+        android:textColor="@color/Background_2"
+        android:text="설정하기"
+        style="@style/Title"/>
 
-        <TextView
-            android:id="@+id/nextTxt"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:background="@color/Signature"
-            android:text="설정하기"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:textColor="@color/Background_1"/>
 
-    </androidx.cardview.widget.CardView>
-</RelativeLayout>
+
+<!--    <androidx.cardview.widget.CardView-->
+<!--        android:id="@+id/nextBtn"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="56dp"-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        android:layout_marginHorizontal="16dp"-->
+<!--        android:layout_marginBottom="58dp"-->
+<!--        app:cardCornerRadius="20dp"-->
+<!--        app:cardElevation="0dp" >-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/nextTxt"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:gravity="center"-->
+<!--            android:background="@color/Signature"-->
+<!--            android:text="설정하기"-->
+<!--            android:textSize="20sp"-->
+<!--            android:textStyle="bold"-->
+<!--            android:textColor="@color/Background_1"/>-->
+
+<!--    </androidx.cardview.widget.CardView>-->
+</FrameLayout>
+
