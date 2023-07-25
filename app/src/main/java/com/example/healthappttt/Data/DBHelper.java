@@ -98,7 +98,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 + "USER_FK INT,"
                 + "CHAT_ROOM_PK INT primary key,"
                 + "LAST_MSG_INDEX INT,"
-                + "OTHER_USER_NM,"
+                + "OTHER_USER_NM VARCHAR(30),"
                 + "FAV INT ,"
                 + "GYM_NM VARCHAR(30),"
                 + "TS  VARCHAR(30)"
