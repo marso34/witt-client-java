@@ -98,6 +98,7 @@ public class ChattingFragment extends Fragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
+                sqLiteUtil.setEmptyDB();
                 sqLiteUtil.setInitView(getContext(), "CHAT_MSG_TB");
                 MSG m = sqLiteUtil.selectLastMsg(chatRoomId, userKey, 2);
 
@@ -130,7 +131,6 @@ public class ChattingFragment extends Fragment {
             @Override
             public void onResponse(Call<List<UserChat>> call, Response<List<UserChat>> response) {
                 if (response.isSuccessful()) {
-
                     List<UserChat> users = response.body();
                     sqLiteUtil.setInitView(getContext(),"CHAT_ROOM_TB");
                     sqLiteUtil.deleteChatRoom();

@@ -1,7 +1,6 @@
 package com.example.healthappttt.Routine;
 
 import android.content.Context;
-import android.graphics.pdf.PdfRenderer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -83,6 +82,7 @@ public class RoutineFragment extends Fragment {
             Log.d("루틴 프래그먼트", "유저 키 테스트 " + code);
         }
 
+
         pagerAdapter = new RoutinePagerAdapter(this, code);
         pagerAdapter.createFragment(0);
         pagerAdapter.createFragment(1);
@@ -91,9 +91,7 @@ public class RoutineFragment extends Fragment {
         pagerAdapter.createFragment(4);
         pagerAdapter.createFragment(5);
         pagerAdapter.createFragment(6);
-
         viewPager.setAdapter(pagerAdapter);
-
         new TabLayoutMediator(tabLayout, viewPager,
                 (tab, position) -> tab.setText(setText(position))
         ).attach();

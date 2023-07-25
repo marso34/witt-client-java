@@ -88,7 +88,6 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
      */
     public void insertRL(ReviewListData reviewList) {
         ContentValues values = new ContentValues();
-
         if(table.equals("REVIEW_TB")){
             // 동일한 Review_PK 값이 이미 존재하는지 확인
 //            int existingReviewPK = checkExistingReviewPK(reviewList.getReview_PK());
@@ -126,6 +125,7 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         cursor.close();
         return existingReviewPK;
     }
+
     public long insert(int userKey, int myFlag, String message, int chatRoomId, int Success,String ts) {
         long lastKey = -1;
         try {
@@ -147,8 +147,8 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
             db.close();
             return lastKey;
         }
-
     }
+
     public int getLastMyMsgPK(String chatRoomId,String userKey) {
         int lastMsgPK = -1;
         try {
@@ -167,11 +167,10 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
             return lastMsgPK;
         }
     }
+
     public int getLastAllMsgPK(String chatRoomId,String userKey) {
         int lastMsgPK = -1;
         try {
-
-
             // MSG_PK 열의 마지막 튜플을 얻기 위한 쿼리를 작성합니다.
             if (table != null && table.equals("CHAT_MSG_TB")) {
                 String query = "SELECT MAX(MSG_PK) FROM CHAT_MSG_TB WHERE USER_FK = ? AND CHAT_ROOM_FK = ?";
@@ -186,8 +185,8 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
             db.close();
             return lastMsgPK;
         }
-
     }
+
     public int getLastOtherMsgPK(String chatRoomId,String userKey) {
         int lastMsgPK = -1;
         try {
@@ -199,7 +198,6 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
                 if (cursor.moveToFirst()) {
                     lastMsgPK = cursor.getInt(0);
                 }
-
                 cursor.close();
                 db.close();
             }
@@ -207,7 +205,6 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
             db.close();
             return lastMsgPK;
         }
-
     }
 
     public int insert(int chatPk,int userKey, int myFlag, String message, int chatRoomId, int Success,String ts) {
