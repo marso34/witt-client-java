@@ -153,6 +153,7 @@ public class SocketSingleton {
                             if(flag == false) {
 //                                createNotificationChannel();
 //                                showCustomNotification(chatRoomId, message); // 채팅 메시지 알림 표시
+                                alarmManager.setSounds(3);
                                 sqLiteUtil.setInitView(context, "CHAT_ROOM_TB");
                                 String otherUserNM = sqLiteUtil.selectOtherUserName(String.valueOf(preferenceHelper.getPK()),chatRoomId);
                                 alarmManager.showCustomNotification(otherUserNM,message);
