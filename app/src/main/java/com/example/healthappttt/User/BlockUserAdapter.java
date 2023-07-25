@@ -296,7 +296,7 @@ public class BlockUserAdapter extends RecyclerView.Adapter<BlockUserAdapter.View
 // 날짜형식을 바꿔주는 매서드
     public static String formatDateString(String inputDateString) {
         try {
-            SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault());
+            SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
             Date date = inputFormat.parse(inputDateString);
 
             Calendar calendar = Calendar.getInstance();

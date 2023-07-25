@@ -108,7 +108,6 @@ public class MainActivity extends AppCompatActivity {
         Log.d("sub2에서 받은pk:", String.valueOf(userKey));
         apiService = RetrofitClient.getClient().create(ServiceApi.class); // create메서드로 api서비스 인터페이스의 구현제 생성
 
-
         sqLiteUtil = SQLiteUtil.getInstance(); //sqllite 객체
         prefhelper = new PreferenceHelper("UserTB",this);
         getuserProfile(userKey); //유저키

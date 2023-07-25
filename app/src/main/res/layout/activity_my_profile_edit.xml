@@ -320,11 +320,12 @@
                             android:layout_height="24dp"
                             android:background="#00ff0000"
                             android:layout_gravity="center" />
+
                         <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:src="@drawable/ic_baseline_keyboard_arrow_down_24"
-                            android:layout_gravity="center"/>
+                            android:layout_width="30dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_baseline_keyboard_arrow_down_24" />
 
                     </FrameLayout>
                 </LinearLayout>
