@@ -35,7 +35,6 @@ public class MyProfileEdit extends AppCompatActivity {
 
     ImageView edit_img;
     ImageButton elbum;
-//    Map<String, Object> Editeduserdata;
 
     static String name;//초기 넘겨받은 데이터
     static int height,weight,gender; //초기 넘겨받은 데이터
@@ -52,7 +51,6 @@ public class MyProfileEdit extends AppCompatActivity {
         binding = ActivityMyProfileEditBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        UserTB = new PreferenceHelper("membership",this);
         UserTB = new PreferenceHelper("UserTB",MyProfileEdit.this);
         apiService = RetrofitClient.getClient().create(ServiceApi.class);
 
@@ -224,35 +222,6 @@ public class MyProfileEdit extends AppCompatActivity {
         });
     }
 
-    //설정하기
-//    public void set_btn(View view) {
-//        view.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent();
-//                /**
-//                 * 로컬 저장하는 로직 + 내 프로필로 돌아갔을 때 업데이트되어 보여짐
-//                 */
-//
-//
-//
-//                intent.putExtra("name",binding.Ename.getText().toString());
-//                intent.putExtra("height",Integer.valueOf(String.valueOf(binding.Eheight.getText())) );
-//                intent.putExtra("weight",Integer.valueOf(String.valueOf(binding.Eweight.getText())) );
-//                intent.putExtra("squatValue",squatValue1.get() );
-//                intent.putExtra("benchValue",benchValue1.get() );
-//                intent.putExtra("deadValue",deadValue1.get() );
-//                if(binding.gender.getText().equals("남자")) {
-//                    intent.putExtra("gender",0);
-//                }else{
-//                    intent.putExtra("gender",1);
-//                }
-//
-//                setResult(RESULT_OK, intent);//응답코드 -1
-//                finish();//스택에서 제거
-//            }
-//        });
-//    };
 
 
 }

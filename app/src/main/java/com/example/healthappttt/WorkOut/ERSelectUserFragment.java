@@ -2,20 +2,17 @@ package com.example.healthappttt.WorkOut;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import com.example.healthappttt.Data.Chat.UserChat;
-import com.example.healthappttt.Data.Exercise.RoutineData;
 import com.example.healthappttt.R;
-import com.example.healthappttt.Routine.RoutineAdapter;
 import com.example.healthappttt.User.UserGenAdapter;
 
 import java.util.ArrayList;
@@ -112,10 +109,6 @@ public class ERSelectUserFragment extends Fragment {
 
     private void setRecyclerView() {
         test = new ArrayList<>();
-        test.add(new UserChat("3ddddddddddddddd", "3", ""));
-        test.add(new UserChat("3ddd", "3", ""));
-        test.add(new UserChat("3ddddddddd", "3", ""));
-        test.add(new UserChat("3ddddddddddddddddddd", "3", ""));
 
 
         adapter = new UserGenAdapter(getContext(), test, 3);

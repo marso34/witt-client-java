@@ -97,7 +97,9 @@
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/drawable/shape_switch_track.xml" value="0.191" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/drawable/state.xml" value="0.191" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/drawable/tab_dayofweek_style.xml" value="0.191" />
+        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_add_exercise.xml" value="0.21822916666666667" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_alarm.xml" value="0.264" />
+        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_block.xml" value="0.21822916666666667" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_calender.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_calender_sub.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_chat.xml" value="0.25263157894736843" />
@@ -105,6 +107,7 @@
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_create_exercise.xml" value="0.264" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_create_exercize.xml" value="0.16" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_create_routine.xml" value="0.24947916666666667" />
+        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_detailprofile.xml" value="0.21822916666666667" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_edit_routine.xml" value="0.14583333333333334" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_enlargement.xml" value="0.23385416666666667" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_exercise_record.xml" value="0.12954253954681488" />
@@ -116,6 +119,7 @@
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_join.xml" value="0.10687022900763359" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_login.xml" value="0.6" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_main.xml" value="0.264" />
+        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_my_profile_edit.xml" value="0.21822916666666667" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_myprofile.xml" value="0.23072916666666668" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_profile.xml" value="0.264" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_profile_my.xml" value="0.1" />
@@ -134,29 +138,38 @@
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/adapter_area.xml" value="0.4" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/adapter_create_exercize.xml" value="0.6" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/adapter_exercise.xml" value="0.20478837109876016" />
-        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/adapter_exercise_list.xml" value="0.536" />
+        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/adapter_exercise_input.xml" value="0.21822916666666667" />
+        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/adapter_exercise_list.xml" value="0.49230769230769234" />
+        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/adapter_exercise_list_p.xml" value="0.21822916666666667" />
+        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/adapter_exercise_record.xml" value="0.21822916666666667" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/adapter_exercize.xml" value="0.264" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/adapter_name_exercize.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/adapter_routine.xml" value="0.176" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/adapter_set_exercise.xml" value="0.23385416666666667" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/adapter_test.xml" value="0.24583333333333332" />
-        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/adapter_user.xml" value="0.35962145110410093" />
-        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/custom_notification_layout.xml" value="0.17628607277289837" />
+        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/adapter_user.xml" value="0.264" />
+        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/adapter_user_gen.xml" value="0.21822916666666667" />
+        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/chat_menu_popup.xml" value="0.21822916666666667" />
+        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/custom_notification_layout.xml" value="0.536" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/fragment_add_exercise.xml" value="0.23385416666666667" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/fragment_alram.xml" value="0.24583333333333332" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/fragment_alram_list.xml" value="0.24583333333333332" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/fragment_bottom.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/fragment_chatting.xml" value="0.264" />
+        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/fragment_cr_input_detail.xml" value="0.21822916666666667" />
+        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/fragment_cr_set_time.xml" value="0.21822916666666667" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/fragment_er_recording.xml" value="0.14583333333333334" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/fragment_er_select_routine.xml" value="0.14583333333333334" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/fragment_er_select_user.xml" value="0.14583333333333334" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/fragment_exercise_detail.xml" value="0.14739583333333334" />
+        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/fragment_exercise_result.xml" value="0.21822916666666667" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/fragment_home.xml" value="0.2" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/fragment_home_back_up.xml" value="0.2" />
-        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/fragment_home_child.xml" value="0.3831450912250217" />
+        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/fragment_home_child.xml" value="0.13559322033898305" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/fragment_item.xml" value="0.14739583333333334" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/fragment_item_list.xml" value="0.14739583333333334" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/fragment_proflie.xml" value="0.24947916666666667" />
+        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/fragment_record.xml" value="0.21822916666666667" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/fragment_routine.xml" value="0.1578125" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/fragment_routine_child.xml" value="0.4" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/fragment_set_routine_time.xml" value="0.14739583333333334" />
@@ -175,7 +188,7 @@
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/sent.xml" value="0.4" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/test.xml" value="0.152" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/toolbar.xml" value="0.20478837109876016" />
-        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/user_layout.xml" value="0.264" />
+        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/user_layout.xml" value="0.536" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/view_loader.xml" value="0.1" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/menu/bottom_nav_menu.xml" value="0.14814814814814814" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/menu/menu.xml" value="0.1" />

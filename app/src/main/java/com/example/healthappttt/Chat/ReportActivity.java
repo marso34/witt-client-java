@@ -55,7 +55,7 @@ public class ReportActivity extends AppCompatActivity {
         RPTMap.put("otherpk",otherUserKey);
 
 
-        setview();// 체크 뷰 및 다른 뷰 정의
+        setview();// 체크뷰 및 다른뷰 정의
         setCheckedTextViewListeners(); //체크박스 클릭 이벤트 처리
         RPTclick(); //신고하기
 
@@ -127,18 +127,19 @@ public class ReportActivity extends AppCompatActivity {
                         Log.d("ReportActivity : ", "체크표시를 안하고 텍스트만 적었을때");
                         sendEmail();
                     }
-                } else if (txt.getText() != null) {
-                    //TODO 서버db에 저장
+                } else {
                     setCheckBit(checkedTextViews);
-                    RPT(RPTMap, false);
-                    Log.d("ReportActivity : ","체크표시하고 텍스트 안적었을때" );
-                    finish();
-                }else {
-                    Log.d("ReportActivity : ","둘다 적었을때");
+                    if(txt.getText() == null){
+                        //서버db에 저장 and email 전송 X
+                        Log.d("ReportActivity : ","체크표시하고 텍스트 안적었을때" );
 
-                    //TODO 서버db에 저장
-                    setCheckBit(checkedTextViews);
-                    RPT(RPTMap, true);
+                        RPT(RPTMap, false);
+                    }else {
+                        //서버db에 저장 and email 전송 O
+                        Log.d("ReportActivity : ","둘다 적었을때");
+
+                        RPT(RPTMap, true);
+                    }
 
                 }
             }
@@ -174,19 +175,16 @@ public class ReportActivity extends AppCompatActivity {
 
     public void RPT(Map<String, Object> RPTMap, boolean i) {
 
-
-
         Call<String> call = apiService.updateRPT(RPTMap);
         call.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 if (response.isSuccessful()) {
-                    String d= response.body();
-                    Log.d("서버에서 보내온 텍스트: ", d);
+                    String d = response.body();
                     Log.d("ReportActivity ","신고성공");
                     //email 전송
-                    if(i){sendEmail();}
-
+                    if(i){ sendEmail(); }
+                    finish();
                 } else {
                     // 요청이 실패했을 때의 처리 로직
                     Log.d("ReportActivity ","신고실패");
@@ -195,7 +193,7 @@ public class ReportActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
-                Log.d("ReportActivity ", "서버 응답 실패. 상태코드:?");
+                Log.d("ReportActivity ", "서버 응답 실패.");
             }
         });
 

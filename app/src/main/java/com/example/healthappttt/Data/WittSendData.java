@@ -12,12 +12,14 @@ public class WittSendData {
     String user_NM;
     @SerializedName("otherUserNM")
     String otherUserNM;
-
-    public WittSendData(int user_PK, int otherUserPK, String user_NM, String otherUserNM) {
+    @SerializedName("TS")
+    String TS;
+    public WittSendData(int user_PK, int otherUserPK, String user_NM, String otherUserNM,String TS) {
         this.user_PK = user_PK;
         this.otherUserPK = otherUserPK;
         this.user_NM = user_NM;
         this.otherUserNM = otherUserNM;
+        this.TS = TS;
     }
 
     public int getUser_PK() {

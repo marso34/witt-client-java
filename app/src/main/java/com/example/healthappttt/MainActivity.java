@@ -4,7 +4,6 @@ import static android.content.ContentValues.TAG;
 
 import android.Manifest;
 import android.app.AlarmManager;
-import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -16,9 +15,7 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -105,12 +102,13 @@ public class MainActivity extends AppCompatActivity {
             userKey = new UserKey(Integer.parseInt(uk));
         }
         else Log.d(TAG, "onCreate: 유저키 없음");
-        Log.d("sub2에서 받은pk:", String.valueOf(userKey));
+        Log.d("sub2에서 받은pk:", String.valueOf(userKey.getPk()));
         apiService = RetrofitClient.getClient().create(ServiceApi.class); // create메서드로 api서비스 인터페이스의 구현제 생성
-
 
         sqLiteUtil = SQLiteUtil.getInstance(); //sqllite 객체
         prefhelper = new PreferenceHelper("UserTB",this);
+        prefhelper.setPK(Integer.parseInt(uk));
+
         getuserProfile(userKey); //유저키
 
         final LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -240,22 +238,16 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("dayOfWeek", dayOfWeek);
             startActivity(intent);
         });
-        binding.signOutButton.setOnClickListener(view -> {
-            signOut();
-        });
+
         binding.myInformation.setOnClickListener(view -> {
                 //showUserInfoPopup(useremail); // 자신의 이메일 정보를 보여주는 팝업
             Intent intent = new Intent(MainActivity.this, MyProfileActivity.class);
             intent.putExtra("PK", uk);
-            Log.d("main에서 넘겨주는 myPK",uk);
+            //Log.d("main에서 넘겨주는 myPK",uk);
             startActivity(intent);
         });
 
-        //api 요청 인터페이스 가져오기
-        //유저의 pk를 그대로 받을수있으면 필요가 없음 다른방향( 다른유저의 키를 가져오는 느낌)으로 가야함
         Log.d("prefhelper", "USER_PK:" + prefhelper.getPK()); //저장된 유저의 pk값 가져오기
-
-        //매개변수 prefhelper.getPK() 변경하여 테스팅 필요
         getBlackList(userKey);
         getReviewList(userKey);
         getWittHistory(userKey);
@@ -288,6 +280,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+    // 설정으로 옮김
     private void signOut() {
         mGoogleSignInClient.signOut()
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
@@ -348,7 +341,6 @@ public class MainActivity extends AppCompatActivity {
     }
     //API 요청 후 응답을 SQLite로 차단테이블 데이터 로컬 저장
     private void getBlackList(UserKey userKey) {
-        Log.d(TAG, "getBlackList: a");
         Call<List<BlackListData>> call = apiService.getBlackList(userKey);
         call.enqueue(new Callback<List<BlackListData>>() {
             @Override
@@ -564,56 +556,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    private void showUserInfoPopup(String userEmail) {
 
-       // Toast.makeText(MainActivity.this, userEmail, Toast.LENGTH_SHORT).show();
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        View view = getLayoutInflater().inflate(R.layout.my_popup_layout, null);
-
-        GetUserInfo.getUserInfo(userEmail, new Callback<GetUserInfo>() {
-            @Override
-            public void onResponse(Call<GetUserInfo> call, Response<GetUserInfo> response) {
-                if (response.isSuccessful()) {
-                    GetUserInfo userInfo = response.body();
-
-
-
-                    TextView tvUserName = view.findViewById(R.id.tv_user_info_name);
-                    TextView tvUserEmail = view.findViewById(R.id.tv_user_info_email);
-                    Button btnClose = view.findViewById(R.id.btn_user_info_close);
-
-                    String userName = userInfo.getUserNm();
-                    String userEmail = userInfo.getEmail();
-
-                    tvUserName.setText(userName);
-                    tvUserEmail.setText(userEmail);
-
-                    builder.setView(view);
-                    AlertDialog dialog = builder.create();
-
-                    btnClose.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            dialog.dismiss(); // 팝업창 닫기
-                        }
-                    });
-                    dialog.show();
-
-
-                } else {
-                    // API 호출이 실패한 경우 처리
-                    // ...
-                }
-            }
-
-            @Override
-            public void onFailure(Call<GetUserInfo> call, Throwable t) {;
-            }
-        });
-
-
-    }
 
 
 

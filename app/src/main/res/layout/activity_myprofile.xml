@@ -21,6 +21,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/rounded_bottom"
+                android:elevation="5dp"
                 android:orientation="vertical"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -40,44 +41,51 @@
                     android:text="상세 프로필"
                     android:textSize="25sp" />
 
+
             </LinearLayout>
-                <LinearLayout
+                <androidx.appcompat.widget.Toolbar
                     android:id="@+id/myprofile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    >
+                    android:layout_marginBottom="40dp">
+
+                    <Button
+                        android:id="@+id/cancel_profile"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:background="@drawable/baseline_arrow_back_ios_new_24"
+                        android:backgroundTint="@color/Background_3"
+                        android:layout_marginBottom="16dp"/>
+
 
                     <TextView
                         style="@style/profile_style"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingVertical="20dp"
-                        android:paddingLeft="17dp"
                         android:text="내 정보"
-                        android:textSize="25sp" />
+                        android:textSize="25sp"
+                        android:layout_gravity="center"/>
 
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
 
                     <Button
                         android:id="@+id/PEdit"
                         style="@style/profile_style"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="end"
+                        android:layout_gravity="right"
                         android:background="#00000000"
                         android:text="수정하기"
                         android:textColor="@color/syment"
-                        android:textSize="15sp"/>
-                </LinearLayout>
+                        android:textSize="15dp"
+                        android:visibility="gone"/>
+
+                </androidx.appcompat.widget.Toolbar>
 
                 <ImageView
                     android:id="@+id/ProfileImg"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
                     android:layout_gravity="center"
                     android:background="@drawable/circle" />
 
@@ -94,34 +102,40 @@
                         style="@style/profile_style"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@color/lightgray"
+                        android:background="@drawable/rectangle"
+                        android:backgroundTint="@color/colorCat7"
+                        android:paddingVertical="2dp"
+                        android:paddingHorizontal="8dp"
                         android:text="남자"
-                        android:textColor="@color/gender" />
+                        android:textColor="@color/textColorCat7" />
 
                     <TextView
                         android:id="@+id/name"
                         style="@style/profile_style"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="5sp"
-                        android:text="김건우" />
+                        android:layout_marginLeft="8dp"
+                        android:text="김건우"
+                        android:textColor="@color/darksyment"/>
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginTop="24dp"
                     android:background="@drawable/rectangle"
-                    android:backgroundTint="@color/silver"
+                    android:backgroundTint="@color/white"
                     android:elevation="5dp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="5dp">
 
                     <ImageView
                         android:id="@+id/MapImg"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:layout_margin="19dp"
+                        android:layout_marginVertical="14dp"
                         android:src="@drawable/ic_baseline_place_24" />
 
                     <TextView
@@ -130,200 +144,332 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="부안군 부안읍" />
+                        android:layout_marginLeft="8dp"
+                        android:text="엠케이 휘트니스 부안점" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginVertical="12dp"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="5dp"
+                    android:background="@drawable/rectangle"
+                    android:backgroundTint="@color/white"
+                    android:elevation="5dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginVertical="14dp"
+                        android:src="@drawable/logo_test" />
 
                     <TextView
-                        android:id="@+id/MyHealthPlace"
+                        style="@style/profile_style"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_gravity="center"
+                        android:text="위트 점수" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        style="@style/profile_style"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center|right"
+                        android:text="--"
+                        android:textColor="@color/default_color" />
+
+                    <TextView
                         style="@style/profile_style"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="ㆍMK헬스장"
-                        android:visibility="gone"/>
+                        android:layout_marginLeft="4dp"
+                        android:text="점"
+                        android:textColor="@color/syment" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/EditBody"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginHorizontal="11dp"
+                    android:weightSum="5">
+
+                    <TableRow
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/rectangle"
+                        android:backgroundTint="@color/white"
+                        android:paddingHorizontal="16dp"
+                        android:layout_margin="5dp"
+                        android:paddingVertical="11dp"
+                        android:layout_weight="2"
+                        android:elevation="5dp">
+
+                        <TextView
+                            style="@style/profile_style"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/syment"
+                            android:text="신장" />
+
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="right">
+
+                            <TextView
+                                android:id="@+id/height"
+                                style="@style/profile_style"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="right"
+                                android:text="1--"
+                                android:textColor="@color/darksyment" />
+
+                            <TextView
+                                android:id="@+id/cm"
+                                style="@style/profile_style"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="8dp"
+                                android:gravity="right"
+                                android:text="cm"
+                                android:textColor="#D1D8E2" />
+
+                        </TableRow>
+
+
+
+                    </TableRow>
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                    <TableRow
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/rectangle"
+                        android:backgroundTint="@color/white"
+                        android:paddingHorizontal="16dp"
+                        android:layout_margin="5dp"
+                        android:paddingVertical="11dp"
+                        android:layout_weight="2"
+                        android:elevation="5dp">
+
+                        <TextView
+                            style="@style/profile_style"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/syment"
+                            android:text="체중" />
+
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="right">
+
+                            <TextView
+                                android:id="@+id/weight"
+                                style="@style/profile_style"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="right"
+                                android:text="--"
+                                android:textColor="@color/darksyment" />
+
+                            <TextView
+                                android:id="@+id/kg"
+                                style="@style/profile_style"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="8dp"
+                                android:gravity="right"
+                                android:text="kg"
+                                android:textColor="#D1D8E2" />
+
+                        </TableRow>
+
+
+                    </TableRow>
+
+
                 </LinearLayout>
 
                 <TableLayout
+                    android:id="@+id/exercise_3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
-                    android:layout_marginTop="12dp">
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/rectangle"
+                    android:backgroundTint="@color/white"
+                    android:elevation="5dp"
+                    app:layout_constraintTop_toBottomOf="@id/entire1">
 
-                    <TableRow android:paddingVertical="13dp">
-
-                        <TextView
-                            style="@style/profile_style"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="키" />
-
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="0dp"
-                            android:layout_weight="1" />
-
-                        <TextView
-                            android:id="@+id/Pheight"
-                            style="@style/profile_style"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="right"
-                            android:text="178cm"
-                            android:textColor="@color/syment" />
-                    </TableRow>
-
-                    <TableRow android:paddingVertical="13dp">
+                    <TableRow
+                        android:layout_marginHorizontal="20dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="10dp"
+                        android:weightSum="3">
 
                         <TextView
                             style="@style/profile_style"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="몸무게" />
-
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="0dp"
-                            android:layout_weight="1" />
-
-                        <TextView
-                            android:id="@+id/Pweight"
-                            style="@style/profile_style"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="right"
-                            android:text="69kg"
+                            android:layout_weight="1"
+                            android:text="스쿼트"
+                            android:textAlignment="center"
                             android:textColor="@color/syment" />
-                    </TableRow>
-
-                    <TableRow android:paddingVertical="13dp">
 
                         <TextView
                             style="@style/profile_style"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="위트 점수" />
-
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="0dp"
-                            android:layout_weight="1" />
-
-                        <TextView
-                            android:id="@+id/WScore"
-                            style="@style/profile_style"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="right"
-                            android:text="100"
-                            android:textColor="@color/default_color" />
-
-                        <TextView
-                            style="@style/profile_style"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="right"
-                            android:text="점"
+                            android:layout_weight="1"
+                            android:text="벤치프레스"
+                            android:textAlignment="center"
                             android:textColor="@color/syment" />
 
+
+                        <TextView
+                            style="@style/profile_style"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="데드리프트"
+                            android:textAlignment="center"
+                            android:textColor="@color/syment" />
                     </TableRow>
 
-                    <!--                여기까지 묶어야할 배경이 있음-->
+                    <TableRow
+                        android:layout_marginHorizontal="20dp"
+                        android:layout_marginBottom="20dp"
+                        android:weightSum="3">
+
+                        <TextView
+                            android:id="@+id/Psqaut"
+                            style="@style/profile_style"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="60"
+                            android:textColor="@color/darksyment"
+                            android:textAlignment="center" />
+
+                        <TextView
+                            android:id="@+id/Pbench"
+                            style="@style/profile_style"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="40"
+                            android:textColor="@color/darksyment"
+                            android:textAlignment="center" />
+
+
+                        <TextView
+                            android:id="@+id/Pdeadlift"
+                            style="@style/profile_style"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="55"
+                            android:textColor="@color/darksyment"
+                            android:textAlignment="center" />
+                    </TableRow>
 
 
                 </TableLayout>
 
 
+<!--                <TableLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginHorizontal="16dp"-->
+<!--                    android:layout_marginTop="12dp">-->
+
+<!--                    <TableRow android:paddingVertical="13dp">-->
+
+<!--                        <TextView-->
+<!--                            style="@style/profile_style"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:text="키" />-->
+
+<!--                        <View-->
+<!--                            android:layout_width="0dp"-->
+<!--                            android:layout_height="0dp"-->
+<!--                            android:layout_weight="1" />-->
+
+<!--                        <TextView-->
+<!--                            android:id="@+id/Pheight"-->
+<!--                            style="@style/profile_style"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:gravity="right"-->
+<!--                            android:text="178cm"-->
+<!--                            android:textColor="@color/syment" />-->
+<!--                    </TableRow>-->
+
+<!--                    <TableRow android:paddingVertical="13dp">-->
+
+<!--                        <TextView-->
+<!--                            style="@style/profile_style"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:text="몸무게" />-->
+
+<!--                        <View-->
+<!--                            android:layout_width="0dp"-->
+<!--                            android:layout_height="0dp"-->
+<!--                            android:layout_weight="1" />-->
+
+<!--                        <TextView-->
+<!--                            android:id="@+id/Pweight"-->
+<!--                            style="@style/profile_style"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:gravity="right"-->
+<!--                            android:text="69kg"-->
+<!--                            android:textColor="@color/syment" />-->
+<!--                    </TableRow>-->
+
+
+
+<!--                    &lt;!&ndash;                여기까지 묶어야할 배경이 있음&ndash;&gt;-->
+
+
+<!--                </TableLayout>-->
+
+
             </LinearLayout>
 
 
-            <TableLayout
-                android:id="@+id/exercise_3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/rectangle"
-                android:elevation="5dp"
-                app:layout_constraintTop_toBottomOf="@id/entire1">
 
-                <TableRow
-                    android:layout_marginHorizontal="20dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="10dp"
-                    android:weightSum="3">
-
-                    <TextView
-                        style="@style/profile_style"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="스쿼트"
-                        android:textAlignment="center"
-                        android:textColor="@color/darksyment" />
-
-                    <TextView
-                        style="@style/profile_style"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="벤치프레스"
-                        android:textAlignment="center"
-                        android:textColor="@color/darksyment" />
-
-
-                    <TextView
-                        style="@style/profile_style"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="데드리프트"
-                        android:textAlignment="center"
-                        android:textColor="@color/darksyment" />
-                </TableRow>
-
-                <TableRow
-                    android:layout_marginHorizontal="20dp"
-                    android:layout_marginBottom="20dp"
-                    android:weightSum="3">
-
-                    <TextView
-                        android:id="@+id/Psqaut"
-                        style="@style/profile_style"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="60"
-                        android:textAlignment="center" />
-
-                    <TextView
-                        android:id="@+id/Pbench"
-                        style="@style/profile_style"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="40"
-                        android:textAlignment="center" />
-
-
-                    <TextView
-                        android:id="@+id/Pdeadlift"
-                        style="@style/profile_style"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="55"
-                        android:textAlignment="center" />
-                </TableRow>
-
-
-            </TableLayout>
 
             <LinearLayout
-                android:id="@+id/aaa"
+                android:id="@+id/rt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/exercise_3">
+                app:layout_constraintTop_toBottomOf="@+id/entire1">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerView"
@@ -335,183 +481,163 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/evaluation"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:background="@drawable/rounded_top"
-                android:orientation="vertical"
-                app:layout_constraintTop_toBottomOf="@+id/aaa">
-
-                <TextView
-                    style="@style/profile_style"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingVertical="20dp"
-                    android:paddingLeft="17dp"
-                    android:text="받은 평가" />
-
-                <TextView
-                    style="@style/profile_style"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:paddingVertical="15dp"
-                    android:text="받은 후기가 없어요"
-                    android:textColor="@color/darksyment" />
-
-            </LinearLayout>
-
-            <View
-                android:id="@+id/view1"
-                android:layout_width="0dp"
-                android:layout_height="10dp"
-                android:layout_weight="1"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/evaluation" />
-
-
-            <LinearLayout
-                android:id="@+id/Reviews_received"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/rectangle"
-                android:orientation="horizontal"
-                android:paddingHorizontal="16dp"
-                android:paddingVertical="14dp"
-                app:layout_constraintTop_toBottomOf="@+id/view1">
-
-                <TextView
-                    style="@style/profile_style"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="받은 후기"
-                    android:textStyle="bold"
-                    android:layout_gravity="center|left"/>
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
-
-                <ImageButton
-                    android:id="@+id/Reviews_Recd"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_baseline_arrow_forward_ios_24"
-                    android:backgroundTint="@color/white"
-                    android:scaleType="fitCenter"/>
-
-            </LinearLayout>
-
-            <View
-                android:id="@+id/view2"
-                android:layout_width="0dp"
-                android:layout_height="10dp"
-                android:layout_weight="1"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/Reviews_received" />
-
             <TableLayout
                 android:id="@+id/setting_table"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/rectangle"
+                android:backgroundTint="@color/white"
                 android:elevation="5dp"
-                app:layout_constraintTop_toBottomOf="@+id/view2">
-
-
-                <TableRow
-                    android:layout_marginHorizontal="16dp"
-                    android:layout_marginVertical="14dp">
-
-                    <TextView
-                        style="@style/profile_style"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="위트내역"
-                        android:textStyle="bold"
-                        android:layout_gravity="center|left"/>
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="3" />
-
-                    <ImageButton
-                        android:id="@+id/WittHistory"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_baseline_arrow_forward_ios_24"
-                        android:backgroundTint="@color/white"
-                        android:scaleType="fitCenter" />
-                </TableRow>
+                android:paddingHorizontal="16dp"
+                android:layout_marginTop="12dp"
+                app:layout_constraintTop_toBottomOf="@+id/rt">
 
                 <TableRow
-                    android:id="@+id/black"
-                    android:layout_marginHorizontal="16dp"
-                    android:layout_marginVertical="14dp">
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingVertical="16dp">
 
                     <TextView
-                        style="@style/profile_style"
+                        style="@style/report"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="차단목록"
-                        android:textStyle="bold"
-                        android:layout_gravity="center|left"/>
+                        android:text="받은 평가"
+                        android:textStyle="bold" />
 
                     <View
                         android:layout_width="0dp"
                         android:layout_height="0dp"
                         android:layout_weight="1" />
 
-                    <ImageButton
-                        android:id="@+id/block_btn"
+                    <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_baseline_arrow_forward_ios_24"
-                        android:backgroundTint="@color/white"
-                        android:scaleType="fitCenter" />
+                        android:backgroundTint="@color/Background_3"
+                        android:scaleType="fitEnd"/>
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/Reviews_received"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingVertical="16dp">
+
+                    <TextView
+                        style="@style/report"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="받은 후기"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_baseline_arrow_forward_ios_24"
+                        android:backgroundTint="@color/Background_3"
+                        android:scaleType="fitEnd"/>
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/WittHistory"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingVertical="16dp">
+
+                    <TextView
+                        style="@style/report"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="위트내역"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_baseline_arrow_forward_ios_24"
+                        android:backgroundTint="@color/Background_3"
+                        android:scaleType="fitEnd"/>
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/black"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingVertical="16dp">
+
+                    <TextView
+                        style="@style/report"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="차단목록"
+                        android:textStyle="bold"/>
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_baseline_arrow_forward_ios_24"
+                        android:backgroundTint="@color/Background_3"
+                        android:scaleType="fitEnd"/>
 
                 </TableRow>
 
                 <TableRow
                     android:id="@+id/set"
-                    android:layout_marginHorizontal="16dp"
-                    android:layout_marginVertical="14dp">
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingVertical="16dp">
 
                     <TextView
-                        style="@style/profile_style"
+                        style="@style/report"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="설정"
-                        android:textStyle="bold"
-                        android:layout_gravity="center|left"/>
+                        android:textStyle="bold"/>
 
                     <View
                         android:layout_width="0dp"
                         android:layout_height="0dp"
                         android:layout_weight="1" />
 
-                    <ImageButton
-                        android:id="@+id/setting"
+                    <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_baseline_arrow_forward_ios_24"
-                        android:backgroundTint="@color/white"
-                        android:scaleType="fitCenter" />
+                        android:backgroundTint="@color/Background_3"
+                        android:scaleType="fitEnd"/>
 
                 </TableRow>
 
                 <TableRow
-                    android:id="@+id/routineTb"
-                    android:layout_marginHorizontal="16dp"
-                    android:layout_marginVertical="14dp"
+                    android:id="@+id/totalRoutine"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingVertical="16dp"
                     android:visibility="gone">
 
                     <TextView
-                        style="@style/profile_style"
+                        style="@style/report"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="루틴"
@@ -523,24 +649,25 @@
                         android:layout_height="0dp"
                         android:layout_weight="1" />
 
-                    <ImageButton
-                        android:id="@+id/total_routine"
+                    <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_baseline_arrow_forward_ios_24"
-                        android:backgroundTint="@color/white"
-                        android:scaleType="fitCenter" />
+                        android:backgroundTint="@color/Background_3"
+                        android:scaleType="fitEnd"/>
 
                 </TableRow>
 
                 <TableRow
                     android:id="@+id/report"
-                    android:layout_marginHorizontal="16dp"
-                    android:layout_marginVertical="14dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingVertical="16dp"
                     android:visibility="gone">
 
                     <TextView
-                        style="@style/profile_style"
+                        style="@style/report"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="신고내역"
@@ -552,13 +679,12 @@
                         android:layout_height="0dp"
                         android:layout_weight="1" />
 
-                    <ImageButton
-                        android:id="@+id/RPT_btn"
+                    <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_baseline_arrow_forward_ios_24"
-                        android:backgroundTint="@color/white"
-                        android:scaleType="fitCenter" />
+                        android:backgroundTint="@color/Background_3"
+                        android:scaleType="fitEnd"/>
 
                 </TableRow>
 
@@ -568,52 +694,18 @@
             <View
                 android:id="@+id/view3"
                 android:layout_width="0dp"
-                android:layout_height="10dp"
+                android:layout_height="110dp"
                 android:layout_weight="1"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/setting_table" />
-
-
-            <LinearLayout
-                android:id="@+id/secession"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/rectangle"
-                android:orientation="horizontal"
-                android:paddingHorizontal="13dp"
-                android:paddingVertical="24dp"
-                app:layout_constraintTop_toBottomOf="@+id/view3">
-
-                <TextView
-                    style="@style/profile_style"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="탈퇴하기"
-                    android:textStyle="bold"
-                    android:layout_gravity="center|left"/>
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
-
-                <ImageButton
-                    android:id="@+id/quit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_baseline_arrow_forward_ios_24"
-                    android:backgroundTint="@color/white"
-                    android:scaleType="fitCenter" />
-
-            </LinearLayout>
+                app:layout_constraintTop_toBottomOf="@+id/setting_table"
+                android:visibility="gone"/>
 
             <View
-                android:id="@+id/space"
                 android:layout_width="0dp"
-                android:layout_height="130dp"
-                android:layout_weight="1"
+                android:layout_height="30dp"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/secession" />
+                app:layout_constraintTop_toBottomOf="@+id/view3"/>
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
