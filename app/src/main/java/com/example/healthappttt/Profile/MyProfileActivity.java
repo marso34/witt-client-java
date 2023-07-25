@@ -470,8 +470,8 @@ public class MyProfileActivity extends AppCompatActivity {
                         } finally {
                             sqLiteUtil.setInitView(getApplicationContext(), "CHAT_MSG_TB");
                             sqLiteUtil.insert(chatkey, Integer.parseInt(myPK), 1, "!%$$#@@$%^!!~" + UserTB.getUser_NM() + "~!!^%$@@#$$%!", response.body(), 0, ts);
-                            Log.d(TAG, "chatPk보내기" + chatkey + ts);
-                            Log.d(TAG, "chatPk보내기" + otherUserKey);
+                            Log.d("TAG", "chatPk보내기" + chatkey + ts);
+                            Log.d("TAG", "chatPk보내기" + otherUserKey);
                             //채팅방 로컬 저장 코드 넣기
                             if (chatkey != -1) {
                                 sendMessageToServer("!%$$#@@$%^!!~" + UserTB.getUser_NM() + "~!!^%$@@#$$%!", response.body(), chatkey);

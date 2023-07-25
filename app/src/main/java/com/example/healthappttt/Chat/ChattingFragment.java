@@ -77,17 +77,17 @@ public class ChattingFragment extends Fragment {
         userList = new ArrayList<>();
         sqLiteUtil = SQLiteUtil.getInstance();
         sqLiteUtil.setEmptyDB();
-        prefhelper = new PreferenceHelper(name_TB,getActivity());
-        socketSingleton = SocketSingleton.getInstance(getActivity());
+        prefhelper = new PreferenceHelper(name_TB,getContext());
+        socketSingleton = SocketSingleton.getInstance(getContext());
         socketSingleton.setChatFragment(this);
         // 리사이클러뷰를 초기화합니다.
         userlistRecyclerView = view.findViewById(R.id.recyclerView2);
-        userlistRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        userlistRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         // 유저 목록을 가져와서 userList에 저장합니다.
 
         // 어댑터를 초기화하고 userList를 설정합니다.
-        userListAdapter = new UserListAdapter(getActivity(),userList);
+        userListAdapter = new UserListAdapter(getContext(),userList);
         userlistRecyclerView.setAdapter(userListAdapter);
         getUsersFromServer();
         // 어댑터의 아이템 클릭 리스너를 설정합니다.
@@ -98,7 +98,7 @@ public class ChattingFragment extends Fragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                sqLiteUtil.setInitView(getActivity(), "CHAT_MSG_TB");
+                sqLiteUtil.setInitView(getContext(), "CHAT_MSG_TB");
                 MSG m = sqLiteUtil.selectLastMsg(chatRoomId, userKey, 2);
 
                 // 메인 스레드로 UI 갱신 작업 보냄
@@ -132,9 +132,9 @@ public class ChattingFragment extends Fragment {
                 if (response.isSuccessful()) {
 
                     List<UserChat> users = response.body();
-                    sqLiteUtil.setInitView(getActivity(),"CHAT_ROOM_TB");
+                    sqLiteUtil.setInitView(getContext(),"CHAT_ROOM_TB");
                     sqLiteUtil.deleteChatRoom();
-                    sqLiteUtil.setInitView(getActivity(),"CHAT_ROOM_TB");
+                    sqLiteUtil.setInitView(getContext(),"CHAT_ROOM_TB");
                     sqLiteUtil.insert(prefhelper.getPK(),users);
 
                     // userList에 데이터가 추가된 후에 실행되어야 하는 로직을 여기에 작성합니다.
@@ -144,13 +144,13 @@ public class ChattingFragment extends Fragment {
                     chatflag = false;
 
                 } else {
-                    Toast.makeText(getActivity(), "Failed to retrieve user list", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Failed to retrieve user list", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<List<UserChat>> call, Throwable t) {
-                Toast.makeText(getActivity(), "Failed to retrieve user list", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Failed to retrieve user list", Toast.LENGTH_SHORT).show();
             }
         });
     }
