@@ -100,7 +100,7 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             View dialogView = LayoutInflater.from(parent.getContext()).inflate(R.layout.routine_edit_popup, null);
 
-            Button e = dialogView.findViewById(R.id.edit);
+            Button edit = dialogView.findViewById(R.id.edit);
             Button copyBtn = dialogView.findViewById(R.id.copy);
             Button deleteBtn = dialogView.findViewById(R.id.delete);
 
@@ -110,11 +110,11 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
             alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             alertDialog.show();
 
-            e.setOnClickListener(new View.OnClickListener() {
+            edit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     int position = mainViewHolder.getAbsoluteAdapterPosition();
-                    onClickRoutine.onClickRoutine(routines.get(position));
+//                    onClickRoutine.onClickRoutine(routines.get(position));
                     alertDialog.dismiss();
                 }
             });

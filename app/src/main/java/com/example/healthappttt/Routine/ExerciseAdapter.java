@@ -71,7 +71,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.MainVi
             if (CntOrDis != 0)
                 result += " · " + CntOrDis + "km";
             if (SetOrTime != 0)
-                result += " · " + SetOrTime + "분";
+                result += SetOrTime + "분";
         } else {
             if (Volume != 0)
                 result += Volume + "kg";
@@ -80,8 +80,6 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.MainVi
             if (SetOrTime != 0)
                 result += " · " + SetOrTime + "세트";
         }
-
-
 
         return result;
     }

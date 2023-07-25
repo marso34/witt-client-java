@@ -28,8 +28,8 @@ public class SUInputBodyFragment extends Fragment {
 
     private BottomSheetDialog bottomSheetDialog;
 
-    private static final String Backgrount_1 = "#F2F5F9";
-    private static final String Backgrount_2 = "#D1D8E2";
+    private static final String Background_1 = "#F2F5F9";
+    private static final String Background_2 = "#D1D8E2";
     private static final String Body = "#4A5567";
     private static final String Signature = "#05C78C";
     private static final String White = "#ffffff";

@@ -55,240 +55,219 @@
             android:layout_marginTop="50dp"
             android:orientation="vertical">
 
-            <LinearLayout
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/morning"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/rectangle_16dp"
-                android:elevation="10dp"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginVertical="6dp"
                 android:outlineSpotShadowColor="@color/Background_1"
-                android:orientation="vertical" >
+                app:rippleColor="@color/white"
+                app:strokeColor="@color/Orange"
+                app:strokeWidth="0dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="10dp">
 
-
-
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/morning"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="16dp"
-                    android:layout_marginVertical="6dp"
-                    android:outlineSpotShadowColor="@color/Background_1"
-                    app:strokeColor="@color/Orange"
-                    app:strokeWidth="0dp"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="10dp">
+                    android:paddingTop="9dp"
+                    android:paddingHorizontal="16dp"
+                    android:paddingBottom="11dp"
+                    android:orientation="horizontal">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    <ImageView
+                        android:id="@+id/morningIcon"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:layout_gravity="center_vertical"
+                        android:background="@drawable/baseline_brightness_5_24" />
+
+                    <TextView
+                        android:id="@+id/morningTxt"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingTop="9dp"
-                        android:paddingHorizontal="16dp"
-                        android:paddingBottom="11dp"
-                        android:orientation="horizontal"
-                        android:gravity="left">
+                        android:layout_marginLeft="4dp"
+                        android:layout_gravity="center_vertical"
+                        android:textColor="@color/Orange"
+                        android:text="아침"
+                        style="@style/Caption"/>
 
-                        <ImageView
-                            android:id="@+id/morningIcon"
-                            android:layout_width="22dp"
-                            android:layout_height="22dp"
-                            android:layout_gravity="center_vertical"
-                            android:src="@drawable/baseline_brightness_5_24"
-                            app:tint="@color/Orange"/>
+                    <TextView
+                        android:id="@+id/morningDetail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_gravity="center_vertical"
+                        android:text="오전 6시 ~ 오후 12시"
+                        android:textColor="@color/Background_3"
+                        style="@style/Body"/>
 
-                        <TextView
-                            android:id="@+id/morningTxt"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="4dp"
-                            android:layout_gravity="center_vertical"
-                            android:textColor="@color/Orange"
-                            android:text="아침"
-                            style="@style/Caption"/>
+                </LinearLayout>
 
-                        <TextView
-                            android:id="@+id/morningDetail"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="16dp"
-                            android:layout_gravity="center_vertical"
-                            android:text="오전 6시 ~ 오후 12시"
-                            android:textColor="@color/Background_3"
-                            style="@style/Body"/>
+            </com.google.android.material.card.MaterialCardView>
 
-                    </LinearLayout>
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/afternoon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginVertical="6dp"
+                android:outlineSpotShadowColor="@color/Background_1"
+                app:rippleColor="@color/white"
+                app:strokeColor="@color/Yellow"
+                app:strokeWidth="0dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="10dp">
 
-                </com.google.android.material.card.MaterialCardView>
-
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/afternoon"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="16dp"
-                    android:layout_marginVertical="6dp"
+                    android:paddingTop="9dp"
+                    android:paddingHorizontal="16dp"
+                    android:paddingBottom="11dp"
+                    android:orientation="horizontal"
+                    android:background="@drawable/rectangle_16dp"
                     android:outlineSpotShadowColor="@color/Background_1"
-                    app:strokeColor="@color/Yellow"
-                    app:strokeWidth="0dp"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="10dp">
+                    android:elevation="10dp"
+                    android:gravity="left">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    <ImageView
+                        android:id="@+id/afternoonIcon"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:layout_gravity="center_vertical"
+                        android:background="@drawable/baseline_wb_sunny_24" />
+
+                    <TextView
+                        android:id="@+id/afternoonTxt"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingTop="9dp"
-                        android:paddingHorizontal="16dp"
-                        android:paddingBottom="11dp"
-                        android:orientation="horizontal"
-                        android:background="@drawable/rectangle_16dp"
-                        android:outlineSpotShadowColor="@color/Background_1"
-                        android:elevation="10dp"
-                        android:gravity="left">
+                        android:layout_marginLeft="4dp"
+                        android:layout_gravity="center_vertical"
+                        android:textColor="@color/Yellow"
+                        android:text="점심"
+                        style="@style/Caption"/>
 
-                        <ImageView
-                            android:id="@+id/afternoonIcon"
-                            android:layout_width="22dp"
-                            android:layout_height="22dp"
-                            android:layout_gravity="center_vertical"
-                            android:src="@drawable/baseline_wb_sunny_24"
-                            app:tint="@color/Yellow"/>
+                    <TextView
+                        android:id="@+id/afternoonDetail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_gravity="center_vertical"
+                        android:text="오후 12시 ~ 오후 6시"
+                        android:textColor="@color/Background_3"
+                        style="@style/Body"/>
 
-                        <TextView
-                            android:id="@+id/afternoonTxt"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="4dp"
-                            android:layout_gravity="center_vertical"
-                            android:textColor="@color/Yellow"
-                            android:text="점심"
-                            style="@style/Caption"/>
+                </LinearLayout>
 
-                        <TextView
-                            android:id="@+id/afternoonDetail"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="16dp"
-                            android:layout_gravity="center_vertical"
-                            android:text="오후 12시 ~ 오후 6시"
-                            android:textColor="@color/Background_3"
-                            style="@style/Body"/>
+            </com.google.android.material.card.MaterialCardView>
 
-                    </LinearLayout>
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/evening"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginVertical="6dp"
+                android:outlineSpotShadowColor="@color/Background_1"
+                app:rippleColor="@color/white"
+                app:strokeColor="@color/Notion"
+                app:strokeWidth="0dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="10dp">
 
-                </com.google.android.material.card.MaterialCardView>
-
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/evening"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="16dp"
-                    android:layout_marginVertical="6dp"
-                    android:outlineSpotShadowColor="@color/Background_1"
-                    app:strokeColor="@color/Orange"
-                    app:strokeWidth="0dp"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="10dp">
+                    android:paddingTop="9dp"
+                    android:paddingHorizontal="16dp"
+                    android:paddingBottom="11dp"
+                    android:orientation="horizontal">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    <ImageView
+                        android:id="@+id/eveningIcon"
+                        android:layout_width="22dp"
                         android:layout_height="wrap_content"
-                        android:paddingTop="9dp"
-                        android:paddingHorizontal="16dp"
-                        android:paddingBottom="11dp"
-                        android:orientation="horizontal"
-                        android:background="@drawable/rectangle_16dp"
-                        android:outlineSpotShadowColor="@color/Background_1"
-                        android:elevation="10dp"
-                        android:gravity="left">
+                        android:layout_gravity="center_vertical"
+                        android:background="@drawable/baseline_brightness_3_24" />
 
-                        <ImageView
-                            android:id="@+id/eveningIcon"
-                            android:layout_width="22dp"
-                            android:layout_height="22dp"
-                            android:layout_gravity="center_vertical"
-                            android:src="@drawable/baseline_brightness_3_24"
-                            app:tint="@color/Notion"/>
+                    <TextView
+                        android:id="@+id/eveningTxt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="4dp"
+                        android:layout_gravity="center_vertical"
+                        android:textColor="@color/Notion"
+                        android:text="저녁"
+                        style="@style/Caption"/>
 
-                        <TextView
-                            android:id="@+id/eveningTxt"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="4dp"
-                            android:layout_gravity="center_vertical"
-                            android:textColor="@color/Notion"
-                            android:text="저녁"
-                            style="@style/Caption"/>
+                    <TextView
+                        android:id="@+id/eveningDetail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_gravity="center_vertical"
+                        android:text="오후 6시 ~ 오전 12시"
+                        android:textColor="@color/Background_3"
+                        style="@style/Body"/>
 
-                        <TextView
-                            android:id="@+id/eveningDetail"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="16dp"
-                            android:layout_gravity="center_vertical"
-                            android:text="오후 6시 ~ 오전 12시"
-                            android:textColor="@color/Background_3"
-                            style="@style/Body"/>
-
-                    </LinearLayout>
+                </LinearLayout>
 
 
-                </com.google.android.material.card.MaterialCardView>
+            </com.google.android.material.card.MaterialCardView>
 
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/dawn"
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/dawn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="20dp"
+                android:outlineSpotShadowColor="@color/Background_1"
+                app:rippleColor="@color/white"
+                app:strokeColor="@color/Purple"
+                app:strokeWidth="0dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="10dp">
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="16dp"
-                    android:layout_marginVertical="6dp"
-                    android:outlineSpotShadowColor="@color/Background_1"
-                    app:strokeColor="@color/Orange"
-                    app:strokeWidth="0dp"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="10dp">
+                    android:paddingTop="9dp"
+                    android:paddingHorizontal="16dp"
+                    android:paddingBottom="11dp"
+                    android:orientation="horizontal">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    <ImageView
+                        android:id="@+id/dawnIcon"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:layout_gravity="center_vertical"
+                        android:background="@drawable/baseline_flare_24"/>
+
+                    <TextView
+                        android:id="@+id/dawnTxt"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingTop="9dp"
-                        android:paddingHorizontal="16dp"
-                        android:paddingBottom="11dp"
-                        android:orientation="horizontal"
-                        android:background="@drawable/rectangle_16dp"
-                        android:outlineSpotShadowColor="@color/Background_1"
-                        android:elevation="10dp"
-                        android:gravity="left">
+                        android:layout_marginLeft="4dp"
+                        android:layout_gravity="center_vertical"
+                        android:textColor="@color/Purple"
+                        android:text="새벽"
+                        style="@style/Caption"/>
 
-                        <ImageView
-                            android:id="@+id/dawnIcon"
-                            android:layout_width="22dp"
-                            android:layout_height="22dp"
-                            android:layout_gravity="center_vertical"
-                            android:src="@drawable/baseline_flare_24"
-                            app:tint="@color/Purple"/>
+                    <TextView
+                        android:id="@+id/dawnDetail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_gravity="center_vertical"
+                        android:text="오전 12시 ~ 오전 6시"
+                        android:textColor="@color/Background_3"
+                        style="@style/Body"/>
 
-                        <TextView
-                            android:id="@+id/dawnTxt"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="4dp"
-                            android:layout_gravity="center_vertical"
-                            android:textColor="@color/Purple"
-                            android:text="새벽"
-                            style="@style/Caption"/>
+                </LinearLayout>
 
-                        <TextView
-                            android:id="@+id/dawnDetail"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="16dp"
-                            android:layout_gravity="center_vertical"
-                            android:text="오전 12시 ~ 오전 6시"
-                            android:textColor="@color/Background_3"
-                            style="@style/Body"/>
-
-                    </LinearLayout>
-
-                </com.google.android.material.card.MaterialCardView>
-
-            </LinearLayout>
-
+            </com.google.android.material.card.MaterialCardView>
 
         </LinearLayout>
 

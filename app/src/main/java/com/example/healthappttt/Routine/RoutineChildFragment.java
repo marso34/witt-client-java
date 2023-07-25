@@ -129,8 +129,10 @@ public class RoutineChildFragment extends Fragment {
                             }
                         }
                     }
-                    else if (check == 1)
+                    else if (check == 1) {
                         routines.add(r); // 루틴 추가
+                        binding.addRoutine.setVisibility(View.GONE);
+                    }
 
                     Collections.sort(routines, new RoutineComparator());
                     adapter.notifyDataSetChanged();
@@ -162,6 +164,9 @@ public class RoutineChildFragment extends Fragment {
                     routines.get(i).setExercises(sqLiteUtil.SelectExercise(routines.get(i).getID(), true));
 
                 setRecyclerView(0);
+
+                if (routines.size() != 0)
+                    binding.addRoutine.setVisibility(View.GONE);
             }
         } else { // 남의 루틴 표시, 여기는 서버에서 받아오는 코드
             binding.addRoutine.setVisibility(View.GONE);

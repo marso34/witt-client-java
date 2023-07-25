@@ -1,44 +1,19 @@
 package com.example.healthappttt.Sign;
 
-import static android.content.ContentValues.TAG;
-
-import android.content.Intent;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.NumberPicker;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.healthappttt.Data.PreferenceHelper;
-import com.example.healthappttt.Data.RetrofitClient;
-import com.example.healthappttt.Data.User.BodyInfo;
-import com.example.healthappttt.Data.User.ExPerfInfo;
-import com.example.healthappttt.Data.User.LocInfo;
-import com.example.healthappttt.Data.User.MannerInfo;
-import com.example.healthappttt.Data.User.PhoneInfo;
-import com.example.healthappttt.Data.User.UserClass;
-import com.example.healthappttt.Data.User.UserData;
-import com.example.healthappttt.MainActivity;
 import com.example.healthappttt.R;
 import com.example.healthappttt.databinding.FragmentSuInputPerfBinding;
-import com.example.healthappttt.interface_.ServiceApi;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class SUInputPerfFragment extends Fragment {
     FragmentSuInputPerfBinding binding;
@@ -87,26 +62,28 @@ public class SUInputPerfFragment extends Fragment {
             binding.deadlift.setText(deadliftValue + ""); // 스트링으로 바꾸기 편하게
         }
 
-        View view = inflater.inflate(R.layout.input_exercose_perf, null, false);
         bottomSheetDialog = new BottomSheetDialog(getContext());
+
+        View view = inflater.inflate(R.layout.input_exercise_perf, null, false);
+        NumberPicker SquatPicker = view.findViewById(R.id.squatPicker);
+        NumberPicker BenchPicker = view.findViewById(R.id.benchPicker);
+        NumberPicker DeadliftPicker = view.findViewById(R.id.deadliftPicker);
+        TextView SelectBtn = view.findViewById(R.id.selectBtn);
+
         bottomSheetDialog.setContentView(view);
 
-        NumberPicker SquatPicker = view.findViewById(R.id.squatPicker);
         SquatPicker.setMaxValue(500); //최대값
         SquatPicker.setMinValue(0); //최소값
         SquatPicker.setValue(Integer.parseInt(binding.squat.getText().toString()));// 초기값
 
-        NumberPicker BenchPicker = view.findViewById(R.id.benchPicker);
         BenchPicker.setMaxValue(500); //최대값
         BenchPicker.setMinValue(0); //최소값
         BenchPicker.setValue(Integer.parseInt(binding.benchpress.getText().toString()));// 초기값
 
-        NumberPicker DeadliftPicker = view.findViewById(R.id.deadliftPicker);
         DeadliftPicker.setMaxValue(500); //최대값
         DeadliftPicker.setMinValue(0); //최소값
         DeadliftPicker.setValue(Integer.parseInt(binding.deadlift.getText().toString()));// 초기값
 
-        TextView SelectBtn =  view.findViewById(R.id.selectBtn);
         SelectBtn.setOnClickListener(v -> {
             binding.squat.setText(SquatPicker.getValue() + ""); // 스트링으로 바꾸기 편하게
             binding.benchpress.setText(BenchPicker.getValue() + "");

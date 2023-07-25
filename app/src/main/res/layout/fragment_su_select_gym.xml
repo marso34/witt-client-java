@@ -29,7 +29,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/circle6"
+            android:background="@drawable/rounded_bottom"
             android:orientation="vertical">
 
             <LinearLayout
@@ -119,13 +119,13 @@
             android:layout_height="wrap_content"
             android:nestedScrollingEnabled="true"/>
 
-<!--        <TextView-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginTop="24dp"-->
-<!--            android:layout_gravity="center"-->
-<!--            android:text="더 이상 표시할 헬스장이 없어요"-->
-<!--            style="@style/Subtitle"/>-->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_gravity="center"
+            android:text="더 이상 표시할 헬스장이 없어요"
+            style="@style/Subtitle"/>
 
     </LinearLayout>
 

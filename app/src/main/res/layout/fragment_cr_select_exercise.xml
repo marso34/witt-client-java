@@ -5,119 +5,117 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
     tools:context=".Routine.CRSelectExerciseFragment">
 
-    <!-- TODO: Update blank fragment layout -->
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/backBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_arrow_back_ios_new_24"/>
+
+        <TextView
+            android:id="@+id/dayOfWeek"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingTop="5dp"
+            android:paddingHorizontal="12dp"
+            android:paddingBottom="7dp"
+            android:background="@drawable/rectangle_14dp"
+            android:outlineSpotShadowColor="@color/Background_1"
+            android:elevation="10dp"
+            android:textColor="@color/Subtitle"
+            android:text="일요일"
+            style="@style/Caption"/>
+
+    </androidx.appcompat.widget.Toolbar>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="56dp"
         android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/directInput"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_marginTop="44dp"
-            android:text="직접추가"
-            android:textColor="@color/Subtitle"
-            android:visibility="invisible"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="22dp"
-            android:text="운동을 추가해주세요"
-            android:textColor="@color/Standard"
-            android:textSize="18dp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/schedule"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="월요일 · 오전 12:00 - 오전 12:00"
-            android:textSize="12sp"
-            android:textColor="@color/Subtitle"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:background="@drawable/rounded_bottom">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:text="운동을 추가해요"
+                style="@style/Title"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="16dp"
+                android:text="루틴에 추가할 운동을 여러개 선택해요"
+                style="@style/Subtitle"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginBottom="12dp"
+                android:paddingTop="9dp"
+                android:paddingHorizontal="16dp"
+                android:paddingBottom="11dp"
+                android:orientation="horizontal"
+                android:background="@drawable/rectangle_16dp"
+                android:outlineSpotShadowColor="@color/Background_1"
+                android:elevation="10dp">
+
+                <ImageView
+                    android:id="@+id/timeIcon"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/baseline_brightness_5_24"/>
+
+                <TextView
+                    android:id="@+id/timeTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:layout_gravity="center_vertical"
+                    android:textColor="@color/Orange"
+                    android:text="아침"
+                    style="@style/Caption"/>
+
+                <TextView
+                    android:id="@+id/timeDetail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_gravity="center_vertical"
+                    android:text="오전 6시 ~ 오후 12시"
+                    android:textColor="@color/Background_3"
+                    style="@style/Body"/>
+
+            </LinearLayout>
 
             <androidx.appcompat.widget.SearchView
                 android:id="@+id/search"
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
-                android:background="@drawable/mainbackground"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginBottom="15dp"
+                android:background="@drawable/rectangle_16dp"
                 android:backgroundTint="@color/Background_1"
                 app:iconifiedByDefault="false"
                 app:queryBackground="@null"
-                app:queryHint="운동 검색" />
-
-
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tabLayout"
-                android:layout_width="match_parent"
-                android:layout_height="42dp"
-                android:layout_marginTop="24dp"
-                app:tabMode="scrollable"
-                app:tabGravity="fill"
-                app:tabIndicatorColor="@color/black"
-                app:tabIndicatorHeight="1.6dp"
-                app:tabSelectedTextColor="@color/black"
-                app:tabTextColor="@color/black"
-                tools:ignore="SpeakableTextPresentCheck">
-
-                <com.google.android.material.tabs.TabItem
-                    android:id="@+id/chestTab"
-                    android:layout_width="64dp"
-                    android:layout_height="42dp"
-                    android:textAlignment="center"
-                    android:text="가슴"/>
-                <com.google.android.material.tabs.TabItem
-                    android:id="@+id/backTab"
-                    android:layout_width="64dp"
-                    android:layout_height="42dp"
-                    android:textAlignment="center"
-                    android:text="등"/>
-                <com.google.android.material.tabs.TabItem
-                    android:id="@+id/shoulderTab"
-                    android:layout_width="64dp"
-                    android:layout_height="42dp"
-                    android:textAlignment="center"
-                    android:text="어깨"/>
-                <com.google.android.material.tabs.TabItem
-                    android:id="@+id/lowBodyTab"
-                    android:layout_width="64dp"
-                    android:layout_height="42dp"
-                    android:textAlignment="center"
-                    android:text="하체"/>
-                <com.google.android.material.tabs.TabItem
-                    android:id="@+id/armTab"
-                    android:layout_width="128dp"
-                    android:layout_height="42dp"
-                    android:background="@color/Background_1"
-                    android:textAlignment="center"
-                    android:text="팔"/>
-                <com.google.android.material.tabs.TabItem
-                    android:id="@+id/absTab"
-                    android:layout_width="64dp"
-                    android:layout_height="42dp"
-                    android:textAlignment="center"
-                    android:text="복근"/>
-                <com.google.android.material.tabs.TabItem
-                    android:id="@+id/cardioTab"
-                    android:layout_width="64dp"
-                    android:layout_height="42dp"
-                    android:textAlignment="center"
-                    android:text="유산소"/>
-
-            </com.google.android.material.tabs.TabLayout>
+                app:queryHint="운동명 검색 (ex, 딥스)" />
 
         </LinearLayout>
 
@@ -125,7 +123,7 @@
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="19dp"
+            android:paddingTop="6dp"
             android:clipToPadding="false"
             android:paddingBottom="300dp"
             tools:listitem="@layout/adapter_exercise_list_p"/>
@@ -136,29 +134,21 @@
         android:layout_width="match_parent"
         android:layout_height="172dp"
         android:layout_gravity="bottom"
-        android:background="@drawable/bg_gradient_white">
+        android:background="@drawable/bg_gradient_background_1">
 
-        <androidx.cardview.widget.CardView
+        <TextView
             android:id="@+id/nextBtn"
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:layout_marginHorizontal="16dp"
             android:layout_marginTop="58dp"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="0dp">
-
-            <TextView
-                android:id="@+id/nextTxt"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/Background_2"
-                android:gravity="center"
-                android:text="선택 완료"
-                android:textColor="@color/Background_3"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-        </androidx.cardview.widget.CardView>
+            android:layout_marginHorizontal="16dp"
+            android:gravity="center"
+            android:background="@drawable/rectangle_green_20dp"
+            android:outlineSpotShadowColor="@color/Background_1"
+            android:elevation="12dp"
+            android:textColor="@color/white"
+            android:text="추가하기"
+            style="@style/Title"/>
 
     </LinearLayout>
 
