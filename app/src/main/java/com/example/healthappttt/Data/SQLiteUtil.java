@@ -46,19 +46,16 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         db = null;
     }
     public void setInitView(Context context, String tableName) {
-        if((db == null || !db.isOpen())) {
-            this.table = tableName;
+        this.table = tableName;
 
-            DBHelper dbHelper = new DBHelper(context, "Witt", null, 1);
-            try {
-                db = dbHelper.getWritableDatabase();
-                if((db == null || !db.isOpen()))
-                    dbHelper.onCreate(db);
+        DBHelper dbHelper = new DBHelper(context, "Witt", null, 1);
+        try {
+            db = dbHelper.getWritableDatabase();
+            dbHelper.onCreate(db);
 
-            } catch (SQLiteException e) {
-                e.printStackTrace();
-                Log.e(table, " 데이터 베이스를 열 수 없음");
-            }
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+            Log.e(table, " 데이터 베이스를 열 수 없음");
         }
     }
     
@@ -280,7 +277,6 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         } else {
             Log.d(table, "메서드 형식 오류");
         }
-        db.close();
     }
 
     /**
@@ -303,7 +299,6 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         } else {
             Log.d(table, "메서드 형식 오류");
         }
-        db.close();
     }
 
     /**
@@ -339,7 +334,6 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         } else {
             Log.d(table, "메서드 형식 오류");
         }
-        db.close();
     }
     public void insert(int userKey,List<UserChat> U){
         if (table.equals("CHAT_ROOM_TB")) {
@@ -532,7 +526,6 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         } else {
             Log.d(table, " 잘못된 메서드 호출");
         }
-        db.close();
         return null;
     }
 
@@ -562,7 +555,6 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         } else {
             Log.d(table, " 잘못된 메서드 호출");
         }
-        db.close();
         return null;
     }
 
@@ -596,7 +588,6 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         } else {
             Log.d(table, " 잘못된 메서드 호출");
         }
-        db.close();
         return null;
     }
 

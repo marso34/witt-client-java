@@ -157,7 +157,6 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
                 holder.EditBtn.setVisibility(View.GONE);
             }
 
-            Log.d("루틴 테스트", routines.get(position).getExercises().size() + "");
             setRecyclerView(holder.recyclerView, holder.adapter, position);
         } else {
             holder.RoutineLayout.setVisibility(View.GONE);
