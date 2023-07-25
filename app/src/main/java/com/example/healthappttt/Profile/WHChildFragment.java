@@ -246,7 +246,7 @@ public class WHChildFragment extends Fragment {
     private void datePicker(ArrayList<WittListData> WittList) {
         //dateList = new ArrayList<>(); // wittList에서 TS시간을 String으로 받은 데이터들의 리스트
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
         for (int n = 0; n < WittList.size(); n++) {
             Log.d("위트리스트 사이즈: ", String.valueOf(WittList.size()));

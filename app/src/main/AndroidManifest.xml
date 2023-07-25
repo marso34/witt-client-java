@@ -71,6 +71,7 @@
         <activity
             android:name=".Chat.ReviewActivity"
             android:exported="false" />
+
         <activity
             android:name=".Chat.ReportActivity"
             android:exported="true">

@@ -73,19 +73,19 @@ public class alarmActivity extends AppCompatActivity {
     }
 
     private void postsUpdate(final boolean clear) { // 스크롤되면 할 작업
-        updating = true;
-        alarmList.clear();
+        if(clear)
+            alarmList.clear();
         //Date date = userList
         // .size() == 0 || clear ? new Date() : userList.get(userList.size() - 1).getCreatedAt();
         getAlarmData();
         //UserSolt(UserList);
         //UserSolt(CurrentUser);
         //퀵정렬 편집해서 만드는건 가능한데 일단 보류 난이도가 높음.
-        updating = false;
+
     }
 
     private void getAlarmData(){
-
+        updating = false;
     }
     private void setRecyclerView() {
         adapter = new AlarmAdapter(this, (ArrayList<AlarmInfo>) alarmList); // 나중에 routine

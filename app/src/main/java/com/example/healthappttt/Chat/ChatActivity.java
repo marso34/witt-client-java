@@ -29,8 +29,11 @@ import com.example.healthappttt.interface_.ServiceApi;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.CountDownLatch;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -60,7 +63,6 @@ public class ChatActivity extends AppCompatActivity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_chat);
         sqLiteUtil = SQLiteUtil.getInstance();
@@ -73,12 +75,14 @@ public class ChatActivity extends AppCompatActivity{
             getMessagesFromServer();
             clickmenu();
         }
+
     private void initViews() {
         messageRecyclerView = findViewById(R.id.chatRecyclerView);
         messageEditText = findViewById(R.id.messageBox);
         sendButton = findViewById(R.id.sendButton);
         menu = findViewById(R.id.menu);
     }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -103,7 +107,7 @@ public class ChatActivity extends AppCompatActivity{
     private void setupRecyclerView() {
         messageRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         messageList = new ArrayList<>();
-        messageListAdapter = new MessageListAdapter(messageList, preferenceHelper.getUser_NM(), otherUserName);
+        messageListAdapter = new MessageListAdapter(messageList, preferenceHelper.getUser_NM(), otherUserName,otherUserKey,this);
         messageRecyclerView.setAdapter(messageListAdapter);
     }
 
@@ -118,10 +122,18 @@ public class ChatActivity extends AppCompatActivity{
                 String messageText = messageEditText.getText().toString();
                 if (!messageText.isEmpty()) {
                     messageEditText.setText("");
-                    sqLiteUtil.setInitView(getApplicationContext(), "CHAT_MSG_TB");
-                    int chatPk = sqLiteUtil.insert(Integer.parseInt(userKey), 1, messageText, Integer.parseInt(chatRoomId), 0);
-                    Log.d(TAG, "chatPk보내기"+chatPk);
-                    sendMessageToServer(messageText,chatPk);
+                    int chatkey = -1;
+                    String ts  = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
+                    try {
+                        sqLiteUtil.setInitView(getApplicationContext(),"CHAT_MSG_TB");
+                        chatkey = sqLiteUtil.getLastMyMsgPK(String.valueOf(chatRoomId),userKey);
+                        chatkey = chatkey+1;
+                    }finally {
+                        sqLiteUtil.setInitView(getApplicationContext(), "CHAT_MSG_TB");
+                        sqLiteUtil.insert(chatkey,Integer.parseInt(userKey), 1, messageText, Integer.parseInt(chatRoomId), 0,ts);
+                        Log.d(TAG, "chatPk보내기"+chatkey+ts);
+                        sendMessageToServer(messageText,chatkey,ts);
+                    }
 
                 }
             }
@@ -143,31 +155,31 @@ public class ChatActivity extends AppCompatActivity{
     private void getMessagesFromServer() {
         setupSQLiteUtil();
         apiService = RetrofitClient.getClient().create(ServiceApi.class);
-        Call<List<MSG>> call = apiService.getMSGFromServer(new getMSGKey(Integer.parseInt(userKey),Integer.parseInt(chatRoomId)));
+        sqLiteUtil.setInitView(getApplicationContext(), "CHAT_MSG_TB");
+        MSG m = sqLiteUtil.selectLastMsg(chatRoomId,userKey,1);
+        Log.d(TAG, "getMessagesFromServer: "+m.getKey());
+        Call<List<MSG>> call = apiService.getMSGFromServer(new getMSGKey(Integer.parseInt(userKey),Integer.parseInt(chatRoomId),m.getKey(),m.timestampString()));
         call.enqueue(new Callback<List<MSG>>() {
             @Override
             public void onResponse(Call<List<MSG>> call, Response<List<MSG>> response) {
                 if (response.isSuccessful()) {
                     List<MSG> msgList = response.body();
                     if (msgList != null) {
-                        sqLiteUtil.setInitView(getApplicationContext(), "CHAT_MSG_TB");
-                        sqLiteUtil.deleteChatRoom(Integer.parseInt(chatRoomId));
                         for (MSG msg : msgList) {
                             sqLiteUtil.setInitView(getApplicationContext(), "CHAT_MSG_TB");
                             String name1 = extractName(msg.getMessage());
+                            Log.d(TAG, "onResponse: ts" + msg.timestampString());
                             if (name1 != null) {
-                                sqLiteUtil.insert(Integer.parseInt(userKey), msg.getMyFlag(),name1, Integer.parseInt(chatRoomId), 1);
-
+                                sqLiteUtil.insert(msg.getKey(),Integer.parseInt(userKey), msg.getMyFlag(),name1, Integer.parseInt(chatRoomId), 1,msg.timestampString());
                             } else {
-                                sqLiteUtil.insert(Integer.parseInt(userKey), msg.getMyFlag(),msg.getMessage(), Integer.parseInt(chatRoomId), 1);
-
+                                sqLiteUtil.insert(msg.getKey(),Integer.parseInt(userKey), msg.getMyFlag(),msg.getMessage(), Integer.parseInt(chatRoomId), 1,msg.timestampString());
                             }
                             Log.d(TAG, "onResponse: msg"+msg.getMessage());
                               }
                     }
                     updatingMSG = true;
                    sendUpdatingMSG  = true;
-                    getAllMSG(3);
+                    getMSG(3);
                 } else {
                     Log.e(TAG, "getMessagesFromServer: API 요청 실패. 응답 코드: " + response.code());
                 }
@@ -182,20 +194,20 @@ public class ChatActivity extends AppCompatActivity{
     public String getChatRoomId(){
         return chatRoomId;
     }
-    public void getAllMSG(int sendOrReceive) {
+    public void getMSG(int sendOrReceive) {
         final CountDownLatch latch = new CountDownLatch(1);
-
+        sqLiteUtil.setInitView(getApplicationContext(), "CHAT_MSG_TB");
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    sqLiteUtil.setInitView(getApplicationContext(), "CHAT_MSG_TB");
-                    List<MSG> TM = sqLiteUtil.SelectAllMSG(userKey, Integer.parseInt(chatRoomId));
+                    List<MSG> TM = sqLiteUtil.SelectAllMSG(userKey, Integer.parseInt(chatRoomId));messageList.clear();
                     if(TM != null) {
                         messageList.clear();
                         messageList.addAll(TM);
                         messageListAdapter.notifyDataSetChanged();
                         messageRecyclerView.scrollToPosition(messageList.size() - 1);
+
                     }
                 } finally {
                     latch.countDown();
@@ -231,7 +243,7 @@ public class ChatActivity extends AppCompatActivity{
     public void setSendUpdatingMSG(boolean t){
         this.sendUpdatingMSG = t;
     }
-    private void sendMessageToServer(String messageText, int chatPk) {
+    public void sendMessageToServer(String messageText, int chatPk,String ts) {
         try {
             JSONObject data = new JSONObject();
             data.put("myUserKey", userKey);
@@ -239,6 +251,7 @@ public class ChatActivity extends AppCompatActivity{
             data.put("chatRoomId", Integer.parseInt(chatRoomId));
             data.put("messageText", messageText);
             data.put("chatPk",chatPk);
+            data.put("TS",ts);
             socketSingleton.sendMessage(data);
         } catch (JSONException e) {
             e.printStackTrace();

@@ -20,27 +20,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.Toast;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
 
-import com.example.healthappttt.Data.RetrofitClient;
-import com.example.healthappttt.Data.User.SaveImageResponse;
-import com.example.healthappttt.Data.User.UploadResponse;
-import com.example.healthappttt.MainActivity;
 import com.example.healthappttt.R;
-import com.example.healthappttt.interface_.ServiceApi;
-
-import java.io.File;
-
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class sub1Fragment extends Fragment {
     private static final String ARG_LATITUDE = "latitude";
@@ -168,6 +152,7 @@ public class sub1Fragment extends Fragment {
         W.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
             }
 
             @Override

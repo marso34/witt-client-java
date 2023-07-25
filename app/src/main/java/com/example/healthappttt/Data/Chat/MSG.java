@@ -13,6 +13,8 @@ import java.util.Date;
 public class MSG {
     public static final int TYPE_SENT = 1;
     public static final int TYPE_RECEIVED = 2;
+    @SerializedName("chatPk")
+    private int chatPk;
     @SerializedName("myFlag")
     private int myFlag;
     @SerializedName("chatRoomId")
@@ -24,12 +26,16 @@ public class MSG {
     private int success = -1;
 
 
-    public MSG(int myFlag, int chatRoomId, String message, String timestamp,int success) {
+    public MSG(int chatPk,int myFlag, int chatRoomId, String message, String timestamp,int success) {
+        this.chatPk = chatPk;
         this.myFlag = myFlag;
         this.chatRoomId = chatRoomId;
         this.message = message;
         this.timestamp = timestamp;
         this.success = success;
+    }
+    public int getKey(){
+        return chatPk;
     }
     public int getSuccess(){
         return success;
@@ -53,7 +59,7 @@ public class MSG {
     public long getTimestamp(){
         if(timestamp ==null) timestamp = "0000-00-00 00:00:00";
         Date date = null;
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
             date = format.parse(timestamp);
         } catch (ParseException e) {
@@ -62,9 +68,12 @@ public class MSG {
         }
 
         long timeStamp = date.getTime(); // 날짜 및 시간을 밀리초로 변환
-            System.out.println(timestamp);
+        Log.d(TAG, "getTimestamp: "+timeStamp);
             return timeStamp;
 
+    }
+    public String timestampString(){
+        return timestamp;
     }
 
     public void setTimestamp(String timestamp) {
