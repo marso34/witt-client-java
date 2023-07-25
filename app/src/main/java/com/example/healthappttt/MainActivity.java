@@ -4,6 +4,7 @@ import static android.content.ContentValues.TAG;
 
 import android.Manifest;
 import android.app.AlarmManager;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +15,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
@@ -65,6 +67,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
+    private static final int NOTIFICATION_PERMISSION_REQUEST_CODE = 100;
     ActivityMainBinding binding;
     private long backPressedTime = 0;
     private Toast toast;
@@ -251,6 +254,7 @@ public class MainActivity extends AppCompatActivity {
         getBlackList(userKey);
         getReviewList(userKey);
         getWittHistory(userKey);
+        checkAndRequestNotificationPermission();
 //         uploadImageToServer(url, userKey.toString());
     }
 
@@ -629,5 +633,24 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+    private void checkAndRequestNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            if (notificationManager != null && !notificationManager.isNotificationPolicyAccessGranted()) {
+                Intent intent = new Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
+                startActivityForResult(intent, NOTIFICATION_PERMISSION_REQUEST_CODE);
+            }
+        }
+    }
+
+    // 요청 결과 처리
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == NOTIFICATION_PERMISSION_REQUEST_CODE) {
+            // 알림 권한 요청 결과 처리 (필요에 따라 구현)
+        }
+    }
+
 
 }

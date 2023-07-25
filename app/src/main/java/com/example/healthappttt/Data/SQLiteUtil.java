@@ -42,8 +42,10 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         return instance;
     }
     public void setEmptyDB(){
-        db.close();
-        db = null;
+        if(db != null && db.isOpen()) {
+            db.close();
+            db = null;
+        }
     }
     public void setInitView(Context context, String tableName) {
         this.table = tableName;
@@ -333,21 +335,27 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         }
     }
     public void insert(int userKey,List<UserChat> U){
-        if (table.equals("CHAT_ROOM_TB")) {
-            ContentValues values = new ContentValues();
-            for (UserChat u : U) {
-                if (table.equals("CHAT_ROOM_TB")) {
-                    values.put("USER_FK", userKey);
-                    values.put("CHAT_ROOM_PK", u.getChatRoomId());
-                    values.put("LAST_MSG_INDEX", 1);
-                    values.put("OTHER_USER_NM", u.getUserNM());
-                    values.put("FAV", 0);
-                    values.put("TS", u.getTS());
+        try {
 
-                    long result = db.insert(table, null, values);
-                    Log.d(table, result + "성공");
-                } else Log.d(table, "실패 삽입 챗티방");
+
+            if (table.equals("CHAT_ROOM_TB")) {
+                ContentValues values = new ContentValues();
+                for (UserChat u : U) {
+                    if (table.equals("CHAT_ROOM_TB")) {
+                        values.put("USER_FK", userKey);
+                        values.put("CHAT_ROOM_PK", u.getChatRoomId());
+                        values.put("LAST_MSG_INDEX", 1);
+                        values.put("OTHER_USER_NM", u.getUserNM());
+                        values.put("FAV", 0);
+                        values.put("TS", u.getTS());
+
+                        long result = db.insert(table, null, values);
+                        Log.d(table, result + "성공");
+                    } else Log.d(table, "실패 삽입 챗티방");
+                }
+
             }
+        }finally {
             db.close();
         }
     }
@@ -370,8 +378,15 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         Log.d(TAG, "deleteChatRoom: 삭제완료"+chatRoomPk);
         }
     public void deleteChatRoom() {
-        if (table.equals("CHAT_ROOM_TB")) {
-            db.execSQL("DELETE FROM CHAT_ROOM_TB");
+        try {
+
+
+            if (table.equals("CHAT_ROOM_TB")) {
+                db.execSQL("DELETE FROM CHAT_ROOM_TB");
+
+            }
+        }
+        finally {
             db.close();
             Log.d(TAG, "deleteChatRoom: 성공");
         }
@@ -774,7 +789,34 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         }
     }
     // UserListAdapter.java (selectLastMsg 메서드 수정)
+    public String selectOtherUserName(String userKey, String chatRoomId){
+        String otherUserName = null;
+        try {
+            if (table != null && table.equals("CHAT_ROOM_TB")) {
+                Log.d(TAG, "selectLastMsgwwww:sssssaaaaa ");
+                String sql = "";
 
+                    sql = "SELECT OTHER_USER_NM FROM CHAT_ROOM_TB WHERE USER_FK = ? AND CHAT_ROOM_PK = ?";
+
+                String[] selectionArgs = {userKey, chatRoomId};
+                Cursor cursor = db.rawQuery(sql, selectionArgs);
+                if (cursor != null && cursor.moveToFirst()) {
+                    int otherUserNameIndex = cursor.getColumnIndex("OTHER_USER_NM");
+
+                    if (otherUserNameIndex != -1) {
+                        otherUserName = cursor.getString(otherUserNameIndex);
+                    }
+
+                } else {
+                    // cursor 객체가 null인 경우 로그 출력 후 메서드 종료
+                }
+                cursor.close();
+            }
+        }finally {
+            db.close();
+            return otherUserName;
+        }
+    }
     public MSG selectLastMsg(String chatRoomID, String userKey,int allLastFlag) {
         String msg = "";
         String TS = "-1";
@@ -817,16 +859,15 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
                 } else {
                     // cursor 객체가 null인 경우 로그 출력 후 메서드 종료
                     Log.d(TAG, "cursor is null");
-                    if(allLastFlag == 1)
-                        return new MSG(MSG_PK, myFlag, Integer.parseInt(chatRoomID), msg, TS, 1);
-                    else return new MSG(MSG_PK, 2, Integer.parseInt(chatRoomID), msg, TS, 1);
                 }
                 cursor.close();
             }
         }finally {
             db.close();
             Log.d(TAG, "selectLastMsg: " + msg + "ssssss" + TS);
-            return new MSG(MSG_PK,2, Integer.parseInt(chatRoomID), msg, TS, 1);
+            if(allLastFlag == 1)
+                return new MSG(MSG_PK, myFlag, Integer.parseInt(chatRoomID), msg, TS, 1);
+            else return new MSG(MSG_PK, 2, Integer.parseInt(chatRoomID), msg, TS, 1);
         }
         // TS 값을 처리하는 로직 추가
     }

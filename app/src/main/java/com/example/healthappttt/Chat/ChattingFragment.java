@@ -2,6 +2,7 @@ package com.example.healthappttt.Chat;
 
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -94,31 +95,33 @@ public class ChattingFragment extends Fragment {
         return view;
     }
 
-    public void getLastMSG(String chatRoomId, String userKey) {
+    public void getLastMSG(String chatRoomId, String userKey, Context c) {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                sqLiteUtil.setEmptyDB();
-                sqLiteUtil.setInitView(getContext(), "CHAT_MSG_TB");
-                MSG m = sqLiteUtil.selectLastMsg(chatRoomId, userKey, 2);
-
-                // 메인 스레드로 UI 갱신 작업 보냄
-                Handler handler = new Handler(Looper.getMainLooper());
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        for (UserChat uc : userList) {
-                            if (uc.getChatRoomId().equals(chatRoomId)) {
-                                uc.setLastChat(m.getMessage());
-                                uc.setLastChatTime(m.timestampString());
-                                break;
+                try{
+                    sqLiteUtil.setInitView(c, "CHAT_MSG_TB");
+                }finally {
+                    MSG m = sqLiteUtil.selectLastMsg(chatRoomId, userKey, 2);
+                    Handler handler = new Handler(Looper.getMainLooper());
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            for (UserChat uc : userList) {
+                                if (uc.getChatRoomId().equals(chatRoomId)) {
+                                    uc.setLastChat(m.getMessage());
+                                    uc.setLastChatTime(m.timestampString());
+                                    break;
+                                }
                             }
+                            userListAdapter.notifyDataSetChanged();
+                            chatflag = false;
                         }
-                        userListAdapter.notifyDataSetChanged();
-                        chatflag = false;
-                    }
-                });
-            }
+                    });
+                }
+                }
+                // 메인 스레드로 UI 갱신 작업 보냄
+
         }).start();
     }
     // 서버에서 유저 목록을 가져오는 메소드입니다.
