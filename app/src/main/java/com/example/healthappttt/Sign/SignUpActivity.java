@@ -177,7 +177,7 @@ public class SignUpActivity extends AppCompatActivity
                     Log.d("shared 로컬 저장 회원가입 pk:", String.valueOf(userKey));
 
                     Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
-                    intent.putExtra("userKey",String.valueOf(userKey));
+                    intent.putExtra("userKey", String.valueOf(userKey));
                     startActivity(intent);
                     finish();
                     Log.d(TAG, "sendTokenToServer success");
