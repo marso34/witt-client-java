@@ -81,8 +81,6 @@ public class SUSelectGymFragment extends Fragment implements OnMapReadyCallback,
     private static final String White = "#ffffff";
     private static final String Backgrount_2 = "#D1D8E2";
 
-
-
     private static final int PERMISSION_REQUEST_CODE = 1;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private static final String ARG_LAT = "lat";
@@ -189,7 +187,7 @@ public class SUSelectGymFragment extends Fragment implements OnMapReadyCallback,
         binding.skip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((SignUpActivity) getActivity()).goToInputPerf(lat, lon, null, 0, 0);
+                ((SignUpActivity) requireActivity()).goToInputPerf(lat, lon, null, 0, 0);
             }
         });
 
@@ -210,7 +208,7 @@ public class SUSelectGymFragment extends Fragment implements OnMapReadyCallback,
             if (isSelected) {
                 gymName = binding.selectGym.getText().toString();
 
-                ((SignUpActivity) getActivity()).goToInputPerf(lat, lon, gymName, gymLat, gymLon);
+                ((SignUpActivity) requireActivity()).goToInputPerf(lat, lon, gymName, gymLat, gymLon);
             }
         });
     }

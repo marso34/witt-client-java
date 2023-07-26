@@ -8,8 +8,9 @@
     android:layout_marginHorizontal="16dp"
     android:layout_marginVertical="12dp"
     app:cardElevation="6dp"
-    android:outlineSpotShadowColor="@color/Body"
-    app:cardCornerRadius="16dp">
+    android:outlineSpotShadowColor="@color/Background_3"
+    app:cardCornerRadius="16dp"
+    tools:context=".Routine.RoutineAdapter">
 
     <LinearLayout
         android:id="@+id/routineLayout"
@@ -23,6 +24,7 @@
             android:layout_height="wrap_content"
             android:paddingVertical="12dp"
             android:paddingHorizontal="16dp"
+            android:gravity="center_vertical"
             android:background="@drawable/rectangle_16dp"
             android:elevation="10dp"
             android:outlineSpotShadowColor="@color/Background_1"
@@ -32,6 +34,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+
                 android:orientation="horizontal"
                 android:gravity="left">
 
@@ -39,7 +42,7 @@
                     android:id="@+id/timeIcon"
                     android:layout_width="22dp"
                     android:layout_height="22dp"
-                    android:background="@drawable/baseline_wb_sunny_24"/>
+                    android:src="@drawable/baseline_wb_sunny_24"/>
 
                 <TextView
                     android:id="@+id/timeTxt"
@@ -48,9 +51,14 @@
                     android:layout_marginLeft="4dp"
                     android:layout_gravity="center_vertical"
                     android:text="점심"
-                    style="@style/SubtitleM"/>
+                    style="@style/Caption"/>
 
             </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/catRecyclerView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
             <ImageView
                 android:id="@+id/editBtn"
@@ -69,7 +77,7 @@
             android:fillViewport="true">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
+                android:id="@+id/exRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:overScrollMode="never"
@@ -79,13 +87,6 @@
         </androidx.core.widget.NestedScrollView>
 
     </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/clickLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:visibility="gone"/>
 
     <LinearLayout
         android:id="@+id/nullLayout"

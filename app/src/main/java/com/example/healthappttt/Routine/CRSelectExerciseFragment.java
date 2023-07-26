@@ -132,25 +132,25 @@ public class CRSelectExerciseFragment extends Fragment {
 
         switch (time) {
             case 0:
-                binding.timeIcon.setBackground(getContext().getDrawable(R.drawable.baseline_brightness_5_24));
+                binding.timeIcon.setImageResource(R.drawable.baseline_brightness_5_24);
                 binding.timeTxt.setText("아침");
                 binding.timeTxt.setTextColor(Color.parseColor(Orange));
                 binding.timeDetail.setText("오전 6시 ~ 오후 12시");
                 break;
             case 1:
-                binding.timeIcon.setBackground(getContext().getDrawable(R.drawable.baseline_wb_sunny_24));
+                binding.timeIcon.setImageResource(R.drawable.baseline_wb_sunny_24);
                 binding.timeTxt.setText("점심");
                 binding.timeTxt.setTextColor(Color.parseColor(Yellow));
                 binding.timeDetail.setText("오후 12시 ~ 오후 6시");
                 break;
             case 2:
-                binding.timeIcon.setBackground(getContext().getDrawable(R.drawable.baseline_brightness_3_24));
+                binding.timeIcon.setImageResource(R.drawable.baseline_brightness_3_24);
                 binding.timeTxt.setText("저녁");
                 binding.timeTxt.setTextColor(Color.parseColor(Blue));
                 binding.timeDetail.setText("오후 6시 ~ 오전 12시");
                 break;
             case 3:
-                binding.timeIcon.setBackground(getContext().getDrawable(R.drawable.baseline_flare_24));
+                binding.timeIcon.setImageResource(R.drawable.baseline_flare_24);
                 binding.timeTxt.setText("새벽");
                 binding.timeTxt.setTextColor(Color.parseColor(Purple));
                 binding.timeDetail.setText("오전 12시 ~ 오전 6시");

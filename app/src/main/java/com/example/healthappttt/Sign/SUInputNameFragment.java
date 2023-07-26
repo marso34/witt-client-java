@@ -103,7 +103,7 @@ public class SUInputNameFragment extends Fragment {
 
         binding.nextBtn.setOnClickListener(v -> {
             if (isTrue) {
-                ((SignUpActivity) getActivity()).goToInputBody(binding.name.getText().toString());
+                ((SignUpActivity) requireActivity()).goToInputBody(binding.name.getText().toString());
             }
         });
 

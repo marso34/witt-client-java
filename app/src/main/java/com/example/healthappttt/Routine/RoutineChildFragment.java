@@ -157,11 +157,10 @@ public class RoutineChildFragment extends Fragment {
             routines = sqLiteUtil.SelectRoutine(dayOfWeek);
 
             if (routines != null) {
-
-                sqLiteUtil.setInitView(getContext(), "EX_TB");
-
-                for (int i = 0; i < routines.size(); i++)
+                for (int i = 0; i < routines.size(); i++) {
+                    sqLiteUtil.setInitView(getContext(), "EX_TB");
                     routines.get(i).setExercises(sqLiteUtil.SelectExercise(routines.get(i).getID(), true));
+                }
 
                 setRecyclerView(0);
 

@@ -152,8 +152,6 @@ public class HomeChildFragment extends Fragment {
         return view;
     }
 
-
-
     private void setRecyclerView() {
         adapter = new UserAdapter(getContext(), (ArrayList<UserInfo>) UserList, day_of_week); // 나중에 routine
         recyclerView.setHasFixedSize(true);

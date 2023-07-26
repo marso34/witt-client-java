@@ -135,11 +135,11 @@ public class ExerciseInputAdapter extends RecyclerView.Adapter<ExerciseInputAdap
 
             bottomSheetDialog.setContentView(view1);
 
-            HourPicker.setMaxValue(50); //최대값
+            HourPicker.setMaxValue(24); //최대값
             HourPicker.setMinValue(0); //최소값
             HourPicker.setValue(this.exercises.get(position).getSetOrTime()/60);// 초기값
 
-            MinutePicker.setMaxValue(50); //최대값
+            MinutePicker.setMaxValue(60); //최대값
             MinutePicker.setMinValue(0); //최소값
             MinutePicker.setValue(this.exercises.get(position).getSetOrTime()%60);// 초기값
 

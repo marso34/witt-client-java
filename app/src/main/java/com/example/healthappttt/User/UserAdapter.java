@@ -2,6 +2,7 @@ package com.example.healthappttt.User;//package com.example.healthappttt.adapter
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,52 +26,54 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder> {
-    private ArrayList<UserInfo> mDataset;
-    private FirebaseStorage storage;
-    private UserInfo userInfo;
     private Context mContext;
-    private UserInfo thisUser;
+
+    private static final String Signature = "#05C78C";
+    private static final String Background_2 = "#D1D8E2";
+
+    private static final String Body = "#4A5567";
+
+    private static final String Orange = "#FC673F";
+    private static final String Yellow = "#F2BB57";
+    private static final String Blue = "#579EF2";
+    private static final String Purple = "#8C5AD8";
+
+    private ArrayList<UserInfo> mDataset;
     private int dayOfWeek;
-    FirebaseFirestore db;
-
-    static class MainViewHolder extends RecyclerView.ViewHolder {
-        private Context mContext;
-        public TextView Name ;
-        public TextView LocaName ;
-        public ImageView photoImageVIew;
-        public TextView PreferredTime;
-        public RecyclerView recyclerView;
-        public LinearLayout UserLayout;
-        public AreaAdapter Adapter;
-
-        public ArrayList<String> ExerciseNames;
-
-        MainViewHolder(@NonNull View itemView) {
-            super(itemView);
-            Name =  itemView.findViewById(R.id.UNE);
-            LocaName = itemView.findViewById(R.id.GT);
-            photoImageVIew = itemView.findViewById(R.id.PRI);
-            PreferredTime = itemView.findViewById(R.id.GoodTime);
-            recyclerView = itemView.findViewById(R.id.recyclerView);
-            ExerciseNames = new ArrayList<>();
-            Adapter = new AreaAdapter(mContext,ExerciseNames);
-           }
-    }
 
     public UserAdapter(Context mContext, ArrayList<UserInfo> myDataset, int dayOfWeek) {
-        this.mDataset = myDataset;
         this.mContext = mContext;
+        this.mDataset = myDataset;
         this.dayOfWeek = dayOfWeek; // 프로필 호출할 때 필요한 데이터, 삭제하면 안 됨
     }
 
-    @Override
-    public int getItemViewType(int position){
-        return position;
+    static class MainViewHolder extends RecyclerView.ViewHolder {
+        public TextView Name, GymName, GymAdress;
+        public ImageView MapIcon, TimeIcon;
+        public TextView TimeTxt;
+
+        public RecyclerView recyclerView;
+
+        public AreaAdapter Adapter;
+
+        MainViewHolder(@NonNull View itemView) {
+            super(itemView);
+
+            this.Name =  itemView.findViewById(R.id.UNE);
+            this.GymName = itemView.findViewById(R.id.gymName);
+            this.GymAdress = itemView.findViewById(R.id.gymAdress);
+
+            this.MapIcon = itemView.findViewById(R.id.mapIcon);
+            this.TimeIcon = itemView.findViewById(R.id.timeIcon);
+            this.TimeTxt = itemView.findViewById(R.id.timeTxt);
+
+            recyclerView = itemView.findViewById(R.id.recyclerView);
+        }
     }
 
     @NonNull
     @Override
-    public UserAdapter.MainViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public MainViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View cardView = (View) LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_user, parent, false);
         final MainViewHolder mainViewHolder = new MainViewHolder(cardView);
 
@@ -79,69 +82,135 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull final MainViewHolder holder, int position) {
+        if (mDataset.size() > 0) {
+            UserInfo userInfo = mDataset.get(position);
+            Log.d("유저 이름!", userInfo.getName());
+            Log.d("유저 PK!", String.valueOf(userInfo.getUserKey()));
 
-        UserInfo userInfo = mDataset.get(position);
-        Log.d("유저 이름!", userInfo.getName());
-        Log.d("유저 PK!", String.valueOf(userInfo.getUserKey()));
-//        getCurrentWeek();
+            //  Log.d(TAG, "onBindViewHolder: "+ userInfo.getUserName().toString());
+            //calculateDistances(//여기에);형원이 한테 받아서 하기.
 
-      //  Log.d(TAG, "onBindViewHolder: "+ userInfo.getUserName().toString());
-        holder.Name.setText(userInfo.getName().toString());
-        //calculateDistances(//여기에);형원이 한테 받아서 하기.
-        holder.LocaName.setText(userInfo.getGymName());
-        holder.PreferredTime.setText(userInfo.getTime()+ "");
-        holder.ExerciseNames.clear();
-        holder.recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
-        holder.recyclerView.setAdapter(holder.Adapter);
-        holder.recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
-        holder.recyclerView.setAdapter(holder.Adapter);
-        Integer exerciseCat = userInfo.getRoutineCategory();
-                            Log.d("rrr", "Document exists!");
-                            if ((exerciseCat & 0x1) == 0x1) {
-                                String a = "가슴";
-                                    holder.ExerciseNames.add(a);
-                            }
-                            if ((exerciseCat & 0x2) ==    0x2) {
-                                String a = "등";
-                                holder.ExerciseNames.add(a);
-                            }
-                            if ((exerciseCat & 0x4) == 0x4) {
-                                String a = "어깨";
-                                holder.ExerciseNames.add(a);
-                            }
-                            if ((exerciseCat & 0x8) == 0x8) {
-                                String a = "하체";
-                                holder.ExerciseNames.add(a);
-                            }
-                            if ((exerciseCat & 0x10) == 0x10) {
-                                String a = "팔";
-                                holder.ExerciseNames.add(a);
-                            }
-                            if ((exerciseCat & 0x20) == 0x20) {
-                                String a = "복근";
-                                holder.ExerciseNames.add(a);
-                            }
-                            if ((exerciseCat & 0x40) == 0x40) {
-                                String a = "유산소";
-                                holder.ExerciseNames.add(a);
-                            }
-                    holder.Adapter.notifyDataSetChanged();
+            String str = userInfo.getGymName();
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d("상세 프로필", "userAdapter에서 클릭처리");
-                String adapterUserKey = String.valueOf(userInfo.getUserKey());
-                Intent intent = new Intent(mContext, MyProfileActivity.class);
+            holder.Name.setText(userInfo.getName());
 
-                intent.putExtra("PK",adapterUserKey);
-                intent.putExtra("dayOfWeek", dayOfWeek);
-//                intent.putExtra("post",finalProfilefile);--?
-                mContext.startActivity(intent);
+
+            if (str != null) {
+                holder.GymName.setText(str);
+                holder.GymName.setTextColor(Color.parseColor(Body));
+                holder.GymAdress.setText("lat, lon, 파싱하거나 db에 주소도 저장할 것");
+                holder.MapIcon.setColorFilter(Color.parseColor(Signature));
+            } else {
+                holder.GymName.setText("선택된 헬스장이 없어요");
+                holder.GymName.setTextColor(Color.parseColor(Background_2));
+                holder.GymAdress.setText("lat, lon, 파싱하거나 db에 주소도 저장할 것");
+                holder.MapIcon.setColorFilter(Color.parseColor(Background_2));
             }
-        });
 
+            switch (userInfo.getTime()) {
+                case 0:
+                    holder.TimeIcon.setImageResource(R.drawable.baseline_brightness_5_24);
+                    holder.TimeTxt.setText("아침");
+                    holder.TimeTxt.setTextColor(Color.parseColor(Orange));
+                    break;
+                case 1:
+                    holder.TimeIcon.setImageResource(R.drawable.baseline_wb_sunny_24);
+                    holder.TimeTxt.setText("점심");
+                    holder.TimeTxt.setTextColor(Color.parseColor(Yellow));
+                    break;
+                case 2:
+                    holder.TimeIcon.setImageResource(R.drawable.baseline_brightness_3_24);
+                    holder.TimeTxt.setText("저녁");
+                    holder.TimeTxt.setTextColor(Color.parseColor(Blue));
+                    break;
+                case 3:
+                    holder.TimeIcon.setImageResource(R.drawable.baseline_flare_24);
+                    holder.TimeTxt.setText("새벽");
+                    holder.TimeTxt.setTextColor(Color.parseColor(Purple));
+                    break;
+            }
+
+            setCatRecyclerView(holder.recyclerView, holder.Adapter, position);
+
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Log.d("상세 프로필", "userAdapter에서 클릭처리");
+                    String adapterUserKey = String.valueOf(userInfo.getUserKey());
+                    Intent intent = new Intent(mContext, MyProfileActivity.class);
+
+                    intent.putExtra("PK", adapterUserKey);
+                    intent.putExtra("dayOfWeek", dayOfWeek);
+//                intent.putExtra("post",finalProfilefile);--?
+                    mContext.startActivity(intent);
+                }
+            });
+        }
+
+
+//        holder.PreferredTime.setText(userInfo.getTime()+ "");
+
+//        holder.ExerciseNames.clear();
+//        holder.recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+//        holder.recyclerView.setAdapter(holder.Adapter);
+//        holder.recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
+//        holder.recyclerView.setAdapter(holder.Adapter);
+//        Integer exerciseCat = userInfo.getRoutineCategory();
+//                            Log.d("rrr", "Document exists!");
+//                            if ((exerciseCat & 0x1) == 0x1) {
+//                                String a = "가슴";
+//                                    holder.ExerciseNames.add(a);
+//                            }
+//                            if ((exerciseCat & 0x2) ==    0x2) {
+//                                String a = "등";
+//                                holder.ExerciseNames.add(a);
+//                            }
+//                            if ((exerciseCat & 0x4) == 0x4) {
+//                                String a = "어깨";
+//                                holder.ExerciseNames.add(a);
+//                            }
+//                            if ((exerciseCat & 0x8) == 0x8) {
+//                                String a = "하체";
+//                                holder.ExerciseNames.add(a);
+//                            }
+//                            if ((exerciseCat & 0x10) == 0x10) {
+//                                String a = "팔";
+//                                holder.ExerciseNames.add(a);
+//                            }
+//                            if ((exerciseCat & 0x20) == 0x20) {
+//                                String a = "복근";
+//                                holder.ExerciseNames.add(a);
+//                            }
+//                            if ((exerciseCat & 0x40) == 0x40) {
+//                                String a = "유산소";
+//                                holder.ExerciseNames.add(a);
+//                            }
+//                    holder.Adapter.notifyDataSetChanged();
     }
+
+    @Override
+    public int getItemViewType(int position){
+        return position;
+    }
+
+    private void setCatRecyclerView(RecyclerView recyclerView, AreaAdapter adapter, int positon) {
+        ArrayList<String> eCat = new ArrayList<>();
+        int cat = mDataset.get(positon).getRoutineCategory();
+
+        if ((cat & 0x1)  == 0x1)        eCat.add("가슴");
+        if ((cat & 0x2)  == 0x2)        eCat.add("등");
+        if ((cat & 0x4)  == 0x4)        eCat.add("어깨");
+        if ((cat & 0x8)  == 0x8)        eCat.add("하체");
+        if ((cat & 0x10) == 0x10)       eCat.add("팔");
+        if ((cat & 0x20) == 0x20)       eCat.add("복근");
+        if ((cat & 0x40) == 0x40)       eCat.add("유산소");
+
+        adapter = new AreaAdapter(eCat); // 나중에 routine
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(mContext, RecyclerView.HORIZONTAL, false));
+        recyclerView.setAdapter(adapter);
+    }
+
     private void calculateDistances(double myLatitude, double myLongitude) {
         for (UserInfo userInfo : mDataset) {
             double userLatitude = userInfo.getLatitude();

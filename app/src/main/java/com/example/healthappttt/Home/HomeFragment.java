@@ -1,31 +1,58 @@
 package com.example.healthappttt.Home;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.example.healthappttt.Data.Exercise.ExerciseComparator;
+import com.example.healthappttt.Data.Exercise.ExerciseData;
+import com.example.healthappttt.Data.Exercise.RoutineData;
+import com.example.healthappttt.Data.SQLiteUtil;
 import com.example.healthappttt.R;
-import com.example.healthappttt.User.UserPagerAdapter;
+import com.example.healthappttt.Routine.ExerciseAdapter;
+import com.example.healthappttt.User.AreaAdapter;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
+import org.w3c.dom.Text;
+
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 
 public class HomeFragment extends Fragment {
-    Context context;
+    private static final String Orange = "#FC673F";
+    private static final String Yellow = "#F2BB57";
+    private static final String Blue = "#579EF2";
+    private static final String Purple = "#8C5AD8";
 
     private TabLayout tabLayout;
+    private ImageView timeIcon;
+    private LinearLayout routineLayout;
+    private TextView timeTxt, emptyTxt;
+    private RecyclerView recyclerView;
     private ViewPager2 viewPager;
+
+    private AreaAdapter catAdapter;
     private UserPagerAdapter pagerAdapter;
 
+    private SQLiteUtil sqLiteUtil;
+    private ArrayList<RoutineData> routines;
 
     @Nullable
     @Override
@@ -35,8 +62,16 @@ public class HomeFragment extends Fragment {
 
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_home, container, false);
 
+        sqLiteUtil = SQLiteUtil.getInstance();
+        sqLiteUtil.setInitView(getContext(), "RT_TB");
+        routines = sqLiteUtil.SelectAllRoutine();
 
         tabLayout = view.findViewById(R.id.tab_layout);
+        routineLayout = view.findViewById(R.id.routine);
+        timeIcon = view.findViewById(R.id.timeIcon);
+        timeTxt = view.findViewById(R.id.timeTxt);
+        emptyTxt = view.findViewById(R.id.empty);
+        recyclerView = view.findViewById(R.id.recyclerView);
         viewPager = view.findViewById(R.id.view_pager);
 
         pagerAdapter = new UserPagerAdapter(this);
@@ -57,25 +92,49 @@ public class HomeFragment extends Fragment {
         Date currentDate = new Date();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(currentDate);
+        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK) - 1;
 
-        viewPager.setCurrentItem(calendar.get(Calendar.DAY_OF_WEEK) - 1, false);
+        int i = 0;
+        for (RoutineData r : routines) {
+            if (r.getDayOfWeek() == dayOfWeek) {
+                setRoutines(r);
+                break;
+            }
+            i++;
+        }
 
-//        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-//            @Override
-//            public void onTabSelected(TabLayout.Tab tab) {
-////                viewPager.setCurrentItem(tab.getPosition(), false);
-//            }
-//
-//            @Override
-//            public void onTabUnselected(TabLayout.Tab tab) {
-//            }
-//
-//            @Override
-//            public void onTabReselected(TabLayout.Tab tab) {
-//
-//            }
-//        });
-//        애니메이션 삭제 코드, 애니메이션 삭제하면 너무 딱딱하게 느껴짐. 없으면 탭 클릭 시 애니메이션 과함
+        if (i == routines.size())
+            setRoutines(null);
+
+        viewPager.setCurrentItem(dayOfWeek, false);
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                Log.d("탭 포지션", tab.getPosition() + "");
+
+                int i = 0;
+                for (RoutineData r : routines) {
+                    if (r.getDayOfWeek() == tab.getPosition()) {
+                        setRoutines(r);
+                        break;
+                    }
+                    i++;
+                }
+
+                if (i == routines.size())
+                    setRoutines(null);
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
 
         return view;
     }
@@ -95,6 +154,58 @@ public class HomeFragment extends Fragment {
         }
 
         return dayOfWeek;
+    }
+
+    private void setRoutines(RoutineData r) {
+        if (r != null) {
+            routineLayout.setVisibility(View.VISIBLE);
+            emptyTxt.setVisibility(View.GONE);
+
+            switch (r.getTime()) {
+                case 0:
+                    timeIcon.setImageResource(R.drawable.baseline_brightness_5_24);
+                    timeTxt.setText("아침");
+                    timeTxt.setTextColor(Color.parseColor(Orange));
+                    break;
+                case 1:
+                    timeIcon.setImageResource(R.drawable.baseline_wb_sunny_24);
+                    timeTxt.setText("점심");
+                    timeTxt.setTextColor(Color.parseColor(Yellow));
+                    break;
+                case 2:
+                    timeIcon.setImageResource(R.drawable.baseline_brightness_3_24);
+                    timeTxt.setText("저녁");
+                    timeTxt.setTextColor(Color.parseColor(Blue));
+                    break;
+                case 3:
+                    timeIcon.setImageResource(R.drawable.baseline_flare_24);
+                    timeTxt.setText("새벽");
+                    timeTxt.setTextColor(Color.parseColor(Purple));
+                    break;
+            }
+
+            setCatRecyclerView(r.getCat());
+        } else {
+            routineLayout.setVisibility(View.GONE);
+            emptyTxt.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void setCatRecyclerView(int cat) {
+        ArrayList<String> eCat = new ArrayList<>();
+
+        if ((cat & 0x1)  == 0x1)        eCat.add("가슴");
+        if ((cat & 0x2)  == 0x2)        eCat.add("등");
+        if ((cat & 0x4)  == 0x4)        eCat.add("어깨");
+        if ((cat & 0x8)  == 0x8)        eCat.add("하체");
+        if ((cat & 0x10) == 0x10)       eCat.add("팔");
+        if ((cat & 0x20) == 0x20)       eCat.add("복근");
+        if ((cat & 0x40) == 0x40)       eCat.add("유산소");
+
+        catAdapter = new AreaAdapter(eCat); // 나중에 routine
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
+        recyclerView.setAdapter(catAdapter);
     }
 
 //    private void setRoutine() {

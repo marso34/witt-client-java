@@ -26,6 +26,7 @@ import com.example.healthappttt.Data.RetrofitClient;
 import com.example.healthappttt.Data.SQLiteUtil;
 import com.example.healthappttt.Data.pkData;
 import com.example.healthappttt.R;
+import com.example.healthappttt.User.AreaAdapter;
 import com.example.healthappttt.interface_.ServiceApi;
 
 import java.util.ArrayList;
@@ -37,6 +38,11 @@ import retrofit2.Response;
 
 public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainViewHolder> {
     private Context context;
+
+    private static final String Orange = "#FC673F";
+    private static final String Yellow = "#F2BB57";
+    private static final String Blue = "#579EF2";
+    private static final String Purple = "#8C5AD8";
 
     private ServiceApi service;
     private SQLiteUtil sqLiteUtil;
@@ -59,25 +65,28 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
     }
 
     public static class MainViewHolder extends RecyclerView.ViewHolder {
-        public LinearLayout RoutineLayout, ClickLayout, NullLayout;
+        public LinearLayout RoutineLayout, NullLayout;
         public ImageView TimeIcon, EditBtn;
         public TextView TimeTxt;
 
-        public RecyclerView recyclerView;
-        public ExerciseAdapter adapter;
+        public RecyclerView CatRecyclerView;
+        public AreaAdapter CatAdapter;
+
+        public RecyclerView ExRecyclerView;
+        public ExerciseAdapter ExAdapter;
 
         public MainViewHolder(View view) {
             super(view);
 
             this.RoutineLayout = view.findViewById(R.id.routineLayout);
-            this.ClickLayout = view.findViewById(R.id.clickLayout);
             this.NullLayout = view.findViewById(R.id.nullLayout);
 
             this.TimeIcon = view.findViewById(R.id.timeIcon);
             this.TimeTxt = view.findViewById(R.id.timeTxt);
             this.EditBtn = view.findViewById(R.id.editBtn);
 
-            this.recyclerView = view.findViewById(R.id.recyclerView);
+            this.CatRecyclerView = view.findViewById(R.id.catRecyclerView);
+            this.ExRecyclerView = view.findViewById(R.id.exRecyclerView);
         }
     }
 
@@ -86,13 +95,6 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
     public MainViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_routine, parent, false);
         final MainViewHolder mainViewHolder = new MainViewHolder(view);
-
-        mainViewHolder.ClickLayout.setOnClickListener(v -> {
-            int position = mainViewHolder.getAbsoluteAdapterPosition();
-
-            if (attribute > 0)
-                onClickRoutine.onClickRoutine(routines.get(position));
-        });
 
         mainViewHolder.EditBtn.setOnClickListener(v -> {
             int position = mainViewHolder.getAbsoluteAdapterPosition();
@@ -144,36 +146,40 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
         if (routines.size() > 0) {
             holder.RoutineLayout.setVisibility(View.VISIBLE);
             holder.NullLayout.setVisibility(View.GONE);
-            holder.ClickLayout.setVisibility(View.GONE);
 
             switch (routines.get(position).getTime()) {
                 case 0:
-                    holder.TimeIcon.setBackground(context.getDrawable(R.drawable.baseline_brightness_5_24));
+                    holder.TimeIcon.setImageResource(R.drawable.baseline_brightness_5_24);
                     holder.TimeTxt.setText("아침");
+                    holder.TimeTxt.setTextColor(Color.parseColor(Orange));
                     break;
                 case 1:
-                    holder.TimeIcon.setBackground(context.getDrawable(R.drawable.baseline_wb_sunny_24));
+                    holder.TimeIcon.setImageResource(R.drawable.baseline_wb_sunny_24);
                     holder.TimeTxt.setText("점심");
+                    holder.TimeTxt.setTextColor(Color.parseColor(Yellow));
                     break;
                 case 2:
-                    holder.TimeIcon.setBackground(context.getDrawable(R.drawable.baseline_brightness_3_24));
+                    holder.TimeIcon.setImageResource(R.drawable.baseline_brightness_3_24);
                     holder.TimeTxt.setText("저녁");
+                    holder.TimeTxt.setTextColor(Color.parseColor(Blue));
                     break;
                 case 3:
-                    holder.TimeIcon.setBackground(context.getDrawable(R.drawable.baseline_flare_24));
+                    holder.TimeIcon.setImageResource(R.drawable.baseline_flare_24);
                     holder.TimeTxt.setText("새벽");
+                    holder.TimeTxt.setTextColor(Color.parseColor(Purple));
                     break;
             }
 
             if (attribute == 0) { // 내 루틴
+
             } else if (attribute > 0) { // 운동 기록
-                holder.ClickLayout.setVisibility(View.VISIBLE);
                 holder.EditBtn.setVisibility(View.GONE);
             } else { // 다른 사람 루틴
                 holder.EditBtn.setVisibility(View.GONE);
             }
 
-            setRecyclerView(holder.recyclerView, holder.adapter, position);
+            setCatRecyclerView(holder.CatRecyclerView, holder.CatAdapter, position);
+            setRecyclerView(holder.ExRecyclerView, holder.ExAdapter, position);
         } else {
             holder.RoutineLayout.setVisibility(View.GONE);
             holder.NullLayout.setVisibility(View.VISIBLE);
@@ -230,9 +236,27 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
         ArrayList<ExerciseData> e = (ArrayList<ExerciseData>) routines.get(positon).getExercises();
         Collections.sort(e, new ExerciseComparator());
 
-        adapter = new ExerciseAdapter(e); // 나중에 routine
+        adapter = new ExerciseAdapter(e);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        recyclerView.setAdapter(adapter);
+    }
+
+    private void setCatRecyclerView(RecyclerView recyclerView, AreaAdapter adapter, int positon) {
+        ArrayList<String> eCat = new ArrayList<>();
+        int cat = routines.get(positon).getCat();
+
+        if ((cat & 0x1)  == 0x1)        eCat.add("가슴");
+        if ((cat & 0x2)  == 0x2)        eCat.add("등");
+        if ((cat & 0x4)  == 0x4)        eCat.add("어깨");
+        if ((cat & 0x8)  == 0x8)        eCat.add("하체");
+        if ((cat & 0x10) == 0x10)       eCat.add("팔");
+        if ((cat & 0x20) == 0x20)       eCat.add("복근");
+        if ((cat & 0x40) == 0x40)       eCat.add("유산소");
+
+        adapter = new AreaAdapter(eCat); // 나중에 routine
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(context, RecyclerView.HORIZONTAL, false));
         recyclerView.setAdapter(adapter);
     }
 

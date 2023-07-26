@@ -112,9 +112,10 @@ public class CreateRoutineActivity extends AppCompatActivity implements CRSetTim
         sqLiteUtil.setInitView(this, "RT_TB");
         sqLiteUtil.insert(routine);
 
-        sqLiteUtil.setInitView(this, "EX_TB");
-        for (ExerciseData e : routine.getExercises())
+        for (ExerciseData e : routine.getExercises()) {
+            sqLiteUtil.setInitView(this, "EX_TB");
             sqLiteUtil.insert(e, false);
+        }
     }
 
     private void Terminate(boolean isSuccess) {

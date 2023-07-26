@@ -74,7 +74,10 @@ public class ExerciseRecordActivity extends AppCompatActivity implements ERSelec
         bundle.putSerializable("routines", routines);
         bundle.putInt("dayOfWeek", dayOfWeek);
 
-        replaceFragment(new ERSelectRoutineFragment(), bundle);
+        if (routines.size() > 0)
+            replaceFragment(ERSelectRoutineFragment.newInstance(dayOfWeek, routines.get(0)));
+        else
+            replaceFragment(ERSelectRoutineFragment.newInstance(dayOfWeek, null));
     }
 
     private String TimeToString(int time) {
