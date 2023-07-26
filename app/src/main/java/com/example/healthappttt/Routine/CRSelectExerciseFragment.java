@@ -53,7 +53,6 @@ public class CRSelectExerciseFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_TIME = "time";
     private static final String ARG_ROUTINE = "routine";
 
     // TODO: Rename and change types of parameters
@@ -87,15 +86,13 @@ public class CRSelectExerciseFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param time Parameter 1.
-     * @param routine Parameter 2.
+     * @param routine Parameter 1.
      * @return A new instance of fragment addExerciseFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static CRSelectExerciseFragment newInstance(int time, RoutineData routine) {
+    public static CRSelectExerciseFragment newInstance(RoutineData routine) {
         CRSelectExerciseFragment fragment = new CRSelectExerciseFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_TIME, time);
         args.putSerializable(ARG_ROUTINE, routine);
         fragment.setArguments(args);
         return fragment;
@@ -105,8 +102,8 @@ public class CRSelectExerciseFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if(getArguments() != null) {
-            time = getArguments().getInt(ARG_TIME);
             routine = (RoutineData) getArguments().getSerializable(ARG_ROUTINE);
+            time = routine.getTime();
             dayOfWeek = routine.getDayOfWeek();
 
             exercises = new ArrayList<>();

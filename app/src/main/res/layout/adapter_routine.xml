@@ -39,7 +39,7 @@
                     android:id="@+id/timeIcon"
                     android:layout_width="22dp"
                     android:layout_height="22dp"
-                    android:src="@drawable/baseline_wb_sunny_24"/>
+                    android:background="@drawable/baseline_wb_sunny_24"/>
 
                 <TextView
                     android:id="@+id/timeTxt"

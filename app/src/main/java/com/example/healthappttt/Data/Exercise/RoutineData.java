@@ -19,50 +19,43 @@ public class RoutineData implements Serializable {
     @SerializedName("cat")
     private int cat;
 
-    @SerializedName("startTime")
-    private String startTime;
-
-    @SerializedName("endTime")
-    private String endTime;
+    @SerializedName("time")
+    private int time;
 
     @SerializedName("exercises")
     private List<ExerciseData> exercises;
 
     public RoutineData() {}
 
-    public RoutineData(int ID, int userID, int dayOfWeek, int cat, String startTime, String endTime, List<ExerciseData> exercises) {
+    public RoutineData(int ID, int userID, int dayOfWeek, int cat, int time, List<ExerciseData> exercises) {
         this.ID = ID;
         this.userID = userID;
         this.dayOfWeek = dayOfWeek;
         this.cat = cat;
-        this.startTime = startTime;
-        this.endTime = endTime;
+        this.time = time;
         this.exercises = exercises;
     }
 
-    public RoutineData(int ID, int dayOfWeek, int cat, String startTime, String endTime, List<ExerciseData> exercises) {
+    public RoutineData(int ID, int dayOfWeek, int cat, int time, List<ExerciseData> exercises) {
         this.ID = ID;
         this.dayOfWeek = dayOfWeek;
         this.cat = cat;
-        this.startTime = startTime;
-        this.endTime = endTime;
+        this.time = time;
         this.exercises = exercises;
     }
 
-    public RoutineData(String startTime, String endTime, int cat, int dayOfWeek, List<ExerciseData> exercises) {
+    public RoutineData(int time, int cat, int dayOfWeek, List<ExerciseData> exercises) {
         this.dayOfWeek = dayOfWeek;
         this.cat = cat;
-        this.startTime = startTime;
-        this.endTime = endTime;
+        this.time = time;
         this.exercises = exercises;
     }
 
-    public RoutineData(int ID, String startTime, String endTime, int cat, int dayOfWeek) {
+    public RoutineData(int ID, int time, int cat, int dayOfWeek) {
         this.ID = ID;
         this.dayOfWeek = dayOfWeek;
         this.cat = cat;
-        this.startTime = startTime;
-        this.endTime = endTime;
+        this.time = time;
     }
 
     public RoutineData(RoutineData r) {
@@ -70,8 +63,7 @@ public class RoutineData implements Serializable {
         this.userID = r.userID;
         this.dayOfWeek = r.dayOfWeek;
         this.cat = r.cat;
-        this.startTime = r.startTime;
-        this.endTime = r.endTime;
+        this.time = r.time;
         this.exercises = r.exercises;
     }
 
@@ -79,8 +71,7 @@ public class RoutineData implements Serializable {
     public int getUserID()                                  { return this.userID; }
     public int getDayOfWeek()                               { return this.dayOfWeek; }
     public int getCat()                                     { return this.cat; }
-    public String getStartTime()                            { return this.startTime; }
-    public String getEndTime()                              { return this.endTime; }
+    public int getTime()                                    { return this.time; }
     public ArrayList<ExerciseData> getExercises()           { return (ArrayList<ExerciseData>) this.exercises; }
 
     public String getStringDayOfWeek() {
@@ -97,12 +88,11 @@ public class RoutineData implements Serializable {
         return null;
     }
 
-    public void setID(int ID)                               { this.ID = ID; }
-    public void setUserID(int userID)                       { this.userID = userID; }
-    public void setDayOfWeek(int dayOfWeek)                 { this.dayOfWeek = dayOfWeek; }
-    public void setCat(int cat)                             { this.cat = cat; }
-    public void setStartTime(String startTime)              { this.startTime = startTime; }
-    public void setEndTime(String endTime)                  { this.endTime = endTime; }
+    public void setID(int ID)                                    { this.ID = ID; }
+    public void setUserID(int userID)                            { this.userID = userID; }
+    public void setDayOfWeek(int dayOfWeek)                      { this.dayOfWeek = dayOfWeek; }
+    public void setCat(int cat)                                  { this.cat = cat; }
+    public void setTime(int time)                                { this.time = time; }
     public void setExercises(ArrayList<ExerciseData> exercises)  { this.exercises = exercises; }
 
 }

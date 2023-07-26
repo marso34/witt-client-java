@@ -12,7 +12,9 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.LinearGradient;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.RadioGroup;
@@ -36,6 +38,16 @@ import retrofit2.Response;
 
 public class EditRoutineActivity extends AppCompatActivity {
     ActivityEditRoutineBinding binding;
+
+    private static final String Background_1 = "#F2F5F9";
+    private static final String Background_2 = "#D1D8E2";
+    private static final String Background_3 = "#9AA5B8";
+    private static final String Signature = "#05C78C";
+    private static final String Orange = "#FC673F";
+    private static final String Yellow = "#F2BB57";
+    private static final String Blue = "#579EF2";
+    private static final String Purple = "#8C5AD8";
+
     private ActivityResultLauncher<Intent> startActivityResult;
     private ExerciseInputAdapter adapter;
 
@@ -44,13 +56,17 @@ public class EditRoutineActivity extends AppCompatActivity {
 
     private RoutineData routine;
     private ArrayList<Integer> deletePk;
-    private int runTime, startTime, endTime;
+
+    private int time;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityEditRoutineBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        Intent intent = getIntent();
+        routine = (RoutineData) intent.getSerializableExtra("routine");
 
         startActivityResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
             @Override
@@ -73,14 +89,16 @@ public class EditRoutineActivity extends AppCompatActivity {
         sqLiteUtil = SQLiteUtil.getInstance();
         sqLiteUtil.setInitView(this, "RT_TB");
 
-        Intent intent = getIntent();
-        routine = (RoutineData) intent.getSerializableExtra("routine");
         deletePk = new ArrayList<>();
 
         init();
 
         if (routine != null)
             setRecyclerView();
+
+        setTime(routine.getTime());
+
+        binding.backBtn.setOnClickListener(v -> {});
 
         binding.dayOfWeek.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -97,41 +115,13 @@ public class EditRoutineActivity extends AppCompatActivity {
             }
         });
 
-        binding.startTimeUP.setOnClickListener(v -> {
-            if (startTime < endTime) {
-                startTime += 5;
-                runTime = endTime - startTime;
-                binding.startTime.setText(TimeToString(startTime));
-                binding.runTime.setText(RuntimeToString(runTime));
-            }
-        });
+        binding.morning.setOnClickListener(v -> setTime(0));
 
-        binding.startTimeDown.setOnClickListener(v -> {
-            if (startTime > 0) {
-                startTime -= 5;
-                runTime = endTime - startTime;
-                binding.startTime.setText(TimeToString(startTime));
-                binding.runTime.setText(RuntimeToString(runTime));
-            }
-        });
+        binding.afternoon.setOnClickListener(v -> setTime(1));
 
-        binding.endTimeUP.setOnClickListener(v -> {
-            if (endTime < 240) {
-                endTime += 5;
-                runTime = endTime - startTime;
-                binding.endTime.setText(TimeToString(endTime));
-                binding.runTime.setText(RuntimeToString(runTime));
-            }
-        });
+        binding.evening.setOnClickListener(v -> setTime(2));
 
-        binding.endTimeDown.setOnClickListener(v -> {
-            if (endTime > startTime) {
-                endTime -= 5;
-                runTime = endTime - startTime;
-                binding.endTime.setText(TimeToString(endTime));
-                binding.runTime.setText(RuntimeToString(runTime));
-            }
-        });
+        binding.dawn.setOnClickListener(v -> setTime(3));
 
         binding.addExercises.setOnClickListener(v -> {
             Intent intent1 = new Intent(this, AddExerciseActivity.class);
@@ -143,30 +133,15 @@ public class EditRoutineActivity extends AppCompatActivity {
         });
 
         binding.completeBtn.setOnClickListener(v -> {
-            if (runTime <= 0) {
-                Toast.makeText(this, "시간을 다시 설정해주세요", Toast.LENGTH_SHORT).show();
-            } else if (routine.getExercises().size() <= 0) {
+            if (routine.getExercises().size() <= 0) {
                 Toast.makeText(this, "운동이 없어요", Toast.LENGTH_SHORT).show();
             } else {
-//                Toast.makeText(this, "아직 동작 X", Toast.LENGTH_SHORT).show();
-                routine.setStartTime(TimeToStringD(startTime));
-                routine.setEndTime(TimeToStringD(endTime));
                 UpdateToDB();
             }
         });
     }
 
     private void init() {
-        if (routine != null) {
-            startTime = TimeToString(routine.getStartTime());
-            endTime = TimeToString(routine.getEndTime());
-            runTime = endTime - startTime;
-        }
-
-        binding.startTime.setText(TimeToString(startTime));
-        binding.endTime.setText(TimeToString(endTime));
-        binding.runTime.setText(RuntimeToString(runTime));
-
         switch (routine.getDayOfWeek()) {
             case 0: binding.sun.setChecked(true); break;
             case 1: binding.mon.setChecked(true); break;
@@ -178,52 +153,67 @@ public class EditRoutineActivity extends AppCompatActivity {
         }
     }
 
-    private int TimeToString(String Time) {
-        String[] TimeSplit = Time.split(":");
-
-        int hour = Integer.parseInt(TimeSplit[0]);
-        int min = Integer.parseInt(TimeSplit[1]);
-
-        return (hour * 10) + (min / 6);
-    }
-
-    private String TimeToString(int Time) {
-        String am_pm = "";
-
-        if (Time >= 240) Time-= 240;
-
-        if (Time < 120) {
-            am_pm = "오전";
-            if (Time < 10) Time += 120;
-        } else {
-            am_pm = "오후";
-            if (Time >= 130) Time-= 120;
+    private void setTime(int t) {
+        routine.setTime(t);
+//  ------------------------------------------------------------------------------------------------
+        binding.morning.setStrokeWidth(0);
+        binding.afternoon.setStrokeWidth(0);
+        binding.evening.setStrokeWidth(0);
+        binding.dawn.setStrokeWidth(0);
+//  ------------------------------------------------------------------------------------------------
+//        binding.morningIcon.setBackgroundColor(Color.parseColor(Background_3));
+//        binding.afternoonIcon.setBackgroundColor(Color.parseColor(Background_3));
+//        binding.eveningIcon.setBackgroundColor(Color.parseColor(Background_3));
+//        binding.dawnIcon.setBackgroundColor(Color.parseColor(Background_3));
+//  ------------------------------------------------------------------------------------------------
+        binding.morningTxt.setTextColor(Color.parseColor(Background_3));
+        binding.afternoonTxt.setTextColor(Color.parseColor(Background_3));
+        binding.eveningTxt.setTextColor(Color.parseColor(Background_3));
+        binding.dawnTxt.setTextColor(Color.parseColor(Background_3));
+//  ------------------------------------------------------------------------------------------------
+        binding.morningDetail.setTextColor(Color.parseColor(Background_3));
+        binding.afternoonDetail.setTextColor(Color.parseColor(Background_3));
+        binding.eveningDetail.setTextColor(Color.parseColor(Background_3));
+        binding.dawnDetail.setTextColor(Color.parseColor(Background_3));
+//  ------------------------------------------------------------------------------------------------
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            binding.morning.setOutlineSpotShadowColor(Color.parseColor(Background_1));
+            binding.afternoon.setOutlineSpotShadowColor(Color.parseColor(Background_1));
+            binding.evening.setOutlineSpotShadowColor(Color.parseColor(Background_1));
+            binding.dawn.setOutlineSpotShadowColor(Color.parseColor(Background_1));
         }
-
-        @SuppressLint("DefaultLocale") String result = String.format("%02d:%02d", Time/10, Time % 10 * 6);
-
-        return am_pm + " " + result;
-    }
-
-    private String RuntimeToString(int Time) {
-        @SuppressLint("DefaultLocale") String result1 = String.format("%d분", Time % 10 * 6);
-        @SuppressLint("DefaultLocale") String result2 = String.format("%d시간", Time/10);
-        @SuppressLint("DefaultLocale") String result3 = String.format("%d시간 %d분", Time/10, Time % 10 * 6);
-
-        if (Time < 10)
-            return result1;
-
-        if (Time % 10 == 0)
-            return result2;
-
-        return result3;
-    }
-
-    private String TimeToStringD(int Time) {
-        if (Time >= 240) Time-= 240;
-        @SuppressLint("DefaultLocale") String result = String.format("%02d:%02d:%02d", Time/10, Time % 10 * 6, 0);
-
-        return result;
+//  ---------------------------전부 끄고------------------------------------------------------------
+        switch (t) { // 필요한 것만 켜기
+            case 0:
+                binding.morning.setStrokeWidth(1);
+                binding.morningTxt.setTextColor(Color.parseColor(Orange));
+                binding.morningDetail.setTextColor(Color.parseColor(Orange));
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
+                    binding.morning.setOutlineSpotShadowColor(Color.parseColor(Orange));
+                break;
+            case 1:
+                binding.afternoon.setStrokeWidth(1);
+                binding.afternoonTxt.setTextColor(Color.parseColor(Yellow));
+                binding.afternoonDetail.setTextColor(Color.parseColor(Yellow));
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
+                    binding.afternoon.setOutlineSpotShadowColor(Color.parseColor(Yellow));
+                break;
+            case 2:
+                binding.evening.setStrokeWidth(1);
+                binding.eveningTxt.setTextColor(Color.parseColor(Blue));
+                binding.eveningDetail.setTextColor(Color.parseColor(Blue));
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
+                    binding.evening.setOutlineSpotShadowColor(Color.parseColor(Blue));
+                break;
+            case 3:
+                binding.dawn.setStrokeWidth(1);
+                binding.dawnTxt.setTextColor(Color.parseColor(Purple));
+                binding.dawnDetail.setTextColor(Color.parseColor(Purple));
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
+                    binding.dawn.setOutlineSpotShadowColor(Color.parseColor(Purple));
+                break;
+            default: break;
+        }
     }
 
     private void setRecyclerView() {
@@ -234,7 +224,6 @@ public class EditRoutineActivity extends AppCompatActivity {
     }
 
     private void UpdateToDB() {
-
         service.updateRoutine(routine).enqueue(new Callback<Integer>() {
             @Override
             public void onResponse(Call<Integer> call, Response<Integer> response) {

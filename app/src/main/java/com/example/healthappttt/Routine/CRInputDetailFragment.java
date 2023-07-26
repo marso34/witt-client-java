@@ -52,7 +52,7 @@ public class CRInputDetailFragment extends Fragment {
     private static final String ARG_ROUTINE = "routine";
 
     // TODO: Rename and change types of parameters
-    int dayOfWeek;
+    int time, dayOfWeek;
     private RoutineData routine;
 
     private OnFragmentInteractionListener mListener;
@@ -97,8 +97,8 @@ public class CRInputDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-//            time = getArguments().getInt(ARG_TIME);
             routine = (RoutineData) getArguments().getSerializable(ARG_ROUTINE);
+            time = routine.getTime();
             exercises = routine.getExercises();
             dayOfWeek = routine.getDayOfWeek();
 
@@ -119,7 +119,7 @@ public class CRInputDetailFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        switch (1) { // routine.getTime();
+        switch (time) { // routine.getTime();
             case 0:
                 binding.timeIcon.setBackground(getContext().getDrawable(R.drawable.baseline_brightness_5_24));
                 binding.timeTxt.setText("아침");

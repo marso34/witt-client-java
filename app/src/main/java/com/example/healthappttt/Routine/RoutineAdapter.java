@@ -114,7 +114,7 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
                 @Override
                 public void onClick(View v) {
                     int position = mainViewHolder.getAbsoluteAdapterPosition();
-//                    onClickRoutine.onClickRoutine(routines.get(position));
+                    onClickRoutine.onClickRoutine(routines.get(position));
                     alertDialog.dismiss();
                 }
             });
@@ -146,8 +146,24 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
             holder.NullLayout.setVisibility(View.GONE);
             holder.ClickLayout.setVisibility(View.GONE);
 
-//            holder.startTimeView.setText(TimeToString(routines.get(position).getStartTime()));
-//            holder.endTimeView.setText(TimeToString(routines.get(position).getEndTime())); // 시간 설정 방식 변경
+            switch (routines.get(position).getTime()) {
+                case 0:
+                    holder.TimeIcon.setBackground(context.getDrawable(R.drawable.baseline_brightness_5_24));
+                    holder.TimeTxt.setText("아침");
+                    break;
+                case 1:
+                    holder.TimeIcon.setBackground(context.getDrawable(R.drawable.baseline_wb_sunny_24));
+                    holder.TimeTxt.setText("점심");
+                    break;
+                case 2:
+                    holder.TimeIcon.setBackground(context.getDrawable(R.drawable.baseline_brightness_3_24));
+                    holder.TimeTxt.setText("저녁");
+                    break;
+                case 3:
+                    holder.TimeIcon.setBackground(context.getDrawable(R.drawable.baseline_flare_24));
+                    holder.TimeTxt.setText("새벽");
+                    break;
+            }
 
             if (attribute == 0) { // 내 루틴
             } else if (attribute > 0) { // 운동 기록
@@ -208,23 +224,6 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
     public void removeItem(int position) {
         routines.remove(position);
         notifyItemRemoved(position);
-    }
-
-    private String TimeToString(String Time) {
-        String[] TimeSplit = Time.split(":");
-        String am_pm = "";
-
-        int hour = Integer.parseInt(TimeSplit[0]);
-
-        if (hour < 12) {
-            am_pm = "오전";
-            if (hour == 0) hour = 12;
-        } else {
-            am_pm = "오후";
-            if (hour >= 13) hour-= 12;
-        }
-
-        return am_pm + " " + hour + ":" + TimeSplit[1];
     }
 
     private void setRecyclerView(RecyclerView recyclerView, ExerciseAdapter adapter, int positon) {

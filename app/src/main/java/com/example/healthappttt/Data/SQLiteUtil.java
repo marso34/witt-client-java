@@ -26,9 +26,7 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
     private static volatile SQLiteUtil instance; // volatile 메인 메모리에 저장
     private SQLiteDatabase db;
     private String table;
-    private SQLiteUtil() {
-
-    }
+    private SQLiteUtil() {}
 
     public static SQLiteUtil getInstance() {
         if (instance == null) { // synchronized 성능 저하 문제 해결법, double check locking
@@ -267,8 +265,7 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
 
         if (table.equals("RT_TB")) {
             values.put("PK", routine.getID());
-            values.put("Start_Time", routine.getStartTime());
-            values.put("End_Time", routine.getEndTime());
+            values.put("Time", routine.getTime());
             values.put("CAT", routine.getCat());
             values.put("Day_Of_Week", routine.getDayOfWeek());
 
@@ -335,6 +332,7 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
             Log.d(table, "메서드 형식 오류");
         }
     }
+
     public void insert(int userKey,List<UserChat> U){
         if (table.equals("CHAT_ROOM_TB")) {
             ContentValues values = new ContentValues();
@@ -354,6 +352,7 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
             db.close();
         }
     }
+
     public void delete(int PK) {
         String selection = "PK = ?";
         int result = db.delete(table, selection, new String[]{String.valueOf(PK)});
@@ -372,6 +371,7 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         db.close();
         Log.d(TAG, "deleteChatRoom: 삭제완료"+chatRoomPk);
         }
+
     public void deleteChatRoom() {
         if (table.equals("CHAT_ROOM_TB")) {
             db.execSQL("DELETE FROM CHAT_ROOM_TB");
@@ -392,12 +392,12 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         }
 
     }
+
     public void Update(RoutineData routine) {
         ContentValues values = new ContentValues();
 
         if (table.equals("RT_TB")) {
-            values.put("Start_Time", routine.getStartTime());
-            values.put("End_Time", routine.getEndTime());
+            values.put("Time", routine.getTime());
             values.put("CAT", routine.getCat());
             values.put("Day_Of_Week", routine.getDayOfWeek());
 
@@ -406,9 +406,7 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         } else {
             Log.d(table, "메서드 형식 오류");
         }
-        db.close();
     }
-
 
     public void Update(int RECORD_PK, int OUser_FK, int Start_Time, String End_Time, String Run_Time, int CAT, int PROMISE_FK, String TS) {
         ContentValues values = new ContentValues();
@@ -430,7 +428,6 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         } else {
             Log.d(table, "메서드 형식 오류");
         }
-        db.close();
     } // 운동 기록을 수정할 수 있게 할지는 아직 모름
 
     public void UpdateOrInsert(ExerciseData exercise) {
@@ -457,7 +454,6 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
             Log.d(table, result + "삽입 성공");
             cursor.close();
         }
-        db.close();
     }
 
     public void Update(int signal,int userPk,int chatPk,String ts) {
@@ -501,7 +497,6 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         db.close();
     }
 
-
     public ArrayList<RoutineData> SelectRoutine(int DayOfWeek) {
         if (table.equals("RT_TB")) {
             String sql = "SELECT * FROM " + table + " WHERE Day_Of_Week = " + DayOfWeek + ";";
@@ -515,10 +510,9 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
             while(cursor.moveToNext()) {
                 routines.add(new RoutineData(
                         cursor.getInt(0),    // ID
-                        cursor.getString(1), // startTime
-                        cursor.getString(2), // endTime
-                        cursor.getInt(3),    // cat
-                        cursor.getInt(4)     // dayOfWeek
+                        cursor.getInt(1),    // Time
+                        cursor.getInt(2),    // cat
+                        cursor.getInt(3)    // dayOfWeek
                 ));
             }
 

@@ -38,8 +38,6 @@ public class CRSetTimeFragment extends Fragment {
     private static final String Purple = "#8C5AD8";
     private static final String White = "#ffffff";
 
-    private int[] schedule;
-
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_TIME = "time";
@@ -112,7 +110,6 @@ public class CRSetTimeFragment extends Fragment {
 
         if (-1 < time && time < 4)
             setTime(time);
-
 
         switch (dayOfWeek) {
             case 0: binding.dayOfWeek.setText("일요일"); break;
