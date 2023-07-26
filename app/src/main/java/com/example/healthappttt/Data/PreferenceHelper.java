@@ -19,7 +19,6 @@ import java.util.Map;
 public class PreferenceHelper
 {
     private final String NAME = "name";
-    //    private UserProfile upf = new UserProfile();   테스트
     private SharedPreferences app_prefs;
     private Context context;
     private UserClass userClass;
@@ -108,6 +107,7 @@ public class PreferenceHelper
         edit.putInt("gender",bodyInfo.getGender());
         edit.putInt("height", (int) bodyInfo.getHeight());
         edit.putInt("weight", (int) bodyInfo.getWeight());
+        edit.putInt("temp",bodyInfo.getIsPublic());
 
         edit.apply();
         Log.d("sharedpref","로컬 저장 완료 ");
@@ -120,35 +120,23 @@ public class PreferenceHelper
     public String getEmail() {
         return app_prefs.getString("EMAIL","__");
     }
-    public int getIP() {
-        return  app_prefs.getInt( "IP", 00);
-    }
-    public int getPlatform() {
-        return  app_prefs.getInt( "Platform", 00);
-    }
     public String getUser_NM() {
         return app_prefs.getString("User_NM","__");
     }
-    public String getPW() {
-        return app_prefs.getString("PW","__");
+    public String getGYMNM() {
+        return app_prefs.getString("gymNm","");
     }
-    //필요한 변수 setter 매소드 생성
-    public void setPK(int pk) {
-        app_prefs.edit().putInt("USER_PK",pk);
-        app_prefs.edit().apply();
-        Log.d("setPK: ", String.valueOf(pk));
-    }
-    public void setBodyInfo(int height, int weight) {
-        SharedPreferences.Editor edit = app_prefs.edit();
-        edit.putInt("height",height);
-        edit.putInt("weight",weight);
-        edit.apply();
+    public int getGender() {
+        return app_prefs.getInt("gender",0);
     }
     public int getheight() {
         return app_prefs.getInt("height",1);
     }
     public int getweight() {
         return app_prefs.getInt("weight",1);
+    }
+    public int gettemp() {
+        return app_prefs.getInt("temp",1);
     }
 
     public int getsquatValue() {
@@ -161,20 +149,45 @@ public class PreferenceHelper
         return app_prefs.getInt("deadValue",1);
     }
 
+    //필요한 변수 setter 매소드 생성
+    public void setPK(int pk) {
+        app_prefs.edit().putInt("USER_PK",pk);
+        app_prefs.edit().apply();
+        Log.d("setPK: ", String.valueOf(pk));
+    }
+    public void setBodyInfo(int height, int weight, int temp) {
+        SharedPreferences.Editor edit = app_prefs.edit();
+        edit.putInt("height",height);
+        edit.putInt("weight",weight);
+        edit.putInt("temp",temp);
+        edit.apply();
+    }
+    public void setWeight(int squat,int bench, int deadlift) {
+        SharedPreferences.Editor edit = app_prefs.edit();
+        edit.putInt("squatValue",squat);
+        edit.putInt("benchValue",bench);
+        edit.putInt("deadValue",deadlift);
+        Log.d("squatValue: ", String.valueOf(squat)); //테스트용
+        edit.apply();
+    }
+
+
 
     //
 
     public  Map<String, Object> getUserData() {
         Map<String, Object> userData = new HashMap<>();
-        userData.put("User_NM",app_prefs.getString("User_NM","nothing"));
+        userData.put("User_NM",app_prefs.getString("User_NM",""));
+        userData.put("gymNm",app_prefs.getString("gymNm","헬스장을 등록해주세요"));
         userData.put("gender", app_prefs.getInt("gender", 0));
+        userData.put("temp", app_prefs.getInt("temp", 0));
         userData.put("height", app_prefs.getInt("height", 0));
         userData.put("weight", app_prefs.getInt("weight", 0));
         userData.put("squatValue", app_prefs.getInt("squatValue", 0));
         userData.put("benchValue", app_prefs.getInt("benchValue", 0));
         userData.put("deadValue", app_prefs.getInt("deadValue", 0));
-        userData.put("totalValue",app_prefs.getInt("totalValue",0));
-        userData.put("image", app_prefs.getString("image", "nothing"));
+        //userData.put("totalValue",app_prefs.getInt("totalValue",0));
+        //userData.put("image", app_prefs.getString("image", ""));
         Log.d("member getUserData() ", String.valueOf(app_prefs.getInt("height", 0)));
         return userData;
     }
@@ -199,12 +212,5 @@ public class PreferenceHelper
         editor.apply();
     }
 
-//    public int getGender() { return app_prefs.getInt("gender",00); }
-//    public int getheight() { return app_prefs.getInt("height",00); }
-//    public int getweight() { return app_prefs.getInt("weight",00); }
-//    public int getbenchValue() { return app_prefs.getInt("benchValue",00); }
-//    public int getsquatValue() { return app_prefs.getInt("squatValue",00); }
-//    public int getdeadliftValue() { return app_prefs.getInt("deadliftValue",00); }
-//    public String getimage() { return app_prefs.getString("image","nothing");}
 
 }

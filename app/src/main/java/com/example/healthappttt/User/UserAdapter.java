@@ -89,7 +89,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
         holder.Name.setText(userInfo.getName().toString());
         //calculateDistances(//여기에);형원이 한테 받아서 하기.
         holder.LocaName.setText(userInfo.getGymName());
-        holder.PreferredTime.setText(userInfo.getStartTime()+" ~ "+userInfo.getEndTime());
+//        holder.PreferredTime.setText(userInfo.getStartTime()+" ~ "+userInfo.getEndTime());
         holder.ExerciseNames.clear();
         holder.recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         holder.recyclerView.setAdapter(holder.Adapter);

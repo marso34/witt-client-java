@@ -1,19 +1,15 @@
 package com.example.healthappttt.Profile;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -23,7 +19,6 @@ import com.example.healthappttt.Data.Exercise.RoutineData;
 import com.example.healthappttt.Data.PreferenceHelper;
 import com.example.healthappttt.Data.RetrofitClient;
 import com.example.healthappttt.Data.SQLiteUtil;
-import com.example.healthappttt.Data.User.UserClass;
 import com.example.healthappttt.Data.User.UserKey;
 import com.example.healthappttt.Data.WittSendData;
 import com.example.healthappttt.R;
@@ -52,18 +47,15 @@ import retrofit2.Response;
 public class MyProfileActivity extends AppCompatActivity {
 
     private ActivityMyprofileBinding binding;
-    private ActivityResultLauncher<Intent> editProfileLauncher;
     private PreferenceHelper UserTB;
     private SQLiteUtil sqLiteUtil;
     private ServiceApi apiService;
-    private UserClass userClass;
     private RoutineAdapter adapter;
     private WittSendData wittSendData;
-  
-    ImageButton block_btn,Reviews_btn,WittHistory_btn;
-    Button PEdit, cancel_profile;
+
+    Button  cancel_profile;
     ImageView ProfileImg;
-    TextView Pname,Pgender,Pheight,Pweight,Plocatoin;
+    TextView Pname,Pgender,Plocatoin;
     TextView Psqaut,Pbench,Pdeadlift;
     Map<String,Object> userDefault;
     Map<String,Object> OuserDefault;
@@ -82,14 +74,10 @@ public class MyProfileActivity extends AppCompatActivity {
         binding = ActivityMyprofileBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        //Reviews_btn = findViewById(R.id.Reviews_Recd);
-        //WittHistory_btn = findViewById(R.id.WittHistory);
         cancel_profile = findViewById(R.id.cancel_profile);
         //텍스트
         Pname = findViewById(R.id.name);
         Pgender = findViewById(R.id.gender);
-//        Pheight = findViewById(R.id.Pheight);
-//        Pweight = findViewById(R.id.Pweight);
         Psqaut = findViewById(R.id.Psqaut);
         Pbench = findViewById(R.id.Pbench);
         Pdeadlift = findViewById(R.id.Pdeadlift);
@@ -108,61 +96,20 @@ public class MyProfileActivity extends AppCompatActivity {
 
         dayOfWeek = intent.getIntExtra("dayOfWeek",calendar.get(Calendar.DAY_OF_WEEK) - 1);
 
-
         myPK = String.valueOf(UserTB.getPK());// 로컬 내 PK
         /** 마이 프로필*/
         if(PK.equals(myPK) ){ // 내 pk이면 마이 프로필
             Log.d("프로필에서 로컬pk와 넘겨받은pk",PK + " " + myPK);
 
-            //block_btn = findViewById(R.id.block_btn); //내 프로필에만  존재
-            //PEdit = findViewById(R.id.PEdit);//내 프로필에만 존재
-
             userDefault = new HashMap<>();// 회원가입시 입력했던 데이터들 로컬에서 받기
-            userDefault.put("User_NM", UserTB.getUserData().get("User_NM")); //TODO getter pref에 만들기
-            userDefault.put("gender", UserTB.getUserData().get("gender"));
-            userDefault.put("height", UserTB.getUserData().get("height"));
-            userDefault.put("weight", UserTB.getUserData().get("weight"));
-            userDefault.put("squatValue", UserTB.getUserData().get("squatValue"));
-            userDefault.put("benchValue", UserTB.getUserData().get("benchValue"));
-            userDefault.put("deadValue", UserTB.getUserData().get("deadValue"));
-            userDefault.put("totalValue", UserTB.getUserData().get("totalValue"));
-
+            userDefault = UserTB.getUserData();
+            //userDefault.put("totalValue", UserTB.getUserData().get("totalValue"));
 
             setDefault(userDefault); //로컬 데이터를를 화면에 세팅
 
-            ViewChangeBlock(); // 화면전환 매서드
+            ViewChangeBlock();
+            CommonViewChange(); // 화면전환 매서드
 
-            // MyprofileEdit에서 넘어온 데이터 처리
-            editProfileLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
-                result -> {
-                    // result 에는 resultCode 가 있다.
-                    // resultCode 의 값으로, 여러가지 구분해서 사용이 가능.
-                    if (result.getResultCode() == RESULT_OK){
-
-                        userDefault = UserTB.getUserData();// edit에서 저장되고 돌아온 후 로컬에서 다시 데이터 불러옴
-
-                        //화면에 연결
-                        binding.name.setText(userDefault.get("User_NM").toString());
-//                        binding.Pheight.setText(userDefault.get("height").toString() + "cm");
-//                        binding.Pweight.setText(userDefault.get("weight").toString() + "kg");
-                        binding.Psqaut.setText(userDefault.get("squatValue").toString());
-                        binding.Pbench.setText(userDefault.get("benchValue").toString());
-                        binding.Pdeadlift.setText(userDefault.get("deadValue").toString());
-                        if(userDefault.get("gender").equals(0)) {
-                            binding.gender.setText("남자");
-                            binding.gender.setTextColor(Color.parseColor("#0000FF")); // 파란색
-                        }else {
-                            binding.gender.setText("여자");
-                            binding.gender.setTextColor(Color.parseColor("#FFC0CB")); // 핑크색
-                        }
-
-
-                    }else if(result.getResultCode() == Activity.RESULT_CANCELED){
-                        userDefault = UserTB.getUserData();
-                        setDefault(userDefault);
-                        Log.d("Profile","그냥 뒤로가처리 후 기본값 설정됨");
-                    }
-                });
         /** 상세 프로필*/
         }else { // 내 pk가 아니면 상대 프로필
             Log.d("메인에서 넘겨받은 상대 pk: ",PK);
@@ -173,14 +120,14 @@ public class MyProfileActivity extends AppCompatActivity {
 
             // 상대 pk -> 상대 프로필 정보 가져오기 + 화면에 뿌려주기
             getOtherProfile(userKey);
-            getOtherRoutine(userKey.getPk()); // 상대방 루틴
+            //getOtherRoutine(userKey.getPk()); // 상대방 루틴
 
             // 화면 전환
             OtherViewChangeBlock();
+            CommonViewChange();
 
         }
-        cancel_profile();
-
+        cancel_profile();//뒤로가기
     }
 
     public void setOtherProfileView() {
@@ -218,6 +165,7 @@ public class MyProfileActivity extends AppCompatActivity {
                     String gender = data.get("Gender").toString();
                     int height = (int) Double.parseDouble(data.get("User_HT").toString());
                     int weight = (int) Double.parseDouble(data.get("User_WT").toString());
+                    int temp = (int) Double.parseDouble(data.get("Is_Public").toString());
                     int squatValue = (int) Double.parseDouble(data.get("Bench").toString());
                     int benchValue = (int) Double.parseDouble(data.get("Squat").toString());
                     int deadValue = (int) Double.parseDouble(data.get("DeadLift").toString());
@@ -228,15 +176,25 @@ public class MyProfileActivity extends AppCompatActivity {
                     OtherName = User_NM;
                     //받아온 상대 정보 뿌려주기
                     Pname.setText(User_NM);
-//                    Pheight.setText(height + "cm");Pweight.setText(weight+ "kg");
-//                    Psqaut.setText(String.valueOf(squatValue));Pbench.setText(String.valueOf(benchValue));
-                    Pdeadlift.setText(String.valueOf(deadValue));Plocatoin.setText(GYM_NM);
+                    Psqaut.setText(String.valueOf(squatValue));
+                    Pbench.setText(String.valueOf(benchValue));
+                    Pdeadlift.setText(String.valueOf(deadValue));
+                    Plocatoin.setText(GYM_NM);
+
                     if( gender.equals("0.0")) {
                         Pgender.setText("남자");
                         Pgender.setTextColor(Color.parseColor("#0000FF")); // 파란색
                     } else{
                         Pgender.setText("여자");
                         Pgender.setTextColor(Color.parseColor("#FFC0CB")); // 핑크색
+                    }
+
+                    if(temp == 0){
+                        binding.height.setVisibility(View.GONE); binding.weight.setVisibility(View.GONE);
+                        binding.cm.setText("비공개"); binding.kg.setText("비공개");
+                    }else {
+                        binding.height.setText(String.valueOf(height));
+                        binding.weight.setText(String.valueOf(weight));
                     }
 
                 }else { Log.d("getOtherProfile","프로필 데이터 null");}
@@ -275,8 +233,7 @@ public class MyProfileActivity extends AppCompatActivity {
     //기본 사용자 정보 세팅
     public void setDefault( Map<String, Object> data ) {
         Pname.setText(data.get("User_NM").toString());//이름
-//        Pheight.setText(data.get("height").toString() + "cm");
-//        Pweight.setText(data.get("weight").toString() + "kg");
+        Plocatoin.setText(data.get("gymNm").toString());//헬스장
         Psqaut.setText(data.get("squatValue").toString());
         Pbench.setText(data.get("benchValue").toString());
         Pdeadlift.setText(data.get("deadValue").toString());
@@ -290,8 +247,7 @@ public class MyProfileActivity extends AppCompatActivity {
             Pgender.setTextColor(Color.parseColor("#FFC0CB")); // 핑크색
         }
 
-
-        if(data.get("height").toString().equals("0")){
+        if(data.get("temp").toString().equals("0")){
             binding.height.setVisibility(View.GONE); binding.weight.setVisibility(View.GONE);
             binding.cm.setText("비공개"); binding.kg.setText("비공개");
         }else {
@@ -299,36 +255,21 @@ public class MyProfileActivity extends AppCompatActivity {
             binding.weight.setText(data.get("weight").toString() );
         }
 
-
     }
 
     //화면전환(마이프로필)
     public void ViewChangeBlock() {
-        //수정하기
-        binding.PEdit.setOnClickListener(new View.OnClickListener() {
+        //헬스장 수정
+        binding.GYM.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MyProfileActivity.this, MyProfileEdit.class);
-
-                Bundle bundle = new Bundle();
-                for (Map.Entry<String, Object> entry : userDefault.entrySet()) {
-                    String key = entry.getKey();
-                    Object value = entry.getValue();
-
-                    if (value instanceof String) {
-                        bundle.putString(key, (String) value);
-                    } else if (value instanceof Integer) {
-                        bundle.putInt(key, (Integer) value);
-                    }
-                    // 다른 데이터 타입에 따라 추가적인 처리
-                }
-
-                intent.putExtras(bundle);
-                editProfileLauncher.launch(intent);
+                Intent intent = new Intent(MyProfileActivity.this,EditGymActivity.class);
+                intent.putExtra("MyName",Pname.getText());
+                startActivity(intent);
             }
         });
 
-        //TODO version 1 키, 몸무게 수정하기
+        //version 1 키, 몸무게 수정
         binding.EditBody.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -336,11 +277,12 @@ public class MyProfileActivity extends AppCompatActivity {
                 intent.putExtra("PK",UserTB.getPK());
                 intent.putExtra("height",UserTB.getheight());
                 intent.putExtra("weight",UserTB.getweight());
+                intent.putExtra("temp",UserTB.gettemp());
                 startActivity(intent);
 
             }
         });
-        //TODO version 1 3대 운동 수정하기
+        //version 1 3대 운동 수정
         binding.exercise3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -353,7 +295,7 @@ public class MyProfileActivity extends AppCompatActivity {
             }
         });
 
-        //차단하기
+        //차단목록
         binding.black.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
@@ -361,25 +303,25 @@ public class MyProfileActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        //받은 후기
-        binding.ReviewsReceived.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MyProfileActivity.this, ReviewsRecdAtivity.class);
-                intent.putExtra("PK",PK);
-                startActivity(intent);
-            }
-        });
-        //위트 내역
-        binding.WittHistory.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MyProfileActivity.this, WittHistoryActivity.class);
-                intent.putExtra("PK",PK);
-                startActivity(intent);
-            }
-        });
-        /** 설정 */
+//        //받은 후기
+//        binding.ReviewsReceived.setOnClickListener(new View.OnClickListener(){
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(MyProfileActivity.this, ReviewsRecdAtivity.class);
+//                intent.putExtra("PK",PK);
+//                startActivity(intent);
+//            }
+//        });
+//        //위트 내역
+//        binding.WittHistory.setOnClickListener(new View.OnClickListener(){
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(MyProfileActivity.this, WittHistoryActivity.class);
+//                intent.putExtra("PK",PK);
+//                startActivity(intent);
+//            }
+//        });
+        //설정
         binding.set.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -387,7 +329,6 @@ public class MyProfileActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
 
 
     }
@@ -403,24 +344,24 @@ public class MyProfileActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        /** 받은 후기 */
-        binding.ReviewsReceived.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MyProfileActivity.this, ReviewsRecdAtivity.class);
-                intent.putExtra("PK",PK);
-                startActivity(intent);
-            }
-        });
-        /** 위트 내역 */
-        binding.WittHistory.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MyProfileActivity.this, WittHistoryActivity.class);
-                intent.putExtra("PK",PK);
-                startActivity(intent);
-            }
-        });
+//        /** 받은 후기 */
+//        binding.ReviewsReceived.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(MyProfileActivity.this, ReviewsRecdAtivity.class);
+//                intent.putExtra("PK",PK);
+//                startActivity(intent);
+//            }
+//        });
+//        /** 위트 내역 */
+//        binding.WittHistory.setOnClickListener(new View.OnClickListener(){
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(MyProfileActivity.this, WittHistoryActivity.class);
+//                intent.putExtra("PK",PK);
+//                startActivity(intent);
+//            }
+//        });
         /** 신고 내역 */
         binding.report.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -448,6 +389,39 @@ public class MyProfileActivity extends AppCompatActivity {
 
             }
         });
+
+    }
+    //공통 목록
+    public void CommonViewChange() {
+        /** 받은 평가 */
+        binding.evaluated.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MyProfileActivity.this,EvaluationRecdActivity.class);
+                intent.putExtra("PK",PK);
+                startActivity(intent);
+            }
+        });
+
+        /** 받은 후기 */
+        binding.ReviewsReceived.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MyProfileActivity.this, ReviewsRecdAtivity.class);
+                intent.putExtra("PK",PK);
+                startActivity(intent);
+            }
+        });
+        /** 위트 내역 */
+        binding.WittHistory.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MyProfileActivity.this, WittHistoryActivity.class);
+                intent.putExtra("PK",PK);
+                startActivity(intent);
+            }
+        });
+
 
     }
 
@@ -521,16 +495,29 @@ public class MyProfileActivity extends AppCompatActivity {
     } //TODO 상세 프로필에 나오도록 xml 변경
 
     @Override
-    protected void onRestart() {
-        super.onRestart();
+    protected void onResume() {
+        super.onResume();
         //수정하고 뒤로갔을때 다시 보여줄 데이터
-        if(UserTB.getheight() == 0){
-            binding.height.setVisibility(View.GONE); binding.weight.setVisibility(View.GONE);
-            binding.cm.setText("비공개"); binding.kg.setText("비공개");
-        }else {
-            binding.height.setText(String.valueOf(UserTB.getheight()) );
-            binding.weight.setText(String.valueOf(UserTB.getweight()) );
+        if (PK.equals(myPK)) {
+            Log.d("onResume():","마이프로필 O");
+            //키, 몸무게
+            if (UserTB.gettemp() == 0) {
+                binding.height.setVisibility(View.GONE);
+                binding.weight.setVisibility(View.GONE);
+                binding.cm.setText("비공개");
+                binding.kg.setText("비공개");
+            } else {
+                binding.height.setText(String.valueOf(UserTB.getheight()));
+                binding.weight.setText(String.valueOf(UserTB.getweight()));
+            }
+            //3대
+            binding.Psqaut.setText(String.valueOf(UserTB.getsquatValue()));
+            binding.Pbench.setText(String.valueOf(UserTB.getbenchValue()));
+            binding.Pdeadlift.setText(String.valueOf(UserTB.getdeadValue()));
+        }else{
+            Log.d("onResume():","마이프로필 X");
         }
+
 
     }
     //새로 추가함

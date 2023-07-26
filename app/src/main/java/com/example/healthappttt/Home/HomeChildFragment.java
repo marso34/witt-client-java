@@ -173,13 +173,13 @@ public class HomeChildFragment extends Fragment {
                     UserList.clear();
                     for (UserInfo value : response.body()) {
                         UserList.add(value);
-                        Log.d("이름", value.getName());
-                        Log.d("엔드타임", value.getEndTime());
-                        Log.d("키", String.valueOf(value.getUserKey()));
-                        Log.d("시작타임", value.getStartTime());
-                        Log.d("헬스장", value.getGymName());
-                        Log.d("날짜", String.valueOf(value.getDayOfWeek()));
-                        Log.d("부위",String.valueOf(value.getRoutineCategory()));
+//                        Log.d("이름", value.getName());
+//                        Log.d("엔드타임", value.getEndTime());
+//                        Log.d("키", String.valueOf(value.getUserKey()));
+//                        Log.d("시작타임", value.getStartTime());
+//                        Log.d("헬스장", value.getGymName());
+//                        Log.d("날짜", String.valueOf(value.getDayOfWeek()));
+//                        Log.d("부위",String.valueOf(value.getRoutineCategory()));
                     }
                  adapter.notifyDataSetChanged();
                 } else {

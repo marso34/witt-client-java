@@ -14,7 +14,6 @@ import com.example.healthappttt.Data.PreferenceHelper;
 import com.example.healthappttt.Data.RetrofitClient;
 import com.example.healthappttt.Data.SQLiteUtil;
 import com.example.healthappttt.Data.User.BlackListData;
-import com.example.healthappttt.Data.User.ReportHistory;
 import com.example.healthappttt.Data.User.ReviewListData;
 import com.example.healthappttt.Data.User.UserKey;
 import com.example.healthappttt.Data.User.WittListData;
@@ -32,12 +31,11 @@ import retrofit2.Response;
 public class ReviewsRecdAtivity extends AppCompatActivity {
     private ServiceApi apiService;
     private PreferenceHelper UserTB;
-    SQLiteUtil sqLiteUtil;
+    private SQLiteUtil sqLiteUtil;
 
     androidx.appcompat.widget.SearchView searchView;
     TextView listCnt;
     ArrayList<BlackListData> BlackList;
-    ArrayList<ReportHistory> ReportList;
     ArrayList<ReviewListData> ReviewList, filteredList;
     ReviewListData ReviewListdata;
     ArrayList<WittListData> WittList;

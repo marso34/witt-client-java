@@ -29,7 +29,7 @@ public class EditBodyInfo extends AppCompatActivity {
     int PK;
     int height,weight; //초기에 받은 값
     int Cheight,Cweight; //수정된 값
-
+    int temp; //is_public
     Map<String, Object> UpdateDefault; //서버로 보낼값
 
     @Override
@@ -48,11 +48,12 @@ public class EditBodyInfo extends AppCompatActivity {
         PK = intent.getIntExtra("PK",0);
         height = intent.getIntExtra("height",1);
         weight = intent.getIntExtra("weight",1);
+        temp = intent.getIntExtra("temp",0);
         Cheight = height;
         Cweight = weight;
 
         setFirstBodyInfo(); //초기값 세팅
-        datachange();//데이터 바뀔때 처리 (예외처리)
+        //datachange();//데이터 바뀔때 처리 (예외처리)
         //TODO 공개하지 않을래요 클릭시 신장 체중 ->  비공개 + 0으로 처리
 
         //공개로 들어왔을때//비공개로 들어왔을떄
@@ -66,7 +67,7 @@ public class EditBodyInfo extends AppCompatActivity {
 
 
     private void setFirstBodyInfo() {
-        if (height != 0) {
+        if (temp != 0) {
             binding.height.setText(String.valueOf(height));
             binding.weight.setText(String.valueOf(weight));
         } else {
@@ -88,28 +89,29 @@ public class EditBodyInfo extends AppCompatActivity {
         binding.height.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(!hasFocus) {
-                        String ChangeH = binding.height.getText().toString().trim();
+                if(!hasFocus ) {
+                    String ChangeH = binding.height.getText().toString().trim();
 
-                        if(ChangeH.equals("")){
-                            Toast.makeText(getApplicationContext(), "신장을 입력해주세요.", Toast.LENGTH_SHORT).show();
-                            binding.EditBtn.setEnabled(false);
-                        }else {
-                            Cheight = Integer.parseInt(ChangeH);//포커스가  안될때 저장됨!
-                            Log.d("바뀐 키: ", String.valueOf(Cheight));
-                            binding.EditBtn.setEnabled(true);
-                        }
+                    if(ChangeH.equals("") | ChangeH.equals("0")){
+                        Toast.makeText(getApplicationContext(), "신장을 입력해주세요.", Toast.LENGTH_SHORT).show();
+                        binding.EditBtn.setEnabled(false);
+                    }else {
+                        Cheight = Integer.parseInt(ChangeH);//포커스가  안될때 저장됨!
+                        Log.d("바뀐 키: ", String.valueOf(Cheight));
+                        binding.EditBtn.setEnabled(true);
+                    }
                 }
+
             }
         });
 
         binding.weight.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(!hasFocus) {
+                if(!hasFocus ) {
                         String ChangeW = binding.weight.getText().toString().trim();
 
-                        if(ChangeW.equals("")){
+                        if(ChangeW.equals("") | ChangeW.equals("0")){
                             Toast.makeText(getApplicationContext(), "체중을 입력해주세요.", Toast.LENGTH_SHORT).show();
                             binding.EditBtn.setEnabled(false);
                         }else{
@@ -131,11 +133,14 @@ public class EditBodyInfo extends AppCompatActivity {
                     binding.height.setEnabled(false); binding.weight.setEnabled(false);
                     binding.height.setText("비공개"); binding.weight.setText("비공개");
                     Log.d("checksecret weight: ",Cweight +" 비공개" );
+                    temp = 0;
                 }else {
                     binding.height.setEnabled(true); binding.weight.setEnabled(true);
                     binding.height.setText(String.valueOf(Cheight)); binding.weight.setText(String.valueOf(Cweight));
+                    datachange();
                     Log.d("checksecret weight: ",Cweight +" 공개" );
                     Log.d("checksecret weight: ","공개" );
+                    temp = 1;
                 }
             }
         });
@@ -147,7 +152,7 @@ public class EditBodyInfo extends AppCompatActivity {
             public void onClick(View v) {
                 if(binding.checksecret.isChecked()){
                     //TODO 로컬에 키,몸무게 0으로 저장
-                    UserTB.setBodyInfo(0,0);
+                    UserTB.setBodyInfo(0,0,0);
                     Log.d("수정된 키: ", String.valueOf(UserTB.getheight()));
                     Log.d("수정된 키: ", String.valueOf(UserTB.getweight()));
                     Log.d("setInfo ","비공개" );
@@ -161,7 +166,7 @@ public class EditBodyInfo extends AppCompatActivity {
                     binding.height.clearFocus();
                     binding.weight.clearFocus();
                     //TODO 로컬에 키,몸무게 저장
-                    UserTB.setBodyInfo(Cheight,Cweight);
+                    UserTB.setBodyInfo(Cheight,Cweight,1);
                     Log.d("수정된 키: ", String.valueOf(UserTB.getheight()));
                     Log.d("수정된 키: ", String.valueOf(UserTB.getweight()));
                     Log.d("setInfo ","공개" );
@@ -200,7 +205,7 @@ public class EditBodyInfo extends AppCompatActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
-
+        Log.d("editvol ","destroy");
         binding = null;
     }
 
