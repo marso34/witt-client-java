@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckedTextView;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,7 +34,8 @@ public class DropUserActivity extends AppCompatActivity {
     private CheckedTextView[] checkedTextViews; //체크박스들 모음
     private int selection, mypk;
     private String myname;
-    private Button GO_Drop, cancel_drop;
+    private Button GO_Drop;
+    private ImageButton cancel_drop;
     private TextView reportname;
     private EditText txt;
     private Map<String, Object> DropMap; //서버로 보내는 데이터

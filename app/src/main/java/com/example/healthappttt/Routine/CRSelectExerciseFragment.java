@@ -53,7 +53,6 @@ public class CRSelectExerciseFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_TIME = "time";
     private static final String ARG_ROUTINE = "routine";
 
     // TODO: Rename and change types of parameters
@@ -87,15 +86,13 @@ public class CRSelectExerciseFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param time Parameter 1.
-     * @param routine Parameter 2.
+     * @param routine Parameter 1.
      * @return A new instance of fragment addExerciseFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static CRSelectExerciseFragment newInstance(int time, RoutineData routine) {
+    public static CRSelectExerciseFragment newInstance(RoutineData routine) {
         CRSelectExerciseFragment fragment = new CRSelectExerciseFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_TIME, time);
         args.putSerializable(ARG_ROUTINE, routine);
         fragment.setArguments(args);
         return fragment;
@@ -105,8 +102,8 @@ public class CRSelectExerciseFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if(getArguments() != null) {
-            time = getArguments().getInt(ARG_TIME);
             routine = (RoutineData) getArguments().getSerializable(ARG_ROUTINE);
+            time = routine.getTime();
             dayOfWeek = routine.getDayOfWeek();
 
             exercises = new ArrayList<>();
@@ -135,25 +132,25 @@ public class CRSelectExerciseFragment extends Fragment {
 
         switch (time) {
             case 0:
-                binding.timeIcon.setBackground(getContext().getDrawable(R.drawable.baseline_brightness_5_24));
+                binding.timeIcon.setImageResource(R.drawable.baseline_brightness_5_24);
                 binding.timeTxt.setText("아침");
                 binding.timeTxt.setTextColor(Color.parseColor(Orange));
                 binding.timeDetail.setText("오전 6시 ~ 오후 12시");
                 break;
             case 1:
-                binding.timeIcon.setBackground(getContext().getDrawable(R.drawable.baseline_wb_sunny_24));
+                binding.timeIcon.setImageResource(R.drawable.baseline_wb_sunny_24);
                 binding.timeTxt.setText("점심");
                 binding.timeTxt.setTextColor(Color.parseColor(Yellow));
                 binding.timeDetail.setText("오후 12시 ~ 오후 6시");
                 break;
             case 2:
-                binding.timeIcon.setBackground(getContext().getDrawable(R.drawable.baseline_brightness_3_24));
+                binding.timeIcon.setImageResource(R.drawable.baseline_brightness_3_24);
                 binding.timeTxt.setText("저녁");
                 binding.timeTxt.setTextColor(Color.parseColor(Blue));
                 binding.timeDetail.setText("오후 6시 ~ 오전 12시");
                 break;
             case 3:
-                binding.timeIcon.setBackground(getContext().getDrawable(R.drawable.baseline_flare_24));
+                binding.timeIcon.setImageResource(R.drawable.baseline_flare_24);
                 binding.timeTxt.setText("새벽");
                 binding.timeTxt.setTextColor(Color.parseColor(Purple));
                 binding.timeDetail.setText("오전 12시 ~ 오전 6시");

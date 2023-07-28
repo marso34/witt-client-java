@@ -27,6 +27,20 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".Profile.EvaluationRecdActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".Profile.EditGymActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".Profile.EditWeightVolumes"
             android:exported="false">
             <meta-data
@@ -96,14 +110,7 @@
 
         <activity
             android:name=".Routine.RoutineActivity"
-            android:exported="false" />
-        <activity
-            android:name=".Profile.MyProfileEdit"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity> <!-- <activity -->
+            android:exported="false" /> <!-- <activity -->
         <!-- android:name=".WHChildFragment" -->
         <!-- android:exported="false"> -->
         <!-- <meta-data -->

@@ -17,7 +17,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
-import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -77,18 +76,15 @@ public class MainActivity extends AppCompatActivity {
     private BlackListData BlackList;
     private ReviewListData ReviewList;
     private WittListData wittList;
-    //유저키를 UserKey 자료형으로 받음 ( 유동적으로 로그인에서 넘겨준 pk값이 들어가야함 )
     UserKey userKey;
-    private SQLiteUtil reviewsqLiteUtil,blacksqLiteUtil,wittsqLiteUtil;
-    //private String name_TB = "UserTB";
-
     private SQLiteUtil sqLiteUtil;
+
     private boolean isConnected = false;  // 소켓 연결 여부 확인
 
     private static final int RC_SIGN_IN = 123;
     private GoogleSignInClient mGoogleSignInClient;
     private int tempItemID;
-    Button mGoogleSignOutButton;
+
     private LoginActivity loginActivity;
     private int dayOfWeek;
     Intent serviceIntent;
@@ -457,12 +453,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void SaveReviewList(ReviewListData reviewListData) {
-        reviewsqLiteUtil = SQLiteUtil.getInstance();
-        reviewsqLiteUtil.setInitView(this,"REVIEW_TB");
+//        sqLiteUtil = SQLiteUtil.getInstance();
+        sqLiteUtil.setInitView(this,"REVIEW_TB");
 
         //중복 PK 확인
         boolean CheckStored = false;
-        List<ReviewListData> reviewList = reviewsqLiteUtil.SelectReviewUser();
+        List<ReviewListData> reviewList = sqLiteUtil.SelectReviewUser();
         for(ReviewListData storedData : reviewList) {
             int storedPK = storedData.getReview_PK();
             if(storedPK == reviewListData.getReview_PK()){
@@ -473,19 +469,20 @@ public class MainActivity extends AppCompatActivity {
         if (CheckStored) {
             Log.d("SaveReviewList 메서드", "중복된 PK -> 저장 X");
         } else {
-            reviewsqLiteUtil.insertRL(reviewListData);
+            sqLiteUtil.setInitView(this,"REVIEW_TB");
+            sqLiteUtil.insertRL(reviewListData);
             Log.d("SaveReviewList 메서드", "저장 완료");
         }
     }
 
 
     private void SaveBlackList(BlackListData blackListData) {
-        blacksqLiteUtil = SQLiteUtil.getInstance();
-        blacksqLiteUtil.setInitView(this, "BLACK_LIST_TB");
+//        sqLiteUtil = SQLiteUtil.getInstance();
+        sqLiteUtil.setInitView(this, "BLACK_LIST_TB");
 
         // 중복 PK 확인
         boolean CheckStored = false;
-        List<BlackListData> blackList = blacksqLiteUtil.SelectBlackUser();
+        List<BlackListData> blackList = sqLiteUtil.SelectBlackUser();
         for (BlackListData storedData : blackList) {
             int storedPK = storedData.getBL_PK();
             if (storedPK == blackListData.getBL_PK()) {
@@ -497,17 +494,18 @@ public class MainActivity extends AppCompatActivity {
         if (CheckStored) {
             Log.d("SaveBlackList 메서드", "중복된 PK -> 저장 X");
         } else {
-            blacksqLiteUtil.insertBL(blackListData);
+            sqLiteUtil.setInitView(this, "BLACK_LIST_TB");
+            sqLiteUtil.insertBL(blackListData);
             Log.d("SaveBlackList 메서드", "저장 완료");
         }
     }
     private void SaveWittList(WittListData wittListData){
-        wittsqLiteUtil = SQLiteUtil.getInstance();
-        wittsqLiteUtil.setInitView(this,"Witt_History_TB");
+//        sqLiteUtil = SQLiteUtil.getInstance();
+        sqLiteUtil.setInitView(this,"Witt_History_TB");
 
         // 중복 PK 확인
         boolean CheckStored = false;
-        List<WittListData> WittList = wittsqLiteUtil.SelectWittHistoryUser();
+        List<WittListData> WittList = sqLiteUtil.SelectWittHistoryUser();
         for (WittListData storedData : WittList) {
             int storedPK = storedData.getRECORD_PK();
             if (storedPK == wittListData.getRECORD_PK()) {
@@ -519,7 +517,8 @@ public class MainActivity extends AppCompatActivity {
         if (CheckStored) {
             Log.d("SaveWittList 메서드", "중복된 PK -> 저장 X");
         } else {
-            wittsqLiteUtil.insertWH(wittListData);
+            sqLiteUtil.setInitView(this,"Witt_History_TB");
+            sqLiteUtil.insertWH(wittListData);
             Log.d("SaveWittList 메서드", "저장 완료");
         }
     }

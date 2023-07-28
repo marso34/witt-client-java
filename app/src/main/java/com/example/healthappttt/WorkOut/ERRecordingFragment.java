@@ -25,6 +25,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.healthappttt.Data.Exercise.ExerciseData;
+import com.example.healthappttt.Data.Exercise.RoutineData;
 import com.example.healthappttt.R;
 import com.example.healthappttt.databinding.FragmentErRecordingBinding;
 
@@ -50,19 +51,16 @@ public class ERRecordingFragment extends Fragment {
     private long startTime, clickTime, pauseTime; // 운동 시작 시간// 총 운동 시간과 휴식 시간을 // 계산하기 위한 시간 -> 스톱워치 눌렀을 때 현재 시간을 저장
     private int runTime;    // 총 운동 시간
 
-    private ArrayList<ExerciseData> exercises;
     private ArrayList<ExerciseData> recordExercises; // 실제 운동을 기록, 어댑터에서 한 기록을 받아옴
     private int recordPosition;
 
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_EXERCISES = "exercises";
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private ArrayList<ExerciseData> exercises;
 
     private OnFragmentInteractionListener mListener;
 
@@ -90,16 +88,14 @@ public class ERRecordingFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+     * @param exercises Parameter 1.
      * @return A new instance of fragment ERRecordingFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ERRecordingFragment newInstance(String param1, String param2) {
+    public static ERRecordingFragment newInstance(ArrayList<ExerciseData> exercises) {
         ERRecordingFragment fragment = new ERRecordingFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putSerializable(ARG_EXERCISES, exercises);
         fragment.setArguments(args);
         return fragment;
     }
@@ -108,8 +104,13 @@ public class ERRecordingFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            exercises = (ArrayList<ExerciseData>) getArguments().getSerializable(ARG_EXERCISES);
+            recordExercises = new ArrayList<>();
+
+            for (int i = 0; i < exercises.size(); i++) {
+                recordExercises.add(new ExerciseData(exercises.get(i)));
+                recordExercises.get(i).setSetOrTime(0);
+            }
         }
     }
 
@@ -120,18 +121,6 @@ public class ERRecordingFragment extends Fragment {
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_er_recording, container, false);
 
         binding = FragmentErRecordingBinding.inflate(inflater);
-
-        exercises = new ArrayList<>();
-        recordExercises = new ArrayList<>();
-
-        if (getArguments() != null) {
-            exercises = (ArrayList<ExerciseData>) getArguments().getSerializable("exercises");
-
-            for (int i = 0; i < exercises.size(); i++) {
-                recordExercises.add(new ExerciseData(exercises.get(i)));
-                recordExercises.get(i).setSetOrTime(0);
-            }
-        }
 
         init();
 
@@ -175,7 +164,7 @@ public class ERRecordingFragment extends Fragment {
             }
         });
 
-        binding.stopWatch.setOnClickListener(v -> StartStopWatch());
+//        binding.stopWatch.setOnClickListener(v -> StartStopWatch());
         binding.stopBtn.setOnClickListener(v -> EndRocording());
     }
 
@@ -240,10 +229,10 @@ public class ERRecordingFragment extends Fragment {
             binding.stopTxt.setTextColor(Color.parseColor("#ffffff"));
             binding.stopTxt.setBackgroundColor(Color.parseColor("#05c78c"));
 
-            binding.runTimeTxt.setTextColor(Color.parseColor("#1B202D"));
+//            binding.runTimeTxt.setTextColor(Color.parseColor("#1B202D"));
             binding.runTimeView.setTextColor(Color.parseColor("#1B202D"));
-            binding.restTimeTxt.setTextColor(Color.parseColor("#9AA5B8"));
-            binding.restTimeView.setTextColor(Color.parseColor("#9AA5B8"));
+//            binding.restTimeTxt.setTextColor(Color.parseColor("#9AA5B8"));
+//            binding.restTimeView.setTextColor(Color.parseColor("#9AA5B8"));
 
             TimerCall = new Timer();
             timerTask = new TimerTask() {
@@ -259,16 +248,16 @@ public class ERRecordingFragment extends Fragment {
 
             if (isRunning) {
                 clickTime += (System.currentTimeMillis() - pauseTime);
-                binding.runTimeTxt.setTextColor(Color.parseColor("#1B202D"));  // 나중에 메서드화
+//                binding.runTimeTxt.setTextColor(Color.parseColor("#1B202D"));  // 나중에 메서드화
                 binding.runTimeView.setTextColor(Color.parseColor("#1B202D"));
-                binding.restTimeTxt.setTextColor(Color.parseColor("#9AA5B8"));
-                binding.restTimeView.setTextColor(Color.parseColor("#9AA5B8"));
+//                binding.restTimeTxt.setTextColor(Color.parseColor("#9AA5B8"));
+//                binding.restTimeView.setTextColor(Color.parseColor("#9AA5B8"));
             } else {
                 pauseTime = System.currentTimeMillis();
-                binding.runTimeTxt.setTextColor(Color.parseColor("#9AA5B8"));
+//                binding.runTimeTxt.setTextColor(Color.parseColor("#9AA5B8"));
                 binding.runTimeView.setTextColor(Color.parseColor("#9AA5B8"));
-                binding.restTimeTxt.setTextColor(Color.parseColor("#1B202D"));
-                binding.restTimeView.setTextColor(Color.parseColor("#1B202D"));
+//                binding.restTimeTxt.setTextColor(Color.parseColor("#1B202D"));
+//                binding.restTimeView.setTextColor(Color.parseColor("#1B202D"));
             }
         }
     }
@@ -329,7 +318,7 @@ public class ERRecordingFragment extends Fragment {
             @SuppressLint("DefaultLocale") String result2 = String.format("%02d:%02d:%02d", restHour, restMin, restSec);
 
             binding.runTimeView.setText(result);
-            binding.restTimeView.setText(result2);
+//            binding.restTimeView.setText(result2);
 
             if (AdapterProgressBar != null) { // 이 부분은 수정 필요
                 int progress = AdapterProgressBar.getProgress();

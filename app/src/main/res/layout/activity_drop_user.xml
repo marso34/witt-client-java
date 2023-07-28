@@ -15,13 +15,19 @@
         android:layout_marginHorizontal="16dp"
         android:layout_marginVertical="40dp">
 
-        <Button
-            android:id="@+id/cancel_drop"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:background="@drawable/baseline_arrow_back_ios_new_24"
-            android:backgroundTint="@color/Background_3"
-            android:layout_marginBottom="16dp"/>
+        <androidx.appcompat.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            app:contentInsetStart="0dp">
+
+            <ImageButton
+                android:id="@+id/cancel_drop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/baseline_arrow_back_ios_new_24"
+                android:backgroundTint="@color/Background_3"/>
+
+        </androidx.appcompat.widget.Toolbar>
 
         <TextView
             android:id="@+id/dropname"

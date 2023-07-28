@@ -5,6 +5,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.graphics.Color;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,43 +16,41 @@ import android.widget.TextView;
 
 import com.example.healthappttt.Data.Exercise.ExerciseData;
 import com.example.healthappttt.R;
+import com.google.android.material.card.MaterialCardView;
 
 import java.util.ArrayList;
 
 public class ExerciseRecordAdapter extends RecyclerView.Adapter<ExerciseRecordAdapter.MainViewHolder>  {
     private static ArrayList<ExerciseData> exercises;
-
     private OnExerciseClick onExerciseClick;
+
+    private static final String Signature = "#05C78C";
 
     public ExerciseRecordAdapter(ArrayList<ExerciseData> exercises) {
         this.exercises = exercises;
     }
 
     public static class MainViewHolder extends RecyclerView.ViewHolder {
-        public CardView ExerciseCard;
-        public LinearLayout CountLayout; // 각 운동정보, 유산소 카운트, 세트카운트, 완료 레이아웃
-        public TextView CatView, NameView;
-        public TextView CountView, CountUnitView, CardioTxtView;
+        public MaterialCardView ExerciseCard, NameCard;
+        public CardView CatView;
+        public TextView NameTxt, DetailTxt, CardioTxt;
         public ProgressBar progressBar;
-        public ImageView endView;
-
-//        public int progressMaxValue;
+        public ImageView CardioIcon, EndView;
 
         public MainViewHolder(View view) {
             super(view);
 
             this.ExerciseCard  = view.findViewById(R.id.exerciseCard);
-            this.CountLayout   = view.findViewById(R.id.countLayout);
-            this.CatView       = view.findViewById(R.id.exerciseCat);
-            this.NameView      = view.findViewById(R.id.exerciseName);
-            this.CountView     = view.findViewById(R.id.count);
-            this.CountUnitView = view.findViewById(R.id.countUnit);
-            this.CardioTxtView = view.findViewById(R.id.cardioTxt);
-            this.progressBar   = view.findViewById(R.id.progressBar);
-            this.endView       = view.findViewById(R.id.checked);
+            this.NameCard      = view.findViewById(R.id.nameCard);
 
-//            this.progressMaxValue = exercises.get(getAbsoluteAdapterPosition()).getCount();
-//            exercises.get(getAbsoluteAdapterPosition()).setCount(0);
+            this.CatView       = view.findViewById(R.id.exerciseCat);
+            this.NameTxt       = view.findViewById(R.id.exerciseName);
+            this.DetailTxt     = view.findViewById(R.id.exerciseDetail);
+            this.CardioTxt     = view.findViewById(R.id.cardioTxt);
+
+            this.progressBar   = view.findViewById(R.id.progressBar);
+            this.CardioIcon    = view.findViewById(R.id.cardioIcon);
+            this.EndView       = view.findViewById(R.id.checked);
         }
     }
 
@@ -61,16 +60,21 @@ public class ExerciseRecordAdapter extends RecyclerView.Adapter<ExerciseRecordAd
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_exercise_record, parent, false);
         final MainViewHolder mainViewHolder = new MainViewHolder(view);
 
-        view.setOnClickListener(new View.OnClickListener() {
+        mainViewHolder.ExerciseCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int position = mainViewHolder.getAbsoluteAdapterPosition();
 
-                onExerciseClick.onExerciseClick(position, mainViewHolder.CardioTxtView, mainViewHolder.progressBar);
+                onExerciseClick.onExerciseClick(position, mainViewHolder.CardioTxt, mainViewHolder.progressBar);
 
                 if (mainViewHolder.progressBar.getProgress() == mainViewHolder.progressBar.getMax()) {
-                    mainViewHolder.endView.setVisibility(View.VISIBLE);
-                    mainViewHolder.CountLayout.setVisibility(View.GONE);
+                    mainViewHolder.ExerciseCard.setStrokeWidth(1);
+                    mainViewHolder.NameCard.setStrokeWidth(1);
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                        mainViewHolder.ExerciseCard.setOutlineSpotShadowColor(Color.parseColor(Signature));
+                    }
+                    mainViewHolder.EndView.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -80,35 +84,48 @@ public class ExerciseRecordAdapter extends RecyclerView.Adapter<ExerciseRecordAd
 
     @Override
     public void onBindViewHolder(@NonNull MainViewHolder holder, int position) {
-        String name = this.exercises.get(position).getExerciseName();
-        String cat = this.exercises.get(position).getStrCat();
+        String name = this.exercises.get(position).getExerciseName(); // 운동 이름
+        String detail = "";
+        int SetOrTime = this.exercises.get(position).getSetOrTime();  // 무산소 세트 수, 유산소 시간
+        int Volume = this.exercises.get(position).getVolume();        // 무산소 무게, 유산소 강도(속도)
+        int CntOrDis = this.exercises.get(position).getCntOrDis();    // 무산소 횟수, 유산소 거리
         int progressCurrentValue = holder.progressBar.getProgress();
-        int progressMaxValue = this.exercises.get(position).getSetOrTime();
+        int progressMaxValue = SetOrTime;
 
-        holder.CatView.setTextColor(Color.parseColor(this.exercises.get(position).getTextColor())); // 부위 텍스트 색
-        holder.CatView.setBackgroundColor(Color.parseColor(this.exercises.get(position).getColor())); // 부위 바탕 색
-        holder.CatView.setText(cat);
-        holder.NameView.setText(name);
+        holder.CatView.setCardBackgroundColor(Color.parseColor(this.exercises.get(position).getTextColor())); // 부위 바탕 색
+        holder.NameTxt.setText(name);
 
         if (this.exercises.get(position).getCat() == 0x40) {// 유산소일 경우
-            holder.CountView.setText(Integer.toString(progressMaxValue));
-            holder.CountUnitView.setText("분");
-            holder.CardioTxtView.setVisibility(View.VISIBLE);
-            holder.CardioTxtView.setText(holder.CardioTxtView.getText());
+            holder.CardioIcon.setVisibility(View.VISIBLE);
+            holder.CardioTxt.setVisibility(View.VISIBLE);
+            holder.CardioTxt.setText(holder.CardioTxt.getText());
 
             progressMaxValue = progressMaxValue * 60 * 100;
+
+            if (Volume != 0)
+                detail += Volume + "km/s";
+            if (CntOrDis != 0)
+                detail += " · " + CntOrDis + "km";
+            if (SetOrTime != 0)
+                detail += SetOrTime + "분";
         } else {
-            holder.CountView.setText(Integer.toString(this.exercises.get(position).getCntOrDis()));
-            holder.CountUnitView.setText("회");
-            holder.CardioTxtView.setVisibility(View.GONE);
+            holder.CardioIcon.setVisibility(View.GONE);
+            holder.CardioTxt.setVisibility(View.GONE);
+
+            if (Volume != 0)
+                detail += Volume + "kg";
+            if (CntOrDis != 0)
+                detail += " · " + CntOrDis + "회";
+            if (SetOrTime != 0)
+                detail += " · " + SetOrTime + "세트";
         }
 
+        holder.DetailTxt.setText(detail);
         holder.progressBar.setMax(progressMaxValue);
         holder.progressBar.setProgress(progressCurrentValue);
 
         if (progressCurrentValue == progressMaxValue) { // 운동을 완료했을 경우
-            holder.endView.setVisibility(View.VISIBLE);
-            holder.CountLayout.setVisibility(View.GONE);
+            holder.EndView.setVisibility(View.VISIBLE);
         }
     }
 

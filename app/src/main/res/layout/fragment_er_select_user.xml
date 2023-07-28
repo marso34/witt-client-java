@@ -5,81 +5,62 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
     tools:context=".WorkOut.ERSelectUserFragment">
 
-    <!-- TODO: Update blank fragment layout -->
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/backBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_arrow_back_ios_new_24"/>
+
+    </androidx.appcompat.widget.Toolbar>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="56dp"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/rounded_bottom"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:outlineSpotShadowColor="@color/Background_2"
+            android:elevation="8dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="86dp"
                 android:layout_marginHorizontal="16dp"
-                android:text="위트 파트너를 선택해주세요"
-                android:textColor="@color/Standard"
-                android:textSize="18dp"
-                android:textStyle="bold" />
+                android:text="위트 메이트를 선택해주세요"
+                style="@style/Title" />
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="16dp"
+                android:text="생성된 채팅방으로 위트 메이트를 나열해요"
+                style="@style/Subtitle" />
+
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/search"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginBottom="12dp"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="0dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:background="@color/Background_1">
-
-                    <ImageView
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
-                        android:layout_marginLeft="17dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/baseline_search_24"
-                        app:tint="@color/Background_3" />
-
-                    <EditText
-                        android:id="@+id/search"
-                        android:layout_width="match_parent"
-                        android:layout_height="44dp"
-                        android:layout_weight="1"
-                        android:layout_marginLeft="16dp"
-                        android:background="@color/transparent"
-                        android:singleLine="true"
-                        android:scrollHorizontally="true"
-                        android:hint="이름(초성) 검색"
-                        android:textColorHint="@color/Background_3"
-                        android:textSize="16sp" />
-
-                    <ImageView
-                        android:id="@+id/removeTxt"
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_gravity="center"
-                        android:visibility="invisible"
-                        android:src="@drawable/baseline_close_24"
-                        app:tint="@color/Background_3" />
-
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
+                android:layout_marginBottom="15dp"
+                android:background="@drawable/rectangle_16dp"
+                android:backgroundTint="@color/Background_1"
+                app:iconifiedByDefault="false"
+                app:queryBackground="@null"
+                app:queryHint="검색하기" />
 
         </LinearLayout>
 
@@ -87,6 +68,9 @@
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingTop="6dp"
+            android:clipToPadding="false"
+            android:paddingBottom="300dp"
             tools:listitem="@layout/adapter_user_gen"/>
 
     </LinearLayout>
@@ -95,29 +79,22 @@
         android:layout_width="match_parent"
         android:layout_height="172dp"
         android:layout_gravity="bottom"
-        android:background="@drawable/bg_gradient_white">
+        android:background="@drawable/bg_gradient_background_1">
 
-        <androidx.cardview.widget.CardView
+        <TextView
             android:id="@+id/nextBtn"
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="58dp"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="0dp">
-
-            <TextView
-                android:id="@+id/nextTxt"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/Signature"
-                android:gravity="center"
-                android:text="건너뛰기"
-                android:textColor="@color/white"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-        </androidx.cardview.widget.CardView>
+            android:layout_marginTop="48dp"
+            android:layout_gravity="bottom"
+            android:gravity="center"
+            android:background="@drawable/rectangle_20dp"
+            android:outlineSpotShadowColor="@color/Background_1"
+            android:elevation="12dp"
+            android:textColor="@color/Body"
+            android:text="건너뛰기"
+            style="@style/Title"/>
 
     </LinearLayout>
 

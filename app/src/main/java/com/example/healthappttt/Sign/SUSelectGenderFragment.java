@@ -96,7 +96,7 @@ public class SUSelectGenderFragment extends Fragment {
         }
 
         binding.backBtn.setOnClickListener(v -> {
-            ((SignUpActivity) getActivity()).goToInputBody(null);
+            ((SignUpActivity) requireActivity()).goToInputBody(null);
         });
 
         binding.maleCard.setOnClickListener(v -> {
@@ -117,7 +117,7 @@ public class SUSelectGenderFragment extends Fragment {
 
         binding.nextBtn.setOnClickListener(v -> {
             if (isChecked) {
-                ((SignUpActivity) getActivity()).goToSelectGym(gender);
+                ((SignUpActivity) requireActivity()).goToSelectGym(gender);
             }
         });
     }

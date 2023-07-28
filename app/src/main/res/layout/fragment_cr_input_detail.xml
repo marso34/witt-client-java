@@ -47,7 +47,9 @@ tools:context=".Routine.CRInputDetailFragment">
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="@drawable/rounded_bottom">
+            android:background="@drawable/rounded_bottom"
+            android:outlineSpotShadowColor="@color/Background_2"
+            android:elevation="8dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -75,7 +77,7 @@ tools:context=".Routine.CRInputDetailFragment">
                     android:layout_width="22dp"
                     android:layout_height="22dp"
                     android:layout_gravity="center_vertical"
-                    android:background="@drawable/baseline_brightness_5_24"/>
+                    android:src="@drawable/baseline_brightness_5_24"/>
 
                 <TextView
                     android:id="@+id/timeTxt"

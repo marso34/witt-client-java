@@ -5,13 +5,13 @@ import static android.content.ContentValues.TAG;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.healthappttt.Data.PreferenceHelper;
 import com.example.healthappttt.Data.RetrofitClient;
 import com.example.healthappttt.Data.User.BodyInfo;
 import com.example.healthappttt.Data.User.ExPerfInfo;
@@ -28,22 +28,22 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class SignUpActivity extends AppCompatActivity
+public class SignUpActivity extends AppCompatActivity implements SUSelectGymFragment.OnFragmentInteractionListener
 {
-    String email = "jjj";
-    String name;
+    String name, email = "jjj";
     int platform;
-    int height, weight;
     private boolean isPublic;
-    int gender;
-    double lat, lon;
-    String gymName;
+    double lat, lon, gymLat, gymLon;
+    String gymName, gymAdress;
+    int height, weight, gender;
     int bench, deadlift, squat;
-    double gymLat, gymLon;
+
+    private PreferenceHelper UserTB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        UserTB = new PreferenceHelper("UserTB",this);
         Intent intent = getIntent();
         if (intent != null) {
             email = intent.getStringExtra("email");
@@ -65,6 +65,11 @@ public class SignUpActivity extends AppCompatActivity
                 .commit();
     }
 
+    private void replaceFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.ContentLayout, fragment).commit();      // Fragment로 사용할 MainActivity내의 layout공간을 선택합니다.
+    }
 
     public void goToInputName() {
         replaceFragment(SUInputNameFragment.newInstance(name));
@@ -93,20 +98,6 @@ public class SignUpActivity extends AppCompatActivity
             this.gender = gender;
 
         replaceFragment(SUSelectGymFragment.newInstance(lat, lon, gymName));
-    }
-
-    public void goToInputPerf(double lat, double lon, String gymName, double gymLat, double gymLon) {
-        if (lat != 0)
-            this.lat = lat;
-        if (lon != 0)
-            this.lon = lon;
-        if (gymName != null)
-            this.gymName = gymName;
-
-        this.gymLat = gymLat;
-        this.gymLon = gymLon;
-
-        replaceFragment(SUInputPerfFragment.newInstance(bench, deadlift, squat));
     }
 
     public void sendToServer(int squat, int bench, int deadlift) {
@@ -173,11 +164,11 @@ public class SignUpActivity extends AppCompatActivity
 
                     UserClass sharedUser = new UserClass(getUserDT(), getPhoneInfo(), getMannerInfo(), getLocInfo(), getExPerInfo(), getBodyInfo());
 
-//                    prefhelper.putMembership(sharedUser);
+                    UserTB.putMembership(sharedUser);
                     Log.d("shared 로컬 저장 회원가입 pk:", String.valueOf(userKey));
 
                     Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
-                    intent.putExtra("userKey",String.valueOf(userKey));
+                    intent.putExtra("userKey", String.valueOf(userKey));
                     startActivity(intent);
                     finish();
                     Log.d(TAG, "sendTokenToServer success");
@@ -196,10 +187,24 @@ public class SignUpActivity extends AppCompatActivity
         });
     }
 
-    private void replaceFragment(Fragment fragment) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.ContentLayout, fragment).commit();      // Fragment로 사용할 MainActivity내의 layout공간을 선택합니다.
+    @Override
+    public void onSaveLocation(double userLat, double userLon, double gymLat, double gymLon, String gymName, String gymAdress) {
+        if (userLat != 0)
+            this.lat = lat;
+        if (userLon != 0)
+            this.lon = lon;
+
+        this.gymName = gymName;
+        this.gymAdress = gymAdress;
+        this.gymLat = gymLat;
+        this.gymLon = gymLon;
+
+        replaceFragment(SUInputPerfFragment.newInstance(bench, deadlift, squat));
+    }
+
+    @Override
+    public void onCancel() {
+        goToSelectGender(-1, -1, false);
     }
 
     @Override
@@ -209,4 +214,3 @@ public class SignUpActivity extends AppCompatActivity
     }
 
 }
-
