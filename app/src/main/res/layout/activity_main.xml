@@ -27,6 +27,7 @@
                 style="@style/Headline"/>
 
             <ImageView
+                android:id="@+id/alarm"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_gravity="right"

@@ -3,6 +3,7 @@ package com.example.healthappttt.Chat;
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
 import android.content.Context;
+import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.healthappttt.Data.Chat.MSG;
@@ -22,6 +24,9 @@ import com.example.healthappttt.R;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -35,7 +40,6 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
     private String otherUserPk;
     private Context context;
     public class MessageViewHolder extends RecyclerView.ViewHolder {
-        public TextView nameTextView;
         public TextView messageTextView;
         public TextView timeTextView;
         public ImageView sendingView;
@@ -44,7 +48,6 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
 
         public MessageViewHolder(View itemView) {
             super(itemView);
-            nameTextView = itemView.findViewById(R.id.nameTextView);
             messageTextView = itemView.findViewById(R.id.messageTextView);
             timeTextView = itemView.findViewById(R.id.timeTextView);
             sendingView = itemView.findViewById(R.id.sending);
@@ -86,13 +89,14 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
             return null; // 이름이 매칭되지 않으면 빈 문자열 반환
         }
     }
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onBindViewHolder(@NonNull MessageViewHolder holder, int position) {
         MSG message = messageList.get(position);
         if(extractName(message.getMessage())== null)
             holder.messageTextView.setText(message.getMessage());
         else  holder.messageTextView.setText(extractName(message.getMessage()));
-        holder.timeTextView.setText(message.timestampString());
+        holder.timeTextView.setText(extractDateTime(message.timestampString()));
         if (message.getMyFlag() == 1) {
             // 보낸 메시지인 경우
             holder.messageTextView.setBackgroundResource(R.drawable.sent);
@@ -127,14 +131,35 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
                 }
             });
         } else {
-            holder.nameTextView.setText(otherUserName);
-            // 받은 메시지인 경우
-            holder.nameTextView.setVisibility(View.VISIBLE);
-            ;
+
             holder.messageTextView.setBackgroundResource(R.drawable.receive);
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public String extractDateTime(String dateString) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        if(dateString == "-1"){
+            return "";
+        }
+        else {
+            // 문자열을 LocalDateTime 객체로 변환
+            LocalDateTime dateTime = LocalDateTime.parse(dateString, formatter);
+            // 현재 날짜 가져오기
+            LocalDate currentDate = LocalDate.now();
+            if (dateTime.toLocalDate().isEqual(currentDate)) {
+                // 날짜가 오늘이면 시간과 분 추출
+                int hour = dateTime.getHour();
+                int minute = dateTime.getMinute();
+                return String.format("%02d:%02d", hour, minute);
+            } else {
+                // 날짜가 오늘이 아니면 월과 일 추출
+                int month = dateTime.getMonthValue();
+                int day = dateTime.getDayOfMonth();
+                return String.format("%02d월 %02d일", month, day);
+            }
+        }
+    }
     @Override
     public int getItemCount() {
         return messageList.size();

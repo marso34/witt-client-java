@@ -7,21 +7,20 @@ public class UserChat {
     private String userNM;
 
     @SerializedName("otherUserKey")
-    private String otherUserKey;
+    private int otherUserKey;
 
     @SerializedName("chatRoomId")
-    private String chatRoomId;
+    private int chatRoomId;
 
     @SerializedName("lastChat")
     private String lastChat;
 
     @SerializedName("lastChatTime")
     private String lastChatTime;
-
     @SerializedName("timeStamp")
     private String TS;
 
-    public UserChat(String userNM, String otherUserKey, String chatRoomId, String lastChat, String lastChatTime,String TS) {
+    public UserChat(String userNM, int otherUserKey, int chatRoomId, String lastChat, String lastChatTime, String TS) {
         this.userNM = userNM;
         this.otherUserKey = otherUserKey;
         this.chatRoomId = chatRoomId;
@@ -29,6 +28,16 @@ public class UserChat {
         this.lastChatTime = lastChatTime;
         this.TS = TS;
     }
+
+    public UserChat(String other_user_nm,int otherUserKey, int chatRoomId, String TS) {
+        this.userNM = other_user_nm;
+        this.otherUserKey = otherUserKey;
+        this.chatRoomId = chatRoomId;
+        this.lastChat = "";
+        this.lastChatTime = "";
+        this.TS = TS;
+    }
+
     public String getTS() {
         return TS;
     }
@@ -40,19 +49,19 @@ public class UserChat {
         this.userNM = userNM;
     }
 
-    public String getOtherUserKey() {
+    public int getOtherUserKey() {
         return otherUserKey;
     }
 
-    public void setOtherUserKey(String otherUserKey) {
+    public void setOtherUserKey(int otherUserKey) {
         this.otherUserKey = otherUserKey;
     }
 
-    public String getChatRoomId() {
+    public int getChatRoomId() {
         return chatRoomId;
     }
 
-    public void setChatRoomId(String chatRoomId) {
+    public void setChatRoomId(int chatRoomId) {
         this.chatRoomId = chatRoomId;
     }
 

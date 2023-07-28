@@ -41,6 +41,7 @@ import com.example.healthappttt.Data.User.UserKey;
 import com.example.healthappttt.Data.User.UserProfile;
 import com.example.healthappttt.Data.User.WittListData;
 import com.example.healthappttt.Home.HomeFragment;
+import com.example.healthappttt.Home.alarmActivity;
 import com.example.healthappttt.Profile.MyProfileActivity;
 import com.example.healthappttt.Record.RecordFragment;
 import com.example.healthappttt.Routine.RoutineFragment;
@@ -249,7 +250,9 @@ public class MainActivity extends AppCompatActivity {
             //Log.d("main에서 넘겨주는 myPK",uk);
             startActivity(intent);
         });
-
+        binding.alarm.setOnClickListener(view->{
+            openMyStartActivity(alarmActivity.class);
+        });
         Log.d("prefhelper", "USER_PK:" + prefhelper.getPK()); //저장된 유저의 pk값 가져오기
         getBlackList(userKey);
         getReviewList(userKey);
@@ -652,5 +655,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void openMyStartActivity(Class c) {
+        // Intent를 사용하여 mystartActivity를 시작합니다.
+        Intent intent = new Intent(this, c);
+        startActivity(intent);
+    }
 
 }

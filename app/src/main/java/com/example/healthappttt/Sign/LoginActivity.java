@@ -87,6 +87,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         });
         int runningServices = ServiceTracker.countRunningServices(this, DataReceiverService.class);
         Log.d("loginActivity", "Running services: " + runningServices);
+
         //updateUI(GoogleSignIn.getLastSignedInAccount(this));
     }
 

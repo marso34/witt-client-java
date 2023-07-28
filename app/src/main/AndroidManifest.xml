@@ -62,14 +62,6 @@
                 android:value="" />
         </activity>
 
-        <receiver
-            android:name=".interface_.AlarmRecevier"
-            android:enabled="true"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-            </intent-filter>
-        </receiver>
 
         <activity
             android:name=".Chat.ReviewActivity"
@@ -220,6 +212,9 @@
             android:name=".Sign.LoginActivity"
             android:exported="true"
             android:screenOrientation="portrait"
+            android:launchMode="singleTask"
+            android:taskAffinity=""
+            android:excludeFromRecents="true"
             android:usesCleartextTraffic="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

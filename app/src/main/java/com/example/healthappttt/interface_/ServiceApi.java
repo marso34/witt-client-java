@@ -1,5 +1,6 @@
 package com.example.healthappttt.interface_;
 
+import com.example.healthappttt.Data.AlarmInfo;
 import com.example.healthappttt.Data.Chat.MSD;
 import com.example.healthappttt.Data.Chat.MSG;
 import com.example.healthappttt.Data.Chat.UserChat;
@@ -23,6 +24,7 @@ import com.example.healthappttt.Data.UserInfo;
 import com.example.healthappttt.Data.WittSendData;
 import com.example.healthappttt.Data.pkData;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -71,7 +73,8 @@ public interface ServiceApi {
 
     @POST("/profile/deleteUser")//탈퇴 하기
     Call<String> deleteUser(@Body Map<String, Object> DROP);
-
+    @POST("/updateAlarmList")
+    Call<ArrayList<AlarmInfo>> getAlarmList(@Body pkData data);
     @POST("/profile/updateRPT")//신고하기
     Call<String> updateRPT(@Body Map<String, Object> RPT);
 
@@ -113,7 +116,7 @@ public interface ServiceApi {
     Call<GetUserInfo> getUserInfo(@Path("useremail") String useremail);
 
     @POST("/findChatUsers")
-    Call<List<UserChat>> getUsers(@Body UserKey userKey);
+    Call<List<UserChat>> getUsers(@Body pkData userKey);
 
     @POST("messages")
     Call<MSG> sendMessage(@Body MSG message);
