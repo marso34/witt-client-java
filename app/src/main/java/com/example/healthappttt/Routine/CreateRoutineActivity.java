@@ -33,7 +33,7 @@ public class CreateRoutineActivity extends AppCompatActivity implements CRSetTim
     private SQLiteUtil sqLiteUtil;
     private PreferenceHelper prefhelper;
 
-    private int dayOfWeek, time, startTime, endTime;
+    private int dayOfWeek, time;
     private RoutineData routine;
 
     @Override
@@ -51,17 +51,11 @@ public class CreateRoutineActivity extends AppCompatActivity implements CRSetTim
 
         routine = new RoutineData();
         routine.setDayOfWeek(dayOfWeek);
+        routine.setTime(time);
 
         replaceFragment(CRSetTimeFragment.newInstance(time, dayOfWeek));
     }
 
-    private String TimeToString(int Time) {
-        if (Time >= 240) Time-= 240;
-
-        @SuppressLint("DefaultLocale") String result = String.format("%02d:%02d:%02d", Time/10, Time % 10 * 6, 0);
-
-        return result;
-    }
 
     private void SaveToDB() {
         ArrayList<ExerciseData> list = new ArrayList<>();
@@ -118,9 +112,10 @@ public class CreateRoutineActivity extends AppCompatActivity implements CRSetTim
         sqLiteUtil.setInitView(this, "RT_TB");
         sqLiteUtil.insert(routine);
 
-        sqLiteUtil.setInitView(this, "EX_TB");
-        for (ExerciseData e : routine.getExercises())
+        for (ExerciseData e : routine.getExercises()) {
+            sqLiteUtil.setInitView(this, "EX_TB");
             sqLiteUtil.insert(e, false);
+        }
     }
 
     private void Terminate(boolean isSuccess) {
@@ -153,10 +148,9 @@ public class CreateRoutineActivity extends AppCompatActivity implements CRSetTim
         if (-1 < time && time < 4) {
             this.time = time;
 
-        routine.setStartTime("00:00:00");
-        routine.setEndTime("00:00:00");
+        routine.setTime(time);
 
-            replaceFragment(CRSelectExerciseFragment.newInstance(time, routine));
+            replaceFragment(CRSelectExerciseFragment.newInstance(routine));
         } else {
             Terminate();
         }
@@ -178,7 +172,7 @@ public class CreateRoutineActivity extends AppCompatActivity implements CRSetTim
         this.routine.setExercises(exercises);
 
         if (isFinish)   SaveToDB(); // 받은 운동 정보 토대로 DB에 루틴, 운동 생성
-        else            replaceFragment(CRSelectExerciseFragment.newInstance(time, routine));
+        else            replaceFragment(CRSelectExerciseFragment.newInstance(routine));
     } // ExerciseDetailFragment에서 호출하는 메서드
 
     @Override

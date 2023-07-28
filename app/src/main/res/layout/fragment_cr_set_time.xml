@@ -81,7 +81,7 @@
                         android:layout_width="22dp"
                         android:layout_height="22dp"
                         android:layout_gravity="center_vertical"
-                        android:background="@drawable/baseline_brightness_5_24" />
+                        android:src="@drawable/baseline_brightness_5_24"/>
 
                     <TextView
                         android:id="@+id/morningTxt"
@@ -137,7 +137,7 @@
                         android:layout_width="22dp"
                         android:layout_height="22dp"
                         android:layout_gravity="center_vertical"
-                        android:background="@drawable/baseline_wb_sunny_24" />
+                        android:src="@drawable/baseline_wb_sunny_24" />
 
                     <TextView
                         android:id="@+id/afternoonTxt"
@@ -189,7 +189,7 @@
                         android:layout_width="22dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:background="@drawable/baseline_brightness_3_24" />
+                        android:src="@drawable/baseline_brightness_3_24" />
 
                     <TextView
                         android:id="@+id/eveningTxt"
@@ -243,7 +243,7 @@
                         android:layout_width="22dp"
                         android:layout_height="22dp"
                         android:layout_gravity="center_vertical"
-                        android:background="@drawable/baseline_flare_24"/>
+                        android:src="@drawable/baseline_flare_24"/>
 
                     <TextView
                         android:id="@+id/dawnTxt"
@@ -287,8 +287,6 @@
         android:textColor="@color/Background_2"
         android:text="설정하기"
         style="@style/Title"/>
-
-
 
 <!--    <androidx.cardview.widget.CardView-->
 <!--        android:id="@+id/nextBtn"-->

@@ -135,11 +135,11 @@ public class ExerciseInputAdapter extends RecyclerView.Adapter<ExerciseInputAdap
 
             bottomSheetDialog.setContentView(view1);
 
-            HourPicker.setMaxValue(50); //최대값
+            HourPicker.setMaxValue(24); //최대값
             HourPicker.setMinValue(0); //최소값
             HourPicker.setValue(this.exercises.get(position).getSetOrTime()/60);// 초기값
 
-            MinutePicker.setMaxValue(50); //최대값
+            MinutePicker.setMaxValue(60); //최대값
             MinutePicker.setMinValue(0); //최소값
             MinutePicker.setValue(this.exercises.get(position).getSetOrTime()%60);// 초기값
 
@@ -173,15 +173,25 @@ public class ExerciseInputAdapter extends RecyclerView.Adapter<ExerciseInputAdap
 //
         holder.Volume.setText(Integer.toString(this.exercises.get(position).getVolume()));
         holder.Count.setText(Integer.toString(this.exercises.get(position).getCntOrDis()));
-        holder.Set.setText(Integer.toString(this.exercises.get(position).getSetOrTime()));
         holder.CardioTime.setText(Integer.toString(this.exercises.get(position).getSetOrTime()));
 //
         if (this.exercises.get(position).getCat() == 0x40) { // 유산소
             holder.CardioLayout.setVisibility(View.VISIBLE);
             holder.DefaultLayout.setVisibility(View.GONE);
+
+            String str = "";
+            int temp = this.exercises.get(position).getSetOrTime();
+
+            if (temp/60 > 0)
+                str += (temp/60) + "시간";
+            if (temp%60 > 0)
+                str += " " + (temp%60) + "분";
+
+            holder.Set.setText(str);
         } else {
             holder.CardioLayout.setVisibility(View.GONE);
             holder.DefaultLayout.setVisibility(View.VISIBLE);
+            holder.Set.setText(Integer.toString(this.exercises.get(position).getSetOrTime()));
 
 //            if (this.exercises.get(position).get??? == ???) { // 무게 없는 맨몸 운동의 경우
 //                holder.VolumeLayout.setVisibility(View.GONE);

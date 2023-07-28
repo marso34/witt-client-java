@@ -121,7 +121,7 @@ public class SUInputBodyFragment extends Fragment {
             binding.isPrivate.setChecked(true);
 
         binding.backBtn.setOnClickListener(v -> {
-            ((SignUpActivity) getActivity()).goToInputName();
+            ((SignUpActivity) requireActivity()).goToInputName();
         });
 
         binding.height.setOnClickListener(v -> setHeightAndWeight());
@@ -135,7 +135,7 @@ public class SUInputBodyFragment extends Fragment {
         binding.nextBtn.setOnClickListener(v -> {
             String height = binding.heightTxt.getText().toString() , weight =  binding.weightTxt.getText().toString();
 
-            ((SignUpActivity) getActivity()).goToSelectGender(Integer.parseInt(height), Integer.parseInt(weight), isPublic);
+            ((SignUpActivity) requireActivity()).goToSelectGender(Integer.parseInt(height), Integer.parseInt(weight), isPublic);
         });
     }
 

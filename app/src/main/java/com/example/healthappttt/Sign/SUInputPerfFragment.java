@@ -100,11 +100,11 @@ public class SUInputPerfFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         binding.backBtn.setOnClickListener(v -> {
-            ((SignUpActivity) getActivity()).goToSelectGym(-1);
+            ((SignUpActivity) requireActivity()).goToSelectGym(-1);
         });
 
         binding.skip.setOnClickListener(v -> {
-            ((SignUpActivity) getActivity()).sendToServer(0, 0, 0);
+            ((SignUpActivity) requireActivity()).sendToServer(0, 0, 0);
         });
 
         binding.setPerf.setOnClickListener(v -> setExercisePerf());
@@ -114,7 +114,7 @@ public class SUInputPerfFragment extends Fragment {
             benchValue = Integer.parseInt(binding.benchpress.getText().toString());
             deadliftValue = Integer.parseInt(binding.deadlift.getText().toString());
 
-            ((SignUpActivity) getActivity()).sendToServer(squatValue, benchValue, deadliftValue);
+            ((SignUpActivity) requireActivity()).sendToServer(squatValue, benchValue, deadliftValue);
         });
     }
 

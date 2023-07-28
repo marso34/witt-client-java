@@ -41,7 +41,6 @@
                 android:src="@drawable/ic_baseline_person"
                 app:tint="@color/Background_3" />
 
-
         </androidx.appcompat.widget.Toolbar>
 
         <FrameLayout

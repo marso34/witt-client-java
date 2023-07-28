@@ -81,28 +81,28 @@ public class DataReceiverService extends Service {
         SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
         Date currentDate = calendar.getTime();
         for (RoutineData routine : routineList) {
-            try {
-                Date routineStartTime = dateFormat.parse(routine.getStartTime());
-                calendar.setTimeInMillis(System.currentTimeMillis());
-
-// 현재 시간의 시분초를 14:00:00으로 설정
-                calendar.set(Calendar.HOUR_OF_DAY, routineStartTime.getHours());
-                calendar.set(Calendar.MINUTE, routineStartTime.getMinutes());
-                calendar.set(Calendar.SECOND, routineStartTime.getSeconds());
-                calendar.set(Calendar.MILLISECOND, 0);
-
-                long timeDifferenceInMillis = calendar.getTimeInMillis() - ( 43 * 60 * 1000);
-                Log.d(TAG, "showRoutineAlarm:." + timeDifferenceInMillis+"ss" +currentDate.getTime());
-                int i=0;
-                if (timeDifferenceInMillis > currentDate.getTime()) {
-                    Log.d(TAG, "showRoutineAlarm: 알림실행됨.");
-                    calendar.setTimeInMillis(timeDifferenceInMillis);
-                    PendingIntent pendingIntent = PendingIntent.getBroadcast(this, i++, receiverIntent, PendingIntent.FLAG_IMMUTABLE);
-                    alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
-                }
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+//            try {
+//                Date routineStartTime = dateFormat.parse(routine.getTime());
+//                calendar.setTimeInMillis(System.currentTimeMillis());
+//
+//// 현재 시간의 시분초를 14:00:00으로 설정
+//                calendar.set(Calendar.HOUR_OF_DAY, routineStartTime.getHours());
+//                calendar.set(Calendar.MINUTE, routineStartTime.getMinutes());
+//                calendar.set(Calendar.SECOND, routineStartTime.getSeconds());
+//                calendar.set(Calendar.MILLISECOND, 0);
+//
+//                long timeDifferenceInMillis = calendar.getTimeInMillis() - ( 43 * 60 * 1000);
+//                Log.d(TAG, "showRoutineAlarm:." + timeDifferenceInMillis+"ss" +currentDate.getTime());
+//                int i=0;
+//                if (timeDifferenceInMillis > currentDate.getTime()) {
+//                    Log.d(TAG, "showRoutineAlarm: 알림실행됨.");
+//                    calendar.setTimeInMillis(timeDifferenceInMillis);
+//                    PendingIntent pendingIntent = PendingIntent.getBroadcast(this, i++, receiverIntent, PendingIntent.FLAG_IMMUTABLE);
+//                    alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
+//                }
+//            } catch (ParseException e) {
+//                e.printStackTrace();
+//            }
         }
     }
 

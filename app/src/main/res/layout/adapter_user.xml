@@ -1,97 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.cardview.widget.CardView
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="6dp"
+    android:outlineSpotShadowColor="@color/Background_3"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="6dp"
     tools:context=".User.UserAdapter">
+
     <LinearLayout
         android:background="@drawable/round_button_white"
         android:layout_width="match_parent"
-        android:layout_height="125dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginHorizontal="16dp"
-        android:orientation="horizontal">
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardview_member"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:elevation="6dp"
-            app:cardCornerRadius="25dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="15dp"
-            app:cardElevation="0dp">
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/PRI"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:civ_border_color="@color/gray"
-                app:civ_circle_background_color="@color/gray"
-                android:background="@color/gray"
-              />
-        </androidx.cardview.widget.CardView>
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:orientation="vertical"
-            android:layout_marginLeft="15dp">
+            android:layout_height="wrap_content"
+            android:paddingTop="9dp"
+            android:paddingHorizontal="16dp"
+            android:paddingBottom="11dp"
+            android:background="@drawable/rectangle_16dp"
+            android:elevation="10dp"
+            android:outlineSpotShadowColor="@color/Background_1"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/UNE"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="이름"
+                style="@style/BodyB"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="12dp"
+            android:layout_marginHorizontal="16dp">
+
+            <ImageView
+                android:id="@+id/mapIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_baseline_place_24" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="15dp"
-                >
+                android:layout_marginLeft="4dp"
+                android:orientation="vertical">
+
                 <TextView
-                    android:id="@+id/UNE"
+                    android:id="@+id/gymName"
                     android:layout_width="wrap_content"
-                    android:layout_height="20dp"
-                    android:text="조성현"
-                    android:textSize="15dp"
-                    android:textStyle="bold"
-                    android:textColor="@color/black">
+                    android:layout_height="wrap_content"
+                    android:text="헬스장"
+                    style="@style/Body">
                 </TextView>
+
                 <TextView
-                    android:layout_marginLeft="10dp"
-                    android:id="@+id/GT"
+                    android:id="@+id/gymAdress"
                     android:layout_width="wrap_content"
-                    android:layout_height="20dp"
+                    android:layout_height="wrap_content"
                     android:text="김제시 신풍동 ` KJ휘트니스"
-                    android:textSize="13dp"
-                    android:textStyle="bold"
-                    >
-                </TextView>
+                    style="@style/Subtitle"/>
+
             </LinearLayout>
 
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="12dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/timeIcon"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:src="@drawable/baseline_wb_sunny_24"/>
+
             <TextView
-                android:id="@+id/GoodTime"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:text="13:00 ~ 15:00"
-                android:textSize="22dp"
-                android:layout_marginTop="5dp"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                >
-            </TextView>
+                android:id="@+id/timeTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginLeft="4dp"
+                android:text="점심"
+                style="@style/Caption"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="11dp"
-                tools:listitem="@layout/adapter_area"
-                >
-            </androidx.recyclerview.widget.RecyclerView>
+                android:layout_height="wrap_content"/>
+
         </LinearLayout>
 
     </LinearLayout>
 
-
-
-</LinearLayout>
+</androidx.cardview.widget.CardView>

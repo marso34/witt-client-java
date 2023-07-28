@@ -29,6 +29,7 @@ import com.example.healthappttt.Data.Exercise.RoutineComparator;
 import com.example.healthappttt.Data.PreferenceHelper;
 import com.example.healthappttt.Data.RetrofitClient;
 import com.example.healthappttt.Data.SQLiteUtil;
+import com.example.healthappttt.Data.pkData;
 import com.example.healthappttt.R;
 import com.example.healthappttt.databinding.FragmentRoutineChildBinding;
 import com.example.healthappttt.interface_.ServiceApi;
@@ -121,8 +122,7 @@ public class RoutineChildFragment extends Fragment {
                     if (check == 0) {
                         for (int i = 0; i < routines.size(); i++) {
                             if (routines.get(i).getID() == r.getID()) {
-                                routines.get(i).setStartTime(r.getStartTime());
-                                routines.get(i).setEndTime(r.getEndTime());
+                                routines.get(i).setTime(r.getTime());
                                 routines.get(i).setCat(r.getCat());
                                 routines.get(i).setExercises(r.getExercises());
                                 break;
@@ -157,11 +157,10 @@ public class RoutineChildFragment extends Fragment {
             routines = sqLiteUtil.SelectRoutine(dayOfWeek);
 
             if (routines != null) {
-
-                sqLiteUtil.setInitView(getContext(), "EX_TB");
-
-                for (int i = 0; i < routines.size(); i++)
+                for (int i = 0; i < routines.size(); i++) {
+                    sqLiteUtil.setInitView(getContext(), "EX_TB");
                     routines.get(i).setExercises(sqLiteUtil.SelectExercise(routines.get(i).getID(), true));
+                }
 
                 setRecyclerView(0);
 
@@ -214,6 +213,45 @@ public class RoutineChildFragment extends Fragment {
         super.onDestroy();
 
         binding = null; //바인딩 객체를 GC(Garbage Collector) 가 없애도록 하기 위해 참조를 끊기
+    }
+
+    private void DeleteToDB(int pk) {
+        Log.d("루틴 아이디", pk + "");
+
+        int position = 0;
+
+        for (int i = 0; i < routines.size(); i++) {
+            if (routines.get(i).getID() == pk)
+                position = i;
+        }
+
+        int finalPosition = position;
+        service.deleteRoutine(new pkData(pk)).enqueue(new Callback<Integer>() {
+            @Override
+            public void onResponse(Call<Integer> call, Response<Integer> response) {
+                if(response.isSuccessful() && response.body() == 200) {
+                    Log.d("성공", "루틴 삭제 성공");
+                    DeleteToDev(finalPosition);
+                    adapter.removeItem(finalPosition);
+                    binding.addRoutine.setVisibility(View.VISIBLE);
+                } else {
+                    Toast.makeText(getContext(), "루틴 삭제 실패", Toast.LENGTH_SHORT).show();
+                    Log.d("실패", "루틴 삭제 실패");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Integer> call, Throwable t) {
+                Toast.makeText(getContext(), "루틴 삭제 실패", Toast.LENGTH_SHORT).show();
+                Log.d("실패", t.getMessage());
+//                Terminate(false);
+            }
+        });
+    }
+
+    private void DeleteToDev(int position) {
+        sqLiteUtil.setInitView(getContext(), "RT_TB");
+        sqLiteUtil.delete(routines.get(position).getID());
     }
 
     private void setRecyclerView(int attribute) {
