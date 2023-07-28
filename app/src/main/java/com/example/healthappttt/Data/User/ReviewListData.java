@@ -26,9 +26,13 @@ public class ReviewListData {
         this.User_FK = User_FK;
         this.RPT_User_FK = RPT_User_FK;
         this.Text_Con = Text_Con;
+        this.Check_Box = Check_Box;
         this.TS = TS;
         this.User_NM = User_NM;
         this.User_Img = User_Img;
+    }
+    public ReviewListData(int Check_Box){
+        this.Check_Box = Check_Box;
     }
 
 

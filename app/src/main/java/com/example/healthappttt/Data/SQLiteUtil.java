@@ -616,6 +616,29 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         db.close();
         return null;
     }
+
+    public ArrayList<ReviewListData> SelectEvaluation() {
+        if (table.equals("REVIEW_TB")) {
+            String sql = "SELECT Check_Box FROM REVIEW_TB"; // * 말고 Check_Box만 가져오기
+
+            Cursor cursor = db.rawQuery(sql, null);
+
+            ArrayList<ReviewListData> reviewListData = new ArrayList<>();
+
+            while(cursor.moveToNext()) {
+                ReviewListData e = new ReviewListData( cursor.getInt(0) );    //Check_Box
+
+
+                reviewListData.add(e);
+                Log.d("SQLite SelectEvaluation", "받은평가데이터: " + e.getCheck_Box());
+            }
+            return reviewListData;
+        } else {
+            Log.d(table, " 잘못된 메서드 호출");
+        }
+        db.close();
+        return null;
+    }
   
     public ArrayList<ReviewListData> SelectReviewUser() {
         if (table.equals("REVIEW_TB")) {

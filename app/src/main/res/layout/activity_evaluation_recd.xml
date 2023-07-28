@@ -1,9 +1,497 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Profile.EvaluationRecdActivity">
+    tools:context=".Profile.EvaluationRecdActivity"
+    android:orientation="vertical"
+    android:paddingBottom="40dp">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/myprofile"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:orientation="horizontal"
+        android:layout_marginBottom="40dp"
+        app:contentInsetStart="16dp"
+        android:background="@drawable/rounded_bottom">
+
+        <Button
+            android:id="@+id/cancel_profile"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:background="@drawable/baseline_arrow_back_ios_new_24"
+            android:backgroundTint="@color/Background_3"
+            android:layout_marginBottom="16dp"/>
+
+
+        <TextView
+            style="@style/chat_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="받은평가"
+            android:layout_gravity="center"/>
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingHorizontal="16dp">
+
+
+
+    <LinearLayout
+        android:id="@+id/r1_0"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="9dp"
+        android:paddingLeft="16dp"
+        android:paddingBottom="11dp"
+        android:paddingHorizontal="16dp"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/rectangle">
+
+        <TextView
+            android:id="@+id/eval1_0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="친절하고 매너가 좋아요"
+            style="@style/report"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/listCnt1_0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:textColor="@color/Signature"
+            style="@style/report"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/r1_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="9dp"
+        android:paddingLeft="16dp"
+        android:paddingBottom="11dp"
+        android:paddingHorizontal="16dp"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/rectangle">
+
+        <TextView
+            android:id="@+id/eval1_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="시간약속을 잘 지켜요"
+            style="@style/report"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/listCnt1_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:textColor="@color/Signature"
+            style="@style/report"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/r1_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="9dp"
+        android:paddingLeft="16dp"
+        android:paddingBottom="11dp"
+        android:paddingHorizontal="16dp"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/rectangle">
+
+        <TextView
+            android:id="@+id/eval1_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="응답이 빨라요"
+            style="@style/report"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/listCnt1_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:textColor="@color/Signature"
+            style="@style/report"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/r1_3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="9dp"
+        android:paddingLeft="16dp"
+        android:paddingBottom="11dp"
+        android:paddingHorizontal="16dp"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/rectangle">
+
+        <TextView
+            android:id="@+id/eval1_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="운동을 잘 알려줘요"
+            style="@style/report"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/listCnt1_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:textColor="@color/Signature"
+            style="@style/report"/>
+
+    </LinearLayout>
+<!--여기부터 별로였어요-->
+    <LinearLayout
+        android:id="@+id/r0_0"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="9dp"
+        android:paddingLeft="16dp"
+        android:paddingBottom="11dp"
+        android:paddingHorizontal="16dp"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/rectangle">
+
+        <TextView
+            android:id="@+id/eval0_0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="원하지 않는 운동을 계속 요구해요"
+            style="@style/report"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/listCnt0_0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:textColor="@color/Signature"
+            style="@style/report"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/r0_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="9dp"
+        android:paddingLeft="16dp"
+        android:paddingBottom="11dp"
+        android:paddingHorizontal="16dp"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/rectangle">
+
+        <TextView
+            android:id="@+id/eval0_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="시간약속을 안 지켜요"
+            style="@style/report"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/listCnt0_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:textColor="@color/Signature"
+            style="@style/report"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/r0_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="9dp"
+        android:paddingLeft="16dp"
+        android:paddingBottom="11dp"
+        android:paddingHorizontal="16dp"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/rectangle">
+
+        <TextView
+            android:id="@+id/eval0_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="채팅 메시지를 읽고도 답장이 없어요"
+            style="@style/report"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/listCnt0_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:textColor="@color/Signature"
+            style="@style/report"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/r0_3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="9dp"
+        android:paddingLeft="16dp"
+        android:paddingBottom="11dp"
+        android:paddingHorizontal="16dp"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/rectangle">
+
+        <TextView
+            android:id="@+id/eval0_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="약속 시간을 명확하게 알려주지 않아요"
+            style="@style/report"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/listCnt0_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:textColor="@color/Signature"
+            style="@style/report"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/r0_4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="9dp"
+        android:paddingLeft="16dp"
+        android:paddingBottom="11dp"
+        android:paddingHorizontal="16dp"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/rectangle">
+
+        <TextView
+            android:id="@+id/eval0_4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="약속 시간과 장소를 정한 후 운동 직전 취소했어요"
+            style="@style/report"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/listCnt0_4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:textColor="@color/Signature"
+            style="@style/report"/>
+
+    </LinearLayout>
+
+<!--    <LinearLayout-->
+<!--        android:id="@+id/r0_5"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:paddingTop="9dp"-->
+<!--        android:paddingLeft="16dp"-->
+<!--        android:paddingBottom="11dp"-->
+<!--        android:paddingHorizontal="16dp"-->
+<!--        android:layout_marginBottom="12dp"-->
+<!--        android:background="@drawable/rectangle">-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/eval0_5"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="약속 시간과 장소를 정한 후 연락이 안돼요"-->
+<!--            style="@style/report"/>-->
+
+<!--        <View-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="0dp"-->
+<!--            android:layout_weight="1" />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/listCnt0_5"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="0"-->
+<!--            android:textColor="@color/Signature"-->
+<!--            style="@style/report"/>-->
+
+<!--    </LinearLayout>-->
+
+    <LinearLayout
+        android:id="@+id/r0_5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="9dp"
+        android:paddingLeft="16dp"
+        android:paddingBottom="11dp"
+        android:paddingHorizontal="16dp"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/rectangle">
+
+        <TextView
+            android:id="@+id/eval0_5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="약속장소에 나타나지 않았어요"
+            style="@style/report"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/listCnt0_5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:textColor="@color/Signature"
+            style="@style/report"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/r0_6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="9dp"
+        android:paddingLeft="16dp"
+        android:paddingBottom="11dp"
+        android:paddingHorizontal="16dp"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/rectangle">
+
+        <TextView
+            android:id="@+id/eval0_6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="반말을 사용해요"
+            style="@style/report"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/listCnt0_6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:textColor="@color/Signature"
+            style="@style/report"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/r0_7"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="9dp"
+        android:paddingLeft="16dp"
+        android:paddingBottom="11dp"
+        android:paddingHorizontal="16dp"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/rectangle">
+
+        <TextView
+            android:id="@+id/eval0_7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="불친절해요"
+            style="@style/report"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/listCnt0_7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:textColor="@color/Signature"
+            style="@style/report"/>
+
+    </LinearLayout>
+
+    </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>
