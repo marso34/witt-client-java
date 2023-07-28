@@ -1,22 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Profile.EditWeightVolumes"
     android:orientation="vertical"
-    android:backgroundTint="#FFFFFF"
-    android:layout_marginHorizontal="16dp"
-    android:layout_marginVertical="40dp">
+    android:background="@color/white"
+    android:paddingHorizontal="16dp"
+    android:paddingVertical="40dp">
 
-    <Button
-        android:id="@+id/cancel_editbody"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:background="@drawable/baseline_arrow_back_ios_new_24"
-        android:backgroundTint="@color/Background_3"
-        android:layout_marginBottom="16dp"/>
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        app:contentInsetStart="0dp">
+
+        <ImageButton
+            android:id="@+id/cancel_editbody"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/baseline_arrow_back_ios_new_24"
+            android:backgroundTint="@color/Background_3"/>
+
+    </androidx.appcompat.widget.Toolbar>
+
+<!--    <Button-->
+<!--    android:id="@+id/cancel_editbody"-->
+<!--        android:layout_width="24dp"-->
+<!--        android:layout_height="24dp"-->
+<!--        android:background="@drawable/baseline_arrow_back_ios_new_24"-->
+<!--        android:backgroundTint="@color/Background_3"-->
+<!--        android:layout_marginBottom="16dp"/>-->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -160,41 +175,28 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="bottom|center">
+        android:orientation="horizontal">
 
 
 
         <Button
             android:id="@+id/EditBtn"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="56dp"
             android:background="@drawable/rectangle"
             android:backgroundTint="@color/Signature"
+            android:layout_margin="3dp"
             android:elevation="20dp"
             android:outlineSpotShadowColor="@color/Background_1"
             android:text="수정하기"
-            android:textColor="@color/Background_2"
+            android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:layout_margin="3dp"/>
+            android:layout_gravity="bottom"
+            style="@style/Title" />
 
-        <!--        <Button-->
-        <!--            android:id="@+id/EditBtn"-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:background="@drawable/rectangle"-->
-        <!--            android:backgroundTint="@color/Signature"-->
-        <!--            android:elevation="12dp"-->
-        <!--            android:outlineSpotShadowColor="#05C78C33"-->
-        <!--            android:text="수정하기"-->
-        <!--            android:textColor="@color/white"-->
-        <!--            android:textSize="20sp"-->
-        <!--            android:textStyle="bold"-->
-        <!--            android:layout_marginBottom="5dp"/>-->
+
     </LinearLayout>
-
-
 
 
 

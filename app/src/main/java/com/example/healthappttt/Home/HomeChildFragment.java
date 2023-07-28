@@ -186,6 +186,7 @@ public class HomeChildFragment extends Fragment {
                     UserList.clear();
                     for (UserInfo value : response.body()) {
                         UserList.add(value);
+
                         Log.d("이름", value.getName());
                         Log.d("타임", value.getTime() + "");
                         Log.d("키", String.valueOf(value.getUserKey()));

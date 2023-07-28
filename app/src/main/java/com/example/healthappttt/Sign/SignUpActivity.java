@@ -5,13 +5,13 @@ import static android.content.ContentValues.TAG;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.healthappttt.Data.PreferenceHelper;
 import com.example.healthappttt.Data.RetrofitClient;
 import com.example.healthappttt.Data.User.BodyInfo;
 import com.example.healthappttt.Data.User.ExPerfInfo;
@@ -38,9 +38,12 @@ public class SignUpActivity extends AppCompatActivity implements SUSelectGymFrag
     int height, weight, gender;
     int bench, deadlift, squat;
 
+    private PreferenceHelper UserTB;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        UserTB = new PreferenceHelper("UserTB",this);
         Intent intent = getIntent();
         if (intent != null) {
             email = intent.getStringExtra("email");
@@ -161,7 +164,7 @@ public class SignUpActivity extends AppCompatActivity implements SUSelectGymFrag
 
                     UserClass sharedUser = new UserClass(getUserDT(), getPhoneInfo(), getMannerInfo(), getLocInfo(), getExPerInfo(), getBodyInfo());
 
-//                    prefhelper.putMembership(sharedUser);
+                    UserTB.putMembership(sharedUser);
                     Log.d("shared 로컬 저장 회원가입 pk:", String.valueOf(userKey));
 
                     Intent intent = new Intent(SignUpActivity.this, MainActivity.class);

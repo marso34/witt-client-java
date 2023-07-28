@@ -86,7 +86,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
             UserInfo userInfo = mDataset.get(position);
             Log.d("유저 이름!", userInfo.getName());
             Log.d("유저 PK!", String.valueOf(userInfo.getUserKey()));
-
             //  Log.d(TAG, "onBindViewHolder: "+ userInfo.getUserName().toString());
             //calculateDistances(//여기에);형원이 한테 받아서 하기.
 
