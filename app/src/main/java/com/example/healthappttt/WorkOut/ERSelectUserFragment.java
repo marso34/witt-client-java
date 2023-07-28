@@ -82,6 +82,8 @@ public class ERSelectUserFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        OUser_PK = 1; // 임시값
     }
 
     @Override
@@ -98,10 +100,7 @@ public class ERSelectUserFragment extends Fragment {
 
         binding.backBtn.setOnClickListener(v -> mListener.onSelectUser(-1));
 
-        binding.nextBtn.setOnClickListener(v -> {
-            if (OUser_PK > 0)
-                mListener.onSelectUser(OUser_PK);
-        });
+        binding.nextBtn.setOnClickListener(v -> mListener.onSelectUser(OUser_PK));
 
         setRecyclerView();
     }

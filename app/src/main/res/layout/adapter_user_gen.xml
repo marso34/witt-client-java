@@ -17,7 +17,6 @@
     tools:context=".User.UserGenAdapter">
 
     <LinearLayout
-        android:background="@drawable/round_button_white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -26,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:outlineSpotShadowColor="@color/Background_1"
-            app:cardElevation="6dp"
+            app:cardElevation="10dp"
             app:cardCornerRadius="16dp"
             app:strokeColor="@color/Signature"
             app:strokeWidth="0dp" >
@@ -37,9 +36,6 @@
                 android:paddingTop="9dp"
                 android:paddingHorizontal="16dp"
                 android:paddingBottom="11dp"
-                android:background="@drawable/rectangle_16dp"
-                android:elevation="10dp"
-                android:outlineSpotShadowColor="@color/Background_1"
                 android:orientation="horizontal" >
 
                 <TextView
@@ -100,7 +96,6 @@
             </LinearLayout>
 
         </LinearLayout>
-
 
     </LinearLayout>
 

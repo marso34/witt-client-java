@@ -5,6 +5,7 @@ import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
@@ -13,15 +14,10 @@ import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -72,10 +68,6 @@ import okhttp3.Response;
 public class SUSelectGymFragment extends Fragment implements OnMapReadyCallback, LocationListener {
     FragmentSuSelectGymBinding binding;
 
-    private LocationAdapter locationAdapter;
-    private List<LocData> searchResults;
-
-
     private static final String Body = "#4A5567";
     private static final String Signature = "#05C78C";
     private static final String White = "#ffffff";
@@ -87,22 +79,43 @@ public class SUSelectGymFragment extends Fragment implements OnMapReadyCallback,
     private static final String ARG_LON = "lon";
     private static final String ARG_GYM = "gym";
 
+    private LocationAdapter locationAdapter;
+    private List<LocData> searchResults;
+
     private FusedLocationProviderClient fusedLocationClient;
     private LocationRequest locationRequest;
     private LocationCallback locationCallback;
 
     private double lat, lon, gymLat, gymLon;
-    private String gymName;
+    private String gymName, gymAdress;
 
     private boolean isSelected;
-
 
     private PlacesClient placesClient;
     private MapView mapView;
     private GoogleMap googleMap;
     private LocationManager locationManager;
-
     private Location location;
+
+    private OnFragmentInteractionListener mListner;
+
+    public interface OnFragmentInteractionListener {
+        void onSaveLocation(double userLat, double userLon, double gymLat, double gymLon, String gymName, String gymAdress);
+
+        void onCancel();
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+
+        if (context instanceof OnFragmentInteractionListener) {
+            mListner = (OnFragmentInteractionListener) context;
+        } else {
+            throw new ClassCastException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
 
     public static SUSelectGymFragment newInstance(double lat, double lon, String gymName) {
         SUSelectGymFragment fragment = new SUSelectGymFragment();
@@ -180,16 +193,9 @@ public class SUSelectGymFragment extends Fragment implements OnMapReadyCallback,
 
         setRecyclerView();
 
-        binding.backBtn.setOnClickListener(v -> {
-            ((SignUpActivity) getActivity()).goToSelectGender(-1, -1, false);
-        });
+        binding.backBtn.setOnClickListener(v -> mListner.onCancel());
 
-        binding.skip.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((SignUpActivity) requireActivity()).goToInputPerf(lat, lon, "", 0, 0);
-            }
-        });
+        binding.skip.setOnClickListener( v -> mListner.onSaveLocation(lat, lon, 0, 0, "", ""));
 
         binding.search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -207,8 +213,8 @@ public class SUSelectGymFragment extends Fragment implements OnMapReadyCallback,
         binding.nextBtn.setOnClickListener(v -> {
             if (isSelected) {
                 gymName = binding.selectGym.getText().toString();
-
-                ((SignUpActivity) requireActivity()).goToInputPerf(lat, lon, gymName, gymLat, gymLon);
+                mListner.onSaveLocation(lat, lon, gymLat, gymLon, gymName, gymAdress);
+//                ((SignUpActivity) requireActivity()).goToInputPerf(lat, lon, gymName, gymLat, gymLon);
             }
         });
     }
@@ -390,6 +396,7 @@ public class SUSelectGymFragment extends Fragment implements OnMapReadyCallback,
                     public void onClick(View v) {
                         // Handle location item click
                         L = searchResults.get(getAbsoluteAdapterPosition());
+                        gymAdress = searchResults.get(getAbsoluteAdapterPosition()).getAdress();
                         Log.d(TAG, "onClicklll: "+ L.getName() + "aaaa" + L.getId());
                         getPlaceDetails(L.getId());
 //  ------------------------------------------------------------------------------------------------

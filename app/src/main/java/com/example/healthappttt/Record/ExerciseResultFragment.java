@@ -86,8 +86,8 @@ public class ExerciseResultFragment extends Fragment {
         String RunTime = recordData.getRunTime();                                              // RunTime은 순수하게 운동한 시간, 휴식시간 제외 시간
         String RestTime = betweenTime(ExerciseTime, RunTime);                                  // RunTime은 휴식시간. 운동 시간 - RuntTime
 
-        binding.runTime.setText(parse(RunTime));
-        binding.restTime.setText(parse(RestTime));
+//        binding.runTime.setText(parse(RunTime));
+//        binding.restTime.setText(parse(RestTime));
 
         binding.nextBtn.setOnClickListener(v -> {
             requireActivity().finish();

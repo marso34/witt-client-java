@@ -44,14 +44,14 @@
         <item name="android:textSize">18sp</item>
     </style>
 
-<!--    -->
+    <!--    -->
     <style name="NumberPicker" parent="AppBottomSheetDialogTheme">
         <item name="android:fontFamily">@font/noto_sans_cjk_kr_bold</item>
         <item name="android:editTextColor">@color/Body</item>
         <item name="android:includeFontPadding">false</item>
         <item name="android:textSize">18sp</item>
     </style>
-<!--     넘버피커는 스타일 따로 지정 필요-->
+    <!--     넘버피커는 스타일 따로 지정 필요-->
 
     <style name="Overline" parent="android:Widget.TextView">
         <item name="android:fontFamily">@font/noto_sans_cjk_kr_regular</item>

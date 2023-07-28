@@ -163,14 +163,8 @@ public class ExerciseRecordActivity extends AppCompatActivity implements ERSelec
 //            replaceFragment(); // ERRecordingFragment로 이동
         } else { // 유저 선택
 //            this.OUser_PK = OUser_PK;
-//            replaceFragment(); // ERRecordingFragment로 이동
+            replaceFragment(ERRecordingFragment.newInstance(routines.get(0).getExercises())); // ERRecordingFragment로 이동
         }
-
-//        = OUser_PK
-//        Bundle bundle = new Bundle();
-//        bundle.putSerializable("exercises", routine.getExercises());
-//        if (user != null) {}
-//        replaceFragment(new ERRecordingFragment(), bundle);
     }
 
     @Override

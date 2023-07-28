@@ -7,12 +7,10 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.example.healthappttt.Data.Exercise.RoutineData;
 import com.example.healthappttt.R;
@@ -30,10 +28,6 @@ import io.reactivex.rxjava3.annotations.NonNull;
  */
 public class ERSelectRoutineFragment extends Fragment {
     FragmentErSelectRoutineBinding binding;
-
-    private TextView Edit, DayOfWeekTxt;
-
-    private RecyclerView recyclerView;
     private RoutineAdapter adapter;
 
 

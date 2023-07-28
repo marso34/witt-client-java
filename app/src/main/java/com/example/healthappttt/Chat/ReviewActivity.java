@@ -46,8 +46,13 @@ public class ReviewActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         binding = ActivityReviewBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        Intent intent = getIntent();
+        String name = intent.getStringExtra("name");
+        OtherPk = intent.getIntExtra("code", 0);
 
         goodCheckedTextViews = new CheckedTextView[] {
                 binding.goodCheck1,
@@ -66,10 +71,6 @@ public class ReviewActivity extends AppCompatActivity {
                 binding.badCheck7,
                 binding.badCheck8
         };
-
-        Intent intent = getIntent();
-        String name = intent.getStringExtra("name");
-        OtherPk = intent.getIntExtra("code", 0);
 
         service = RetrofitClient.getClient().create(ServiceApi.class);
         prefhelper = new PreferenceHelper("UserTB", this);
