@@ -28,15 +28,15 @@ public class EvaluationRecdActivity extends AppCompatActivity {
     private ServiceApi apiService;
     private PreferenceHelper UserTB;
     private SQLiteUtil sqLiteUtil;
-    private ReviewListData OReviewList;
 
     UserKey userKey;
     String myPK,PK;
     ArrayList<ReviewListData> EvalList;
     TextView[] GtextView,BtextView;
-    int[] GoodEvalCNT,BadEvalCNT;
     TextView listCnt1_0,listCnt1_1,listCnt1_2,listCnt1_3;
     TextView listCnt0_0,listCnt0_1,listCnt0_2,listCnt0_3,listCnt0_4,listCnt0_5,listCnt0_6,listCnt0_7;
+    int[] GoodEvalCNT,BadEvalCNT;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,16 +44,16 @@ public class EvaluationRecdActivity extends AppCompatActivity {
 
         binding = ActivityEvaluationRecdBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        UserTB = new PreferenceHelper("UserTB", this);
 
+        UserTB = new PreferenceHelper("UserTB", this);
         Intent intent = getIntent();
         PK = intent.getStringExtra("PK");//넘겨 받은 PK
         myPK = String.valueOf(UserTB.getPK());// 로컬 내 PK
 
-        viewsetting();
+        GoodEvalCNT = new int[] {0, 0, 0, 0};
+        BadEvalCNT = new int[] {0, 0, 0, 0, 0, 0, 0, 0};
 
-         GoodEvalCNT = new int[] {0, 0, 0, 0};
-         BadEvalCNT = new int[] {0, 0, 0, 0, 0, 0, 0, 0};
+        viewsetting();
 
         if (PK.equals(myPK)){ //나
 
@@ -85,7 +85,6 @@ public class EvaluationRecdActivity extends AppCompatActivity {
                 }
             });
 
-
         }
 
 
@@ -110,7 +109,6 @@ public class EvaluationRecdActivity extends AppCompatActivity {
         GtextView = new TextView[]{listCnt1_0, listCnt1_1, listCnt1_2, listCnt1_3};
         BtextView = new TextView[]{listCnt0_0, listCnt0_1, listCnt0_2, listCnt0_3, listCnt0_4, listCnt0_5, listCnt0_6, listCnt0_7};
 
-
     }
 
     public void setListView(ArrayList<ReviewListData> ReviewList) {
@@ -120,106 +118,75 @@ public class EvaluationRecdActivity extends AppCompatActivity {
             if(EvalNum >= 32768 ){//좋은 후기
                 Log.d("좋은후기  ",EvalNum+"" );
 
-//                int j = 0;
                 //비트 연산으로 자리 하나씩 검사
                 for(int i = 3; i>=0; i--){
                     int bit = (EvalNum >> i) & 1;
                     if(bit == 1) {
-                        Log.d("비트 연산  ",i + "번째 비트 켜짐" );
+                        //Log.d("비트 연산  ",i + "번째 비트 켜짐" );
                         GoodEvalCNT[i]++;
                     } else{
-                        Log.d("비트 연산  ",i + "비트 X" );
+                        //Log.d("비트 연산  ",i + "비트 X" );
                     }
-//                    j++;
                 }
                 Log.d("비트 연산 결과  ",String.valueOf(GoodEvalCNT[0])+" "+String.valueOf(GoodEvalCNT[1])+" "+String.valueOf(GoodEvalCNT[2])+" "+String.valueOf(GoodEvalCNT[3]) );
-                for(int i=0; i<4; i++) {
-                    int g = GoodEvalCNT[i];
-                    TextView textView = GtextView[i];
-                    View view = binding.getRoot().findViewById(
-                            i == 0 ? R.id.r1_0 :
-                                    i == 1 ? R.id.r1_1 :
-                                            i == 2 ? R.id.r1_2 :
-                                                    R.id.r1_3
-                    );
-                    if (g == 0) {
-                        view.setVisibility(View.GONE);
-                    } else {
-                        textView.setText(String.valueOf(g));
-                    }
-                }
+
 
             }else { //나쁜 후기
                 Log.d("나쁜후기  ",EvalNum+"" );
 
-//                int j = 0;
                 //비트 연산으로 자리 하나씩 검사
                 for(int i = 7; i>=0; i--){
                     int bit = (EvalNum >> i) & 1;
                     if(bit == 1) {
-                        Log.d("비트 연산  ",i + "번째 비트 켜짐" );
+                        //Log.d("비트 연산  ",i + "번째 비트 켜짐" );
                         BadEvalCNT[i]++;
                     } else{
-                        Log.d("비트 연산  ",i + "비트 X" );
+                        //Log.d("비트 연산  ",i + "비트 X" );
                     }
-//                    j++;
                 }
                 Log.d("비트 연산 결과  ", BadEvalCNT[0]+" "+BadEvalCNT[1]+" "+BadEvalCNT[2]+" "+BadEvalCNT[3]+" "+BadEvalCNT[4]+" "+BadEvalCNT[5]+" "+BadEvalCNT[6]+" "+BadEvalCNT[7]);
             }
-            for(int i=0; i<8; i++) {
-                int b = BadEvalCNT[i];
-                TextView textView = BtextView[i];
-                View view = binding.getRoot().findViewById(
-                        i == 0 ? R.id.r0_0 :
-                                i == 1 ? R.id.r0_1 :
-                                        i == 2 ? R.id.r0_2 :
-                                                i == 3 ? R.id.r0_3 :
-                                                        i == 4 ? R.id.r0_4 :
-                                                                i == 5 ? R.id.r0_5 :
-                                                                        i == 6 ? R.id.r0_6 :
-                                                                                R.id.r0_7
-                );
-                if (b == 0) {
-                    view.setVisibility(View.GONE);
-                } else {
-                    textView.setText(String.valueOf(b));
-                }
+
+        }
+//---------------------------------------------------------------------
+        for(int i=0; i<4; i++) {
+            int g = GoodEvalCNT[i];
+            TextView textView = GtextView[i];
+            View view = binding.getRoot().findViewById(
+                    i == 0 ? R.id.r1_0 :
+                            i == 1 ? R.id.r1_1 :
+                                    i == 2 ? R.id.r1_2 :
+                                            R.id.r1_3
+            );
+            if (g == 0) {
+                view.setVisibility(View.GONE);
+                //Log.d("좋은후기인데 GONE 처리  ",g+"번쨰");
+            } else {
+                textView.setText(String.valueOf(g));
             }
-
-
-
         }
-        if(BadEvalCNT == new int[]{0, 0, 0, 0, 0, 0, 0, 0}){
-//             listCnt0_0
 
-             listCnt0_1.setVisibility(View.GONE);
-             listCnt0_2.setVisibility(View.GONE);
-             listCnt0_3.setVisibility(View.GONE);
-             listCnt0_4.setVisibility(View.GONE);
-             listCnt0_5.setVisibility(View.GONE);
-             listCnt0_6.setVisibility(View.GONE);
-             listCnt0_7.setVisibility(View.GONE);
+        for(int i=0; i<8; i++) {
+            int b = BadEvalCNT[i];
+            TextView textView = BtextView[i];
+            View view = binding.getRoot().findViewById(
+                    i == 0 ? R.id.r0_0 :
+                            i == 1 ? R.id.r0_1 :
+                                    i == 2 ? R.id.r0_2 :
+                                            i == 3 ? R.id.r0_3 :
+                                                    i == 4 ? R.id.r0_4 :
+                                                            i == 5 ? R.id.r0_5 :
+                                                                    i == 6 ? R.id.r0_6 :
+                                                                            R.id.r0_7
+            );
+            if (b == 0) {
+                view.setVisibility(View.GONE);
+                //Log.d("나쁜후기인데 GONE 처리  ",b+"번쨰");
+            } else {
+                textView.setText(String.valueOf(b));
+            }
         }
-        if(GoodEvalCNT == new int[]{0, 0, 0, 0}){
-             listCnt1_0.setVisibility(View.GONE);
-             listCnt1_1.setVisibility(View.GONE);
-             listCnt1_2.setVisibility(View.GONE);
-             listCnt1_3.setVisibility(View.GONE);
-        }
-        //Good
-
-        //Bad
-
-
 
     }
-
-
-
-
-
-
-
-
-
+    
 }
