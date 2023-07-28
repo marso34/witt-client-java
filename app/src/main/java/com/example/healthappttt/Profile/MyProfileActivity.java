@@ -53,7 +53,7 @@ public class MyProfileActivity extends AppCompatActivity {
     private RoutineAdapter adapter;
     private WittSendData wittSendData;
 
-    Button  cancel_profile;
+    Button  cancel_Mprofile,cancel_Oprofile;
     ImageView ProfileImg;
     TextView Pname,Pgender,Plocatoin;
     TextView Psqaut,Pbench,Pdeadlift;
@@ -74,7 +74,8 @@ public class MyProfileActivity extends AppCompatActivity {
         binding = ActivityMyprofileBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        cancel_profile = findViewById(R.id.cancel_profile);
+        cancel_Mprofile = findViewById(R.id.cancel_Mprofile);
+        cancel_Oprofile = findViewById(R.id.cancel_Oprofile);
         //텍스트
         Pname = findViewById(R.id.name);
         Pgender = findViewById(R.id.gender);
@@ -112,7 +113,6 @@ public class MyProfileActivity extends AppCompatActivity {
             // 화면 전환
             ViewChangeBlock();
             CommonViewChangeBlock();
-
         /** 상세 프로필*/
         }else { // 내 pk가 아니면 상대 프로필
             Log.d("메인에서 넘겨받은 상대 pk: ",PK);
@@ -130,7 +130,7 @@ public class MyProfileActivity extends AppCompatActivity {
             CommonViewChangeBlock();
 
         }
-        cancel_profile();//뒤로가기
+
     }
 
     public void setOtherProfileView() {
@@ -335,6 +335,13 @@ public class MyProfileActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        //뒤로가기
+        binding.cancelMprofile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
 
     }
@@ -395,6 +402,13 @@ public class MyProfileActivity extends AppCompatActivity {
 
             }
         });
+        //뒤로가기
+        binding.cancelOprofile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
     }
     //공통 목록
@@ -427,7 +441,6 @@ public class MyProfileActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
 
     }
 
@@ -490,15 +503,7 @@ public class MyProfileActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-    //뒤로가기
-    private  void cancel_profile() {
-        cancel_profile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-    } //TODO 상세 프로필에 나오도록 xml 변경
+
 
     @Override
     protected void onResume() {
