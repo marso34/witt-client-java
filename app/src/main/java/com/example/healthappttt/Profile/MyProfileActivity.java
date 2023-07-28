@@ -60,8 +60,8 @@ public class MyProfileActivity extends AppCompatActivity {
     Map<String,Object> userDefault;
     Map<String,Object> OuserDefault;
     String myPK,PK;
-    String OtherName;
-
+    String MyName, OtherName;
+    String MyGym;
     int dayOfWeek;
 
     String otherUserKey;
@@ -97,7 +97,7 @@ public class MyProfileActivity extends AppCompatActivity {
         dayOfWeek = intent.getIntExtra("dayOfWeek",calendar.get(Calendar.DAY_OF_WEEK) - 1);
 
         myPK = String.valueOf(UserTB.getPK());// 로컬 내 PK
-        /** 마이 프로필*/
+        /** 마이 프로필 */
         if(PK.equals(myPK) ){ // 내 pk이면 마이 프로필
             Log.d("프로필에서 로컬pk와 넘겨받은pk",PK + " " + myPK);
 
@@ -106,9 +106,12 @@ public class MyProfileActivity extends AppCompatActivity {
             //userDefault.put("totalValue", UserTB.getUserData().get("totalValue"));
 
             setDefault(userDefault); //로컬 데이터를를 화면에 세팅
+            MyName = Pname.getText().toString();
+            MyGym = Plocatoin.getText().toString();
 
+            // 화면 전환
             ViewChangeBlock();
-            CommonViewChange(); // 화면전환 매서드
+            CommonViewChangeBlock();
 
         /** 상세 프로필*/
         }else { // 내 pk가 아니면 상대 프로필
@@ -124,7 +127,7 @@ public class MyProfileActivity extends AppCompatActivity {
 
             // 화면 전환
             OtherViewChangeBlock();
-            CommonViewChange();
+            CommonViewChangeBlock();
 
         }
         cancel_profile();//뒤로가기
@@ -176,10 +179,11 @@ public class MyProfileActivity extends AppCompatActivity {
                     OtherName = User_NM;
                     //받아온 상대 정보 뿌려주기
                     Pname.setText(User_NM);
+                    Plocatoin.setText(GYM_NM);
                     Psqaut.setText(String.valueOf(squatValue));
                     Pbench.setText(String.valueOf(benchValue));
                     Pdeadlift.setText(String.valueOf(deadValue));
-                    Plocatoin.setText(GYM_NM);
+
 
                     if( gender.equals("0.0")) {
                         Pgender.setText("남자");
@@ -265,7 +269,9 @@ public class MyProfileActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MyProfileActivity.this,EditGymActivity.class);
                 intent.putExtra("MyName",Pname.getText());
+                intent.putExtra("MyGym",Plocatoin.getText());
                 startActivity(intent);
+                Log.d("실행순서: ","myprofileActivity->EditActivity->EditFragment");
             }
         });
 
@@ -392,7 +398,7 @@ public class MyProfileActivity extends AppCompatActivity {
 
     }
     //공통 목록
-    public void CommonViewChange() {
+    public void CommonViewChangeBlock() {
         /** 받은 평가 */
         binding.evaluated.setOnClickListener(new View.OnClickListener() {
             @Override

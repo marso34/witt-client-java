@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Profile.EditGymFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="40dp">
+
+        <androidx.appcompat.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="56dp">
+
+            <ImageButton
+                android:id="@+id/cancel_editgym"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/baseline_arrow_back_ios_new_24"
+                android:backgroundTint="@color/Background_3"
+                android:layout_gravity="left"/>
+
+        </androidx.appcompat.widget.Toolbar>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp">
+
+            <TextView
+                android:id="@+id/MyName"
+                style="@style/chat_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left|bottom"
+                android:text="OOO님의" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+
+            <TextView
+                style="@style/Subtitle"
+                android:id="@+id/edit_gym"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="4dp"
+                android:gravity="right|top"
+                android:text="변경하기" />
+        </LinearLayout>
+
+        <TextView
+            style="@style/chat_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="헬스장은 다음과 같아요"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            style="@style/Subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="해당 헬스장과 가까운 거리 내 위트메이트를 매칭해줘요"
+            android:layout_marginBottom="56dp"/>
+
+
+
+
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:background="@drawable/rectangle_16dp"
+            android:outlineSpotShadowColor="@color/Background_1"
+            android:elevation="10dp"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="20dp">
+
+            <ImageView
+                android:id="@+id/mapIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_baseline_place_24"
+                android:backgroundTint="@color/Signature"
+                android:layout_gravity="top"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginLeft="8dp">
+
+                <TextView
+                    android:id="@+id/Gym"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:elevation="12dp"
+                    android:text="엠케이 휘트니스 부안점"
+                    style="@style/report"/>
+
+                <TextView
+                    android:id="@+id/loc_detail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:elevation="12dp"
+                    android:textColor="@color/Background_2"
+                    android:text="전북 부안군 부안읍 석정로 252 "
+                    style="@style/Body"/>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+</FrameLayout>
