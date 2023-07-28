@@ -64,6 +64,9 @@ public interface ServiceApi {
     @POST("/profile/getOtherProfile")// 상세 프로필 가져오기
     Call<Map<String,Object>> getOtherProfile(@Body UserKey userKey);
 
+    @POST("/profile/getOtherEval")// 상세 받은 평가 가져오기
+    Call<ArrayList<ReviewListData>> getOtherEval(@Body UserKey userKey);
+
     @POST("/profile/getReport")//신고 내역
     Call<List<ReportHistory>> getReport(@Body UserKey userKey);
 

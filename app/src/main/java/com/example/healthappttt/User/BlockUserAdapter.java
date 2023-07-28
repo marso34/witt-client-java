@@ -162,46 +162,7 @@ public class BlockUserAdapter extends RecyclerView.Adapter<BlockUserAdapter.View
                 }
             }
         }
-//        else if(fragment instanceof WHChildFragment){
-//            ImageButton cancel = holder.itemView.findViewById(R.id.Block_cancel);
-//            cancel.setEnabled(false); //삭제 버튼 작동 X
-//            TextView Adapter_date = holder.itemView.findViewById(R.id.adapter_date);
-//            Adapter_date.setVisibility(View.VISIBLE);
-//
-//            if(WittList.size() > 0) {
-//                WittListData data = WittList.get(position);
-//                Date_format = formatDateString(data.getTS()); // 날짜 데이터 전처리 %04d년%02d월%02d일 %s요일
-//
-//                holder.Block_NM.setText(data.getUser_NM());
-//                //holder.GYM.setText(); 헬스장 정보
-//
-//                if(position == 0 || !Date_format.equals(formatDateString(WittList.get(position - 1).getTS()))){
-//                    holder.adapter_date.setText(Date_format);//최상단이거나 날짜가 같지 않은 경우에는 날짜 표시
-//                }else {
-//                    holder.adapter_date.setVisibility(View.GONE);//나머지는 날짜 표시 X
-//                }
-//            }
-//
-//        }
-//        /** 신고 내역 엑티비티일때 **/
-//        else if(activity instanceof ReportHistoryActivity) {
-//
-//            TextView reportText = holder.itemView.findViewById(R.id.Review_text);
-//            reportText.setVisibility(View.VISIBLE);//리뷰텍스트 보이게
-//            ImageButton cancle = holder.itemView.findViewById(R.id.Block_cancel);
-//            cancle.setEnabled(false); //삭제 버튼 작동 X
-//
-//
-//
-//            //텍스트 연결
-//            if(ReportList.size() > 0) {
-//                ReportHistory data = ReportList.get(position);
-//                holder.Block_NM.setText(data.getUser_NM());
-//                holder.Review_text.setText(data.getCONT());
-//                holder.GYM.setText(data.getGYM_NM()); //헬스장 정보
-//            }
-//
-//        }
+
     }
 
     @Override
@@ -222,9 +183,6 @@ public class BlockUserAdapter extends RecyclerView.Adapter<BlockUserAdapter.View
                 Log.d("getItemCount-> ","filerWittList3");
             return WittList.size();
         }
-//         else if (fragment instanceof WHChildFragment) {
-//            Log.d("getItemCount", "WHChildFragment 아이템 개수: " + WittList.size());
-//            return WittList.size();}
          else {
             Log.d("getItemCount", "어뎁터 아이템 개수 0");
             return 0;
@@ -270,10 +228,6 @@ public class BlockUserAdapter extends RecyclerView.Adapter<BlockUserAdapter.View
         WittList = filteredList;
         notifyDataSetChanged();
     }
-//    public void filterReportList(ArrayList<ReportHistory> filteredList){
-//        ReportList = filteredList;
-//        notifyDataSetChanged();
-//    }
 
 //  adapter_blockuser 구성 요소들을 가리키는 뷰홀더
     public class ViewHolder extends RecyclerView.ViewHolder {
