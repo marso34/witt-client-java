@@ -213,6 +213,7 @@ public class SUSelectGymFragment extends Fragment implements OnMapReadyCallback,
         binding.nextBtn.setOnClickListener(v -> {
             if (isSelected) {
                 gymName = binding.selectGym.getText().toString();
+                Log.d("위치 테스트", gymAdress);
                 mListner.onSaveLocation(lat, lon, gymLat, gymLon, gymName, gymAdress);
 //                ((SignUpActivity) requireActivity()).goToInputPerf(lat, lon, gymName, gymLat, gymLon);
             }
@@ -397,6 +398,8 @@ public class SUSelectGymFragment extends Fragment implements OnMapReadyCallback,
                         // Handle location item click
                         L = searchResults.get(getAbsoluteAdapterPosition());
                         gymAdress = searchResults.get(getAbsoluteAdapterPosition()).getAdress();
+                        Log.d("위치 테스트2", gymAdress);
+
                         Log.d(TAG, "onClicklll: "+ L.getName() + "aaaa" + L.getId());
                         getPlaceDetails(L.getId());
 //  ------------------------------------------------------------------------------------------------

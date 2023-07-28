@@ -18,12 +18,17 @@ public class LocInfo {
     @SerializedName("gymLon")
     private double gymLon;
 
-    public LocInfo(double userLat, double userLon, String gymNm, double gymLat, double gymLon) {
+    @SerializedName("gymAdress")
+    private String gymAdress;
+
+
+    public LocInfo(double userLat, double userLon, String gymNm, double gymLat, double gymLon, String gymAdress) {
         this.userLat = userLat;
         this.userLon = userLon;
         this.gymNm = gymNm;
         this.gymLat = gymLat;
         this.gymLon = gymLon;
+        this.gymAdress = gymAdress;
     }
     public double getUserLat() {
         return userLat;
@@ -63,5 +68,13 @@ public class LocInfo {
 
     public void setGymLon(double gymLon) {
         this.gymLon = gymLon;
+    }
+
+    public String getGymAdress() {
+        return gymAdress;
+    }
+
+    public void setGymAdress(String gymAdress) {
+        this.gymAdress = gymAdress;
     }
 }

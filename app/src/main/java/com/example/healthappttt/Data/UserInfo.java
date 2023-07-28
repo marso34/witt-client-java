@@ -10,6 +10,8 @@ public class UserInfo {
     private String name;
     @SerializedName("GymName")
     private String gymName;
+    @SerializedName("GymAdress")
+    private String gymAdress;
     @SerializedName("Latitude")
     private double latitude;
     @SerializedName("Longitude")
@@ -80,4 +82,11 @@ public class UserInfo {
         this.dayOfWeek = dayOfWeek;
     }
 
+    public void setGymAdress(String gymAdress) {
+        this.gymAdress = gymAdress;
+    }
+
+    public String getGymAdress() {
+        return gymAdress;
+    }
 }

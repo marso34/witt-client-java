@@ -102,7 +102,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
             } else {
                 holder.GymName.setText(str);
                 holder.GymName.setTextColor(Color.parseColor(Body));
-                holder.GymAdress.setText("lat, lon, 파싱하거나 db에 주소도 저장할 것");
+                holder.GymAdress.setText(userInfo.getGymAdress());
                 holder.GymAdress.setVisibility(View.VISIBLE);
                 holder.MapIcon.setColorFilter(Color.parseColor(Signature));
             }

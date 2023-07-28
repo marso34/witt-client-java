@@ -135,7 +135,7 @@ public class SignUpActivity extends AppCompatActivity implements SUSelectGymFrag
     } // 매너 테이블에 디폴트 값 넣고 그냥 생성하면 되잖아?
 
     private LocInfo getLocInfo(){
-        return new LocInfo(lat, lon, gymName, gymLat, gymLon);
+        return new LocInfo(lat, lon, gymName, gymLat, gymLon, gymAdress);
     }
 
     private ExPerfInfo getExPerInfo() {
