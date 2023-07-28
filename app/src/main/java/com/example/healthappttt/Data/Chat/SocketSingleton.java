@@ -2,32 +2,19 @@ package com.example.healthappttt.Data.Chat;
 
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
-import android.app.AlarmManager;
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
-import android.os.Build;
 import android.util.Log;
-import android.widget.RemoteViews;
-
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 
 import com.example.healthappttt.Chat.ChatActivity;
 import com.example.healthappttt.Chat.ChattingFragment;
 import com.example.healthappttt.Data.PreferenceHelper;
 import com.example.healthappttt.Data.SQLiteUtil;
-import com.example.healthappttt.R;
-import com.example.healthappttt.interface_.AlarmRecevier;
+import com.example.healthappttt.Home.AlarmManagerCustom;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.URISyntaxException;
-import java.util.Calendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -48,12 +35,14 @@ public class SocketSingleton {
     private static int alarmID = 100;
     private static int i;
     ChattingFragment chatF;
+    private AlarmManagerCustom alarmManager;
     private SocketSingleton(Context context) {
         try {
             this.context = context;
             mSocket = IO.socket(serverUrl);
             preferenceHelper = new PreferenceHelper("UserTB", context);
             setupSocketListeners();
+            alarmManager = AlarmManagerCustom.getInstance(context);
         } catch (URISyntaxException e) {
             Log.d("SocketSingleton", "Failed to initialize Socket: " + e.getMessage());
         }
@@ -126,17 +115,19 @@ public class SocketSingleton {
                     String TS = data.getString("timeStamp");
                     String chat_Pk = data.getString("chatKey");
                     if(extractName(message) != null) {
-                        Intent receiverIntent = new Intent(context, AlarmRecevier.class);
-                        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, i++, receiverIntent, PendingIntent.FLAG_IMMUTABLE);
-                        Calendar calendar = Calendar.getInstance();
-                        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-                        alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
-                        if(!chatF.chatflag) {
+//                        Intent receiverIntent = new Intent(context, AlarmRecevier.class);
+//                        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, i++, receiverIntent, PendingIntent.FLAG_IMMUTABLE);
+//                        Calendar calendar = Calendar.getInstance();
+//                        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+//                        alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
+                        //채팅방 생성알림
+                        alarmManager.onAlarm("New","새로운 위트가 왔어요");
+                        if(chatF!=null && !chatF.chatflag) {
                             chatF.chatflag = true;
                             new Thread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    chatF.getLastMSG(chatRoomId,String.valueOf(preferenceHelper.getPK()));
+                                    chatF.getLastMSG(chatRoomId,String.valueOf(preferenceHelper.getPK()),context);
                                 }
                             }).start();
                         }
@@ -160,14 +151,17 @@ public class SocketSingleton {
                             }
                         else {
                             if(flag == false) {
-                                createNotificationChannel();
-                                showCustomNotification(chatRoomId, message); // 채팅 메시지 알림 표시
+//                                createNotificationChannel();
+//                                showCustomNotification(chatRoomId, message); // 채팅 메시지 알림 표시
+                                sqLiteUtil.setInitView(context, "CHAT_ROOM_TB");
+                                String otherUserNM = sqLiteUtil.selectOtherUserName(String.valueOf(preferenceHelper.getPK()),chatRoomId);
+                                alarmManager.onAlarm(otherUserNM,message);
                                 if(chatF!=null && !chatF.chatflag) {
                                     chatF.chatflag = true;
                                     new Thread(new Runnable() {
                                         @Override
                                         public void run() {
-                                            chatF.getLastMSG(chatRoomId,String.valueOf(preferenceHelper.getPK()));
+                                            chatF.getLastMSG(chatRoomId,String.valueOf(preferenceHelper.getPK()),context);
                                         }
                                     }).start();
                                 }
@@ -281,52 +275,6 @@ public class SocketSingleton {
             this.chatF = null;
         }
         this.chatF = chatF;
-    }
-    // 알림 채널 생성
-    private void createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            String channelId = "chat_channel";
-            String channelName = "Chat Channel";
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel(channelId, channelName, importance);
-
-            // 알림 채널에 대한 추가 설정
-            channel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
-            channel.enableVibration(true);
-
-            NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
-            if (notificationManager != null) {
-                notificationManager.createNotificationChannel(channel);
-            }
-        }
-    }
-
-    // 커스텀 알림 레이아웃을 사용하여 알림 생성
-    private void showCustomNotification(String chatRoomID, String MSG) {
-        // 알림 빌더 생성
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "chat_channel")
-                .setSmallIcon(R.drawable.notification_icon)
-                .setContentTitle(chatRoomID)
-                .setContentText(MSG)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-
-        // 알림 레이아웃을 커스텀한 RemoteViews 생성
-        RemoteViews customLayout = new RemoteViews(context.getPackageName(), R.layout.custom_notification_layout);
-        customLayout.setTextViewText(R.id.notification_title, chatRoomID);
-        customLayout.setTextViewText(R.id.notification_content, MSG);
-        builder.setCustomContentView(customLayout);
-
-        // 알림 매니저를 통해 알림 생성
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-        notificationManager.notify(alarmID, builder.build());
-        alarmID++;
-    }
-
-
-    // 스와이프로 알림 제거 처리
-    private void handleNotificationDismiss(int notificationId) {
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-        notificationManager.cancel(notificationId);
     }
 
 

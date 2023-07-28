@@ -19,14 +19,10 @@ import androidx.core.app.NotificationCompat;
 
 import com.example.healthappttt.Data.Chat.MSD;
 import com.example.healthappttt.Data.Chat.SocketSingleton;
-import com.example.healthappttt.Data.Exercise.RoutineData;
 import com.example.healthappttt.Data.SQLiteUtil;
+import com.example.healthappttt.Home.AlarmManagerCustom;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 
 public class DataReceiverService extends Service {
@@ -35,9 +31,9 @@ public class DataReceiverService extends Service {
     private Handler handler;
     private SocketSingleton socketSingleton;
     private static final int NOTIFICATION_ID = 123;
-    private AlarmManager alarmManager;
+    private AlarmManager alarmManager_;
     private GregorianCalendar mCalender;
-
+    private AlarmManagerCustom alarmManagerCustom;
     private NotificationManager notificationManager;
     NotificationCompat.Builder builder;
     SQLiteUtil sqLiteUtil;
@@ -52,7 +48,7 @@ public class DataReceiverService extends Service {
         handler = new Handler();
         sqLiteUtil = SQLiteUtil.getInstance();
         notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-        alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+        alarmManager_ = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
         mCalender = new GregorianCalendar();
     }
 
@@ -64,7 +60,7 @@ public class DataReceiverService extends Service {
         Log.d(TAG, "onStartCommand: 나 시작함");
         handler.post(reconnectRunnable);
 
-        showRoutineAlarm();
+//
         return START_STICKY;
     }
 
@@ -72,17 +68,17 @@ public class DataReceiverService extends Service {
         DataReceiverService.normalExit = normalExit;
     }
     public void showRoutineAlarm() {
-        Intent receiverIntent = new Intent(this, AlarmRecevier.class);
-        sqLiteUtil.setInitView(getBaseContext(), "RT_TB");
-        Calendar calendar = Calendar.getInstance();
-        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
-        ArrayList<RoutineData> routineList = sqLiteUtil.SelectRoutine(dayOfWeek - 1);
-
-        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-        Date currentDate = calendar.getTime();
-        for (RoutineData routine : routineList) {
+//        Intent receiverIntent = new Intent(this, AlarmRecevier.class);
+//        sqLiteUtil.setInitView(getBaseContext(), "RT_TB");
+//        Calendar calendar = Calendar.getInstance();
+//        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+//        ArrayList<RoutineData> routineList = sqLiteUtil.SelectRoutine(dayOfWeek - 1);
+//
+//        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+//        Date currentDate = calendar.getTime();
+//        for (RoutineData routine : routineList) {
 //            try {
-//                Date routineStartTime = dateFormat.parse(routine.getTime());
+//                Date routineStartTime = dateFormat.parse(routine.getStartTime());
 //                calendar.setTimeInMillis(System.currentTimeMillis());
 //
 //// 현재 시간의 시분초를 14:00:00으로 설정
@@ -103,7 +99,7 @@ public class DataReceiverService extends Service {
 //            } catch (ParseException e) {
 //                e.printStackTrace();
 //            }
-        }
+//        }
     }
 
 
@@ -122,12 +118,13 @@ public class DataReceiverService extends Service {
     private Runnable reconnectRunnable = new Runnable() {
         @Override
         public void run() {
+            alarmManagerCustom = AlarmManagerCustom.getInstance(getBaseContext());
             if(socketSingleton !=null && !socketSingleton.getSocket().connected()) {
                 socketSingleton.connect();
                 Log.d(TAG, "run: 부활시킴");
-            }
+               }
             // 일정 시간 간격으로 소켓 연결 상태 확인 및 재연결 작업 수행
-            handler.postDelayed(this, 20000); // 5초마다 반복 실행
+            handler.postDelayed(this, 10000); // 5초마다 반복 실행
         }
     };
 

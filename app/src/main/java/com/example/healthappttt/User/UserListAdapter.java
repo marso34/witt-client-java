@@ -60,8 +60,8 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserLi
                     UserChat user = userList.get(position);
                 Intent intent = new Intent(context, ChatActivity.class);
                 intent.putExtra("otherUserName",user.getUserNM());
-                intent.putExtra("ChatRoomId",user.getChatRoomId());
-                intent.putExtra("otherUserKey",user.getOtherUserKey());
+                intent.putExtra("ChatRoomId",String.valueOf(user.getChatRoomId()));
+                intent.putExtra("otherUserKey",String.valueOf(user.getOtherUserKey()));
                 Log.d(TAG, "onClick: "+user.getUserNM());
                 context.startActivity(intent);
             }
@@ -76,7 +76,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserLi
         user = userList.get(position);
         holder.userName.setText(user.getUserNM());
         sqLiteUtil.setInitView(context,"CHAT_MSG_TB");
-        MSG m = sqLiteUtil.selectLastMsg(userList.get(position).getChatRoomId(),String.valueOf(preferenceHelper.getPK()),2);
+        MSG m = sqLiteUtil.selectLastMsg(String.valueOf(userList.get(position).getChatRoomId()),String.valueOf(preferenceHelper.getPK()),2);
         if(extractName(m.getMessage()) == null)
             holder.lastChat.setText(m.getMessage());
         else holder.lastChat.setText(extractName(m.getMessage()));

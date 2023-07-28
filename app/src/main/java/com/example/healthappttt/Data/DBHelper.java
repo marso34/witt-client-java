@@ -97,12 +97,25 @@ public class DBHelper extends SQLiteOpenHelper {
                 + "USER_FK INT,"
                 + "CHAT_ROOM_PK INT primary key,"
                 + "LAST_MSG_INDEX INT,"
+                + "OTHER_USER_FK INT,"
                 + "OTHER_USER_NM VARCHAR(30),"
                 + "FAV INT ,"
                 + "GYM_NM VARCHAR(30),"
                 + "TS  VARCHAR(30)"
                 + ");";
         db.execSQL(createChat_Room_TableQuery);
+
+        String createNotifyTableQuery = "CREATE TABLE if not exists NOTIFY_TB ("
+                + "NOTIFY_PK INT PRIMARY KEY,"
+                + "USER_FK INT,"
+                + "OTHER_USER_FK INTEGER DEFAULT -1,"
+                + "NOTIFY_CATEGORY INT,"
+                + "LINK_PK INTE,"  // 넘겨줄 값 페이지 여는 키
+                + "CREATED_TIME VARCHAR(30),"
+                + "READ_TIME VARCHAR(30)"
+                + ");";
+        db.execSQL(createNotifyTableQuery);
+
 
     }
 
@@ -120,6 +133,12 @@ public class DBHelper extends SQLiteOpenHelper {
         String createTableQuery = "DROP TABLE if exists CHAT_MSG_TB";
         db.execSQL(createTableQuery);
 
+        String NOTIFY_TBQuery = "DROP TABLE if exists NOTIFY_TB";
+        db.execSQL(NOTIFY_TBQuery);
+        onCreate(db);
+
+        String CHAT_ROOM_TBQuery = "DROP TABLE if exists CHAT_ROOM_TB";
+        db.execSQL(CHAT_ROOM_TBQuery);
         onCreate(db);
     }
 }

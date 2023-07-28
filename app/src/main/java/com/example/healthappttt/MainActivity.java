@@ -4,6 +4,7 @@ import static android.content.ContentValues.TAG;
 
 import android.Manifest;
 import android.app.AlarmManager;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +15,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -38,6 +40,7 @@ import com.example.healthappttt.Data.User.UserKey;
 import com.example.healthappttt.Data.User.UserProfile;
 import com.example.healthappttt.Data.User.WittListData;
 import com.example.healthappttt.Home.HomeFragment;
+import com.example.healthappttt.Home.alarmActivity;
 import com.example.healthappttt.Profile.MyProfileActivity;
 import com.example.healthappttt.Record.RecordFragment;
 import com.example.healthappttt.Routine.RoutineFragment;
@@ -64,6 +67,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
+    private static final int NOTIFICATION_PERMISSION_REQUEST_CODE = 100;
     ActivityMainBinding binding;
     private long backPressedTime = 0;
     private Toast toast;
@@ -242,11 +246,14 @@ public class MainActivity extends AppCompatActivity {
             //Log.d("main에서 넘겨주는 myPK",uk);
             startActivity(intent);
         });
-
+        binding.alarm.setOnClickListener(view->{
+            openMyStartActivity(alarmActivity.class);
+        });
         Log.d("prefhelper", "USER_PK:" + prefhelper.getPK()); //저장된 유저의 pk값 가져오기
         getBlackList(userKey);
         getReviewList(userKey);
         getWittHistory(userKey);
+        checkAndRequestNotificationPermission();
 //         uploadImageToServer(url, userKey.toString());
     }
 
@@ -627,6 +634,30 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "통신 실패", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+    private void checkAndRequestNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            if (notificationManager != null && !notificationManager.isNotificationPolicyAccessGranted()) {
+                Intent intent = new Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
+                startActivityForResult(intent, NOTIFICATION_PERMISSION_REQUEST_CODE);
+            }
+        }
+    }
+
+    // 요청 결과 처리
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == NOTIFICATION_PERMISSION_REQUEST_CODE) {
+            // 알림 권한 요청 결과 처리 (필요에 따라 구현)
+        }
+    }
+
+    private void openMyStartActivity(Class c) {
+        // Intent를 사용하여 mystartActivity를 시작합니다.
+        Intent intent = new Intent(this, c);
+        startActivity(intent);
     }
 
 }

@@ -1,6 +1,9 @@
-package com.example.healthappttt.Home;//package com.example.healthappttt.adapter;
+package com.example.healthappttt.Home;
+
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,85 +20,69 @@ import java.util.ArrayList;
 
 public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.MainViewHolder> {
     private ArrayList<AlarmInfo> mDataset;
-    private AlarmInfo alarmInfo;
     private Context mContext;
 
     static class MainViewHolder extends RecyclerView.ViewHolder {
-        private Context mContext;
-        public TextView CAT ;
-        public TextView Contents ;
-        public ImageView CAT_IMG;
-        public TextView time_;
-        public RecyclerView recyclerView;
-
+        public TextView title;
+        public TextView contents;
+        public ImageView catImg;
+        public TextView time;
 
         MainViewHolder(@NonNull View itemView) {
             super(itemView);
-            CAT =  itemView.findViewById(R.id.CAT);
-            Contents = itemView.findViewById(R.id.contents);
-            CAT_IMG = itemView.findViewById(R.id.CAT_IMG);
-            time_ = itemView.findViewById(R.id.beforetime);
-            recyclerView = itemView.findViewById(R.id.recyclerView);
+            title = itemView.findViewById(R.id.CAT);
+            contents = itemView.findViewById(R.id.contents);
+            catImg = itemView.findViewById(R.id.CAT_IMG);
+            time = itemView.findViewById(R.id.beforetime);
         }
     }
 
-    public AlarmAdapter(Context mContext,ArrayList<AlarmInfo> myDataset) {
+    public AlarmAdapter(Context mContext, ArrayList<AlarmInfo> myDataset) {
         this.mContext = mContext;
         this.mDataset = myDataset;
     }
 
 
-    @Override
-    public int getItemViewType(int position){
-        return position;
-    }
-
     @NonNull
     @Override
     public AlarmAdapter.MainViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View cardView = (View) LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_alram, parent, false);
-        final MainViewHolder mainViewHolder = new MainViewHolder(cardView);
-
-        return mainViewHolder;
+        View cardView = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_alram, parent, false);
+        return new MainViewHolder(cardView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull final MainViewHolder holder, int position) {
-         alarmInfo = mDataset.get(position);
-
-//
+        AlarmInfo alarmInfo = mDataset.get(position);
+        Log.d(TAG, "onBindViewHolder: ");
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Intent intent = new Intent(mContext, ProfileActivity.class);
-                //intent.putExtra("UserInfo",userInfo);
-//                intent.putExtra("post",finalProfilefile);
-                //mContext.startActivity(intent);
+                // 링크에 따라 프레그먼트 or 액티비티 이동
             }
         });
 
-        if(alarmInfo.getCat() == 0){
-            holder.CAT.setText("위트");
-            holder.CAT_IMG.setImageResource(R.drawable.logo_test);
-            //SQL라이트로 로컬에서 내 이름 긁어 와서000에 넣기.
-            //앱 실행시 서버에서 알람테이블을 긁어오면서 상대방의 정보도 가져오기.
-            //SQL라이트로 로컬에서 나에게 위트보낸 상대방의 이름 긁어와서 넣기
-            holder.Contents.setText("000님의 새로운 운동파트너 도작! 111님이 위트를 보냈어요");
-            //sql라이트로 시간값 긁어오기.
-            holder.time_.setText("n월 m일");
+        // Set data based on the alarm category
+        switch (alarmInfo.getCat()) {
+            case 1:
+                holder.title.setText("위트");
+                holder.catImg.setImageResource(R.drawable.logo_test);
+                // Set other data for category 1
+                holder.contents.setText("000님의 새로운 운동파트너 도작! 111님이 위트를 보냈어요");
+                holder.time.setText("n월 m일");
+                break;
+            case 2:
+                // Set data for category 2
+                break;
+            case 3:
+                // Set data for category 3
+                break;
+            case 4:
+                // Set data for category 4
+                break;
+            default:
+                // Handle unknown category or any other case
+                break;
         }
-        else if(alarmInfo.getCat() == 1){
-//            holder.CAT.setText("위트");
-//            holder.CAT_IMG.setImageResource(R.drawable.logo_test);
-//            //SQL라이트로 로컬에서 내 이름 긁어 와서000에 넣기.
-//            //앱 실행시 서버에서 알람테이블을 긁어오면서 상대방의 정보도 가져오기.
-//            //SQL라이트로 로컬에서 나에게 위트보낸 상대방의 이름 긁어와서 넣기
-//            holder.Contents.setText("000님의 새로운 운동파트너 도작! 111님이 위트를 보냈어요");
-        }
-        else if(alarmInfo.getCat() == 2){
-            //채워넣기
-        }
-
     }
 
     @Override

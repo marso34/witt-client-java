@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -60,7 +61,7 @@ public class ChatActivity extends AppCompatActivity{
     private ServiceApi apiService;
     private boolean updatingMSG = false;
     private boolean sendUpdatingMSG  = false;
-
+    private TextView toolbarName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -81,6 +82,7 @@ public class ChatActivity extends AppCompatActivity{
         messageEditText = findViewById(R.id.messageBox);
         sendButton = findViewById(R.id.sendButton);
         menu = findViewById(R.id.menu);
+        toolbarName = findViewById(R.id.toolbarName);
     }
 
     @Override
@@ -101,6 +103,7 @@ public class ChatActivity extends AppCompatActivity{
         otherUserName = getIntent().getStringExtra("otherUserName");
         chatRoomId = getIntent().getStringExtra("ChatRoomId");
         otherUserKey = getIntent().getStringExtra("otherUserKey");
+        toolbarName.setText(otherUserName);
         Log.d(TAG, "onCreate: otherUserKey " + otherUserKey);
     }
 
@@ -129,8 +132,12 @@ public class ChatActivity extends AppCompatActivity{
                         chatkey = sqLiteUtil.getLastMyMsgPK(String.valueOf(chatRoomId),userKey);
                         chatkey = chatkey+1;
                     }finally {
-                        sqLiteUtil.setInitView(getApplicationContext(), "CHAT_MSG_TB");
-                        sqLiteUtil.insert(chatkey,Integer.parseInt(userKey), 1, messageText, Integer.parseInt(chatRoomId), 0,ts);
+                        try {
+                            sqLiteUtil.setInitView(getApplicationContext(), "CHAT_MSG_TB");
+                        }
+                        finally {
+                            sqLiteUtil.insert(chatkey,Integer.parseInt(userKey), 1, messageText, Integer.parseInt(chatRoomId), 0,ts);
+                        }
                         Log.d(TAG, "chatPk보내기"+chatkey+ts);
                         sendMessageToServer(messageText,chatkey,ts);
                     }
@@ -156,6 +163,7 @@ public class ChatActivity extends AppCompatActivity{
         setupSQLiteUtil();
         apiService = RetrofitClient.getClient().create(ServiceApi.class);
         sqLiteUtil.setInitView(getApplicationContext(), "CHAT_MSG_TB");
+        Log.d(TAG, "getMessagesFromServer:chatRoomId "+ chatRoomId);
         MSG m = sqLiteUtil.selectLastMsg(chatRoomId,userKey,1);
         Log.d(TAG, "getMessagesFromServer: "+m.getKey());
         Call<List<MSG>> call = apiService.getMSGFromServer(new getMSGKey(Integer.parseInt(userKey),Integer.parseInt(chatRoomId),m.getKey(),m.timestampString()));
@@ -196,11 +204,12 @@ public class ChatActivity extends AppCompatActivity{
     }
     public void getMSG(int sendOrReceive) {
         final CountDownLatch latch = new CountDownLatch(1);
-        sqLiteUtil.setInitView(getApplicationContext(), "CHAT_MSG_TB");
+
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 try {
+                    sqLiteUtil.setInitView(getApplicationContext(), "CHAT_MSG_TB");
                     List<MSG> TM = sqLiteUtil.SelectAllMSG(userKey, Integer.parseInt(chatRoomId));messageList.clear();
                     if(TM != null) {
                         messageList.clear();
