@@ -228,6 +228,7 @@ public class WHChildFragment extends Fragment {
     private void postsUpdate(final boolean clear) { // 스크롤되면 할 작업 (리스트 업데이트)
         updating = true;
         WittList.clear();
+        sqLiteUtil.setInitView(getContext(),"Witt_History_TB");
         WittList.addAll(sqLiteUtil.SelectWittHistoryUser()); // 데이터 갱신
         WittHistoryAdapter.notifyDataSetChanged(); // 어댑터에 변경된 데이터 설정
         updating = false;

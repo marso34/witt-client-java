@@ -55,7 +55,7 @@ public class MyProfileActivity extends AppCompatActivity {
 
     Button  cancel_Mprofile,cancel_Oprofile;
     ImageView ProfileImg;
-    TextView Pname,Pgender,Plocatoin;
+    TextView infoName,Pname,Pgender,Plocatoin;
     TextView Psqaut,Pbench,Pdeadlift;
     Map<String,Object> userDefault;
     Map<String,Object> OuserDefault;
@@ -75,8 +75,8 @@ public class MyProfileActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         cancel_Mprofile = findViewById(R.id.cancel_Mprofile);
-        cancel_Oprofile = findViewById(R.id.cancel_Oprofile);
         //텍스트
+        infoName = findViewById(R.id.infoName);
         Pname = findViewById(R.id.name);
         Pgender = findViewById(R.id.gender);
         Psqaut = findViewById(R.id.Psqaut);
@@ -139,7 +139,6 @@ public class MyProfileActivity extends AppCompatActivity {
         binding.black.setVisibility(View.GONE);
         binding.set.setVisibility(View.GONE);
         //상세 프로필(text),루틴, 신고내역 오늘 루틴, 위트 보내기 보이게
-        binding.Oprofile.setVisibility(View.VISIBLE);
         binding.totalRoutine.setVisibility(View.VISIBLE);
         binding.report.setVisibility(View.VISIBLE);
         binding.rt.setVisibility(View.VISIBLE);
@@ -178,6 +177,7 @@ public class MyProfileActivity extends AppCompatActivity {
                     Log.d("getOtherProfile 이름:", User_NM);
                     OtherName = User_NM;
                     //받아온 상대 정보 뿌려주기
+                    infoName.setText("상세 프로필");
                     Pname.setText(User_NM);
                     Plocatoin.setText(GYM_NM);
                     Psqaut.setText(String.valueOf(squatValue));
@@ -309,24 +309,7 @@ public class MyProfileActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-//        //받은 후기
-//        binding.ReviewsReceived.setOnClickListener(new View.OnClickListener(){
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(MyProfileActivity.this, ReviewsRecdAtivity.class);
-//                intent.putExtra("PK",PK);
-//                startActivity(intent);
-//            }
-//        });
-//        //위트 내역
-//        binding.WittHistory.setOnClickListener(new View.OnClickListener(){
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(MyProfileActivity.this, WittHistoryActivity.class);
-//                intent.putExtra("PK",PK);
-//                startActivity(intent);
-//            }
-//        });
+
         //설정
         binding.set.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -335,14 +318,6 @@ public class MyProfileActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        //뒤로가기
-        binding.cancelMprofile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-
 
     }
     //화면 전환(상세 프로필)
@@ -357,24 +332,7 @@ public class MyProfileActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-//        /** 받은 후기 */
-//        binding.ReviewsReceived.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(MyProfileActivity.this, ReviewsRecdAtivity.class);
-//                intent.putExtra("PK",PK);
-//                startActivity(intent);
-//            }
-//        });
-//        /** 위트 내역 */
-//        binding.WittHistory.setOnClickListener(new View.OnClickListener(){
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(MyProfileActivity.this, WittHistoryActivity.class);
-//                intent.putExtra("PK",PK);
-//                startActivity(intent);
-//            }
-//        });
+
         /** 신고 내역 */
         binding.report.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -400,13 +358,6 @@ public class MyProfileActivity extends AppCompatActivity {
                 getWittUserData(wittSendData,timestamp);
 
 
-            }
-        });
-        //뒤로가기
-        binding.cancelOprofile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
             }
         });
 
@@ -439,6 +390,14 @@ public class MyProfileActivity extends AppCompatActivity {
                 Intent intent = new Intent(MyProfileActivity.this, WittHistoryActivity.class);
                 intent.putExtra("PK",PK);
                 startActivity(intent);
+            }
+        });
+
+        //뒤로가기
+        binding.cancelMprofile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
 
