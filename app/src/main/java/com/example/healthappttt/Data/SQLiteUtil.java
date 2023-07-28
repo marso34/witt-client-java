@@ -26,9 +26,7 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
     private static volatile SQLiteUtil instance; // volatile 메인 메모리에 저장
     private SQLiteDatabase db;
     private String table;
-    private SQLiteUtil() {
-
-    }
+    private SQLiteUtil() {}
 
     public static SQLiteUtil getInstance() {
         if (instance == null) { // synchronized 성능 저하 문제 해결법, double check locking
@@ -162,7 +160,7 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
                 }
                 cursor.close();
             }
-        }finally {
+        } finally {
             db.close();
             return lastMsgPK;
         }
@@ -233,7 +231,6 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
                 db.close();
                 return lastKey;
             }
-
     }
 
 
@@ -264,18 +261,20 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
      */
     public void insert(RoutineData routine) {
         ContentValues values = new ContentValues();
+        try {
+            if (table.equals("RT_TB")) {
+                values.put("PK", routine.getID());
+                values.put("Time", routine.getTime());
+                values.put("CAT", routine.getCat());
+                values.put("Day_Of_Week", routine.getDayOfWeek());
 
-        if (table.equals("RT_TB")) {
-            values.put("PK", routine.getID());
-            values.put("Start_Time", routine.getStartTime());
-            values.put("End_Time", routine.getEndTime());
-            values.put("CAT", routine.getCat());
-            values.put("Day_Of_Week", routine.getDayOfWeek());
-
-            long result = db.insert(table, null, values);
-            Log.d(table, result + "성공");
-        } else {
-            Log.d(table, "메서드 형식 오류");
+                long result = db.insert(table, null, values);
+                Log.d(table, result + "성공");
+            } else {
+                Log.d(table, "메서드 형식 오류");
+            }
+        } finally {
+            db.close();
         }
     }
 
@@ -285,19 +284,23 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
     public void insert(RecordData record) {
         ContentValues values = new ContentValues();
 
-        if (table.equals("RECORD_TB")) {
-            values.put("PK", record.getID());
-            values.put("OUser_FK", record.getoUserID());
-            values.put("PROMISE_FK", record.getPromiseID());
-            values.put("Start_Time", record.getStartTime());
-            values.put("End_Time", record.getEndTime());
-            values.put("Run_Time", record.getRunTime());
-            values.put("CAT", record.getCat());
+        try {
+            if (table.equals("RECORD_TB")) {
+                values.put("PK", record.getID());
+                values.put("OUser_FK", record.getoUserID());
+                values.put("PROMISE_FK", record.getPromiseID());
+                values.put("Start_Time", record.getStartTime());
+                values.put("End_Time", record.getEndTime());
+                values.put("Run_Time", record.getRunTime());
+                values.put("CAT", record.getCat());
 
-            long result = db.insert(table, null, values);
-            Log.d(table, result + "성공");
-        } else {
-            Log.d(table, "메서드 형식 오류");
+                long result = db.insert(table, null, values);
+                Log.d(table, result + "성공");
+            } else {
+                Log.d(table, "메서드 형식 오류");
+            }
+        } finally {
+            db.close();
         }
     }
 
@@ -307,34 +310,39 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
     public void insert(ExerciseData exercise, boolean isRecord) {
         ContentValues values = new ContentValues();
 
-        if (table.equals("EX_TB") && !isRecord) {
-            values.put("PK", exercise.getID());
-            values.put("RT_FK", exercise.getParentID());
-            values.put("Ex_NM", exercise.getExerciseName());
-            values.put("Set_Or_Time", exercise.getSetOrTime());
-            values.put("Volume", exercise.getVolume());
-            values.put("Cnt_Or_Dis", exercise.getCntOrDis());
-            values.put("Sort_Index", exercise.getIndex());
-            values.put("CAT", exercise.getCat());
+        try {
+            if (table.equals("EX_TB") && !isRecord) {
+                values.put("PK", exercise.getID());
+                values.put("RT_FK", exercise.getParentID());
+                values.put("Ex_NM", exercise.getExerciseName());
+                values.put("Set_Or_Time", exercise.getSetOrTime());
+                values.put("Volume", exercise.getVolume());
+                values.put("Cnt_Or_Dis", exercise.getCntOrDis());
+                values.put("Sort_Index", exercise.getIndex());
+                values.put("CAT", exercise.getCat());
 
-            long result = db.insert(table, null, values);
-            Log.d(table, result + "성공");
-        } else if (table.equals("EX_TB") && isRecord) {
-            values.put("PK", exercise.getID());
-            values.put("RECORD_FK", exercise.getParentID());
-            values.put("Ex_NM", exercise.getExerciseName());
-            values.put("Set_Or_Time", exercise.getSetOrTime());
-            values.put("Volume", exercise.getVolume());
-            values.put("Cnt_Or_Dis", exercise.getCntOrDis());
-            values.put("Sort_Index", exercise.getIndex());
-            values.put("CAT", exercise.getCat());
+                long result = db.insert(table, null, values);
+                Log.d(table, result + "성공");
+            } else if (table.equals("EX_TB") && isRecord) {
+                values.put("PK", exercise.getID());
+                values.put("RECORD_FK", exercise.getParentID());
+                values.put("Ex_NM", exercise.getExerciseName());
+                values.put("Set_Or_Time", exercise.getSetOrTime());
+                values.put("Volume", exercise.getVolume());
+                values.put("Cnt_Or_Dis", exercise.getCntOrDis());
+                values.put("Sort_Index", exercise.getIndex());
+                values.put("CAT", exercise.getCat());
 
-            long result = db.insert(table, null, values);
-            Log.d(table, result + "성공");
-        } else {
-            Log.d(table, "메서드 형식 오류");
+                long result = db.insert(table, null, values);
+                Log.d(table, result + "성공");
+            } else {
+                Log.d(table, "메서드 형식 오류");
+            }
+        } finally {
+            db.close();
         }
     }
+
     public void insert(int userKey,List<UserChat> U){
         if (table.equals("CHAT_ROOM_TB")) {
             ContentValues values = new ContentValues();
@@ -354,11 +362,15 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
             db.close();
         }
     }
+
     public void delete(int PK) {
         String selection = "PK = ?";
-        int result = db.delete(table, selection, new String[]{String.valueOf(PK)});
-        Log.i(table, +result + "개 row delete 성공");
-        db.close();
+        try {
+            int result = db.delete(table, selection, new String[]{String.valueOf(PK)});
+            Log.i(table, +result + "개 row delete 성공");
+        } finally {
+            db.close();
+        }
     }
 
     //로컬 db에서 해당 pk를 가진 행을 삭제하는 매서드
@@ -372,6 +384,7 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         db.close();
         Log.d(TAG, "deleteChatRoom: 삭제완료"+chatRoomPk);
         }
+
     public void deleteChatRoom() {
         if (table.equals("CHAT_ROOM_TB")) {
             db.execSQL("DELETE FROM CHAT_ROOM_TB");
@@ -392,72 +405,80 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         }
 
     }
+
     public void Update(RoutineData routine) {
         ContentValues values = new ContentValues();
 
-        if (table.equals("RT_TB")) {
-            values.put("Start_Time", routine.getStartTime());
-            values.put("End_Time", routine.getEndTime());
-            values.put("CAT", routine.getCat());
-            values.put("Day_Of_Week", routine.getDayOfWeek());
+        try {
+            if (table.equals("RT_TB")) {
+                values.put("Time", routine.getTime());
+                values.put("CAT", routine.getCat());
+                values.put("Day_Of_Week", routine.getDayOfWeek());
 
-            int result = db.update(table, values, "PK = ?", new String[]{String.valueOf(routine.getID())});
-            Log.d(table, result + " update 성공");
-        } else {
-            Log.d(table, "메서드 형식 오류");
+                int result = db.update(table, values, "PK = ?", new String[]{String.valueOf(routine.getID())});
+                Log.d(table, result + " update 성공");
+            } else {
+                Log.d(table, "메서드 형식 오류");
+            }
+        } finally {
+            db.close();
         }
-        db.close();
     }
-
 
     public void Update(int RECORD_PK, int OUser_FK, int Start_Time, String End_Time, String Run_Time, int CAT, int PROMISE_FK, String TS) {
         ContentValues values = new ContentValues();
 
         // 이 코드는 사용 안 할 수도 있음. 하더라도 수정 필요
-        
-        if (table.equals("RECORD_TB")) {
-            values.put("PK", RECORD_PK);
-            values.put("OUser_FK", OUser_FK);
-            values.put("Start_Time", Start_Time);
-            values.put("End_Time", End_Time);
-            values.put("Run_Time", Run_Time);
-            values.put("CAT", CAT);
-            values.put("PROMISE_FK", PROMISE_FK);
-            values.put("TS", TS);
 
-            int result = db.update(table, values, "PK = ?", new String[]{String.valueOf(RECORD_PK)});
-            Log.d(table, result + "성공");
-        } else {
-            Log.d(table, "메서드 형식 오류");
+        try {
+            if (table.equals("RECORD_TB")) {
+                values.put("PK", RECORD_PK);
+                values.put("OUser_FK", OUser_FK);
+                values.put("Start_Time", Start_Time);
+                values.put("End_Time", End_Time);
+                values.put("Run_Time", Run_Time);
+                values.put("CAT", CAT);
+                values.put("PROMISE_FK", PROMISE_FK);
+                values.put("TS", TS);
+
+                int result = db.update(table, values, "PK = ?", new String[]{String.valueOf(RECORD_PK)});
+                Log.d(table, result + "성공");
+            } else {
+                Log.d(table, "메서드 형식 오류");
+            }
+        } finally {
+            db.close();
         }
-        db.close();
     } // 운동 기록을 수정할 수 있게 할지는 아직 모름
 
     public void UpdateOrInsert(ExerciseData exercise) {
         ContentValues values = new ContentValues();
 
-        values.put("PK", exercise.getID());
-        values.put("RT_FK", exercise.getParentID());
-        values.put("Ex_NM", exercise.getExerciseName());
-        values.put("Set_Or_Time", exercise.getSetOrTime());
-        values.put("Volume", exercise.getVolume());
-        values.put("Cnt_Or_Dis", exercise.getCntOrDis());
-        values.put("Sort_Index", exercise.getIndex());
-        values.put("CAT", exercise.getCat());
+        try {
+            values.put("PK", exercise.getID());
+            values.put("RT_FK", exercise.getParentID());
+            values.put("Ex_NM", exercise.getExerciseName());
+            values.put("Set_Or_Time", exercise.getSetOrTime());
+            values.put("Volume", exercise.getVolume());
+            values.put("Cnt_Or_Dis", exercise.getCntOrDis());
+            values.put("Sort_Index", exercise.getIndex());
+            values.put("CAT", exercise.getCat());
 
-        Cursor cursor = db.query(table, null,  "PK = ?", new String[]{String.valueOf(exercise.getID())}, null, null, null);
-        if (cursor.moveToFirst()) {
-            // 존재하면 업데이트 수행
-            int result = db.update(table, values, "PK = ?", new String[]{String.valueOf(exercise.getID())});
-            Log.d(table, result + "업데이트 성공");
-            cursor.close();
-        } else {
-            // 존재하지 않으면 삽입 수행
-            long result = db.insert(table, null, values);
-            Log.d(table, result + "삽입 성공");
-            cursor.close();
+            Cursor cursor = db.query(table, null,  "PK = ?", new String[]{String.valueOf(exercise.getID())}, null, null, null);
+            if (cursor.moveToFirst()) {
+                // 존재하면 업데이트 수행
+                int result = db.update(table, values, "PK = ?", new String[]{String.valueOf(exercise.getID())});
+                Log.d(table, result + "업데이트 성공");
+                cursor.close();
+            } else {
+                // 존재하지 않으면 삽입 수행
+                long result = db.insert(table, null, values);
+                Log.d(table, result + "삽입 성공");
+                cursor.close();
+            }
+        } finally {
+            db.close();
         }
-        db.close();
     }
 
     public void Update(int signal,int userPk,int chatPk,String ts) {
@@ -501,94 +522,129 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         db.close();
     }
 
+    public ArrayList<RoutineData> SelectAllRoutine() {
+        ArrayList<RoutineData> routines = new ArrayList<>();
+
+        try {
+            if (table.equals("RT_TB")) {
+                String sql = "SELECT * FROM " + table + ";";
+
+                Log.d("SQLite SelectRoutine", sql);
+
+                Cursor cursor = db.rawQuery(sql, null);
+
+
+                while(cursor.moveToNext()) {
+                    routines.add(new RoutineData(
+                            cursor.getInt(0),    // ID
+                            cursor.getInt(1),    // Time
+                            cursor.getInt(2),    // cat
+                            cursor.getInt(3)    // dayOfWeek
+                    ));
+                }
+            } else {
+                Log.d(table, " 잘못된 메서드 호출");
+            }
+        } finally {
+            db.close();
+            return routines;
+        }
+    }
 
     public ArrayList<RoutineData> SelectRoutine(int DayOfWeek) {
-        if (table.equals("RT_TB")) {
-            String sql = "SELECT * FROM " + table + " WHERE Day_Of_Week = " + DayOfWeek + ";";
+        ArrayList<RoutineData> routines = new ArrayList<>();
 
-            Log.d("SQLite SelectRoutine", sql);
+        try {
+            if (table.equals("RT_TB")) {
+                String sql = "SELECT * FROM " + table + " WHERE Day_Of_Week = " + DayOfWeek + ";";
 
-            Cursor cursor = db.rawQuery(sql, null);
+                Log.d("SQLite SelectRoutine", sql);
 
-            ArrayList<RoutineData> routines = new ArrayList<>();
+                Cursor cursor = db.rawQuery(sql, null);
 
-            while(cursor.moveToNext()) {
-                routines.add(new RoutineData(
-                        cursor.getInt(0),    // ID
-                        cursor.getString(1), // startTime
-                        cursor.getString(2), // endTime
-                        cursor.getInt(3),    // cat
-                        cursor.getInt(4)     // dayOfWeek
-                ));
+
+                while(cursor.moveToNext()) {
+                    routines.add(new RoutineData(
+                            cursor.getInt(0),    // ID
+                            cursor.getInt(1),    // Time
+                            cursor.getInt(2),    // cat
+                            cursor.getInt(3)    // dayOfWeek
+                    ));
+                }
+            } else {
+                Log.d(table, " 잘못된 메서드 호출");
             }
-
+        } finally {
+            db.close();
             return routines;
-        } else {
-            Log.d(table, " 잘못된 메서드 호출");
         }
-        return null;
     }
 
     public ArrayList<RecordData> SelectRecord(String Date) {
-        if (table.equals("RECORD_TB")) {
-            String sql = "SELECT * FROM " + table + " WHERE TS LIKE '" + Date + "%';";
+        ArrayList<RecordData> records = new ArrayList<>();
 
-            Log.d("SQLite SelectRecord", sql);
+        try {
+            if (table.equals("RECORD_TB")) {
+                String sql = "SELECT * FROM " + table + " WHERE TS LIKE '" + Date + "%';";
 
-            Cursor cursor = db.rawQuery(sql, null);
+                Log.d("SQLite SelectRecord", sql);
 
-            ArrayList<RecordData> records = new ArrayList<>();
+                Cursor cursor = db.rawQuery(sql, null);
 
-            while(cursor.moveToNext()) {
-                records.add(new RecordData(
-                        cursor.getInt(0),    // ID
-                        cursor.getInt(1),    // OUser_FK
-                        cursor.getInt(2),    // PROMISE_FK
-                        cursor.getString(3), // Start_Time
-                        cursor.getString(4), // End_Time
-                        cursor.getString(5), // Run_Time
-                        cursor.getInt(6)
-                ));
+
+                while(cursor.moveToNext()) {
+                    records.add(new RecordData(
+                            cursor.getInt(0),    // ID
+                            cursor.getInt(1),    // OUser_FK
+                            cursor.getInt(2),    // PROMISE_FK
+                            cursor.getString(3), // Start_Time
+                            cursor.getString(4), // End_Time
+                            cursor.getString(5), // Run_Time
+                            cursor.getInt(6)
+                    ));
+                }
+            } else {
+                Log.d(table, " 잘못된 메서드 호출");
             }
-
+        } finally {
+            db.close();
             return records;
-        } else {
-            Log.d(table, " 잘못된 메서드 호출");
         }
-        return null;
     }
 
     public ArrayList<ExerciseData> SelectExercise(int RT_PK, boolean isRoutine) {
-        if (table.equals("EX_TB")) {
-            String sql = "SELECT * FROM " + table + " WHERE RT_FK = " + RT_PK + ";";
+        ArrayList<ExerciseData> exercises = new ArrayList<>();
 
-            Cursor cursor = db.rawQuery(sql, null);
+        try {
+            if (table.equals("EX_TB")) {
+                String sql = "SELECT * FROM " + table + " WHERE RT_FK = " + RT_PK + ";";
 
-            ArrayList<ExerciseData> exercises = new ArrayList<>();
+                Cursor cursor = db.rawQuery(sql, null);
 
-            int parentID = 1;
-            if (!isRoutine)  parentID = 2;
+                int parentID = 1;
+                if (!isRoutine)  parentID = 2;
 
-            while(cursor.moveToNext()) {
-                ExerciseData e = new ExerciseData( // 순서 잘 지킬 것, 나중에 수정
-                        cursor.getInt(0),   // PK,          ID
-                        cursor.getInt(parentID),   // RT FK or RECORD__FK,       parentID,
-                        cursor.getString(3),// Ex_NM,       title
-                        cursor.getInt(8),   // CAT,         cat
-                        cursor.getInt(4),   // Set_Or_Time, count:set
-                        cursor.getInt(5),   // Volume,      volume
-                        cursor.getInt(6),   // Cnt_Or_Dis,  num:Cnt
-                        cursor.getInt(7)    // Sort_Index,  index
-                );
+                while(cursor.moveToNext()) {
+                    ExerciseData e = new ExerciseData( // 순서 잘 지킬 것, 나중에 수정
+                            cursor.getInt(0),   // PK,          ID
+                            cursor.getInt(parentID),   // RT FK or RECORD__FK,       parentID,
+                            cursor.getString(3),// Ex_NM,       title
+                            cursor.getInt(8),   // CAT,         cat
+                            cursor.getInt(4),   // Set_Or_Time, count:set
+                            cursor.getInt(5),   // Volume,      volume
+                            cursor.getInt(6),   // Cnt_Or_Dis,  num:Cnt
+                            cursor.getInt(7)    // Sort_Index,  index
+                    );
 
-                exercises.add(e);
+                    exercises.add(e);
+                }
+            } else {
+                Log.d(table, " 잘못된 메서드 호출");
             }
-
+        } finally {
+            db.close();
             return exercises;
-        } else {
-            Log.d(table, " 잘못된 메서드 호출");
         }
-        return null;
     }
 
     public ArrayList<BlackListData> SelectBlackUser() {
@@ -657,7 +713,6 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
 
                 while (cursor.moveToNext()) {
                     WittListData e = new WittListData(         // 순서 잘 지킬 것, 나중에 수정
-
                             cursor.getInt(0),           //RECORD_PK
                             cursor.getInt(1),           //
                             cursor.getInt(2),           //OUser_FK

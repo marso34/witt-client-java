@@ -1,8 +1,6 @@
 package com.example.healthappttt.Routine;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,7 +10,6 @@ import androidx.annotation.Nullable;
 
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,8 +34,6 @@ public class CRSetTimeFragment extends Fragment {
     private static final String Blue = "#579EF2";
     private static final String Purple = "#8C5AD8";
     private static final String White = "#ffffff";
-
-    private int[] schedule;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -113,7 +108,6 @@ public class CRSetTimeFragment extends Fragment {
         if (-1 < time && time < 4)
             setTime(time);
 
-
         switch (dayOfWeek) {
             case 0: binding.dayOfWeek.setText("일요일"); break;
             case 1: binding.dayOfWeek.setText("월요일"); break;
@@ -156,10 +150,10 @@ public class CRSetTimeFragment extends Fragment {
         binding.evening.setStrokeWidth(0);
         binding.dawn.setStrokeWidth(0);
 //  ------------------------------------------------------------------------------------------------
-//        binding.morningIcon.setBackgroundColor(Color.parseColor(Background_3));
-//        binding.afternoonIcon.setBackgroundColor(Color.parseColor(Background_3));
-//        binding.eveningIcon.setBackgroundColor(Color.parseColor(Background_3));
-//        binding.dawnIcon.setBackgroundColor(Color.parseColor(Background_3));
+        binding.morningIcon.setColorFilter(Color.parseColor(Background_3));
+        binding.afternoonIcon.setColorFilter(Color.parseColor(Background_3));
+        binding.eveningIcon.setColorFilter(Color.parseColor(Background_3));
+        binding.dawnIcon.setColorFilter(Color.parseColor(Background_3));
 //  ------------------------------------------------------------------------------------------------
         binding.morningTxt.setTextColor(Color.parseColor(Background_3));
         binding.afternoonTxt.setTextColor(Color.parseColor(Background_3));
@@ -181,6 +175,7 @@ public class CRSetTimeFragment extends Fragment {
         switch (t) { // 필요한 것만 켜기
             case 0:
                 binding.morning.setStrokeWidth(1);
+                binding.morningIcon.setColorFilter(Color.parseColor(Orange));
                 binding.morningTxt.setTextColor(Color.parseColor(Orange));
                 binding.morningDetail.setTextColor(Color.parseColor(Orange));
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
@@ -188,6 +183,7 @@ public class CRSetTimeFragment extends Fragment {
                 break;
             case 1:
                 binding.afternoon.setStrokeWidth(1);
+                binding.afternoonIcon.setColorFilter(Color.parseColor(Yellow));
                 binding.afternoonTxt.setTextColor(Color.parseColor(Yellow));
                 binding.afternoonDetail.setTextColor(Color.parseColor(Yellow));
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
@@ -195,6 +191,7 @@ public class CRSetTimeFragment extends Fragment {
                 break;
             case 2:
                 binding.evening.setStrokeWidth(1);
+                binding.eveningIcon.setColorFilter(Color.parseColor(Blue));
                 binding.eveningTxt.setTextColor(Color.parseColor(Blue));
                 binding.eveningDetail.setTextColor(Color.parseColor(Blue));
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
@@ -202,6 +199,7 @@ public class CRSetTimeFragment extends Fragment {
                 break;
             case 3:
                 binding.dawn.setStrokeWidth(1);
+                binding.dawnIcon.setColorFilter(Color.parseColor(Purple));
                 binding.dawnTxt.setTextColor(Color.parseColor(Purple));
                 binding.dawnDetail.setTextColor(Color.parseColor(Purple));
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)

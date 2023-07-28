@@ -15,8 +15,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String routineSql = "CREATE TABLE if not exists RT_TB ("
                 + "PK INT primary key,"
-                + "Start_Time INT,"
-                + "End_Time TIME,"
+                + "Time TYNYINT,"
                 + "CAT SMALLINT,"
                 + "Day_Of_Week TYNYINT);";
 

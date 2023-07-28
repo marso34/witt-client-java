@@ -8,12 +8,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.example.healthappttt.Data.Exercise.RoutineData;
 import com.example.healthappttt.Data.PreferenceHelper;
 import com.example.healthappttt.Data.User.CompareUser;
 import com.example.healthappttt.Data.User.NearUsersData;
@@ -22,6 +25,7 @@ import com.example.healthappttt.Data.UserInfo;
 import com.example.healthappttt.Routine.RoutineChildFragment;
 import com.example.healthappttt.R;
 import com.example.healthappttt.User.UserAdapter;
+import com.example.healthappttt.databinding.FragmentHomeChildBinding;
 import com.example.healthappttt.interface_.ServiceApi;
 
 import java.util.ArrayList;
@@ -38,50 +42,48 @@ import retrofit2.Response;
  * create an instance of this fragment.
  */
 public class HomeChildFragment extends Fragment {
+    FragmentHomeChildBinding binding;
+
     private static final int REQUEST_CODE = 100;
 
-    private RecyclerView recyclerView;
     private UserAdapter adapter;
-    private CardView addRoutineBtn;
+
 
     private boolean topScrolled;
     private ArrayList<CompareUser> CompareuserList;
     private List<UserInfo> UserList;
-    private int day_of_week;
     private boolean updating = false;
     private UserInfo CurrentUser;
     private String UserUid;
-    private String dayOfWeek = "";
+    private PreferenceHelper preferenceHelper;
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-    private PreferenceHelper preferenceHelper;
+    private static final String ARG_DAY_OF_WEEK = "dayOfWeek";
+    private static final String ARG_ROUTINE = "routine";
+
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+
+    private int dayOfWeek;
+    private RoutineData routine;
 
     public HomeChildFragment() {}
-
-    public HomeChildFragment(int day_of_week) {
-        this.day_of_week = day_of_week;
-    }
 
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+     * @param dayOfWeek Parameter 1.
+     * @param routine Parameter 2.
      * @return A new instance of fragment RoutineChildFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static HomeChildFragment newInstance(String param1, String param2) {
+    public static HomeChildFragment newInstance(int dayOfWeek, RoutineData routine) {
         HomeChildFragment fragment = new HomeChildFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putInt(ARG_DAY_OF_WEEK, dayOfWeek);
+        args.putSerializable(ARG_ROUTINE, routine);
         fragment.setArguments(args);
         return fragment;
     }
@@ -90,38 +92,32 @@ public class HomeChildFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            dayOfWeek = getArguments().getInt(ARG_DAY_OF_WEEK);
+            routine = (RoutineData) getArguments().getSerializable(ARG_ROUTINE);
         }
-        preferenceHelper = new PreferenceHelper("UserTB",getContext());
+
+        preferenceHelper = new PreferenceHelper("UserTB", getContext());
+        UserList = new ArrayList<>();
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_home_child, container, false);
-        recyclerView = view.findViewById(R.id.recyclerView2);
-        UserList = new ArrayList<>();
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        binding = FragmentHomeChildBinding.inflate(inflater);
 
-        switch (day_of_week) {
-            case 0: dayOfWeek = "sun"; break;
-            case 1: dayOfWeek = "mon"; break;
-            case 2: dayOfWeek = "tue"; break;
-            case 3: dayOfWeek = "wed"; break;
-            case 4: dayOfWeek = "thu"; break;
-            case 5: dayOfWeek = "fri"; break;
-            case 6: dayOfWeek = "sat"; break;
-        }
-        setRecyclerView();
-        SwipeRefreshLayout mSwipeRefreshLayout = view.findViewById(R.id.swipe_layout);
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        return binding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        binding.swipelayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 final Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
+                        RecyclerView.LayoutManager layoutManager = binding.recyclerView.getLayoutManager();
                         int visibleItemCount = layoutManager.getChildCount();
                         int totalItemCount = layoutManager.getItemCount();
                         int firstVisibleItemPosition = ((LinearLayoutManager)layoutManager).findFirstVisibleItemPosition();
@@ -134,49 +130,65 @@ public class HomeChildFragment extends Fragment {
                         if(0 < firstVisibleItemPosition){
                             topScrolled = false;
                         }
-                        mSwipeRefreshLayout.setRefreshing(false);
+                        binding.swipelayout.setRefreshing(false);
                     }
                 }, 500);
             }
         });
-        {
-            RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
-            int visibleItemCount = layoutManager.getChildCount();
-            int totalItemCount = layoutManager.getItemCount();
-            int firstVisibleItemPosition = ((LinearLayoutManager)layoutManager).findFirstVisibleItemPosition();
-            int lastVisibleItemPosition = ((LinearLayoutManager)layoutManager).findLastVisibleItemPosition();
-            if(totalItemCount < 1 && !updating){
-                postsUpdate(false);
+
+        binding.moveRoutine.setOnClickListener(v -> {});
+
+        if (routine != null) {
+            binding.emptylayout.setVisibility(View.GONE);
+            binding.swipelayout.setVisibility(View.VISIBLE);
+            setRecyclerView();
+
+            {
+                RecyclerView.LayoutManager layoutManager = binding.recyclerView.getLayoutManager();
+                int visibleItemCount = layoutManager.getChildCount();
+                int totalItemCount = layoutManager.getItemCount();
+                int firstVisibleItemPosition = ((LinearLayoutManager)layoutManager).findFirstVisibleItemPosition();
+                int lastVisibleItemPosition = ((LinearLayoutManager)layoutManager).findLastVisibleItemPosition();
+                if(totalItemCount < 1 && !updating){
+                    postsUpdate(false);
+                }
             }
+        } else {
+            binding.emptylayout.setVisibility(View.VISIBLE);
+            binding.swipelayout.setVisibility(View.GONE);
         }
-        return view;
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
 
+        binding = null;
+    }
 
     private void setRecyclerView() {
-        adapter = new UserAdapter(getContext(), (ArrayList<UserInfo>) UserList, day_of_week); // 나중에 routine
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(adapter);
+        adapter = new UserAdapter(getContext(), (ArrayList<UserInfo>) UserList, dayOfWeek); // 나중에 routine
+        binding.recyclerView.setHasFixedSize(true);
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.recyclerView.setAdapter(adapter);
     }
 
     private void getUserData() {
         ServiceApi apiInterface = RetrofitClient.getClient().create(ServiceApi.class);
-        Log.d("TAG", String.valueOf(day_of_week));
-        NearUsersData NR = new NearUsersData(day_of_week,preferenceHelper.getPK());//현재 내 유저 정보 보내서 내껀 안나오게함.
+        NearUsersData NR = new NearUsersData(dayOfWeek, preferenceHelper.getPK());//현재 내 유저 정보 보내서 내껀 안나오게함.
         Call<List<UserInfo>> call = apiInterface.GetNearUsers(NR);
         call.enqueue(new Callback<List<UserInfo>>() {
             @Override
             public void onResponse(Call<List<UserInfo>> call, Response<List<UserInfo>> response) {
                 if (response.isSuccessful()) {
+                    Log.d("Response", "Successful");
+
                     UserList.clear();
                     for (UserInfo value : response.body()) {
                         UserList.add(value);
                         Log.d("이름", value.getName());
-                        Log.d("엔드타임", value.getEndTime());
+                        Log.d("타임", value.getTime() + "");
                         Log.d("키", String.valueOf(value.getUserKey()));
-                        Log.d("시작타임", value.getStartTime());
                         Log.d("헬스장", value.getGymName());
                         Log.d("날짜", String.valueOf(value.getDayOfWeek()));
                         Log.d("부위",String.valueOf(value.getRoutineCategory()));
@@ -205,11 +217,9 @@ public class HomeChildFragment extends Fragment {
         //퀵정렬 편집해서 만드는건 가능한데 일단 보류 난이도가 높음.
         //
         updating = false;
-        }
+    }
 
-
-
-        public void UserSolt(UserInfo currentUser){// 유저 거리순 정렬.
+    public void UserSolt(UserInfo currentUser){// 유저 거리순 정렬.
             ArrayList<Integer> distans = new ArrayList<Integer>();
             for(int i=0;i<UserList.size();++i){
                 if(UserList.get(i).getUserKey() == currentUser.getUserKey()) {

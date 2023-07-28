@@ -10,6 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:text="추후 업데이트 예정입니다." />
+        android:textColor="@color/Background_3"
+        android:text="추후 업데이트 예정입니다."
+        style="@style/Body"/>
 
 </FrameLayout>

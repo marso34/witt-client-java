@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.healthappttt.R;
@@ -15,25 +16,27 @@ import com.example.healthappttt.R;
 import java.util.ArrayList;
 
 public class AreaAdapter extends RecyclerView.Adapter<AreaAdapter.MainViewHolder>  {
+    ArrayList<String> exerciseCat;
 
-    ArrayList<String>MyExercise;
+    private int size;
 
-    private Context mContext;
-    private TextView CountTxt;
+    public AreaAdapter(ArrayList<String> exerciseCat) {
+        this.exerciseCat = exerciseCat;
+        this.size = exerciseCat.size();
 
-
-    public AreaAdapter(Context context, ArrayList<String> MyExercise_) { // 일단 테스트
-        this.mContext = context;
-        this.MyExercise = new ArrayList<>();
-        this.MyExercise = MyExercise_;
+        if (size > 4) size = 5;
     }
 
     public static class MainViewHolder extends RecyclerView.ViewHolder {
-
+        public CardView CatView;
+        public TextView CatTxt, PlusTxt;
 
         public MainViewHolder(View view) {
             super(view);
 
+            this.CatView = view.findViewById(R.id.cat);
+            this.CatTxt = view.findViewById(R.id.exerciseCat);
+            this.PlusTxt = view.findViewById(R.id.plus);
         }
     }
 
@@ -42,17 +45,26 @@ public class AreaAdapter extends RecyclerView.Adapter<AreaAdapter.MainViewHolder
     public MainViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_area, parent, false);
         final MainViewHolder mainViewHolder = new MainViewHolder(view);
+
         return mainViewHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull MainViewHolder holder, int position) {
-      CountTxt = (TextView) holder.itemView.findViewById(R.id.exerciseCat);
+        if (position < 4) {
+            holder.CatView.setVisibility(View.VISIBLE);
+            holder.PlusTxt.setVisibility(View.GONE);
 
-      CountTxt.setBackgroundColor(getColor(MyExercise.get(position)));
-      CountTxt.setTextColor(getTextColor(MyExercise.get(position)));
-      CountTxt.setText(MyExercise.get(position));
+            holder.CatTxt.setText(exerciseCat.get(position));
+            holder.CatTxt.setBackgroundColor(getColor(exerciseCat.get(position)));
+            holder.CatTxt.setTextColor(getTextColor(exerciseCat.get(position)));
+        } else {
+            holder.CatView.setVisibility(View.GONE);
+            holder.PlusTxt.setVisibility(View.VISIBLE);
+            holder.PlusTxt.setText("+" + (exerciseCat.size() - position));
+        }
     }
+
     public int getColor(String cat) {
         switch (cat) {
             case "가슴":  return Color.parseColor("#eee6fa");
@@ -83,7 +95,7 @@ public class AreaAdapter extends RecyclerView.Adapter<AreaAdapter.MainViewHolder
 
     @Override
     public int getItemCount() {
-        return MyExercise.size();
+        return size;
     } // exercises.size()+1 -> 광고 자리를 위한 +1
 
 

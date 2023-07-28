@@ -1,83 +1,172 @@
 package com.example.healthappttt.Home;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.example.healthappttt.Data.Exercise.ExerciseComparator;
+import com.example.healthappttt.Data.Exercise.ExerciseData;
+import com.example.healthappttt.Data.Exercise.RoutineData;
+import com.example.healthappttt.Data.SQLiteUtil;
 import com.example.healthappttt.R;
-import com.example.healthappttt.User.UserPagerAdapter;
+import com.example.healthappttt.Routine.ExerciseAdapter;
+import com.example.healthappttt.User.AreaAdapter;
+import com.example.healthappttt.databinding.FragmentHomeBinding;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
+import org.w3c.dom.Text;
+
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
+import java.util.function.ObjIntConsumer;
 
 public class HomeFragment extends Fragment {
-    Context context;
+    FragmentHomeBinding binding;
 
-    private TabLayout tabLayout;
-    private ViewPager2 viewPager;
+    private static final String Orange = "#FC673F";
+    private static final String Yellow = "#F2BB57";
+    private static final String Blue = "#579EF2";
+    private static final String Purple = "#8C5AD8";
+
+    private int dayOfWeek;
+
+    private AreaAdapter catAdapter;
     private UserPagerAdapter pagerAdapter;
 
+    private SQLiteUtil sqLiteUtil;
+    private ArrayList<RoutineData> routines;
+
+
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
+
+    private String mParam1;
+    private String mParam2;
+
+    public HomeFragment() {}
+
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @param param1 Parameter 1.
+     * @param param2 Parameter 2.
+     * @return A new instance of fragment RoutineChildFragment.
+     */
+    // TODO: Rename and change types and number of parameters
+    public static HomeFragment newInstance(String param1, String param2) {
+        HomeFragment fragment = new HomeFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
+        }
+
+        sqLiteUtil = SQLiteUtil.getInstance();
+        sqLiteUtil.setInitView(getContext(), "RT_TB");
+
+        ArrayList<RoutineData> temp = sqLiteUtil.SelectAllRoutine();
+        routines = new ArrayList<>();
+
+        Date currentDate = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(currentDate);
+        dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK) - 1;
+
+        for (int i = 0; i < 7; i++) {
+            int j = 0;
+            for (RoutineData r : temp) {
+                if (r.getDayOfWeek() == i) {
+                    routines.add(r);
+                    break;
+                }
+                j++;
+            }
+
+            if (j == temp.size())
+                routines.add(null);
+        }
+    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        binding = FragmentHomeBinding.inflate(inflater);
 
-        ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_home, container, false);
+        return binding.getRoot();
+    }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
-        tabLayout = view.findViewById(R.id.tab_layout);
-        viewPager = view.findViewById(R.id.view_pager);
+        pagerAdapter = new UserPagerAdapter(this, routines);
 
-        pagerAdapter = new UserPagerAdapter(this);
-        pagerAdapter.createFragment(0);
-        pagerAdapter.createFragment(1);
-        pagerAdapter.createFragment(2);
-        pagerAdapter.createFragment(3);
-        pagerAdapter.createFragment(4);
-        pagerAdapter.createFragment(5);
-        pagerAdapter.createFragment(6);
+        for (int i = 0; i < 7; i++)
+            pagerAdapter.createFragment(i); // 7개(일주일) 페이지어댑터 할당
 
-        viewPager.setAdapter(pagerAdapter);
+        binding.viewPager.setAdapter(pagerAdapter);
 
-        new TabLayoutMediator(tabLayout, viewPager,
+        new TabLayoutMediator(binding.tabLayout,  binding.viewPager,
                 (tab, position) -> tab.setText(setText(position))
         ).attach();
 
-        Date currentDate = new Date();
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(currentDate);
+        setRoutines(routines.get(dayOfWeek)); // 오늘 요일에 맞는 루틴 할당
 
-        viewPager.setCurrentItem(calendar.get(Calendar.DAY_OF_WEEK) - 1, false);
+        binding.viewPager.setCurrentItem(dayOfWeek, false);
 
-//        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-//            @Override
-//            public void onTabSelected(TabLayout.Tab tab) {
-////                viewPager.setCurrentItem(tab.getPosition(), false);
-//            }
-//
-//            @Override
-//            public void onTabUnselected(TabLayout.Tab tab) {
-//            }
-//
-//            @Override
-//            public void onTabReselected(TabLayout.Tab tab) {
-//
-//            }
-//        });
-//        애니메이션 삭제 코드, 애니메이션 삭제하면 너무 딱딱하게 느껴짐. 없으면 탭 클릭 시 애니메이션 과함
+        binding.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                Log.d("탭 포지션", tab.getPosition() + "");
 
-        return view;
+                setRoutines(routines.get(tab.getPosition())); // 오늘 요일에 맞는 루틴 할당
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        binding = null;
     }
 
     public String setText(int position) {
@@ -95,6 +184,58 @@ public class HomeFragment extends Fragment {
         }
 
         return dayOfWeek;
+    }
+
+    private void setRoutines(RoutineData r) {
+        if (r != null) {
+            binding.routineLayout.setVisibility(View.VISIBLE);
+            binding.emptyTxt.setVisibility(View.GONE);
+
+            switch (r.getTime()) {
+                case 0:
+                    binding.timeIcon.setImageResource(R.drawable.baseline_brightness_5_24);
+                    binding.timeTxt.setText("아침");
+                    binding.timeTxt.setTextColor(Color.parseColor(Orange));
+                    break;
+                case 1:
+                    binding.timeIcon.setImageResource(R.drawable.baseline_wb_sunny_24);
+                    binding.timeTxt.setText("점심");
+                    binding.timeTxt.setTextColor(Color.parseColor(Yellow));
+                    break;
+                case 2:
+                    binding.timeIcon.setImageResource(R.drawable.baseline_brightness_3_24);
+                    binding.timeTxt.setText("저녁");
+                    binding.timeTxt.setTextColor(Color.parseColor(Blue));
+                    break;
+                case 3:
+                    binding.timeIcon.setImageResource(R.drawable.baseline_flare_24);
+                    binding.timeTxt.setText("새벽");
+                    binding.timeTxt.setTextColor(Color.parseColor(Purple));
+                    break;
+            }
+
+            setCatRecyclerView(r.getCat());
+        } else {
+            binding.routineLayout.setVisibility(View.GONE);
+            binding.emptyTxt.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void setCatRecyclerView(int cat) {
+        ArrayList<String> eCat = new ArrayList<>();
+
+        if ((cat & 0x1)  == 0x1)        eCat.add("가슴");
+        if ((cat & 0x2)  == 0x2)        eCat.add("등");
+        if ((cat & 0x4)  == 0x4)        eCat.add("어깨");
+        if ((cat & 0x8)  == 0x8)        eCat.add("하체");
+        if ((cat & 0x10) == 0x10)       eCat.add("팔");
+        if ((cat & 0x20) == 0x20)       eCat.add("복근");
+        if ((cat & 0x40) == 0x40)       eCat.add("유산소");
+
+        catAdapter = new AreaAdapter(eCat); // 나중에 routine
+        binding.recyclerView.setHasFixedSize(true);
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
+        binding.recyclerView.setAdapter(catAdapter);
     }
 
 //    private void setRoutine() {
