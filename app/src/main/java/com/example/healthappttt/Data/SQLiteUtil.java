@@ -397,23 +397,39 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
                 ContentValues values = new ContentValues();
                 for (UserChat u : U) {
                     if (table.equals("CHAT_ROOM_TB")) {
-                        values.put("USER_FK", userKey);
-                        values.put("CHAT_ROOM_PK", u.getChatRoomId());
-                        values.put("LAST_MSG_INDEX", 1);
-                        values.put("OTHER_USER_FK",u.getOtherUserKey());
-                        values.put("OTHER_USER_NM", u.getUserNM());
-                        values.put("FAV", 0);
-                        //헬스장 이름 넣기.
-                        values.put("TS", u.getTS());
-                        long result = db.insert(table, null, values);
-                        Log.d(table, result + "성공");
-                    } else Log.d(table, "실패 삽입 챗티방");
+                        int chatRoomId = u.getChatRoomId();
+                        // Check if the CHAT_ROOM_PK exists in the database
+                        boolean chatRoomExists = checkChatRoomExists(chatRoomId);
+                        if (!chatRoomExists) {
+                            values.put("USER_FK", userKey);
+                            values.put("CHAT_ROOM_PK", u.getChatRoomId());
+                            values.put("LAST_MSG_INDEX", 1);
+                            values.put("OTHER_USER_FK", u.getOtherUserKey());
+                            values.put("OTHER_USER_NM", u.getUserNM());
+                            values.put("FAV", 0);
+                            //헬스장 이름 넣기.
+                            values.put("TS", u.getTS());
+                            long result = db.insert(table, null, values);
+                            Log.d(table, result + "성공");
+                        }
+                    }else Log.d(table, "실패 삽입 챗티방");
                 }
 
             }
         }finally {
             db.close();
         }
+    }
+    private boolean checkChatRoomExists(int chatRoomId) {
+        // Perform a database query to check if the CHAT_ROOM_PK exists in the table
+        // Return true if it exists, false otherwise
+        String query = "SELECT CHAT_ROOM_PK FROM CHAT_ROOM_TB WHERE CHAT_ROOM_PK=?";
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(chatRoomId)});
+        boolean exists = cursor != null && cursor.getCount() > 0;
+        if (cursor != null) {
+            cursor.close();
+        }
+        return exists;
     }
 
     public void delete(int PK) {

@@ -128,18 +128,24 @@ public class ChattingFragment extends Fragment {
     public void getUsersFromServer() {// 이건 챗프레그먼트 켜질때문 부르도록 다른곳에있는 이거 전부 getLastMSG로 바꾸기
         // 서버로부터 유저 목록을 가져와서 List<UserChat>로 반환합니다.
        try {
-           sqLiteUtil.setInitView(getContext(),"CHAT_ROOM_TB");
-           int lastKey = sqLiteUtil.getMaxChatRoomPK(prefhelper.getPK());
+//           sqLiteUtil.setInitView(getContext(),"CHAT_ROOM_TB");
+//           int lastKey = sqLiteUtil.getMaxChatRoomPK(prefhelper.getPK());
            ServiceApi apiService = RetrofitClient.getClient().create(ServiceApi.class);
            Log.d(TAG, "getUsersFromServer: "+String.valueOf(prefhelper.getPK()));
-           Call<List<UserChat>> call = apiService.getUsers(new pkData(prefhelper.getPK(),lastKey)); // 유저키 얻어와서 넣기
+           Call<List<UserChat>> call = apiService.getUsers(new pkData(prefhelper.getPK())); // 유저키 얻어와서 넣기
            call.enqueue(new Callback<List<UserChat>>() {
                @Override
                public void onResponse(Call<List<UserChat>> call, Response<List<UserChat>> response) {
                    if (response.isSuccessful()) {
                        List<UserChat> users = response.body();
-                       sqLiteUtil.setInitView(getContext(),"CHAT_ROOM_TB");
-                       sqLiteUtil.insert(prefhelper.getPK(),users);
+                       sqLiteUtil.setInitView(getContext(), "CHAT_ROOM_TB");
+                       sqLiteUtil.insert(prefhelper.getPK(), users);
+                       sqLiteUtil.setInitView(getContext(), "CHAT_ROOM_TB");
+                       sqLiteUtil.insert(prefhelper.getPK(), users);
+                       userList.clear();
+                       userList.addAll(users);
+                       userListAdapter.notifyDataSetChanged();
+                       chatflag = false;
                        // userList에 데이터가 추가된 후에 실행되어야 하는 로직을 여기에 작성합니다.
                    } else {
                        Toast.makeText(getContext(), "Failed to retrieve user list", Toast.LENGTH_SHORT).show();
@@ -153,12 +159,11 @@ public class ChattingFragment extends Fragment {
 
        }
         finally {
-           sqLiteUtil.setInitView(getContext(),"CHAT_ROOM_TB");
-           List<UserChat> users = sqLiteUtil.selectChatRoom(String.valueOf(prefhelper.getPK()));
-           userList.clear();
-           userList.addAll(users);
-           userListAdapter.notifyDataSetChanged();
-           chatflag = false;
+//           sqLiteUtil.setInitView(getContext(),"CHAT_ROOM_TB");
+//           List<UserChat> users = sqLiteUtil.selectChatRoom(String.valueOf(prefhelper.getPK()));
+//           userList.clear();
+//           userList.addAll(users);
+//           userListAdapter.notifyDataSetChanged();chatflag = false;
 
        }
 

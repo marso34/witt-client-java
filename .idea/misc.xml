@@ -123,8 +123,15 @@
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_myprofile.xml" value="0.23072916666666668" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_profile.xml" value="0.264" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_profile_my.xml" value="0.1" />
+        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_report.xml" value="0.23385416666666667" />
+        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_report_history.xml" value="0.23385416666666667" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_review.xml" value="0.23385416666666667" />
+        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_reviews_recd.xml" value="0.23385416666666667" />
+        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_routine.xml" value="0.23385416666666667" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_set_exercise.xml" value="0.20478837109876016" />
+        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_setalarm.xml" value="0.23385416666666667" />
+        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_setting.xml" value="0.23385416666666667" />
+        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_sign_up.xml" value="0.23385416666666667" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_signup.xml" value="0.4" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_sub.xml" value="0.15988372093023256" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_sub0.xml" value="0.2" />
@@ -137,6 +144,7 @@
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/adapter_alaram.xml" value="0.2484375" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/adapter_alram.xml" value="0.4" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/adapter_area.xml" value="0.4" />
+        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/adapter_blockuser.xml" value="0.23385416666666667" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/adapter_create_exercize.xml" value="0.6" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/adapter_exercise.xml" value="0.20478837109876016" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/adapter_exercise_input.xml" value="0.21822916666666667" />
@@ -179,8 +187,9 @@
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/fragment_sub.xml" value="0.21395348837209302" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/fragment_sub1.xml" value="0.4" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/fragment_sub2.xml" value="0.38530066815144765" />
+        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/input_height_weight.xml" value="0.23385416666666667" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/item_location.xml" value="0.4" />
-        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/item_message_received.xml" value="0.2" />
+        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/item_message_received.xml" value="0.264" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/item_message_sent.xml" value="0.4" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/my_popup_layout.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/receive.xml" value="0.23385416666666667" />
@@ -238,12 +247,5 @@
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
-  </component>
-  <component name="VisualizationToolProject">
-    <option name="state">
-      <ProjectState>
-        <option name="scale" value="0.5" />
-      </ProjectState>
-    </option>
   </component>
 </project>
