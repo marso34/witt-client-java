@@ -22,7 +22,7 @@
             android:elevation="8dp">
 
             <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tab_layout"
+                android:id="@+id/tabLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="21dp"
@@ -45,9 +45,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginVertical="16dp"
                 android:layout_marginHorizontal="16dp"
-                android:layout_marginBottom="15dp"
                 android:gravity="center"
                 android:paddingTop="9dp"
                 android:paddingHorizontal="16dp"
@@ -59,7 +58,7 @@
                 android:elevation="10dp">
 
                 <LinearLayout
-                    android:id="@+id/routine"
+                    android:id="@+id/routineLayout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
@@ -86,11 +85,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
 
-
                 </LinearLayout>
 
                 <TextView
-                    android:id="@+id/empty"
+                    android:id="@+id/emptyTxt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/Background_2"
@@ -103,7 +101,7 @@
         </LinearLayout>
 
         <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/view_pager"
+            android:id="@+id/viewPager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 

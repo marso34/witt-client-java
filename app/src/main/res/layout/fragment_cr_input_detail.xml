@@ -47,7 +47,9 @@ tools:context=".Routine.CRInputDetailFragment">
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="@drawable/rounded_bottom">
+            android:background="@drawable/rounded_bottom"
+            android:outlineSpotShadowColor="@color/Background_2"
+            android:elevation="8dp">
 
             <TextView
                 android:layout_width="wrap_content"

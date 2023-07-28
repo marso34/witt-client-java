@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.healthappttt.Data.Chat.UserChat;
 import com.example.healthappttt.R;
 import com.example.healthappttt.User.UserGenAdapter;
+import com.example.healthappttt.databinding.FragmentErSelectUserBinding;
 
 import java.util.ArrayList;
 
@@ -25,12 +27,12 @@ import io.reactivex.rxjava3.annotations.NonNull;
  * create an instance of this fragment.
  */
 public class ERSelectUserFragment extends Fragment {
-    private CardView NextBtn;
-
-    private RecyclerView recyclerView;
+    FragmentErSelectUserBinding binding;
     private UserGenAdapter adapter;
 
-    ArrayList<UserChat> test;
+    private ArrayList<UserChat> test;
+
+    private int OUser_PK;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -45,7 +47,7 @@ public class ERSelectUserFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     public interface OnFragmentInteractionListener {
-        void onSelectUser();
+        void onSelectUser(int OUser_PK);
     }
 
     @Override
@@ -64,21 +66,12 @@ public class ERSelectUserFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ERSelectUserFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ERSelectUserFragment newInstance(String param1, String param2) {
+    public static ERSelectUserFragment newInstance() {
         ERSelectUserFragment fragment = new ERSelectUserFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
+//        Bundle args = new Bundle();
+//        args.putString(ARG_PARAM1, param1);
+//        args.putString(ARG_PARAM2, param2);
+//        fragment.setArguments(args);
         return fragment;
     }
 
@@ -94,26 +87,38 @@ public class ERSelectUserFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_er_select_user, container, false);
+        binding = FragmentErSelectUserBinding.inflate(inflater);
 
-        recyclerView = view.findViewById(R.id.recyclerView);
-        NextBtn = view.findViewById(R.id.nextBtn);
+        return binding.getRoot();
+    }
 
-        NextBtn.setOnClickListener(v -> mListener.onSelectUser());
+    @Override
+    public void onViewCreated(@androidx.annotation.NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        binding.backBtn.setOnClickListener(v -> mListener.onSelectUser(-1));
+
+        binding.nextBtn.setOnClickListener(v -> {
+            if (OUser_PK > 0)
+                mListener.onSelectUser(OUser_PK);
+        });
 
         setRecyclerView();
+    }
 
-        return view;
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        binding = null;
     }
 
     private void setRecyclerView() {
         test = new ArrayList<>();
 
-
         adapter = new UserGenAdapter(getContext(), test, 3);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(adapter);
+        binding.recyclerView.setHasFixedSize(true);
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.recyclerView.setAdapter(adapter);
     }
 }

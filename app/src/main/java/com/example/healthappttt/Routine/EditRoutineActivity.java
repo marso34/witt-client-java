@@ -228,11 +228,18 @@ public class EditRoutineActivity extends AppCompatActivity {
     }
 
     private void UpdateToDB() {
+        int cat = 0;
+
+        for (ExerciseData e : routine.getExercises())
+            cat |= e.getCat();
+
+        routine.setCat(cat);
+
         service.updateRoutine(routine).enqueue(new Callback<Integer>() {
             @Override
             public void onResponse(Call<Integer> call, Response<Integer> response) {
                 if (response.isSuccessful()) {
-                    Toast.makeText(EditRoutineActivity.this, "수정 성공", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(EditRoutineActivity.this, "수정 성공", Toast.LENGTH_SHORT).show();
 
                     int id = response.body(), cnt = 0;
 
@@ -273,6 +280,7 @@ public class EditRoutineActivity extends AppCompatActivity {
 
         for (int pk: deletePk) {
             Log.d("삭제할 것들", pk + " 테스트");
+            sqLiteUtil.setInitView(this, "EX_TB");
             sqLiteUtil.delete(pk);
         }
     }

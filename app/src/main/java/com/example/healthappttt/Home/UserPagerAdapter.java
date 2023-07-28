@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
+import com.example.healthappttt.Data.Exercise.RoutineData;
 import com.example.healthappttt.Home.HomeChildFragment;
 
 import java.util.ArrayList;
@@ -11,9 +12,14 @@ import java.util.ArrayList;
 
 public class UserPagerAdapter extends FragmentStateAdapter {
     private final ArrayList<Fragment> mFragmentList = new ArrayList<>();
+    private ArrayList<RoutineData> routines;
     private int position;
-    public UserPagerAdapter(@NonNull Fragment fragmentActivity) {
+
+
+    public UserPagerAdapter(@NonNull Fragment fragmentActivity, ArrayList<RoutineData> routines) {
         super(fragmentActivity);
+
+        this.routines = routines;
     }
 
     @NonNull
@@ -27,7 +33,7 @@ public class UserPagerAdapter extends FragmentStateAdapter {
             case 3:
             case 4:
             case 5:
-            case 6: addFragment(new HomeChildFragment(position)); break;
+            case 6: addFragment(HomeChildFragment.newInstance(position, routines.get(position))); break;
             default:
                 return null;
         }

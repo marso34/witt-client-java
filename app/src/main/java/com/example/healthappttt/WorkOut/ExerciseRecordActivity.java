@@ -54,25 +54,19 @@ public class ExerciseRecordActivity extends AppCompatActivity implements ERSelec
 
         service = RetrofitClient.getClient().create(ServiceApi.class);
         sqLiteUtil = SQLiteUtil.getInstance();
-        sqLiteUtil.setInitView(this, "RT_TB");
-
         prefhelper = new PreferenceHelper("UserTB",this);
-//        Log.d("prefhelper", "USER_PK:" + prefhelper.getPK()); //저장된 유저의 pk값 가져오기
 
-
+        sqLiteUtil.setInitView(this, "RT_TB");
         routines = sqLiteUtil.SelectRoutine(dayOfWeek);
 
         if (routines != null) {
-            sqLiteUtil.setInitView(this, "EX_TB");
-
-            for (int i = 0; i < routines.size(); i++)
+            for (int i = 0; i < routines.size(); i++) {
+                sqLiteUtil.setInitView(this, "EX_TB");
                 routines.get(i).setExercises(sqLiteUtil.SelectExercise(routines.get(i).getID(), true));
+            }
 
             Collections.sort(routines, new RoutineComparator());
         }
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("routines", routines);
-        bundle.putInt("dayOfWeek", dayOfWeek);
 
         if (routines.size() > 0)
             replaceFragment(ERSelectRoutineFragment.newInstance(dayOfWeek, routines.get(0)));
@@ -80,23 +74,18 @@ public class ExerciseRecordActivity extends AppCompatActivity implements ERSelec
             replaceFragment(ERSelectRoutineFragment.newInstance(dayOfWeek, null));
     }
 
-    private String TimeToString(int time) {
-        int mSec = time % 1000 / 10; // msec은 언젠가 쓸 수도 있음
-        int sec = (time / 1000) % 60;
-        int min = (time / 1000) / 60 % 60;
-        int hour = (time / 1000) / (60 * 60);
-
-        @SuppressLint("DefaultLocale") String result = String.format("%02d:%02d:%02d", hour, min, sec);
-
-        return result;
-    }
-
-    private String TimeToString(long time) {
-        Date date = new Date(time);
-        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-        String result = dateFormat.format(date);
-
-        return result;
+    private void replaceFragment (Fragment fragment) { //프래그먼트 설정
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        if( fragment.isAdded() )
+        {
+            // Fragment 가 이미 추가되어 있으면 삭제한 후, 새로운 Fragment 를 생성한다.
+            // 새로운 Fragment 를 생성하지 않으면 2번째 보여질 때에 Fragment 가 보여지지 않는 것 같습니다.
+            fragmentTransaction.remove( fragment );
+            fragment = new Fragment();
+        }
+        fragmentTransaction.replace(R.id.frame_layout, fragment);
+        fragmentTransaction.commit();
     }
 
     private void SaveToDB() {
@@ -130,7 +119,7 @@ public class ExerciseRecordActivity extends AppCompatActivity implements ERSelec
 
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("record", record);
-                    replaceFragment(new ExerciseResultFragment(), bundle);
+//                    replaceFragment(new ExerciseResultFragment(), bundle);
 
                 } else {
                     Toast.makeText(ExerciseRecordActivity.this, "서버 연결에 실패", Toast.LENGTH_SHORT).show();
@@ -160,57 +149,35 @@ public class ExerciseRecordActivity extends AppCompatActivity implements ERSelec
             sqLiteUtil.insert(e, true);
     }
 
-    private void replaceFragment (Fragment fragment) { //프래그먼트 설정
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        if( fragment.isAdded() )
-        {
-            // Fragment 가 이미 추가되어 있으면 삭제한 후, 새로운 Fragment 를 생성한다.
-            // 새로운 Fragment 를 생성하지 않으면 2번째 보여질 때에 Fragment 가 보여지지 않는 것 같습니다.
-            fragmentTransaction.remove( fragment );
-            fragment = new Fragment();
-        }
-        fragmentTransaction.replace(R.id.frame_layout, fragment);
-        fragmentTransaction.commit();
-    }
-
-    private void replaceFragment (Fragment fragment, Bundle bundle) { //프래그먼트 설정
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        if( fragment.isAdded() )
-        {
-            // Fragment 가 이미 추가되어 있으면 삭제한 후, 새로운 Fragment 를 생성한다.
-            // 새로운 Fragment 를 생성하지 않으면 2번째 보여질 때에 Fragment 가 보여지지 않는 것 같습니다.
-            fragmentTransaction.remove( fragment );
-            fragment = new Fragment();
-        }
-        fragment.setArguments(bundle);
-        fragmentTransaction.replace(R.id.frame_layout, fragment);
-        fragmentTransaction.commit();
+    @Override
+    public void onSelectRoutine(boolean isBack) {
+        if (isBack)    finish();
+        else           replaceFragment(ERSelectUserFragment.newInstance());
     }
 
     @Override
-    public void onSelectRoutine(RoutineData routine) {
-        this.routine = routine;
+    public void onSelectUser(int OUser_PK) { // 나중에 유저 전달로 변경
+        if (OUser_PK < 0) // 뒤로가기 버튼
+            replaceFragment(ERSelectRoutineFragment.newInstance(dayOfWeek, routines.get(0)));
+        else if (OUser_PK == 0) { // 유저 선택 안 함
+//            replaceFragment(); // ERRecordingFragment로 이동
+        } else { // 유저 선택
+//            this.OUser_PK = OUser_PK;
+//            replaceFragment(); // ERRecordingFragment로 이동
+        }
 
-        replaceFragment(new ERSelectUserFragment());
-    }
-
-    @Override
-    public void onSelectUser() { // 나중에 유저 전달로 변경
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("exercises", routine.getExercises());
-
+//        = OUser_PK
+//        Bundle bundle = new Bundle();
+//        bundle.putSerializable("exercises", routine.getExercises());
 //        if (user != null) {}
-
-        replaceFragment(new ERRecordingFragment(), bundle);
+//        replaceFragment(new ERRecordingFragment(), bundle);
     }
 
     @Override
     public void onRecordExercises(long StartTime, long EndTime, int RunTime, ArrayList<ExerciseData> recordExercises) {
-        startTime = TimeToString(StartTime);
-        endTime = TimeToString(EndTime);
-        runTime = TimeToString(RunTime);
+//        startTime = TimeToString(StartTime);
+//        endTime = TimeToString(EndTime);
+//        runTime = TimeToString(RunTime);
 
         int cat = 0;
         for (ExerciseData e : recordExercises)

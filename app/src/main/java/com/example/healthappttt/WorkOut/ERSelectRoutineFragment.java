@@ -49,7 +49,7 @@ public class ERSelectRoutineFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     public interface OnFragmentInteractionListener {
-        void onSelectRoutine(RoutineData routine);
+        void onSelectRoutine(boolean isBack);
     }
 
     @Override
@@ -118,11 +118,11 @@ public class ERSelectRoutineFragment extends Fragment {
 
         setRecyclerView();
 
-        binding.backBtn.setOnClickListener(v -> {});
+        binding.backBtn.setOnClickListener(v -> mListener.onSelectRoutine(true));
 
         binding.nextBtn.setOnClickListener(v -> {
             if (routine != null) {
-
+                mListener.onSelectRoutine(false);
             }
         });
     }

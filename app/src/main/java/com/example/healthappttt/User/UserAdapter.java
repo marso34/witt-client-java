@@ -95,16 +95,17 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
             holder.Name.setText(userInfo.getName());
 
 
-            if (str != null) {
+            if (str.equals("")) {
+                holder.GymName.setText("선택된 헬스장이 없어요");
+                holder.GymName.setTextColor(Color.parseColor(Background_2));
+                holder.GymAdress.setVisibility(View.GONE);
+                holder.MapIcon.setColorFilter(Color.parseColor(Background_2));
+            } else {
                 holder.GymName.setText(str);
                 holder.GymName.setTextColor(Color.parseColor(Body));
                 holder.GymAdress.setText("lat, lon, 파싱하거나 db에 주소도 저장할 것");
+                holder.GymAdress.setVisibility(View.VISIBLE);
                 holder.MapIcon.setColorFilter(Color.parseColor(Signature));
-            } else {
-                holder.GymName.setText("선택된 헬스장이 없어요");
-                holder.GymName.setTextColor(Color.parseColor(Background_2));
-                holder.GymAdress.setText("lat, lon, 파싱하거나 db에 주소도 저장할 것");
-                holder.MapIcon.setColorFilter(Color.parseColor(Background_2));
             }
 
             switch (userInfo.getTime()) {

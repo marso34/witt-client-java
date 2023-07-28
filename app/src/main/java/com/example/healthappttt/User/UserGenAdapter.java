@@ -56,11 +56,7 @@ public class UserGenAdapter extends RecyclerView.Adapter<UserGenAdapter.MainView
             super(view);
 
             this.CardView   = view.findViewById(R.id.userCard);
-            this.NotifyView = view.findViewById(R.id.newNotify);
-            this.UserImg    = view.findViewById(R.id.userImg);
             this.UserName   = view.findViewById(R.id.userName);
-            this.UserInfo   = view.findViewById(R.id.userInfo);
-            this.ChatTime   = view.findViewById(R.id.chatTime);
         }
     }
 

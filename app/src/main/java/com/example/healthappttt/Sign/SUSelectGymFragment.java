@@ -187,7 +187,7 @@ public class SUSelectGymFragment extends Fragment implements OnMapReadyCallback,
         binding.skip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((SignUpActivity) requireActivity()).goToInputPerf(lat, lon, null, 0, 0);
+                ((SignUpActivity) requireActivity()).goToInputPerf(lat, lon, "", 0, 0);
             }
         });
 
