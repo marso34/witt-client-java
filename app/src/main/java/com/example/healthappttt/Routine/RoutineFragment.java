@@ -28,27 +28,27 @@ public class RoutineFragment extends Fragment {
     private RoutinePagerAdapter pagerAdapter;
 
     private PreferenceHelper prefhelper;
-    private int code;
+
 
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_DAY_OF_WEEK = "dayOfWeek";
+    private static final String ARG_CODE = "code";
+
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
+    private int dayOfWeek;
+    private int code;
 
     public RoutineFragment() {
     }
 
-    public static RoutineFragment newInstance(String param1, String param2) {
+    public static RoutineFragment newInstance(int dayOfWeek, int code) {
         RoutineFragment fragment = new RoutineFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putInt(ARG_DAY_OF_WEEK, dayOfWeek);
+        args.putInt(ARG_CODE, code);
         fragment.setArguments(args);
         return fragment;
     }
@@ -56,9 +56,12 @@ public class RoutineFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        prefhelper = new PreferenceHelper("UserTB", getContext());
+
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            dayOfWeek = getArguments().getInt(ARG_DAY_OF_WEEK);
+            code = getArguments().getInt(ARG_CODE);
         }
     }
 
@@ -73,34 +76,18 @@ public class RoutineFragment extends Fragment {
         tabLayout = view.findViewById(R.id.tab_layout);
         viewPager = view.findViewById(R.id.view_pager);
 
-        if (getArguments() != null) {
-            code = getArguments().getInt("code");
-            Log.d("루틴 프래그먼트", "상대 키 테스트 " + code);
-        } else {
-            prefhelper = new PreferenceHelper("UserTB", getContext());
-            code = prefhelper.getPK(); // 나중에 PreferenceHelper 이용해서 유저pk로 수정
-            Log.d("루틴 프래그먼트", "유저 키 테스트 " + code);
-        }
-
-
         pagerAdapter = new RoutinePagerAdapter(this, code);
-        pagerAdapter.createFragment(0);
-        pagerAdapter.createFragment(1);
-        pagerAdapter.createFragment(2);
-        pagerAdapter.createFragment(3);
-        pagerAdapter.createFragment(4);
-        pagerAdapter.createFragment(5);
-        pagerAdapter.createFragment(6);
+
+        for (int i = 0; i < 7; i++)
+            pagerAdapter.createFragment(i);
+
         viewPager.setAdapter(pagerAdapter);
+
         new TabLayoutMediator(tabLayout, viewPager,
                 (tab, position) -> tab.setText(setText(position))
         ).attach();
 
-        Date currentDate = new Date();
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(currentDate);
-
-        viewPager.setCurrentItem(calendar.get(Calendar.DAY_OF_WEEK) - 1, false);
+        viewPager.setCurrentItem(dayOfWeek, false);
 
 //        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
 //            @Override

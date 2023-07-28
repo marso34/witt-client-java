@@ -66,12 +66,17 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.MainVi
         String result = "";
 
         if (cat == 0x40) { // 유산소, 아래 내용은 나중에 수정
-            if (Volume != 0)
-                result += Volume + "km/s";
-            if (CntOrDis != 0)
-                result += " · " + CntOrDis + "km";
-            if (SetOrTime != 0)
-                result += SetOrTime + "분";
+//            if (Volume != 0)
+//                result += Volume + "km/s";
+//            if (CntOrDis != 0)
+//                result += " · " + CntOrDis + "km";
+//            if (SetOrTime != 0)
+//                result += SetOrTime + "분";
+            if (SetOrTime/60 > 0)
+                result += (SetOrTime/60) + "시간 ";
+            if (SetOrTime%60 > 0)
+                result += (SetOrTime%60) + "분";
+
         } else {
             if (Volume != 0)
                 result += Volume + "kg";

@@ -20,6 +20,7 @@ import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -40,6 +41,13 @@ import java.util.TimerTask;
  */
 public class ERRecordingFragment extends Fragment {
     FragmentErRecordingBinding binding;
+
+    private static final String Blue = "#579EF2";
+    private static final String Body = "#4A5567";
+    private static final String Background_2 = "#D1D8E2";
+    private static final String Standard = "#1B202D";
+
+
     private ExerciseRecordAdapter adapter;
     private ProgressBar AdapterProgressBar;
     private TextView AdapterTxtView;
@@ -164,8 +172,47 @@ public class ERRecordingFragment extends Fragment {
             }
         });
 
-//        binding.stopWatch.setOnClickListener(v -> StartStopWatch());
-        binding.stopBtn.setOnClickListener(v -> EndRocording());
+        binding.stopWatchSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                isRunning = !isChecked;
+
+                if (isChecked) { // 이때가 휴식 중, isRunning == false
+                    binding.playIcon.setColorFilter(Color.parseColor(Background_2));
+                    binding.playTxt.setTextColor(Color.parseColor(Background_2));
+                    binding.pauseIcon.setColorFilter(Color.parseColor(Blue));
+                    binding.pauseTxt.setTextColor(Color.parseColor(Blue));
+                    binding.runTimeView.setTextColor(Color.parseColor(Blue));
+
+                    if (startTime != 0)
+                        pauseTime = System.currentTimeMillis();
+                } else { // 이 때가 운동 중, isRunning == true
+                    binding.playIcon.setColorFilter(Color.parseColor(Body));
+                    binding.playTxt.setTextColor(Color.parseColor(Body));
+                    binding.pauseIcon.setColorFilter(Color.parseColor(Background_2));
+                    binding.pauseTxt.setTextColor(Color.parseColor(Background_2));
+                    binding.runTimeView.setTextColor(Color.parseColor(Standard));
+
+                    if (startTime != 0)
+                        clickTime += (System.currentTimeMillis() - pauseTime);
+                }
+
+                if (startTime == 0) {
+                    startTime = clickTime = System.currentTimeMillis();
+
+                    TimerCall = new Timer();
+                    timerTask = new TimerTask() {
+                        @Override
+                        public void run() {
+                            someWork();
+                        }
+                    };
+                    TimerCall.schedule(timerTask,0,10); // 0.01초
+                }
+            }
+        });
+
+//        binding.stopBtn.setOnClickListener(v -> EndRocording());
     }
 
     @Override
@@ -218,47 +265,6 @@ public class ERRecordingFragment extends Fragment {
                     }
                 }
             });
-        }
-    }
-
-    private void StartStopWatch() {
-        if (startTime == 0) {
-            startTime = clickTime = System.currentTimeMillis();
-            isRunning = true;
-
-            binding.stopTxt.setTextColor(Color.parseColor("#ffffff"));
-            binding.stopTxt.setBackgroundColor(Color.parseColor("#05c78c"));
-
-//            binding.runTimeTxt.setTextColor(Color.parseColor("#1B202D"));
-            binding.runTimeView.setTextColor(Color.parseColor("#1B202D"));
-//            binding.restTimeTxt.setTextColor(Color.parseColor("#9AA5B8"));
-//            binding.restTimeView.setTextColor(Color.parseColor("#9AA5B8"));
-
-            TimerCall = new Timer();
-            timerTask = new TimerTask() {
-                @Override
-                public void run() {
-                    someWork();
-                }
-            };
-            TimerCall.schedule(timerTask,0,10); // 0.01초
-
-        } else {
-            isRunning = !isRunning;
-
-            if (isRunning) {
-                clickTime += (System.currentTimeMillis() - pauseTime);
-//                binding.runTimeTxt.setTextColor(Color.parseColor("#1B202D"));  // 나중에 메서드화
-                binding.runTimeView.setTextColor(Color.parseColor("#1B202D"));
-//                binding.restTimeTxt.setTextColor(Color.parseColor("#9AA5B8"));
-//                binding.restTimeView.setTextColor(Color.parseColor("#9AA5B8"));
-            } else {
-                pauseTime = System.currentTimeMillis();
-//                binding.runTimeTxt.setTextColor(Color.parseColor("#9AA5B8"));
-                binding.runTimeView.setTextColor(Color.parseColor("#9AA5B8"));
-//                binding.restTimeTxt.setTextColor(Color.parseColor("#1B202D"));
-//                binding.restTimeView.setTextColor(Color.parseColor("#1B202D"));
-            }
         }
     }
 

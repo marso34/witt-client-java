@@ -17,6 +17,9 @@ import android.util.Log;
 import com.example.healthappttt.R;
 import com.example.healthappttt.databinding.ActivityRoutineBinding;
 
+import java.util.Calendar;
+import java.util.Date;
+
 public class RoutineActivity extends AppCompatActivity {
     ActivityRoutineBinding binding;
 
@@ -29,18 +32,18 @@ public class RoutineActivity extends AppCompatActivity {
         Intent intent = getIntent();
         int code = intent.getIntExtra("code", 0);
         String name = intent.getStringExtra("name");
-        Log.d("code", String.valueOf(code));
-
-        Log.d("RoutineActivity", code + " " +  name);
 
         binding.name.setText(name);
 
-        Bundle bundle = new Bundle();
-        bundle.putInt("code", code);
-        replaceFragment(new RoutineFragment(), bundle);
+        Date currentDate = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(currentDate);
+        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK) - 1;
+
+        replaceFragment(RoutineFragment.newInstance(dayOfWeek, code));
     }
 
-    private void replaceFragment (Fragment fragment, Bundle bundle){ //프래그먼트 설정
+    private void replaceFragment (Fragment fragment){ //프래그먼트 설정
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         if( fragment.isAdded() )
@@ -51,7 +54,6 @@ public class RoutineActivity extends AppCompatActivity {
             fragment = new Fragment();
         }
 
-        fragment.setArguments(bundle);
         fragmentTransaction.replace(R.id.frame_layout, fragment);
         fragmentTransaction.commit();
     }

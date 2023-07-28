@@ -65,6 +65,11 @@ public class ExerciseRecordAdapter extends RecyclerView.Adapter<ExerciseRecordAd
             public void onClick(View v) {
                 int position = mainViewHolder.getAbsoluteAdapterPosition();
 
+                if (exercises.get(position).getCat() == 0x40) {
+                    mainViewHolder.CardioIcon.setColorFilter(Color.parseColor(Signature));
+                    mainViewHolder.CardioTxt.setTextColor(Color.parseColor(Signature));
+                }
+
                 onExerciseClick.onExerciseClick(position, mainViewHolder.CardioTxt, mainViewHolder.progressBar);
 
                 if (mainViewHolder.progressBar.getProgress() == mainViewHolder.progressBar.getMax()) {
@@ -102,12 +107,10 @@ public class ExerciseRecordAdapter extends RecyclerView.Adapter<ExerciseRecordAd
 
             progressMaxValue = progressMaxValue * 60 * 100;
 
-            if (Volume != 0)
-                detail += Volume + "km/s";
-            if (CntOrDis != 0)
-                detail += " · " + CntOrDis + "km";
-            if (SetOrTime != 0)
-                detail += SetOrTime + "분";
+            if (SetOrTime/60 > 0)
+                detail += (SetOrTime/60) + "시간 ";
+            if (SetOrTime%60 > 0)
+                detail += (SetOrTime%60) + "분";
         } else {
             holder.CardioIcon.setVisibility(View.GONE);
             holder.CardioTxt.setVisibility(View.GONE);
