@@ -3,6 +3,8 @@ package com.example.healthappttt.Data.Chat;
 import com.google.gson.annotations.SerializedName;
 
 public class UserChat {
+    public static final int read = 1;
+    public static final int notRead = 2;
     @SerializedName("userNM")
     private String userNM;
 
@@ -20,6 +22,7 @@ public class UserChat {
     @SerializedName("timeStamp")
     private String TS;
 
+
     public UserChat(String userNM, int otherUserKey, int chatRoomId, String lastChat, String lastChatTime, String TS) {
         this.userNM = userNM;
         this.otherUserKey = otherUserKey;
@@ -27,6 +30,7 @@ public class UserChat {
         this.lastChat = lastChat;
         this.lastChatTime = lastChatTime;
         this.TS = TS;
+
     }
 
     public UserChat(String other_user_nm,int otherUserKey, int chatRoomId, String TS) {
@@ -36,6 +40,7 @@ public class UserChat {
         this.lastChat = "";
         this.lastChatTime = "";
         this.TS = TS;
+
     }
 
     public String getTS() {

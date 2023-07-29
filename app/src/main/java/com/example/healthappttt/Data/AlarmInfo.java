@@ -21,8 +21,10 @@ public class AlarmInfo {
     @SerializedName("Link")
     private int Link;// CHAT_PK OR CHAT_ROOM_PK OR REVIEW_PK OR REPORT_PK...
     //LINK로 얻어온 데이터로 TITLE,CONTENT채우기.
+    @SerializedName("OUSER_NM")
+    private String OUSER_NM;
 
-    public AlarmInfo(int notifyKey, int userKey, int OUserKey, int link, int cat, String read_TS, String TS) {
+    public AlarmInfo(int notifyKey, int userKey, int OUserKey, int link, int cat, String read_TS, String TS,String OUSER_NM) {
         NotifyKey = notifyKey;
         UserKey = userKey;
         this.OUserKey = OUserKey;
@@ -30,9 +32,9 @@ public class AlarmInfo {
         Cat = cat;
         Read_TS = read_TS;
         this.TS = TS;
+        this.OUSER_NM = OUSER_NM;
     }
-
-
+    public String getOUSER_NM(){ return OUSER_NM; }
     public int getNotifyKey(){ return NotifyKey; }
     public int getUserKey() {
         return UserKey;

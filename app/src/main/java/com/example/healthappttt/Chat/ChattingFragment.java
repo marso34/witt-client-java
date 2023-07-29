@@ -69,6 +69,7 @@ public class ChattingFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -140,12 +141,6 @@ public class ChattingFragment extends Fragment {
                        List<UserChat> users = response.body();
                        sqLiteUtil.setInitView(getContext(), "CHAT_ROOM_TB");
                        sqLiteUtil.insert(prefhelper.getPK(), users);
-                       sqLiteUtil.setInitView(getContext(), "CHAT_ROOM_TB");
-                       sqLiteUtil.insert(prefhelper.getPK(), users);
-                       userList.clear();
-                       userList.addAll(users);
-                       userListAdapter.notifyDataSetChanged();
-                       chatflag = false;
                        // userList에 데이터가 추가된 후에 실행되어야 하는 로직을 여기에 작성합니다.
                    } else {
                        Toast.makeText(getContext(), "Failed to retrieve user list", Toast.LENGTH_SHORT).show();
@@ -159,11 +154,12 @@ public class ChattingFragment extends Fragment {
 
        }
         finally {
-//           sqLiteUtil.setInitView(getContext(),"CHAT_ROOM_TB");
-//           List<UserChat> users = sqLiteUtil.selectChatRoom(String.valueOf(prefhelper.getPK()));
-//           userList.clear();
-//           userList.addAll(users);
-//           userListAdapter.notifyDataSetChanged();chatflag = false;
+           sqLiteUtil.setInitView(getContext(),"CHAT_ROOM_TB");
+           List<UserChat> users = sqLiteUtil.selectChatRoom(String.valueOf(prefhelper.getPK()));
+           for (UserChat u : users) Log.d(TAG, "getUsersFromServer: "+ u.getChatRoomId());
+           userList.clear();
+           userList.addAll(users);
+           userListAdapter.notifyDataSetChanged();chatflag = false;
 
        }
 

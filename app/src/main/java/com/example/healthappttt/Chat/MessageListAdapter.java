@@ -54,7 +54,10 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
             parentLayout = itemView.findViewById(R.id.msg); // 부모 뷰의 ID에 맞게 수정하세요
 
         }
+
+
     }
+
     public MessageListAdapter(List<MSG> messageList, String username, String otherUserName, String otherUserPk, Context context) {
         this.otherUserPk = otherUserPk;
         this.messageList = messageList;
@@ -76,6 +79,7 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
                     .inflate(R.layout.item_message_sent, parent, false);
 
         }
+
         return new MessageViewHolder(view);
     }
     public String extractName(String inputString) {
@@ -96,7 +100,14 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
         if(extractName(message.getMessage())== null)
             holder.messageTextView.setText(message.getMessage());
         else  holder.messageTextView.setText(extractName(message.getMessage()));
-        holder.timeTextView.setText(extractDateTime(message.timestampString()));
+        if(position + 1 < messageList.size()) {
+            String nextTS = extractDateTime(messageList.get(position+1).timestampString());
+            if(!extractDateTime(message.timestampString()).equals(nextTS))
+                holder.timeTextView.setText(extractDateTime(message.timestampString()));
+            else holder.timeTextView.setText("");
+        }
+        else holder.timeTextView.setText(extractDateTime(message.timestampString()));
+
         if (message.getMyFlag() == 1) {
             // 보낸 메시지인 경우
             holder.messageTextView.setBackgroundResource(R.drawable.sent);
@@ -123,7 +134,6 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
                             data.put("chatPk", message.getKey());
                             data.put("TS", message.getTimestamp());
                             socketSingleton.sendMessage(data);
-
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -147,17 +157,11 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
             LocalDateTime dateTime = LocalDateTime.parse(dateString, formatter);
             // 현재 날짜 가져오기
             LocalDate currentDate = LocalDate.now();
-            if (dateTime.toLocalDate().isEqual(currentDate)) {
+
                 // 날짜가 오늘이면 시간과 분 추출
                 int hour = dateTime.getHour();
                 int minute = dateTime.getMinute();
                 return String.format("%02d:%02d", hour, minute);
-            } else {
-                // 날짜가 오늘이 아니면 월과 일 추출
-                int month = dateTime.getMonthValue();
-                int day = dateTime.getDayOfMonth();
-                return String.format("%02d월 %02d일", month, day);
-            }
         }
     }
     @Override
@@ -170,8 +174,12 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
         MSG message = messageList.get(position);
         if (message.getMyFlag() == 1) {
             return MSG.TYPE_SENT;
-        } else {
+        } else  {
             return MSG.TYPE_RECEIVED;
         }
+
+    }
+    public String getItemTS(int position){
+        return messageList.get(position).timestampString();
     }
 }

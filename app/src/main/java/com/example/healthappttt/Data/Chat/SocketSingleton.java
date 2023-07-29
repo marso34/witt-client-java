@@ -127,6 +127,7 @@ public class SocketSingleton {
                             new Thread(new Runnable() {
                                 @Override
                                 public void run() {
+                                    chatF.getUsersFromServer();
                                     chatF.getLastMSG(chatRoomId,String.valueOf(preferenceHelper.getPK()),context);
                                 }
                             }).start();
