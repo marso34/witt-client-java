@@ -22,6 +22,7 @@ import com.example.healthappttt.Data.User.CompareUser;
 import com.example.healthappttt.Data.User.NearUsersData;
 import com.example.healthappttt.Data.RetrofitClient;
 import com.example.healthappttt.Data.UserInfo;
+import com.example.healthappttt.MainActivity;
 import com.example.healthappttt.Routine.RoutineChildFragment;
 import com.example.healthappttt.R;
 import com.example.healthappttt.User.UserAdapter;
@@ -136,7 +137,9 @@ public class HomeChildFragment extends Fragment {
             }
         });
 
-        binding.moveRoutine.setOnClickListener(v -> {});
+        binding.moveRoutine.setOnClickListener(v -> {
+            ((MainActivity)requireActivity()).goToRoutine(dayOfWeek);
+        });
 
         if (routine != null) {
             binding.emptylayout.setVisibility(View.GONE);
@@ -172,6 +175,8 @@ public class HomeChildFragment extends Fragment {
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.recyclerView.setAdapter(adapter);
     }
+
+
 
     private void getUserData() {
         ServiceApi apiInterface = RetrofitClient.getClient().create(ServiceApi.class);

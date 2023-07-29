@@ -202,7 +202,6 @@ public class MainActivity extends AppCompatActivity {
         tempItemID = R.id.home;
         replaceFragment(new HomeFragment());
 
-
         binding.bottomNav.setOnItemSelectedListener(item -> {
             int ItemId = item.getItemId();
 
@@ -216,7 +215,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.routine:
                         binding.viewName.setText("루틴");
-                        replaceFragment(new RoutineFragment());
+                        replaceFragment(RoutineFragment.newInstance(dayOfWeek, prefhelper.getPK()));
                         break;
                     case R.id.chatting:
                         binding.viewName.setText("채팅");
@@ -268,6 +267,14 @@ public class MainActivity extends AppCompatActivity {
             Log.d(TAG, "메인 종료");
         }
     }
+
+    public void goToRoutine(int dayOfWeekT) {
+        int temp = dayOfWeek;
+        dayOfWeek = dayOfWeekT;
+        binding.bottomNav.setSelectedItemId(R.id.routine);
+        dayOfWeek = temp;
+    }
+
     private void setAlarmTimer() {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());

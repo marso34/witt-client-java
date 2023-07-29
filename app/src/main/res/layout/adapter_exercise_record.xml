@@ -112,10 +112,7 @@
 
                 </LinearLayout>
 
-
-
             </FrameLayout>
-
 
             <ProgressBar
                 android:id="@+id/progressBar"

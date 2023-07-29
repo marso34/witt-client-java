@@ -78,6 +78,7 @@ public class SUSelectGymFragment extends Fragment implements OnMapReadyCallback,
     private static final String ARG_LAT = "lat";
     private static final String ARG_LON = "lon";
     private static final String ARG_GYM = "gym";
+    private static final String ARG_IS_EDIT = "isEdit";
 
     private LocationAdapter locationAdapter;
     private List<LocData> searchResults;
@@ -89,7 +90,7 @@ public class SUSelectGymFragment extends Fragment implements OnMapReadyCallback,
     private double lat, lon, gymLat, gymLon;
     private String gymName, gymAdress;
 
-    private boolean isSelected;
+    private boolean isSelected, isEdit;
 
     private PlacesClient placesClient;
     private MapView mapView;
@@ -117,12 +118,13 @@ public class SUSelectGymFragment extends Fragment implements OnMapReadyCallback,
         }
     }
 
-    public static SUSelectGymFragment newInstance(double lat, double lon, String gymName) {
+    public static SUSelectGymFragment newInstance(double lat, double lon, String gymName, boolean isEdit) {
         SUSelectGymFragment fragment = new SUSelectGymFragment();
         Bundle args = new Bundle();
         args.putDouble(ARG_LAT, lat);
         args.putDouble(ARG_LON, lon);
         args.putString(ARG_GYM, gymName);
+        args.putBoolean(ARG_IS_EDIT, isEdit);
 
         fragment.setArguments(args);
         return fragment;
@@ -134,6 +136,7 @@ public class SUSelectGymFragment extends Fragment implements OnMapReadyCallback,
             lat = getArguments().getDouble(ARG_LAT);
             lon = getArguments().getDouble(ARG_LON);
             gymName = getArguments().getString(ARG_GYM);
+            isEdit = getArguments().getBoolean(ARG_IS_EDIT);
         }
     }
 
@@ -189,6 +192,11 @@ public class SUSelectGymFragment extends Fragment implements OnMapReadyCallback,
             binding.nextBtn.setBackground(getContext().getDrawable(R.drawable.rectangle_green_20dp));
             binding.nextBtn.setTextColor(Color.parseColor(White));
             isSelected = true;
+        }
+        
+        if (isEdit) {
+            binding.example.setText("헬스장을 변경해요");
+            binding.skip.setVisibility(View.GONE);
         }
 
         setRecyclerView();
@@ -258,6 +266,7 @@ public class SUSelectGymFragment extends Fragment implements OnMapReadyCallback,
         // Update latitude and longitude text views
         lat = location.getLatitude();
         lon = location.getLongitude();
+        Log.d("위치 테스트", lat + " " + lon);
     }
 
     @Override
