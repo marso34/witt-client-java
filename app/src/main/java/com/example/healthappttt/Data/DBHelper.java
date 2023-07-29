@@ -89,7 +89,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 + "CHAT_ROOM_FK INT, "
                 + "MSG  VARCHAR(1500), "
                 + "TS  VARCHAR(30),"
-                + "SUCCESS INT"
+                + "SUCCESS INT,"
+                + "ISREAD INT DEFAULT 1"
                 + ");";
         db.execSQL(createTableQuery);
 
@@ -109,6 +110,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 + "NOTIFY_PK INT PRIMARY KEY,"
                 + "USER_FK INT,"
                 + "OTHER_USER_FK INTEGER DEFAULT -1,"
+                + "OUSER_NM VARCHAR(30),"
                 + "NOTIFY_CATEGORY INT,"
                 + "LINK_PK INTE,"  // 넘겨줄 값 페이지 여는 키
                 + "CREATED_TIME VARCHAR(30),"

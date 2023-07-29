@@ -4,16 +4,19 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-
+    android:paddingHorizontal="6dp"
     tools:context=".User.UserAdapter">
-        <LinearLayout
-            android:background="@drawable/round_button_white"
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginHorizontal="15dp"
-            android:orientation="horizontal">
-
+                <LinearLayout
+                    android:id="@+id/out"
+                    android:layout_margin="12dp"
+                    android:background="@drawable/round_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:elevation="8dp"
+                    android:orientation="horizontal">
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardview_member"
                     android:layout_width="50dp"
@@ -25,7 +28,6 @@
                     android:background="#F2F5F9"
                     app:cardBackgroundColor="#F2F5F9"
                     app:cardElevation="0dp">
-
                         <de.hdodenhof.circleimageview.CircleImageView
                             android:id="@+id/PRI"
                             android:layout_width="match_parent"
@@ -35,6 +37,14 @@
                             app:civ_circle_background_color="#F2F5F9" />
                 </androidx.cardview.widget.CardView>
 
+                        <ImageView
+                            android:id="@+id/circleIMG"
+                            android:layout_width="6dp"
+                            android:layout_height="6dp"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginTop="15dp"
+                            android:src="@drawable/circle6" />
+                </FrameLayout>
                 <LinearLayout
 
                     android:layout_width="match_parent"

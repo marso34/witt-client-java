@@ -4,20 +4,23 @@ import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.healthappttt.Data.Chat.CustomToast;
 import com.example.healthappttt.Data.Chat.MSG;
 import com.example.healthappttt.Data.Chat.SocketSingleton;
 import com.example.healthappttt.Data.Chat.getMSGKey;
@@ -31,6 +34,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -44,14 +50,15 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ChatActivity extends AppCompatActivity{
-
+    private CustomToast currentToast;
+    private String current_day;
     private RecyclerView messageRecyclerView;
     private MessageListAdapter messageListAdapter;
     private List<MSG> messageList;
     private PreferenceHelper preferenceHelper;
     private String userKey;
     private EditText messageEditText;
-    private ImageButton sendButton;
+    private View sendButton;
     private ImageView menu;
     private SocketSingleton socketSingleton;
     private String otherUserName;
@@ -62,6 +69,7 @@ public class ChatActivity extends AppCompatActivity{
     private boolean updatingMSG = false;
     private boolean sendUpdatingMSG  = false;
     private TextView toolbarName;
+    private View tbr;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -75,7 +83,11 @@ public class ChatActivity extends AppCompatActivity{
             setupListeners();
             getMessagesFromServer();
             clickmenu();
-        }
+        messageRecyclerView.addOnScrollListener(recyclerViewScrollListener);
+
+// 리사이클러뷰의 LayoutManager를 가져옵니다.
+
+    }
 
     private void initViews() {
         messageRecyclerView = findViewById(R.id.chatRecyclerView);
@@ -83,15 +95,83 @@ public class ChatActivity extends AppCompatActivity{
         sendButton = findViewById(R.id.sendButton);
         menu = findViewById(R.id.menu);
         toolbarName = findViewById(R.id.toolbarName);
+        tbr = findViewById(R.id.Toolbar);
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (currentToast != null)
+            currentToast.cancel();
+    }
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         socketSingleton.setChatActivity(null);
+        if (currentToast != null)
+            currentToast.cancel();
         finish();
+
     }
 
+    private RecyclerView.OnScrollListener recyclerViewScrollListener = new RecyclerView.OnScrollListener() {
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        @Override
+        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            super.onScrolled(recyclerView, dx, dy);
+            // Call getFirstRecyclerView() whenever there is a change in the visible RecyclerView
+            getFirstRecyclerView();
+        }
+    };
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void getFirstRecyclerView(){
+        int tbrId = R.id.Toolbar; // Replace with the ID of your tbr (Toolbar) layout
+        View tbrLayout = findViewById(tbrId); // Assuming this method is called within an Activity
+
+// Get the bottom position of the tbr layout relative to the parentLayout
+        int tbrBottom = tbrLayout.getBottom();
+        RecyclerView.LayoutManager layoutManager = messageRecyclerView.getLayoutManager();
+        if (layoutManager != null && layoutManager instanceof LinearLayoutManager) {
+            // 리사이클러뷰의 레이아웃 매니저를 LinearLayoutManager로 캐스팅합니다.
+            LinearLayoutManager linearLayoutManager = (LinearLayoutManager) layoutManager;
+
+            // 첫 번째 보이는 항목의 위치를 가져옵니다.
+            int firstVisibleItemPosition = linearLayoutManager.findLastVisibleItemPosition();
+
+            // 최소한 하나 이상의 항목이 화면에 보이는지 확인합니다.
+            if (firstVisibleItemPosition != RecyclerView.NO_POSITION) {
+                // 어댑터에서 해당 위치의 데이터 항목을 가져옵니다.
+                String firstVisibleItemData = messageListAdapter.getItemTS(firstVisibleItemPosition);
+
+                // 이제 firstVisibleItemData를 사용하여 원하는 값을 출력할 수 있습니다.
+                // 예를 들어:
+                String firstVisibleItemValue = firstVisibleItemData;
+
+                // 값을 로그로 출력하거나 원하는 방식으로 화면에 표시합니다.
+                if (currentToast != null) {
+                        current_day = extractDateTime(firstVisibleItemValue);
+                        currentToast.cancel();
+                        currentToast = CustomToast.makeText(ChatActivity.this, extractDateTime(firstVisibleItemValue), Toast.LENGTH_SHORT);
+                        try {
+                            currentToast.show();
+                        } finally {
+                            int yOffset = tbrBottom; // This will position the toast below the tbr layout
+                            currentToast.setGravity(Gravity.TOP | Gravity.CENTER, 0, yOffset);
+                        }
+                }
+                else {
+                    current_day = extractDateTime(firstVisibleItemValue);
+                    currentToast = CustomToast.makeText(ChatActivity.this, extractDateTime(firstVisibleItemValue), Toast.LENGTH_SHORT);
+                    try {
+                        currentToast.show();
+                    }finally {
+                        int yOffset = tbrBottom; // This will position the toast below the tbr layout
+                        currentToast.setGravity(Gravity.TOP | Gravity.CENTER, 0, yOffset);
+                    }
+                }
+            }
+        }
+    }
     private void initSocketSingleton() {
         socketSingleton = SocketSingleton.getInstance(getBaseContext());
         socketSingleton.setChatActivity(this);
@@ -118,6 +198,24 @@ public class ChatActivity extends AppCompatActivity{
         sqLiteUtil.setInitView(this, "CHAT_MSG_TB");
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public String extractDateTime(String dateString) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        if(dateString == "-1"){
+            return "";
+        }
+        else {
+            // 문자열을 LocalDateTime 객체로 변환
+            LocalDateTime dateTime = LocalDateTime.parse(dateString, formatter);
+            // 현재 날짜 가져오기
+            LocalDate currentDate = LocalDate.now();
+                // 날짜가 오늘이 아니면 월과 일 추출
+                int month = dateTime.getMonthValue();
+                int day = dateTime.getDayOfMonth();
+                return String.format("%02d월 %02d일", month, day);
+
+        }
+    }
     private void setupListeners() {
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override

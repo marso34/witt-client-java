@@ -31,8 +31,8 @@ public class UserProfile {
     @SerializedName("User_NM")
     private String User_NM;
 
-//    @SerializedName("User_Img")
-//    private byte[] User_Img;
+    @SerializedName("User_Img")
+    private String User_Img;
 
     @SerializedName("PW")
     private  String PW;
@@ -80,13 +80,13 @@ public class UserProfile {
         this.User_NM = user_NM;
     }
 
-//    public byte[] getUser_Img() {
-//        return User_Img;
-//    }
-//
-//    public void setUser_Img(byte[] user_Img) {
-//        this.User_Img = user_Img;
-//    }
+    public String getUser_Img() {
+        return User_Img;
+    }
+
+    public void setUser_Img(String user_Img) {
+        this.User_Img = user_Img;
+    }
 
     public String getPW() { return PW;}
 

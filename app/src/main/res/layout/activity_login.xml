@@ -4,12 +4,43 @@
     android:layout_height="match_parent"
     tools:context=".Sign.LoginActivity">
 
-    <com.google.android.gms.common.SignInButton
-        android:id="@+id/sign_in_button"
+    <!-- 로고 이미지 -->
+    <ImageView
+        android:id="@+id/logo_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:src="@drawable/logo_test" />
 
-        android:layout_centerInParent="true" />
+    <!-- 문구 텍스트 -->
+    <TextView
+        android:id="@+id/tagline_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/logo_image"
+        android:layout_centerHorizontal="true"
+        android:text="메이트와 함께 위트있는 운동 - 위트"
+        android:textColor="@color/Signature_Hover" />
 
+    <!-- 로그인 버튼과 구글 로고 -->
+    <LinearLayout
+        android:id="@+id/login_button_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="50dp"
+        android:orientation="horizontal"
+        android:gravity="center"> <!-- 가운데로 정렬 -->
+
+
+        <!-- "Google 계정으로 가입" 문구 -->
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/sign_in_button"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center" />
+
+    </LinearLayout>
 
 </RelativeLayout>
