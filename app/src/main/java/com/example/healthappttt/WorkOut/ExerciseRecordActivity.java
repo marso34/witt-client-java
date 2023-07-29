@@ -38,10 +38,11 @@ public class ExerciseRecordActivity extends AppCompatActivity implements ERSelec
     private PreferenceHelper prefhelper;
 
     private int dayOfWeek;
-    private ArrayList<RoutineData> routines;
-    private RoutineData routine;
+    private ArrayList<RoutineData> routines; // 지금은 요일에 루틴 하나를 만들지만
+//    private RoutineData routine;          // 여러개 만들 수도 있음
     private RecordData record;
 
+    private int oUserID, promiseID;
     private String startTime, endTime, runTime;
 
     @Override
@@ -89,10 +90,6 @@ public class ExerciseRecordActivity extends AppCompatActivity implements ERSelec
     }
 
     private void SaveToDB() {
-        ArrayList<ExerciseData> list = new ArrayList<>();
-
-        record.setUserID(prefhelper.getPK());
-
         service.recordExercise(record).enqueue(new Callback<List<Integer>>() {
             @Override
             public void onResponse(Call<List<Integer>> call, Response<List<Integer>> response) {
@@ -117,9 +114,7 @@ public class ExerciseRecordActivity extends AppCompatActivity implements ERSelec
 
                     SaveToDev();
 
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("record", record);
-//                    replaceFragment(new ExerciseResultFragment(), bundle);
+                    replaceFragment(ExerciseResultFragment.newInstance(routines.get(0), record, ""));
 
                 } else {
                     Toast.makeText(ExerciseRecordActivity.this, "서버 연결에 실패", Toast.LENGTH_SHORT).show();
@@ -144,9 +139,10 @@ public class ExerciseRecordActivity extends AppCompatActivity implements ERSelec
         sqLiteUtil.setInitView(this, "RECORD_TB");
         sqLiteUtil.insert(record);
 
-        sqLiteUtil.setInitView(this, "EX_TB");
-        for (ExerciseData e : record.getExercises())
+        for (ExerciseData e : record.getExercises()) {
+            sqLiteUtil.setInitView(this, "EX_TB");
             sqLiteUtil.insert(e, true);
+        }
     }
 
     @Override
@@ -156,28 +152,28 @@ public class ExerciseRecordActivity extends AppCompatActivity implements ERSelec
     }
 
     @Override
-    public void onSelectUser(int OUser_PK) { // 나중에 유저 전달로 변경
-        if (OUser_PK < 0) // 뒤로가기 버튼
+    public void onSelectUser(int oUserID) { // 나중에 유저 전달로 변경
+        if (oUserID < 0) // 뒤로가기 버튼
             replaceFragment(ERSelectRoutineFragment.newInstance(dayOfWeek, routines.get(0)));
-        else if (OUser_PK == 0) { // 유저 선택 안 함
-//            replaceFragment(); // ERRecordingFragment로 이동
+        else if (oUserID == 0) { // 유저 선택 안 함
+            replaceFragment(ERRecordingFragment.newInstance(routines.get(0).getExercises())); // ERRecordingFragment로 이동
         } else { // 유저 선택
-//            this.OUser_PK = OUser_PK;
+            this.oUserID = oUserID;
             replaceFragment(ERRecordingFragment.newInstance(routines.get(0).getExercises())); // ERRecordingFragment로 이동
         }
     }
 
     @Override
-    public void onRecordExercises(long StartTime, long EndTime, int RunTime, ArrayList<ExerciseData> recordExercises) {
-//        startTime = TimeToString(StartTime);
-//        endTime = TimeToString(EndTime);
-//        runTime = TimeToString(RunTime);
+    public void onRecordExercises(String StartTime, String EndTime, String RunTime, ArrayList<ExerciseData> recordExercises) {
+        startTime = StartTime;
+        endTime = EndTime;
+        runTime = RunTime;
 
         int cat = 0;
         for (ExerciseData e : recordExercises)
             cat |= e.getCat();
 
-        record = new RecordData(285, cat, startTime, endTime, runTime); // 나중에 userID prefhelper.getPK()로 수정
+        record = new RecordData(prefhelper.getPK(), 0, 0, startTime, endTime, runTime, cat); // 나중에 userID prefhelper.getPK()로 수정
         record.setExercises(recordExercises);
 
         SaveToDB();

@@ -97,7 +97,7 @@ public class SignUpActivity extends AppCompatActivity implements SUSelectGymFrag
         if (gender != -1)
             this.gender = gender;
 
-        replaceFragment(SUSelectGymFragment.newInstance(lat, lon, gymName));
+        replaceFragment(SUSelectGymFragment.newInstance(lat, lon, gymName, false));
     }
 
     public void sendToServer(int squat, int bench, int deadlift) {
@@ -190,9 +190,9 @@ public class SignUpActivity extends AppCompatActivity implements SUSelectGymFrag
     @Override
     public void onSaveLocation(double userLat, double userLon, double gymLat, double gymLon, String gymName, String gymAdress) {
         if (userLat != 0)
-            this.lat = lat;
+            this.lat = userLat;
         if (userLon != 0)
-            this.lon = lon;
+            this.lon = userLon;
 
         this.gymName = gymName;
         this.gymAdress = gymAdress;

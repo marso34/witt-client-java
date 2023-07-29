@@ -93,6 +93,8 @@ public class PreferenceHelper
         edit.putString("gymNm",locInfo.getGymNm());
         edit.putFloat("gymLat", (float) locInfo.getGymLat());
         edit.putFloat("gymLon", (float) locInfo.getGymLon());
+        edit.putString("gymAdress", locInfo.getGymAdress()); //
+
         /**
          * exPerfInfo 저장
          **/
@@ -126,6 +128,10 @@ public class PreferenceHelper
     public String getGYMNM() {
         return app_prefs.getString("gymNm","");
     }
+    public String getGYMAdress() {
+        return app_prefs.getString("gymAdress","");
+    }
+
     public int getGender() {
         return app_prefs.getInt("gender",0);
     }

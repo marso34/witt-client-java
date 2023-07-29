@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,13 +25,16 @@ import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.healthappttt.Data.Exercise.ExerciseData;
 import com.example.healthappttt.Data.Exercise.RoutineData;
 import com.example.healthappttt.R;
 import com.example.healthappttt.databinding.FragmentErRecordingBinding;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -42,10 +46,15 @@ import java.util.TimerTask;
 public class ERRecordingFragment extends Fragment {
     FragmentErRecordingBinding binding;
 
-    private static final String Blue = "#579EF2";
     private static final String Body = "#4A5567";
+    private static final String Background_1 = "#F2F5F9";
     private static final String Background_2 = "#D1D8E2";
+    private static final String Background_3 = "#9AA5B8";
     private static final String Standard = "#1B202D";
+    private static final String Signature = "#05C78C";
+    private static final String Yellow = "#F2BB57";
+    private static final String Blue = "#579EF2";
+    private static final String White = "#ffffff";
 
 
     private ExerciseRecordAdapter adapter;
@@ -55,12 +64,12 @@ public class ERRecordingFragment extends Fragment {
     private Timer TimerCall;
     private TimerTask timerTask;
 
-    private Boolean isRunning;
+    private Boolean isRunning, isUnLock;
     private long startTime, clickTime, pauseTime; // 운동 시작 시간// 총 운동 시간과 휴식 시간을 // 계산하기 위한 시간 -> 스톱워치 눌렀을 때 현재 시간을 저장
     private int runTime;    // 총 운동 시간
 
     private ArrayList<ExerciseData> recordExercises; // 실제 운동을 기록, 어댑터에서 한 기록을 받아옴
-    private int recordPosition;
+    private int recordPosition, recordSize;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -73,7 +82,7 @@ public class ERRecordingFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     public interface OnFragmentInteractionListener {
-        void onRecordExercises(long StartTime, long EndTime, int runTime, ArrayList<ExerciseData> recordExercises);
+        void onRecordExercises(String StartTime, String EndTime, String runTime, ArrayList<ExerciseData> recordExercises);
     }
 
     @Override
@@ -95,7 +104,6 @@ public class ERRecordingFragment extends Fragment {
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
-     *
      * @param exercises Parameter 1.
      * @return A new instance of fragment ERRecordingFragment.
      */
@@ -120,14 +128,12 @@ public class ERRecordingFragment extends Fragment {
                 recordExercises.get(i).setSetOrTime(0);
             }
         }
+        isUnLock = false;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_er_recording, container, false);
-
         binding = FragmentErRecordingBinding.inflate(inflater);
 
         init();
@@ -155,6 +161,7 @@ public class ERRecordingFragment extends Fragment {
                         if (timerTask != null) {
                             timerTask.cancel();
                             TimerCall.purge();
+                            timerTask = null;
                         }
                         requireActivity().finish();
                     }
@@ -212,7 +219,37 @@ public class ERRecordingFragment extends Fragment {
             }
         });
 
-//        binding.stopBtn.setOnClickListener(v -> EndRocording());
+        binding.floating.setOnClickListener(v -> {
+            if (isUnLock) {
+                binding.lockIcon.setVisibility(View.VISIBLE);
+                binding.stopBtn.setCardBackgroundColor(Color.parseColor(Background_2));
+                binding.stopTxt.setTextColor(Color.parseColor(Background_3));
+
+                binding.floatingIcon.setImageResource(R.drawable.ic_baseline_info_24);
+                binding.floatingIcon.setColorFilter(Color.parseColor(Yellow));
+                binding.floatingTxt.setText("길게 누르면 잠금이 해제돼요");
+
+                isUnLock = false;
+            }
+        });
+
+        binding.stopBtn.setOnClickListener(v -> EndRocording());
+
+        binding.stopBtn.setOnLongClickListener(v -> {
+            if (!isUnLock) {
+                binding.lockIcon.setVisibility(View.GONE);
+                binding.stopBtn.setCardBackgroundColor(Color.parseColor(Signature));
+                binding.stopTxt.setTextColor(Color.parseColor(White));
+
+                binding.floatingIcon.setImageResource(R.drawable.baseline_https_24);
+                binding.floatingIcon.setColorFilter(Color.parseColor(Background_3));
+                binding.floatingTxt.setText("다시 잠그기");
+
+                isUnLock = true;
+            }
+
+            return true;
+        });
     }
 
     @Override
@@ -257,10 +294,18 @@ public class ERRecordingFragment extends Fragment {
                             }
                         } else {
                             int count = progressBar.getProgress();
-                            count++;
 
-                            progressBar.setProgress(count);
-                            recordExercises.get(position).setSetOrTime(count);
+                            if (count < progressBar.getMax()) {
+                                count++;
+                                progressBar.setProgress(count);
+                                recordExercises.get(position).setSetOrTime(count);
+
+                                if (count == progressBar.getMax())
+                                    recordSize++;
+
+                                if (recordSize == recordExercises.size())
+                                    Complete();
+                            }
                         }
                     }
                 }
@@ -268,30 +313,45 @@ public class ERRecordingFragment extends Fragment {
         }
     }
 
-    private void EndRocording() {
-        if (startTime != 0) {
-            AlertDialog.Builder alert_ex = new AlertDialog.Builder(getContext());
-            alert_ex.setMessage("운동을 끝낼까요?");
-            alert_ex.setPositiveButton("예", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    isRunning = false;
-                    pauseTime = 0; // 스톱버튼 누를 시 전부 초기화
-                    timerTask.cancel();
-                    TimerCall.purge();
+    private String TimeToString(long time) {
+        Date date = new Date(time);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+        String result = dateFormat.format(date);
 
-                    mListener.onRecordExercises(startTime, System.currentTimeMillis(), runTime, recordExercises); // 시작시간, 종료시간(현재시간), 운동시간, 운동
-                }
-            });
-            alert_ex.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-//                  // 아니오 누를 시 아무것도 안 함
-                }
-            });
-            alert_ex.setTitle("수고하셨습니다!");
-            AlertDialog alert = alert_ex.create();
-            alert.show();
+        return result;
+    }
+
+    private void Complete() {
+        isUnLock = true;
+
+        binding.lockIcon.setVisibility(View.GONE);
+        binding.stopBtn.setCardBackgroundColor(Color.parseColor(Signature));
+        binding.stopTxt.setTextColor(Color.parseColor(White));
+        binding.floating.setVisibility(View.GONE);
+
+        binding.stopWatchSwitch.setVisibility(View.GONE);
+        binding.stopWatchTxt.setVisibility(View.GONE);
+        binding.endLayout.setVisibility(View.VISIBLE);
+
+        if (timerTask != null) {
+            timerTask.cancel();
+            TimerCall.purge();
+            timerTask = null;
+        }
+    }
+
+    private void EndRocording() {
+        if (startTime != 0 && isUnLock) {
+            isRunning = false;
+            pauseTime = 0; // 스톱버튼 누를 시 전부 초기화
+
+            if (timerTask != null) {
+                timerTask.cancel();
+                TimerCall.purge();
+                timerTask = null;
+            }
+
+            mListener.onRecordExercises(TimeToString(startTime), TimeToString(System.currentTimeMillis()), binding.runTimeView.getText().toString(), recordExercises); // 시작시간, 종료시간(현재시간), 운동시간, 운동
         }
     }
 
@@ -341,6 +401,12 @@ public class ERRecordingFragment extends Fragment {
                     AdapterTxtView.setText(resultT);
 
                     recordExercises.get(recordPosition).setSetOrTime(progress/6000);
+
+                    if (progress == AdapterProgressBar.getMax())
+                        recordSize++;
+
+                    if (recordSize == recordExercises.size())
+                        Complete();
                 }
 
                 if (progress == AdapterProgressBar.getMax()) {

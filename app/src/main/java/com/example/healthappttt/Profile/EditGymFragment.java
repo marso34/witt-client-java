@@ -1,5 +1,6 @@
 package com.example.healthappttt.Profile;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.healthappttt.R;
+import com.example.healthappttt.Sign.SUSelectGymFragment;
 import com.example.healthappttt.databinding.FragmentEditGymBinding;
 
 /**
@@ -28,6 +30,25 @@ public class EditGymFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String MyName;
     private String MyGym;
+
+
+    private OnFragmentInteractionListener mListner;
+
+    public interface OnFragmentInteractionListener {
+        void EditGymInfo();
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+
+        if (context instanceof OnFragmentInteractionListener) {
+            mListner = (OnFragmentInteractionListener) context;
+        } else {
+            throw new ClassCastException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
 
     public EditGymFragment() {
         // Required empty public constructor
@@ -66,15 +87,6 @@ public class EditGymFragment extends Fragment {
         // Inflate the layout for this fragment
         binding = FragmentEditGymBinding.inflate(inflater);
 
-        View view = inflater.inflate(R.layout.fragment_edit_gym, null, false);
-
-       view.findViewById(R.id.cancel_editgym).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().finish(); //TODO ????
-            }
-        });
-
         return binding.getRoot();
     }
 
@@ -85,6 +97,10 @@ public class EditGymFragment extends Fragment {
         binding.MyName.setText(MyName+"님의");
         binding.Gym.setText(MyGym);
         binding.locDetail.setText(""); //헬스장 주소
+
+        binding.cancelEditgym.setOnClickListener(v -> requireActivity().finish());
+
+        binding.editGym.setOnClickListener(v -> mListner.EditGymInfo());
     }
     @Override
     public void onDestroy() {
