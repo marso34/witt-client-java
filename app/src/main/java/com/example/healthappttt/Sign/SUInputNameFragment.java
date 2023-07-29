@@ -22,7 +22,7 @@ import com.example.healthappttt.R;
 import com.example.healthappttt.databinding.FragmentSuInputNameBinding;
 
 public class SUInputNameFragment extends Fragment {
-    FragmentSuInputNameBinding binding;
+    private  FragmentSuInputNameBinding binding;
 
 //    private static final String Backgrount_1 = "#F2F5F9";
     private static final String Backgrount_2 = "#D1D8E2";
@@ -37,6 +37,10 @@ public class SUInputNameFragment extends Fragment {
 
     private String name;
     boolean isTrue;
+
+    private Uri tempSelectedImageUri;
+
+    private Uri selectedImageUri;
 
     public static SUInputNameFragment newInstance(String name) {
         SUInputNameFragment fragment = new SUInputNameFragment();
@@ -101,6 +105,11 @@ public class SUInputNameFragment extends Fragment {
         binding.nextBtn.setOnClickListener(v -> {
             if (isTrue) {
                 ((SignUpActivity) requireActivity()).goToInputBody(binding.name.getText().toString());
+
+                // 사용자가 이미지를 선택한 경우에만 tempSelectedImageUri를 갱신합니다.
+                if (selectedImageUri != null) {
+                    ((SignUpActivity) requireActivity()).receiveImageUri(selectedImageUri);
+                }
             }
         });
 
@@ -108,7 +117,7 @@ public class SUInputNameFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(galleryIntent, GALLERY_REQUEST_CODE); // 나중에 수정
+                startActivityForResult(galleryIntent, GALLERY_REQUEST_CODE);
             }
         });
     }
@@ -120,20 +129,18 @@ public class SUInputNameFragment extends Fragment {
         binding = null;
     }
 
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == GALLERY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            Uri selectedImageUri = data.getData();
+            selectedImageUri = data.getData();
 
             binding.galleryPicture.setImageURI(selectedImageUri);
 
-            SharedPreferences sharedPref = requireContext().getSharedPreferences("myPref", Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPref.edit();
-            editor.putString("URL", selectedImageUri.toString());
-            editor.apply();
-     //       uploadImageToServer(selectedImageUri);
+            // 이미지를 저장하여 SignUpActivity로 전달합니다.
         }
     }
+
 }
 

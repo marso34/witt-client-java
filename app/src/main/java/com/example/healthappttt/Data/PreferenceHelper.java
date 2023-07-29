@@ -49,11 +49,7 @@ public class PreferenceHelper
         edit.putString("User_NM", upf.getUser_NM());
         edit.putString("PW", upf.getPW());
         Log.d("putProfile","pk저장" );
-        // User_Img 는 byte[] 타입이므로 Base64로 인코딩하여 저장
-//        if(upf.getUser_Img() != null) {
-//            String encodedImage = Base64.encodeToString(upf.getUser_Img(), Base64.DEFAULT);
-//            edit.putString("User_Img", encodedImage);
-//        }
+        edit.putString("User_Img", upf.getUser_Img());
 
         edit.apply();
     }
@@ -72,7 +68,7 @@ public class PreferenceHelper
         edit.putString("email", userData.getEmail());
         edit.putInt("platform",userData.getPlatform());
         edit.putString("User_NM",userData.getName());
-        edit.putString("image",userData.getImage());
+        edit.putString("User_IMG",userData.getImage());
         /**
          * PhoneInfo 저장
          **/
@@ -122,6 +118,9 @@ public class PreferenceHelper
     }
     public String getUser_NM() {
         return app_prefs.getString("User_NM","__");
+    }
+    public String getUser_IMG() {
+        return app_prefs.getString("User_IMG","__");
     }
     public String getGYMNM() {
         return app_prefs.getString("gymNm","");
@@ -187,7 +186,7 @@ public class PreferenceHelper
         userData.put("benchValue", app_prefs.getInt("benchValue", 0));
         userData.put("deadValue", app_prefs.getInt("deadValue", 0));
         //userData.put("totalValue",app_prefs.getInt("totalValue",0));
-        //userData.put("image", app_prefs.getString("image", ""));
+        userData.put("User_IMG", app_prefs.getString("User_IMG", ""));
         Log.d("member getUserData() ", String.valueOf(app_prefs.getInt("height", 0)));
         return userData;
     }
