@@ -173,25 +173,24 @@ public class ExerciseInputAdapter extends RecyclerView.Adapter<ExerciseInputAdap
 //
         holder.Volume.setText(Integer.toString(this.exercises.get(position).getVolume()));
         holder.Count.setText(Integer.toString(this.exercises.get(position).getCntOrDis()));
-        holder.CardioTime.setText(Integer.toString(this.exercises.get(position).getSetOrTime()));
-//
+        holder.Set.setText(Integer.toString(this.exercises.get(position).getSetOrTime()));
+
         if (this.exercises.get(position).getCat() == 0x40) { // 유산소
             holder.CardioLayout.setVisibility(View.VISIBLE);
             holder.DefaultLayout.setVisibility(View.GONE);
 
             String str = "";
-            int temp = this.exercises.get(position).getSetOrTime();
+            int SetOrTime = this.exercises.get(position).getSetOrTime();
 
-            if (temp/60 > 0)
-                str += (temp/60) + "시간";
-            if (temp%60 > 0)
-                str += " " + (temp%60) + "분";
+            if (SetOrTime/60 > 0)
+                str += (SetOrTime/60) + "시간 ";
+            if (SetOrTime%60 > 0)
+                str += (SetOrTime%60) + "분";
 
-            holder.Set.setText(str);
+            holder.CardioTime.setText(str);
         } else {
             holder.CardioLayout.setVisibility(View.GONE);
             holder.DefaultLayout.setVisibility(View.VISIBLE);
-            holder.Set.setText(Integer.toString(this.exercises.get(position).getSetOrTime()));
 
 //            if (this.exercises.get(position).get??? == ???) { // 무게 없는 맨몸 운동의 경우
 //                holder.VolumeLayout.setVisibility(View.GONE);

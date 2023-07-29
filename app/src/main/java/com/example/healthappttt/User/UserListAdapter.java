@@ -9,6 +9,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -50,6 +52,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserLi
     public UserListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.user_layout, parent, false);
         UserListViewHolder viewHolder = new UserListViewHolder(view);
+//
         sqLiteUtil = SQLiteUtil.getInstance();
         preferenceHelper = new PreferenceHelper("UserTB", context);
         view.setOnClickListener(new View.OnClickListener() {
@@ -59,6 +62,9 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserLi
                 Log.d(TAG, "onClick: "+String.valueOf(position));
                     UserChat user = userList.get(position);
                 Intent intent = new Intent(context, ChatActivity.class);
+                view.findViewById(R.id.circleIMG).setVisibility(View.INVISIBLE);
+                LinearLayout layout = view.findViewById(R.id.out);
+                layout.setBackgroundResource(R.drawable.round_button_white);
                 intent.putExtra("otherUserName",user.getUserNM());
                 intent.putExtra("ChatRoomId",String.valueOf(user.getChatRoomId()));
                 intent.putExtra("otherUserKey",String.valueOf(user.getOtherUserKey()));
@@ -77,6 +83,19 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserLi
         holder.userName.setText(user.getUserNM());
         sqLiteUtil.setInitView(context,"CHAT_MSG_TB");
         MSG m = sqLiteUtil.selectLastMsg(String.valueOf(userList.get(position).getChatRoomId()),String.valueOf(preferenceHelper.getPK()),2);
+        Log.d(TAG, "onBindViewHolder: "+m.getISREAD()+"  "+m.getMessage());
+        if(m.getISREAD() == 2){
+            LinearLayout layout = holder.itemView.findViewById(R.id.out);
+            layout.setBackgroundResource(R.drawable.round_button_white);
+            holder.circleIMG.setVisibility(View.INVISIBLE);
+        }
+        else
+        {
+            LinearLayout layout = holder.itemView.findViewById(R.id.out);
+            layout.setBackgroundResource(R.drawable.round_line);
+            holder.circleIMG.setVisibility(View.VISIBLE);
+        }
+
         if(extractName(m.getMessage()) == null)
             holder.lastChat.setText(m.getMessage());
         else holder.lastChat.setText(extractName(m.getMessage()));
@@ -136,16 +155,15 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserLi
         public TextView userName;
         public TextView lastChat;
         public TextView lastChatTime;
+        public ImageView circleIMG;
         public UserListViewHolder(@NonNull View itemView) {
             super(itemView);
             userName = itemView.findViewById(R.id.UNE);
             lastChat = itemView.findViewById(R.id.lastChat);
             lastChatTime = itemView.findViewById(R.id.lastChatTime);
-
-
+            circleIMG = itemView.findViewById(R.id.circleIMG);
         }
     }
-
 
 
 }

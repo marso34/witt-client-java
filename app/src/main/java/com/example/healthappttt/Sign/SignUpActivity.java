@@ -2,9 +2,18 @@ package com.example.healthappttt.Sign;
 
 import static android.content.ContentValues.TAG;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
+import android.widget.Toast;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -18,12 +27,22 @@ import com.example.healthappttt.Data.User.ExPerfInfo;
 import com.example.healthappttt.Data.User.LocInfo;
 import com.example.healthappttt.Data.User.MannerInfo;
 import com.example.healthappttt.Data.User.PhoneInfo;
+import com.example.healthappttt.Data.User.UploadResponse;
 import com.example.healthappttt.Data.User.UserClass;
 import com.example.healthappttt.Data.User.UserData;
 import com.example.healthappttt.MainActivity;
 import com.example.healthappttt.R;
 import com.example.healthappttt.interface_.ServiceApi;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -38,6 +57,9 @@ public class SignUpActivity extends AppCompatActivity implements SUSelectGymFrag
     int height, weight, gender;
     int bench, deadlift, squat;
 
+    private Uri userImageUri;
+    private String seturi;
+
     private PreferenceHelper UserTB;
 
     @Override
@@ -50,6 +72,7 @@ public class SignUpActivity extends AppCompatActivity implements SUSelectGymFrag
             name = intent.getStringExtra("name");
             platform = intent.getIntExtra("platform", 0);
         }
+
 
         height = 170;
         weight = 60;
@@ -97,7 +120,7 @@ public class SignUpActivity extends AppCompatActivity implements SUSelectGymFrag
         if (gender != -1)
             this.gender = gender;
 
-        replaceFragment(SUSelectGymFragment.newInstance(lat, lon, gymName));
+        replaceFragment(SUSelectGymFragment.newInstance(lat, lon, gymName, false));
     }
 
     public void sendToServer(int squat, int bench, int deadlift) {
@@ -105,8 +128,18 @@ public class SignUpActivity extends AppCompatActivity implements SUSelectGymFrag
         this.bench = bench;
         this.deadlift = deadlift;
 
+        Log.d("ㅇㅁ1ㄴ:", "ㅇㄴㅁㅇ");
 
-        sendTokenToServer();
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                uploadImage();
+            }
+        });
+        executor.shutdown();
+
+
 
         //            Log.d(TAG, "sub2f"+email);
 //                sendTokenToServer(email,name);
@@ -123,7 +156,7 @@ public class SignUpActivity extends AppCompatActivity implements SUSelectGymFrag
 
 //
     private UserData getUserDT() {
-        return new UserData(email, platform, name,"face");
+        return new UserData(email, platform, name,seturi);
     }
 
     private PhoneInfo getPhoneInfo() {
@@ -150,20 +183,18 @@ public class SignUpActivity extends AppCompatActivity implements SUSelectGymFrag
         return new BodyInfo("1999-12-27", gender, height, weight, temp);
     }
 //
-    private void sendTokenToServer() {
-        ServiceApi apiService = RetrofitClient.getClient().create(ServiceApi.class);
+private void sendTokenToServer() {
+    ServiceApi apiService = RetrofitClient.getClient().create(ServiceApi.class);
 
         Call<Integer> call = apiService.sendData(new UserClass(getUserDT(), getPhoneInfo(), getMannerInfo(), getLocInfo(), getExPerInfo(), getBodyInfo()));
 
+        Log.d(TAG, getUserDT().getImage().toString());
         call.enqueue(new Callback<Integer>() {
             @Override
             public void onResponse(Call<Integer> call, Response<Integer> response) {
                 if (response.isSuccessful()) {
-                    //shared
                     int userKey = response.body();
-
                     UserClass sharedUser = new UserClass(getUserDT(), getPhoneInfo(), getMannerInfo(), getLocInfo(), getExPerInfo(), getBodyInfo());
-
                     UserTB.putMembership(sharedUser);
                     Log.d("shared 로컬 저장 회원가입 pk:", String.valueOf(userKey));
 
@@ -171,28 +202,80 @@ public class SignUpActivity extends AppCompatActivity implements SUSelectGymFrag
                     intent.putExtra("userKey", String.valueOf(userKey));
                     startActivity(intent);
                     finish();
-                    Log.d(TAG, "sendTokenToServer success");
+                    Log.d(TAG, "업로드 성공");
                 } else {
                     // 서버로 데이터 전송 실패
-//                    Toast.makeText(requireActivity(), "로그인 실패", Toast.LENGTH_SHORT).show();
-                    Log.d(TAG, "sendTokenToServer fail");
+                    Log.d(TAG, "업로드 실패");
                 }
             }
 
             @Override
             public void onFailure(Call<Integer> call, Throwable t) {
-//                Toast.makeText(requireActivity(), "서버로부터 응답이 없습니다.", Toast.LENGTH_SHORT).show();
-                Log.e(TAG, "sendTokenToServer error: " + t.getMessage());
+                Log.e(TAG, "이미지 업로드 에러: " + t.getMessage());
+            }
+        });
+
+}
+
+    private void uploadImage() {
+
+        ServiceApi apiService = RetrofitClient.getClient().create(ServiceApi.class);
+        String imagePath = getRealPathFromUri(userImageUri);
+           File imageFile = new File(imagePath);
+            RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), imageFile);
+            MultipartBody.Part imagePart = MultipartBody.Part.createFormData("image", imageFile.getName(), requestBody);
+
+        Call<UploadResponse> call = apiService.uploadImage(imagePart);
+        call.enqueue(new Callback<UploadResponse>() {
+            @Override
+            public void onResponse(Call<UploadResponse> call, Response<UploadResponse> response) {
+                if (response.isSuccessful()) {
+
+                    Log.d(TAG, "sendTokenToServer success");
+                    UploadResponse uploadResponse = response.body();
+
+                    String imageUrl = uploadResponse.getImageUrl();
+                    seturi = imageUrl;
+
+
+
+                    sendTokenToServer();
+
+                } else {
+                    Log.d(TAG, "sendTokenToServer fail");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UploadResponse> call, Throwable t) {
+                Log.e("Upload Error", "통신 실패: " + t.getMessage());
             }
         });
     }
 
+    private String getRealPathFromUri(Uri uri) {
+        String result;
+        String[] projection = {MediaStore.Images.Media.DATA};
+        try (Cursor cursor = getContentResolver().query(uri, projection, null, null, null)) {
+            if (cursor == null) {
+                result = uri.getPath();
+            } else {
+                cursor.moveToFirst();
+                int columnIdx = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                result = cursor.getString(columnIdx);
+            }
+        }
+        return result;
+    }
+
+
+
     @Override
     public void onSaveLocation(double userLat, double userLon, double gymLat, double gymLon, String gymName, String gymAdress) {
         if (userLat != 0)
-            this.lat = lat;
+            this.lat = userLat;
         if (userLon != 0)
-            this.lon = lon;
+            this.lon = userLon;
 
         this.gymName = gymName;
         this.gymAdress = gymAdress;
@@ -200,6 +283,13 @@ public class SignUpActivity extends AppCompatActivity implements SUSelectGymFrag
         this.gymLon = gymLon;
 
         replaceFragment(SUInputPerfFragment.newInstance(bench, deadlift, squat));
+    }
+
+    public void receiveImageUri(Uri imageUri) {
+
+        userImageUri = imageUri;
+
+
     }
 
     @Override

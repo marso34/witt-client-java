@@ -40,11 +40,6 @@ import java.util.function.ObjIntConsumer;
 public class HomeFragment extends Fragment {
     FragmentHomeBinding binding;
 
-    private static final String Orange = "#FC673F";
-    private static final String Yellow = "#F2BB57";
-    private static final String Blue = "#579EF2";
-    private static final String Purple = "#8C5AD8";
-
     private int dayOfWeek;
 
     private AreaAdapter catAdapter;
@@ -53,6 +48,11 @@ public class HomeFragment extends Fragment {
     private SQLiteUtil sqLiteUtil;
     private ArrayList<RoutineData> routines;
 
+
+    private static final String Orange = "#FC673F";
+    private static final String Yellow = "#F2BB57";
+    private static final String Blue = "#579EF2";
+    private static final String Purple = "#8C5AD8";
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";

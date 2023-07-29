@@ -48,8 +48,8 @@ public class PreferenceHelper
         edit.putInt("Platform", upf.getPlatform());
         edit.putString("User_NM", upf.getUser_NM());
         edit.putString("PW", upf.getPW());
-
-        edit.putString("User_Img",upf.getUser_Img());
+        Log.d("putProfile","pk저장" );
+        edit.putString("User_Img", upf.getUser_Img());
         edit.apply();
     }
 
@@ -67,7 +67,7 @@ public class PreferenceHelper
         edit.putString("email", userData.getEmail());
         edit.putInt("platform",userData.getPlatform());
         edit.putString("User_NM",userData.getName());
-        edit.putString("image",userData.getImage());
+        edit.putString("User_IMG",userData.getImage());
         /**
          * PhoneInfo 저장
          **/
@@ -88,6 +88,8 @@ public class PreferenceHelper
         edit.putString("gymNm",locInfo.getGymNm());
         edit.putFloat("gymLat", (float) locInfo.getGymLat());
         edit.putFloat("gymLon", (float) locInfo.getGymLon());
+        edit.putString("gymAdress", locInfo.getGymAdress()); //
+
         /**
          * exPerfInfo 저장
          **/
@@ -118,9 +120,16 @@ public class PreferenceHelper
     public String getUser_NM() {
         return app_prefs.getString("User_NM","__");
     }
+    public String getUser_IMG() {
+        return app_prefs.getString("User_IMG","__");
+    }
     public String getGYMNM() {
         return app_prefs.getString("gymNm","");
     }
+    public String getGYMAdress() {
+        return app_prefs.getString("gymAdress","");
+    }
+
     public int getGender() {
         return app_prefs.getInt("gender",0);
     }
@@ -182,7 +191,7 @@ public class PreferenceHelper
         userData.put("benchValue", app_prefs.getInt("benchValue", 0));
         userData.put("deadValue", app_prefs.getInt("deadValue", 0));
         //userData.put("totalValue",app_prefs.getInt("totalValue",0));
-        //userData.put("image", app_prefs.getString("image", ""));
+        userData.put("User_IMG", app_prefs.getString("User_IMG", ""));
         Log.d("member getUserData() ", String.valueOf(app_prefs.getInt("height", 0)));
         return userData;
     }

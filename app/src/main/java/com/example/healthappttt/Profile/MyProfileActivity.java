@@ -1,6 +1,12 @@
 package com.example.healthappttt.Profile;
 
+import static android.content.ContentValues.TAG;
+
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -39,12 +45,14 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 
 public class MyProfileActivity extends AppCompatActivity {
+
 
     private ActivityMyprofileBinding binding;
     private PreferenceHelper UserTB;
@@ -59,10 +67,11 @@ public class MyProfileActivity extends AppCompatActivity {
     TextView Psqaut,Pbench,Pdeadlift;
     Map<String,Object> userDefault;
     Map<String,Object> OuserDefault;
-    String myPK,PK;
+    String myPK,PK, URI;
     String MyName, OtherName;
     String MyGym;
     int dayOfWeek;
+
 
     String otherUserKey;
     @Override
@@ -73,6 +82,8 @@ public class MyProfileActivity extends AppCompatActivity {
         apiService = RetrofitClient.getClient().create(ServiceApi.class); // create메서드로 api서비스 인터페이스의 구현제 생성
         binding = ActivityMyprofileBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+
 
         cancel_Mprofile = findViewById(R.id.cancel_Mprofile);
         //텍스트
@@ -89,7 +100,16 @@ public class MyProfileActivity extends AppCompatActivity {
         UserTB = new PreferenceHelper("UserTB",this);
 
         Intent intent = getIntent();//넘겨받은 pk를 담은 번들
-        PK = intent.getStringExtra("PK");//넘겨 받은 PK
+        PK = intent.getStringExtra("PK");
+
+        String uri = UserTB.getUser_IMG(); //이미지 가져오는 부분
+        if(uri != null)
+        {
+            String fileName = uri.substring(uri.lastIndexOf("/") + 1);
+            getImage(fileName);
+        }
+
+
 
         Date currentDate = new Date();
         Calendar calendar = Calendar.getInstance();
@@ -245,6 +265,8 @@ public class MyProfileActivity extends AppCompatActivity {
     //기본 사용자 정보 세팅
     public void setDefault( Map<String, Object> data ) {
         Pname.setText(data.get("User_NM").toString());//이름
+
+        Log.d(TAG,data.get("User_IMG").toString());
         Plocatoin.setText(data.get("gymNm").toString());//헬스장
         Psqaut.setText(data.get("squatValue").toString());
         Pbench.setText(data.get("benchValue").toString());
@@ -453,6 +475,30 @@ public class MyProfileActivity extends AppCompatActivity {
             }
         });
     }
+    private void getImage(String imageUri) {
+
+
+        ServiceApi apiService = RetrofitClient.getClient().create(ServiceApi.class);
+
+        Call<ResponseBody> call = apiService.getImage(imageUri);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    Log.d(TAG, "이미지 다운 성공");
+                    Bitmap bitmap = BitmapFactory.decodeStream(response.body().byteStream());
+                    ProfileImg.setImageBitmap(bitmap);
+                } else {
+                    Log.d(TAG, "이미지 다운 실패");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.d(TAG, "이미지 다운 에러");
+            }
+        });
+    }
 
     private void sendMessageToServer(String messageText, int chatRoomPk,int chatPk) {
         try {
@@ -507,6 +553,8 @@ public class MyProfileActivity extends AppCompatActivity {
 
 
     }
+
+
     //새로 추가함
     @Override
     public void onDestroy() {

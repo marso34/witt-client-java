@@ -58,6 +58,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -86,13 +87,13 @@ public class MainActivity extends AppCompatActivity {
     Intent serviceIntent;
     private int login;
     private SocketSingleton socketSingleton;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         login = 1;
 
         String uk = getIntent().getStringExtra("userKey");
-        SharedPreferences sharedPref = getSharedPreferences("myPref", Context.MODE_PRIVATE);
-        String url  = sharedPref.getString("URL", "");
+
 
         if(uk != null){
             userKey = new UserKey(Integer.parseInt(uk));
@@ -197,7 +198,6 @@ public class MainActivity extends AppCompatActivity {
         tempItemID = R.id.home;
         replaceFragment(new HomeFragment());
 
-
         binding.bottomNav.setOnItemSelectedListener(item -> {
             int ItemId = item.getItemId();
 
@@ -211,7 +211,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.routine:
                         binding.viewName.setText("루틴");
-                        replaceFragment(new RoutineFragment());
+                        replaceFragment(RoutineFragment.newInstance(dayOfWeek, prefhelper.getPK()));
                         break;
                     case R.id.chatting:
                         binding.viewName.setText("채팅");
@@ -263,6 +263,14 @@ public class MainActivity extends AppCompatActivity {
             Log.d(TAG, "메인 종료");
         }
     }
+
+    public void goToRoutine(int dayOfWeekT) {
+        int temp = dayOfWeek;
+        dayOfWeek = dayOfWeekT;
+        binding.bottomNav.setSelectedItemId(R.id.routine);
+        dayOfWeek = temp;
+    }
+
     private void setAlarmTimer() {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
@@ -583,33 +591,7 @@ public class MainActivity extends AppCompatActivity {
         toast.show();
     }
 
-    private void uploadImageToServer(String imageUri, String userId) {
 
-        ServiceApi apiService = RetrofitClient.getClient().create(ServiceApi.class);
-
-
-        Call<UploadResponse> call = apiService.uploadImage(imageUri, userId);
-        call.enqueue(new Callback<UploadResponse>() {
-            @Override
-            public void onResponse(Call<UploadResponse> call, Response<UploadResponse> response) {
-                if (response.isSuccessful()) {
-                    UploadResponse uploadResponse = response.body();
-                    Toast.makeText(MainActivity.this, "이미지 업로드 성공", Toast.LENGTH_SHORT).show();
-
-                    // 이미지 URL을 MySQL 데이터베이스에 저장하는 로직 추가
-                } else {
-                    // 업로드 실패 처리
-                    Toast.makeText(MainActivity.this, "이미지 업로드 실패", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<UploadResponse> call, Throwable t) {
-                // 통신 실패 처리
-                Toast.makeText(MainActivity.this, "통신 실패", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
     private void checkAndRequestNotificationPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationManager notificationManager = getSystemService(NotificationManager.class);

@@ -28,12 +28,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
 
 public interface ServiceApi {
@@ -111,6 +115,11 @@ public interface ServiceApi {
     @POST("/saveUser")
     Call<Integer> sendData(@Body UserClass data);
 
+
+    @Multipart
+    @POST("/saveUserWithImage")
+    Call<Integer> sendDataWithImage(@Part MultipartBody.Part image, @Body UserClass userData);
+
     @POST("/getUserInfo/{useremail}")
     Call<GetUserInfo> getUserInfo(@Path("useremail") String useremail);
 
@@ -123,11 +132,12 @@ public interface ServiceApi {
     @POST("/makeChatRoom")
     Call<Integer> makeChatRoom(@Body WittSendData wittSendData);
 
-    @FormUrlEncoded
-    @POST("upload/image")
-    Call<UploadResponse> uploadImage(
-            @Field("imageUrl") String imageUrl,
-            @Field("userId") String userId
-    );
+    @Multipart
+    @POST("/uploadImage")
+    Call<UploadResponse> uploadImage(@Part MultipartBody.Part image);
+
+    @GET("/getImage/{imageName}")
+    Call<ResponseBody> getImage(@Path("imageName") String imageName);
+
 
 }

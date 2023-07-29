@@ -80,7 +80,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         mGoogleSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-              signIn();
+                signIn();
+//                GoMain("2");
+//                GoMain("89");
             }
         });
         int runningServices = ServiceTracker.countRunningServices(this, DataReceiverService.class);
@@ -203,8 +205,4 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         startActivity(intent);
         finish();
     }
-
 }
-
-
-
