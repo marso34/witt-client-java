@@ -3,14 +3,13 @@ package com.example.healthappttt.Sign;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.example.healthappttt.R;
 import com.example.healthappttt.databinding.FragmentSuSelectGenderBinding;
@@ -30,8 +29,6 @@ public class SUSelectGenderFragment extends Fragment {
     private static final String Pink = "#F257AF";
     private static final String Pink_Toggle = "#fde6f3";
     private static final String Body = "#4A5567";
-
-
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER

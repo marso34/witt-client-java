@@ -79,8 +79,8 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
                     .inflate(R.layout.item_message_sent, parent, false);
 
         }
-
         return new MessageViewHolder(view);
+
     }
     public String extractName(String inputString) {
         String namePattern = "!!~(.*?)~!!"; // 정규표현식 패턴: !!~(이름)~!!

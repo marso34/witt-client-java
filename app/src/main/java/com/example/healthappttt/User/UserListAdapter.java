@@ -84,7 +84,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserLi
         sqLiteUtil.setInitView(context,"CHAT_MSG_TB");
         MSG m = sqLiteUtil.selectLastMsg(String.valueOf(userList.get(position).getChatRoomId()),String.valueOf(preferenceHelper.getPK()),2);
         Log.d(TAG, "onBindViewHolder: "+m.getISREAD()+"  "+m.getMessage());
-        if(m.getISREAD() == 2){
+        if(m.getISREAD() == 2 ||m.getISREAD() == -1 ){
             LinearLayout layout = holder.itemView.findViewById(R.id.out);
             layout.setBackgroundResource(R.drawable.round_button_white);
             holder.circleIMG.setVisibility(View.INVISIBLE);
