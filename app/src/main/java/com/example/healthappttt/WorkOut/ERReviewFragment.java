@@ -85,6 +85,7 @@ public class ERReviewFragment extends Fragment {
             intent.putExtra("code", code);
 
             startActivity(intent);
+            requireActivity().finish();
         });
     }
 

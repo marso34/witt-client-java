@@ -21,7 +21,5 @@
             <item name="android:background">@drawable/rectangle_20dp</item>
             <item name="android:elevation">1dp</item>
         </style>
-    
-
 
 </resources>
