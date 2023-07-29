@@ -6,26 +6,40 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".Home.alarmActivity">
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/Toolbar"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        >
+        android:layout_height="82dp"
+        android:background="@drawable/rounded_bottom"
+        android:elevation="3dp">
+
+        <Button
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentRight="false"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/backchatroom"
+            android:gravity="bottom"></Button>
+
         <TextView
+            android:id="@+id/toolbarName"
+            style="@style/Headline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="알람"
-            android:textStyle="bold"
-            android:textSize="24dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="38dp"
+            android:gravity="center"
+            android:text="알림"
             android:textColor="@color/black"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="44dp"
-            android:layout_marginBottom="19dp"
-            >
-        </TextView>
-    </LinearLayout>
+            android:textSize="18dp" />
+
+       </RelativeLayout>
+
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp">
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swipe_layout"
             android:layout_width="match_parent"

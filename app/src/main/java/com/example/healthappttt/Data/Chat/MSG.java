@@ -24,15 +24,23 @@ public class MSG {
     @SerializedName("timeStamp")
     private String timestamp = "0000-00-00 00:00:00";
     private int success = -1;
+    private int ISREAD;//unread =1
 
 
-    public MSG(int chatPk,int myFlag, int chatRoomId, String message, String timestamp,int success) {
+    public MSG(int chatPk,int myFlag, int chatRoomId, String message, String timestamp,int success,int ISREAD) {
         this.chatPk = chatPk;
         this.myFlag = myFlag;
         this.chatRoomId = chatRoomId;
         this.message = message;
         this.timestamp = timestamp;
         this.success = success;
+        this.ISREAD = ISREAD;
+    }
+    public int getISREAD(){
+        return this.ISREAD;
+    }
+    public void setISREAD(int ISREAD){
+        this.ISREAD = ISREAD;
     }
     public int getKey(){
         return chatPk;
