@@ -12,8 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginVertical="40dp">
+        android:layout_marginHorizontal="16dp">
 
         <androidx.appcompat.widget.Toolbar
             android:layout_width="match_parent"
@@ -59,7 +58,7 @@
             android:layout_height="wrap_content"
             android:text="사용하지 않는 앱이에요"
             android:layout_marginBottom="12dp"
-            android:background="@drawable/rectangle"
+            android:background="@drawable/rectangle_20dp"
             android:elevation="3dp"
             android:paddingTop="9dp"
             android:paddingLeft="16dp"
@@ -73,7 +72,7 @@
             android:layout_height="wrap_content"
             android:text="오류가 생겨서 쓸 수 없어요"
             android:layout_marginBottom="12dp"
-            android:background="@drawable/rectangle"
+            android:background="@drawable/rectangle_20dp"
             android:elevation="3dp"
             android:paddingTop="9dp"
             android:paddingLeft="16dp"
@@ -87,7 +86,7 @@
             android:layout_height="wrap_content"
             android:text="개인정보가 불안해요"
             android:layout_marginBottom="12dp"
-            android:background="@drawable/rectangle"
+            android:background="@drawable/rectangle_20dp"
             android:elevation="3dp"
             android:paddingTop="9dp"
             android:paddingLeft="16dp"
@@ -115,7 +114,7 @@
             android:layout_height="wrap_content"
             android:text="위트메이트가 운동에 도움되는지 모르겠어요"
             android:layout_marginBottom="12dp"
-            android:background="@drawable/rectangle"
+            android:background="@drawable/rectangle_20dp"
             android:elevation="3dp"
             android:paddingTop="9dp"
             android:paddingLeft="16dp"

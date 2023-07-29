@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -34,6 +35,7 @@ public class ReportHistoryActivity extends AppCompatActivity {
 //    RecyclerView recyclerView;
 //    LinearLayoutManager linearLayoutManager;
     int PK;
+    Button cancel_reported;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +53,14 @@ public class ReportHistoryActivity extends AppCompatActivity {
         UserKey userKey = new UserKey(PK);
 
         getReportList(userKey);
+
+        cancel_reported = findViewById(R.id.cancel_reported);
+        cancel_reported.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
     }
 

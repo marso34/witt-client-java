@@ -109,6 +109,13 @@ public class EvaluationRecdActivity extends AppCompatActivity {
         GtextView = new TextView[]{listCnt1_0, listCnt1_1, listCnt1_2, listCnt1_3};
         BtextView = new TextView[]{listCnt0_0, listCnt0_1, listCnt0_2, listCnt0_3, listCnt0_4, listCnt0_5, listCnt0_6, listCnt0_7};
 
+        binding.cancelEval.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
     }
 
     public void setListView(ArrayList<ReviewListData> ReviewList) {
@@ -188,5 +195,5 @@ public class EvaluationRecdActivity extends AppCompatActivity {
         }
 
     }
-    
+
 }

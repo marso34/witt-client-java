@@ -1,16 +1,18 @@
 package com.example.healthappttt.Profile;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.healthappttt.Data.SQLiteUtil;
 import com.example.healthappttt.Data.User.BlackListData;
 import com.example.healthappttt.Data.User.ReportHistory;
 import com.example.healthappttt.Data.User.ReviewListData;
-import com.example.healthappttt.Data.SQLiteUtil;
 import com.example.healthappttt.Data.User.WittListData;
 import com.example.healthappttt.R;
 import com.example.healthappttt.User.BlockUserAdapter;
@@ -29,6 +31,8 @@ public class BlackActivity extends AppCompatActivity {
     BlockUserAdapter BlackAdapter;
     RecyclerView recyclerView;
     LinearLayoutManager linearLayoutManager;
+    Button cancel_black;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,6 +78,13 @@ public class BlackActivity extends AppCompatActivity {
             }
         });
 
+        cancel_black = findViewById(R.id.cancel_black);
+        cancel_black.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
     }
 

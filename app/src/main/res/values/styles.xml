@@ -4,4 +4,24 @@
         <item name="android:background">@color/black_overlay</item>
         <item name="android:buttonBarStyle">?android:attr/buttonBarStyle</item>
     </style>
+
+        <style name="Profile_list_LinearLayout">
+            <item name="android:layout_width">match_parent</item>
+            <item name="android:layout_height">wrap_content</item>
+            <item name="android:orientation">horizontal</item>
+
+            <item name="android:paddingLeft">16dp</item>
+            <item name="android:paddingRight">16dp</item>
+            <item name="android:paddingTop">13dp</item>
+            <item name="android:paddingBottom">13dp</item>
+            <item name="android:layout_marginTop">7dp</item>
+            <item name="android:layout_marginBottom">7dp</item>
+            <item name="android:layout_marginStart">6dp</item>
+            <item name="android:layout_marginEnd">6dp</item>
+            <item name="android:background">@drawable/rectangle_20dp</item>
+            <item name="android:elevation">1dp</item>
+        </style>
+    
+
+
 </resources>

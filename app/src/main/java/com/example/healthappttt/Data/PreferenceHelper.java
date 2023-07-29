@@ -48,13 +48,8 @@ public class PreferenceHelper
         edit.putInt("Platform", upf.getPlatform());
         edit.putString("User_NM", upf.getUser_NM());
         edit.putString("PW", upf.getPW());
-        Log.d("putProfile","pk저장" );
-        // User_Img 는 byte[] 타입이므로 Base64로 인코딩하여 저장
-//        if(upf.getUser_Img() != null) {
-//            String encodedImage = Base64.encodeToString(upf.getUser_Img(), Base64.DEFAULT);
-//            edit.putString("User_Img", encodedImage);
-//        }
 
+        edit.putString("User_Img",upf.getUser_Img());
         edit.apply();
     }
 

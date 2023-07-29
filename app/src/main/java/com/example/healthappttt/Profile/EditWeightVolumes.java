@@ -38,6 +38,7 @@ public class EditWeightVolumes extends AppCompatActivity {
     private int benchValue = 0;
     private int deadliftValue = 0;
     private int PK;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,9 +58,7 @@ public class EditWeightVolumes extends AppCompatActivity {
         setTextWeight(squatValue,benchValue,deadliftValue); //초기값 세팅
         Dsquat = squatValue; Dbench = benchValue; Ddead = deadliftValue; //초기값 저장
 
-
-
-        //TODO 바텀시트다이얼로그
+                // 바텀시트다이얼로그
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.input_exercise_perf,null,false);
 
@@ -68,13 +67,13 @@ public class EditWeightVolumes extends AppCompatActivity {
         NumberPicker DeadliftPicker = view.findViewById(R.id.deadliftPicker);
 
         setNumPicker(view,SquatPicker,BenchPicker,DeadliftPicker);//스피너 세팅
+
         //초기화
         binding.resetVol.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 setTextWeight(Dsquat,Dbench,Ddead);
                 squatValue = Dsquat; benchValue = Dbench; deadliftValue = Ddead;
-//                view.findViewById(R.id.squatPicker).set
                 SquatPicker.setValue(Dsquat); BenchPicker.setValue(Dbench); DeadliftPicker.setValue(Ddead);
 
             }
@@ -84,10 +83,12 @@ public class EditWeightVolumes extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 bottomSheetDialog.show();
+//                binding.EditBtn.setTextColor(Color.parseColor("#FFFFFF"));//텍스트 흰색
+//                binding.EditBtn.setBackgroundColor(Color.parseColor("#05C78C"));//배경 시그니처
             }
         });
         //뒤로가기
-        binding.cancelEditbody.setOnClickListener(new View.OnClickListener() {
+        binding.cancelEditweight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
@@ -97,9 +98,9 @@ public class EditWeightVolumes extends AppCompatActivity {
         binding.EditBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO 로컬에 저장 - 테스트:
+                // 로컬에 저장
                 UserTB.setWeight( squatValue ,benchValue, deadliftValue );
-                //TODO 서버에 저장
+                // 서버에 저장
                 UpdateDefault.put("PK",PK);
                 UpdateDefault.put("squatValue",squatValue);
                 UpdateDefault.put("benchValue",benchValue);
@@ -108,7 +109,6 @@ public class EditWeightVolumes extends AppCompatActivity {
                 setWeight(UpdateDefault);
                 finish();
 
-                //TODO 마이프로필 - 로컬에서 불러와서 보여주기
             }
         });
 

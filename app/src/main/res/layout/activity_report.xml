@@ -13,8 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginVertical="40dp">
+        android:layout_marginHorizontal="16dp">
 
         <Button
             android:id="@+id/cancle_report"
@@ -25,23 +24,23 @@
             android:layout_marginBottom="16dp"/>
 
         <TextView
+            style="@style/Title"
             android:id="@+id/reportname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="김도현님을"
-            style="@style/chat_title"/>
+            android:text="김도현님을" />
         <TextView
+            style="@style/Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="신고하는 이유를 선택해주세요"
-            style="@style/chat_title"
             android:layout_marginBottom="8dp"/>
 
         <TextView
+            style="@style/Subtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="부당하거나 허위 신고는 위트 사용 제재 대상이에요 "
-            android:fontFamily="@font/spoqa_han_sans_neo"
             android:textSize="12dp"
             android:textColor="#677489"
             android:layout_marginBottom="56dp"/>
@@ -54,7 +53,7 @@
             android:layout_height="wrap_content"
             android:text="전문 피트니스 PT업자 같아요."
             android:layout_marginBottom="12dp"
-            android:background="@drawable/rectangle"
+            android:background="@drawable/rectangle_20dp"
             android:elevation="3dp"
             android:paddingTop="9dp"
             android:paddingLeft="16dp"
@@ -68,7 +67,7 @@
             android:layout_height="wrap_content"
             android:text="비매너 사용자에요."
             android:layout_marginBottom="12dp"
-            android:background="@drawable/rectangle"
+            android:background="@drawable/rectangle_20dp"
             android:elevation="3dp"
             android:paddingTop="9dp"
             android:paddingLeft="16dp"
@@ -82,7 +81,7 @@
             android:layout_height="wrap_content"
             android:text="욕설을 해요."
             android:layout_marginBottom="12dp"
-            android:background="@drawable/rectangle"
+            android:background="@drawable/rectangle_20dp"
             android:elevation="3dp"
             android:paddingTop="9dp"
             android:paddingLeft="16dp"
@@ -96,7 +95,7 @@
             android:layout_height="wrap_content"
             android:text="성희롱을 해요."
             android:layout_marginBottom="12dp"
-            android:background="@drawable/rectangle"
+            android:background="@drawable/rectangle_20dp"
             android:elevation="3dp"
             android:paddingTop="9dp"
             android:paddingLeft="16dp"
@@ -110,7 +109,7 @@
             android:layout_height="wrap_content"
             android:text="종교활동을 강요해요."
             android:layout_marginBottom="12dp"
-            android:background="@drawable/rectangle"
+            android:background="@drawable/rectangle_20dp"
             android:elevation="3dp"
             android:paddingTop="9dp"
             android:paddingLeft="16dp"
@@ -125,7 +124,7 @@
             android:layout_height="wrap_content"
             android:text="폭력을 사용해요."
             android:layout_marginBottom="12dp"
-            android:background="@drawable/rectangle"
+            android:background="@drawable/rectangle_20dp"
             android:elevation="3dp"
             android:paddingTop="9dp"
             android:paddingLeft="16dp"
@@ -144,11 +143,12 @@
             android:paddingHorizontal="16dp">
 
             <TextView
+                style="@style/BodyB"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="다른 문제가 있어요"
-                style="@style/report"/>
+                android:text="다른 문제가 있어요" />
             <TextView
+                style="@style/Subtitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="자세하게 적어주면 위트팀에서 문제를 해결할게요"
@@ -158,10 +158,12 @@
                 android:layout_marginBottom="24dp"/>
 
             <EditText
+                style="@style/Body"
                 android:id="@+id/RPT_txt"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:hint="여기에 적어주세요 (선택사항) "
+                android:textColorHint="#D1D8E2"
                 android:gravity="top"
                 android:paddingVertical="9dp"
                 android:paddingHorizontal="16dp"
@@ -172,7 +174,7 @@
             <Button
                 android:id="@+id/GO_RPT"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="56dp"
                 android:background="@drawable/rectangle"
                 android:backgroundTint="@color/Signature"
                 android:gravity="center"

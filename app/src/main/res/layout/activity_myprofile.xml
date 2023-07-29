@@ -41,7 +41,7 @@
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:background="@drawable/baseline_arrow_back_ios_new_24"
-                        android:backgroundTint="@color/Background_3"
+                        android:backgroundTint="@color/syment"
                         android:layout_marginBottom="16dp"/>
 
 
@@ -51,6 +51,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="내 정보"
+                        android:textColor="@color/Standard"
                         android:layout_gravity="center"/>
 
                 </androidx.appcompat.widget.Toolbar>
@@ -60,14 +61,19 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="center"
-                    android:background="@drawable/circle" />
+                    android:background="@drawable/circle"
+                    android:backgroundTint="@color/back"/>
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="180dp"
+                    android:layout_height="30dp"
                     android:layout_gravity="center"
+                    android:gravity="center"
+                    android:paddingVertical="2dp"
+                    android:paddingHorizontal="8dp"
                     android:layout_marginTop="19sp"
                     android:orientation="horizontal">
+
 
                     <!--                백그라운드, 색상 등등 수정 필요-->
                     <TextView
@@ -76,19 +82,24 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/rectangle"
-                        android:backgroundTint="@color/colorCat7"
+                        android:backgroundTint="@color/Blue_Toggle"
+                        android:shadowColor="#579FF333"
+                        android:elevation="3dp"
                         android:paddingVertical="2dp"
                         android:paddingHorizontal="8dp"
+                        android:gravity="center"
                         android:text="남자"
-                        android:textColor="@color/textColorCat7" />
+                        android:textSize="11dp"
+                        android:textColor="@color/Notion" />
 
                     <TextView
                         android:id="@+id/name"
                         style="@style/profile_style"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="8dp"
+                        android:gravity="center"
                         android:text="김건우"
+                        android:layout_marginLeft="8dp"
                         android:textColor="@color/darksyment"/>
                 </LinearLayout>
 
@@ -119,7 +130,8 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginLeft="8dp"
-                        android:text="엠케이 휘트니스 부안점" />
+                        android:text="엠케이 휘트니스 부안점"
+                        android:textColor="@color/darksyment"/>
 
                 </LinearLayout>
 
@@ -147,7 +159,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
                         android:layout_gravity="center"
-                        android:text="위트 점수" />
+                        android:text="위트 점수"
+                        android:textColor="@color/darksyment"
+                        />
 
                     <View
                         android:layout_width="0dp"
@@ -160,7 +174,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center|right"
                         android:text="--"
-                        android:textColor="@color/default_color" />
+                        android:textColor="@color/Signature" />
 
                     <TextView
                         style="@style/profile_style"
@@ -181,7 +195,7 @@
                     android:weightSum="5">
 
                     <TableRow
-                        android:layout_width="wrap_content"
+                        android:layout_width="150dp"
                         android:layout_height="wrap_content"
                         android:background="@drawable/rectangle"
                         android:backgroundTint="@color/white"
@@ -192,7 +206,7 @@
                         android:elevation="5dp">
 
                         <TextView
-                            style="@style/profile_style"
+                            style="@style/Caption"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/syment"
@@ -206,12 +220,11 @@
 
                             <TextView
                                 android:id="@+id/height"
-                                style="@style/profile_style"
+                                style="@style/BodyB"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:gravity="right"
-                                android:text="1--"
-                                android:textColor="@color/darksyment" />
+                                android:text="170" />
 
                             <TextView
                                 android:id="@+id/cm"
@@ -221,7 +234,7 @@
                                 android:layout_marginLeft="8dp"
                                 android:gravity="right"
                                 android:text="cm"
-                                android:textColor="#D1D8E2" />
+                                android:textColor="@color/Background_2" />
 
                         </TableRow>
 
@@ -235,7 +248,7 @@
                         android:layout_weight="1" />
 
                     <TableRow
-                        android:layout_width="wrap_content"
+                        android:layout_width="150dp"
                         android:layout_height="wrap_content"
                         android:background="@drawable/rectangle"
                         android:backgroundTint="@color/white"
@@ -246,7 +259,7 @@
                         android:elevation="5dp">
 
                         <TextView
-                            style="@style/profile_style"
+                            style="@style/Caption"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/syment"
@@ -260,12 +273,11 @@
 
                             <TextView
                                 android:id="@+id/weight"
-                                style="@style/profile_style"
+                                style="@style/BodyB"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:gravity="right"
-                                android:text="1--"
-                                android:textColor="@color/darksyment" />
+                                android:text="60" />
 
                             <TextView
                                 android:id="@+id/kg"
@@ -275,7 +287,7 @@
                                 android:layout_marginLeft="8dp"
                                 android:gravity="right"
                                 android:text="kg"
-                                android:textColor="#D1D8E2" />
+                                android:textColor="@color/Background_2" />
 
                         </TableRow>
 
@@ -304,32 +316,32 @@
                         android:weightSum="3">
 
                         <TextView
-                            style="@style/profile_style"
+                            style="@style/Caption"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="스쿼트"
                             android:textAlignment="center"
-                            android:textColor="@color/syment" />
+                            android:textColor="@color/Subtitle" />
 
                         <TextView
-                            style="@style/profile_style"
+                            style="@style/Caption"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="벤치프레스"
                             android:textAlignment="center"
-                            android:textColor="@color/syment" />
+                            android:textColor="@color/Subtitle" />
 
 
                         <TextView
-                            style="@style/profile_style"
+                            style="@style/Caption"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="데드리프트"
                             android:textAlignment="center"
-                            android:textColor="@color/syment" />
+                            android:textColor="@color/Subtitle" />
                     </TableRow>
 
                     <TableRow
@@ -368,73 +380,10 @@
                             android:textColor="@color/darksyment"
                             android:textAlignment="center" />
                     </TableRow>
-
-
                 </TableLayout>
 
 
-<!--                <TableLayout-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_marginHorizontal="16dp"-->
-<!--                    android:layout_marginTop="12dp">-->
-
-<!--                    <TableRow android:paddingVertical="13dp">-->
-
-<!--                        <TextView-->
-<!--                            style="@style/profile_style"-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:text="키" />-->
-
-<!--                        <View-->
-<!--                            android:layout_width="0dp"-->
-<!--                            android:layout_height="0dp"-->
-<!--                            android:layout_weight="1" />-->
-
-<!--                        <TextView-->
-<!--                            android:id="@+id/Pheight"-->
-<!--                            style="@style/profile_style"-->
-<!--                            android:layout_width="match_parent"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:gravity="right"-->
-<!--                            android:text="178cm"-->
-<!--                            android:textColor="@color/syment" />-->
-<!--                    </TableRow>-->
-
-<!--                    <TableRow android:paddingVertical="13dp">-->
-
-<!--                        <TextView-->
-<!--                            style="@style/profile_style"-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:text="몸무게" />-->
-
-<!--                        <View-->
-<!--                            android:layout_width="0dp"-->
-<!--                            android:layout_height="0dp"-->
-<!--                            android:layout_weight="1" />-->
-
-<!--                        <TextView-->
-<!--                            android:id="@+id/Pweight"-->
-<!--                            style="@style/profile_style"-->
-<!--                            android:layout_width="match_parent"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:gravity="right"-->
-<!--                            android:text="69kg"-->
-<!--                            android:textColor="@color/syment" />-->
-<!--                    </TableRow>-->
-
-
-
-<!--                    &lt;!&ndash;                여기까지 묶어야할 배경이 있음&ndash;&gt;-->
-
-
-<!--                </TableLayout>-->
-
-
             </LinearLayout>
-
 
 
 
@@ -464,6 +413,7 @@
                 android:backgroundTint="@color/white"
                 android:elevation="5dp"
                 android:paddingHorizontal="16dp"
+                android:paddingVertical="16dp"
                 android:layout_marginTop="12dp"
                 app:layout_constraintTop_toBottomOf="@+id/rt">
 
@@ -478,8 +428,7 @@
                         style="@style/report"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="받은 평가"
-                        android:textStyle="bold" />
+                        android:text="받은 평가" />
 
                     <View
                         android:layout_width="0dp"
@@ -505,8 +454,7 @@
                         style="@style/report"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="받은 후기"
-                        android:textStyle="bold" />
+                        android:text="받은 후기" />
 
                     <View
                         android:layout_width="0dp"
@@ -532,8 +480,7 @@
                         style="@style/report"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="위트내역"
-                        android:textStyle="bold" />
+                        android:text="위트내역" />
 
                     <View
                         android:layout_width="0dp"
@@ -559,8 +506,7 @@
                         style="@style/report"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="차단목록"
-                        android:textStyle="bold"/>
+                        android:text="차단목록"/>
 
                     <View
                         android:layout_width="0dp"
@@ -587,8 +533,7 @@
                         style="@style/report"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="설정"
-                        android:textStyle="bold"/>
+                        android:text="설정"/>
 
                     <View
                         android:layout_width="0dp"
@@ -617,7 +562,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="루틴"
-                        android:textStyle="bold"
                         android:layout_gravity="center|left"/>
 
                     <View
@@ -647,7 +591,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="신고내역"
-                        android:textStyle="bold"
                         android:layout_gravity="center"/>
 
                     <View
@@ -670,17 +613,17 @@
             <View
                 android:id="@+id/view3"
                 android:layout_width="0dp"
-                android:layout_height="110dp"
+                android:layout_height="140dp"
                 android:layout_weight="1"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/setting_table"
                 android:visibility="gone"/>
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="30dp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view3"/>
+<!--            <View-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="30dp"-->
+<!--                app:layout_constraintLeft_toLeftOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/view3"/>-->
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

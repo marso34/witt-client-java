@@ -741,7 +741,7 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
                             cursor.getString(1),     // User_NM,
                             cursor.getInt(2),        //OUser_FK
                             cursor.getString(3),     // TS
-                            cursor.getBlob(4)        //User_Img
+                            cursor.getString(4)        //User_Img
                     );
                     BlackListData.add(e);
                 }

@@ -19,7 +19,6 @@ import android.provider.Settings;
 import android.util.Log;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -54,9 +53,6 @@ import com.example.healthappttt.interface_.ServiceTracker;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.Task;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -283,28 +279,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-    // 설정으로 옮김
-    private void signOut() {
-        mGoogleSignInClient.signOut()
-                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        login = 0;
-                        DataReceiverService.setNormalExit(true);
-                        stopService(serviceIntent);
-                        // Update UI after sign out
-                        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                        startActivity(intent);
-                        finish();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.e("MainActivity", "Google sign out failed", e);
-                    }
-                });
-    }
+
     //API 요청 후 응답을 shared로 유저테이블 데이터 로컬 저장
     private void getuserProfile(UserKey userKey) {
         Call<List<UserProfile>> call = apiService.getuserprofile(userKey);
@@ -360,7 +335,7 @@ public class MainActivity extends AppCompatActivity {
                             String User_NM = Black.getUser_NM();
                             int OUser_FK = Black.getOUser_FK();
                             String TS = Black.getTS();
-                            byte[] User_Img = Black.getUser_Img();
+                            String User_Img = Black.getUser_Img();
                             BlackList = new BlackListData(BL_PK, User_NM, OUser_FK, TS,User_Img); //서버에서 받아온 데이터 형식으로 바꿔야함
 
                             SaveBlackList(BlackList);//로컬db에 차단목록 저장 매서드
