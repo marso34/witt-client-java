@@ -2,14 +2,12 @@ package com.example.healthappttt.Chat;
 
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -29,6 +27,7 @@ import com.example.healthappttt.Data.RetrofitClient;
 import com.example.healthappttt.Data.SQLiteUtil;
 import com.example.healthappttt.R;
 import com.example.healthappttt.interface_.ServiceApi;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -111,16 +110,17 @@ public class ChatActivity extends AppCompatActivity{
         if (currentToast != null)
             currentToast.cancel();
         finish();
-
     }
 
     private RecyclerView.OnScrollListener recyclerViewScrollListener = new RecyclerView.OnScrollListener() {
         @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+
             super.onScrolled(recyclerView, dx, dy);
             // Call getFirstRecyclerView() whenever there is a change in the visible RecyclerView
             getFirstRecyclerView();
+
         }
     };
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -153,10 +153,14 @@ public class ChatActivity extends AppCompatActivity{
                         currentToast.cancel();
                         currentToast = CustomToast.makeText(ChatActivity.this, extractDateTime(firstVisibleItemValue), Toast.LENGTH_SHORT);
                         try {
+
                             currentToast.show();
+
                         } finally {
+
                             int yOffset = tbrBottom; // This will position the toast below the tbr layout
                             currentToast.setGravity(Gravity.TOP | Gravity.CENTER, 0, yOffset);
+
                         }
                 }
                 else {
@@ -172,12 +176,18 @@ public class ChatActivity extends AppCompatActivity{
             }
         }
     }
+
+
     private void initSocketSingleton() {
+
         socketSingleton = SocketSingleton.getInstance(getBaseContext());
         socketSingleton.setChatActivity(this);
+
     }
 
+
     private void retrieveIntentData() {
+
         preferenceHelper = new PreferenceHelper("UserTB", this);
         userKey = String.valueOf(preferenceHelper.getPK());
         otherUserName = getIntent().getStringExtra("otherUserName");
@@ -185,7 +195,9 @@ public class ChatActivity extends AppCompatActivity{
         otherUserKey = getIntent().getStringExtra("otherUserKey");
         toolbarName.setText(otherUserName);
         Log.d(TAG, "onCreate: otherUserKey " + otherUserKey);
+
     }
+
 
     private void setupRecyclerView() {
         messageRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -194,10 +206,10 @@ public class ChatActivity extends AppCompatActivity{
         messageRecyclerView.setAdapter(messageListAdapter);
     }
 
+
     private void setupSQLiteUtil() {
         sqLiteUtil.setInitView(this, "CHAT_MSG_TB");
     }
-
     @RequiresApi(api = Build.VERSION_CODES.O)
     public String extractDateTime(String dateString) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -213,9 +225,10 @@ public class ChatActivity extends AppCompatActivity{
                 int month = dateTime.getMonthValue();
                 int day = dateTime.getDayOfMonth();
                 return String.format("%02d월 %02d일", month, day);
-
         }
     }
+
+
     private void setupListeners() {
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -239,11 +252,11 @@ public class ChatActivity extends AppCompatActivity{
                         Log.d(TAG, "chatPk보내기"+chatkey+ts);
                         sendMessageToServer(messageText,chatkey,ts);
                     }
-
                 }
             }
         });
     }
+
 
     public String extractName(String inputString) {
         String namePattern = "!!~(.*?)~!!"; // 정규표현식 패턴: !!~(이름)~!!
@@ -256,6 +269,7 @@ public class ChatActivity extends AppCompatActivity{
             return null; // 이름이 매칭되지 않으면 빈 문자열 반환
         }
     }
+
 
     private void getMessagesFromServer() {
         setupSQLiteUtil();
@@ -296,6 +310,7 @@ public class ChatActivity extends AppCompatActivity{
             }
         });
     }
+
 
     public String getChatRoomId(){
         return chatRoomId;
@@ -338,6 +353,8 @@ public class ChatActivity extends AppCompatActivity{
         }
 // 작업이 모두 끝난 후에 실행될 코드
     }
+
+
     public boolean getUpdatingMSG(){
         return updatingMSG;
     }
@@ -365,37 +382,68 @@ public class ChatActivity extends AppCompatActivity{
         }
     }
 
-    public void clickmenu() {
-        menu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(ChatActivity.this);
-                View dialogView = getLayoutInflater().inflate(R.layout.chat_menu_popup, null);
 
-                if( dialogView == null) {
-                    Log.d("chat", " 다이얼로그 널이야");
-                }
-                builder.setView(dialogView);
-                AlertDialog alertDialog = builder.create();
-                alertDialog.getWindow().setGravity(Gravity.BOTTOM);
-                alertDialog.show();
 
-                Button reportBtn = dialogView.findViewById(R.id.report_btn);
-                reportBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                    Intent intent = new Intent(ChatActivity.this,ReportActivity.class);
-                    intent.putExtra("otherUserName",otherUserName);
-                    intent.putExtra("otherUserKey",otherUserKey);
-                    intent.putExtra("mypk",String.valueOf(userKey) );
-                    startActivity(intent);
-                    alertDialog.cancel();
-                    finish();
+        // clickmenu() 메서드 추가
+        public void clickmenu() {
+            menu.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // 바텀 시트 다이얼로그 생성
+                    BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(ChatActivity.this);
+                    View dialogView = getLayoutInflater().inflate(R.layout.chat_menu_popup, null);
+
+                    if (dialogView == null) {
+                        Log.d("chat", "다이얼로그 널이야");
+                        return;
                     }
-                });
 
-            }
-        });
-    }
+                    bottomSheetDialog.setContentView(dialogView);
 
+                    // 신고하기 버튼 클릭 시
+                    View reportBtn = dialogView.findViewById(R.id.report_btn);
+                    reportBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(ChatActivity.this, ReportActivity.class);
+                            intent.putExtra("otherUserName", otherUserName);
+                            intent.putExtra("otherUserKey", otherUserKey);
+                            intent.putExtra("mypk", String.valueOf(userKey));
+                            startActivity(intent);
+                            bottomSheetDialog.dismiss();
+                            finish();
+                        }
+                    });
+
+                    View BlackBtn = dialogView.findViewById(R.id.blackBtn);
+                    BlackBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+//
+                        }
+                    });
+
+
+                    View reviewBtn = dialogView.findViewById(R.id.review_btn);
+                    reviewBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                           Intent intent = new Intent(ChatActivity.this, ReviewActivity.class);
+                            intent.putExtra("name", otherUserName);
+                            intent.putExtra("code", otherUserKey);
+                            startActivity(intent);
+                            bottomSheetDialog.dismiss();
+                        }
+                    });
+
+
+
+                    // 바텀 시트 다이얼로그 노출
+                    bottomSheetDialog.show();
+
+                }
+            });
+        }
+
+        // 이후 코드 생략
 }

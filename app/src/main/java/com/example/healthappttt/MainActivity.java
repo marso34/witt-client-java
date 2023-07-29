@@ -4,11 +4,11 @@ import static android.content.ContentValues.TAG;
 
 import android.Manifest;
 import android.app.AlarmManager;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -21,6 +21,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -34,7 +36,6 @@ import com.example.healthappttt.Data.SQLiteUtil;
 import com.example.healthappttt.Data.User.BlackListData;
 import com.example.healthappttt.Data.User.GetUserInfo;
 import com.example.healthappttt.Data.User.ReviewListData;
-import com.example.healthappttt.Data.User.UploadResponse;
 import com.example.healthappttt.Data.User.UserKey;
 import com.example.healthappttt.Data.User.UserProfile;
 import com.example.healthappttt.Data.User.WittListData;
@@ -58,13 +59,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
-    private static final int NOTIFICATION_PERMISSION_REQUEST_CODE = 100;
+    private static final int NOTIFICATION_PERMISSION_REQUEST_CODE = 1001;
     ActivityMainBinding binding;
     private long backPressedTime = 0;
     private Toast toast;
@@ -94,12 +94,12 @@ public class MainActivity extends AppCompatActivity {
 
         String uk = getIntent().getStringExtra("userKey");
 
-
         if(uk != null){
             userKey = new UserKey(Integer.parseInt(uk));
         }
         else Log.d(TAG, "onCreate: 유저키 없음");
         Log.d("sub2에서 받은pk:", String.valueOf(userKey.getPk()));
+        createNotificationChannelAndSendNotification();
         apiService = RetrofitClient.getClient().create(ServiceApi.class); // create메서드로 api서비스 인터페이스의 구현제 생성
 
         sqLiteUtil = SQLiteUtil.getInstance(); //sqllite 객체
@@ -249,7 +249,6 @@ public class MainActivity extends AppCompatActivity {
         getBlackList(userKey);
         getReviewList(userKey);
         getWittHistory(userKey);
-        checkAndRequestNotificationPermission();
 //         uploadImageToServer(url, userKey.toString());
     }
 
@@ -325,6 +324,66 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+
+
+    // 알림 허용 권한을 확인하고 요청하는 메서드
+    private static final String CHANNEL_ID = "my_channel_id"; // 채널 ID
+
+    // 알림 채널 생성과 푸시 알림 전송을 위한 메서드
+    private void createNotificationChannelAndSendNotification() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            if (notificationManager != null && !notificationManager.areNotificationsEnabled()) {
+                // 채널 생성
+                NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "My Channel", NotificationManager.IMPORTANCE_HIGH);
+                notificationManager.createNotificationChannel(channel);
+
+                // 알림 허용 권한 요청
+                Intent intent = new Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
+                        .putExtra(Settings.EXTRA_APP_PACKAGE, getPackageName())
+                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivityForResult(intent, NOTIFICATION_PERMISSION_REQUEST_CODE);
+            } else {
+                // 이미 알림 허용 권한이 있는 경우
+                sendNotification();
+            }
+        } else {
+            // Android Oreo 이전 버전은 채널 생성이 필요 없음
+            sendNotification();
+        }
+    }
+
+
+    // 권한 요청 결과를 처리하는 메서드 (onActivityResult를 사용하도록 액티비티에서 오버라이드 해야 합니다.)
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == NOTIFICATION_PERMISSION_REQUEST_CODE) {
+            // 알림 허용 권한 설정화면에서 돌아온 경우
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                NotificationManager notificationManager = getSystemService(NotificationManager.class);
+                if (notificationManager != null && notificationManager.areNotificationsEnabled()) {
+                    // 사용자가 알림 허용 권한을 부여한 경우
+                    // 여기서 푸시 알림을 보내는 작업을 수행하세요.
+                    sendNotification();
+                } else {
+                    // 사용자가 알림 허용 권한을 거부한 경우 또는 아직 설정하지 않은 경우
+                    // 권한을 부여해야 정상적인 동작을 하도록 안내해줄 수 있습니다.
+                }
+            }
+        }
+    }
+    private void sendNotification() {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setSmallIcon(R.drawable.witt_logo)
+                .setContentTitle("Notification Title")
+                .setContentText("Notification Content")
+                .setPriority(NotificationCompat.PRIORITY_HIGH);
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+        notificationManager.notify(1, builder.build());
+    }
+
     //API 요청 후 응답을 SQLite로 차단테이블 데이터 로컬 저장
     private void getBlackList(UserKey userKey) {
         Call<List<BlackListData>> call = apiService.getBlackList(userKey);
@@ -592,24 +651,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void checkAndRequestNotificationPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            if (notificationManager != null && !notificationManager.isNotificationPolicyAccessGranted()) {
-                Intent intent = new Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
-                startActivityForResult(intent, NOTIFICATION_PERMISSION_REQUEST_CODE);
-            }
-        }
-    }
 
-    // 요청 결과 처리
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == NOTIFICATION_PERMISSION_REQUEST_CODE) {
-            // 알림 권한 요청 결과 처리 (필요에 따라 구현)
-        }
-    }
+
+
 
     private void openMyStartActivity(Class c) {
         // Intent를 사용하여 mystartActivity를 시작합니다.

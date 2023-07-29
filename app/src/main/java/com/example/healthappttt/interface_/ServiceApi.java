@@ -32,8 +32,6 @@ import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
-import retrofit2.http.Field;
-import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
@@ -49,7 +47,8 @@ public interface ServiceApi {
 
     @POST("/profile/getBlackList")// 차단목록에서 차단 유저 리스트 가져오는 api
     Call<List<BlackListData>> getBlackList(@Body UserKey userKey);
-
+    @POST("/profile/insertBL")
+    Call<BlackListData> insertBL(@Body pkData pD);
     @POST("/profile/getReviewList") //받은 후기에서 후기 리스트 가져오는 api
     Call<List<ReviewListData>> getReviewList(@Body UserKey userKey);
 

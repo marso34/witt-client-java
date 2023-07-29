@@ -81,6 +81,7 @@ public class alarmActivity extends AppCompatActivity {
         // Load the initial data
         postsUpdate(false);
     }
+
     private void setRecyclerView() {
         adapter = new AlarmAdapter(this, alarmList);
         recyclerView.setHasFixedSize(true);

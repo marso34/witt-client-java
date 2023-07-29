@@ -102,6 +102,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 + "OTHER_USER_NM VARCHAR(30),"
                 + "FAV INT ,"
                 + "GYM_NM VARCHAR(30),"
+                + "ADR VARCHAR(100),"
                 + "TS  VARCHAR(30)"
                 + ");";
         db.execSQL(createChat_Room_TableQuery);
