@@ -199,18 +199,26 @@ public class MyProfileActivity extends AppCompatActivity {
                     //받아온 상대 정보 뿌려주기
                     infoName.setText("상세 프로필");
                     Pname.setText(User_NM);
-                    Plocatoin.setText(GYM_NM);
+
                     Psqaut.setText(String.valueOf(squatValue));
                     Pbench.setText(String.valueOf(benchValue));
                     Pdeadlift.setText(String.valueOf(deadValue));
 
+                    if(GYM_NM.equals("")){
+                        Plocatoin.setText("선택된 헬스장이 없어요");
+                        Plocatoin.setTextColor(Color.parseColor("#D1D8E2"));
+                        binding.MapImg.setBackgroundColor(Color.parseColor("#D1D8E2"));
+                    }else{
+                        Plocatoin.setText(GYM_NM);
+                    }
+
 
                     if( gender.equals("0.0")) {
                         Pgender.setText("남자");
-                        Pgender.setTextColor(Color.parseColor("#0000FF")); // 파란색
+                        Pgender.setTextColor(Color.parseColor("#579EF2")); // 파란색
                     } else{
                         Pgender.setText("여자");
-                        Pgender.setTextColor(Color.parseColor("#FFC0CB")); // 핑크색
+                        Pgender.setTextColor(Color.parseColor("#F257AF")); // 핑크색
                     }
 
                     if(temp == 0){
@@ -267,10 +275,10 @@ public class MyProfileActivity extends AppCompatActivity {
 
         if( data.get("gender").toString().equals("0")) {
             Pgender.setText("남자");
-            Pgender.setTextColor(Color.parseColor("#0000FF")); // 파란색
+            Pgender.setTextColor(Color.parseColor("#579EF2")); // 파란색
         } else{
             Pgender.setText("여자");
-            Pgender.setTextColor(Color.parseColor("#FFC0CB")); // 핑크색
+            Pgender.setTextColor(Color.parseColor("#F257AF")); // 핑크색
         }
 
         if(data.get("temp").toString().equals("0")){
@@ -515,16 +523,25 @@ public class MyProfileActivity extends AppCompatActivity {
         super.onResume();
         //수정하고 뒤로갔을때 다시 보여줄 데이터
         if (PK.equals(myPK)) {
-            Log.d("onResume():","마이프로필 O");
             //키, 몸무게
             if (UserTB.gettemp() == 0) {
+                binding.cm.setVisibility(View.VISIBLE);
+                binding.kg.setVisibility(View.VISIBLE);
                 binding.height.setVisibility(View.GONE);
                 binding.weight.setVisibility(View.GONE);
                 binding.cm.setText("비공개");
                 binding.kg.setText("비공개");
+                Log.d("onResume():","마이프로필 비공개");
+                Log.d("temp: ", String.valueOf(UserTB.gettemp()));
             } else {
+                binding.cm.setVisibility(View.GONE);
+                binding.kg.setVisibility(View.GONE);
+                binding.height.setVisibility(View.VISIBLE);
+                binding.weight.setVisibility(View.VISIBLE);
                 binding.height.setText(String.valueOf(UserTB.getheight()));
                 binding.weight.setText(String.valueOf(UserTB.getweight()));
+                Log.d("onResume():","마이프로필 공개");
+                Log.d("temp: ", String.valueOf(UserTB.gettemp()));
             }
             //3대
             binding.Psqaut.setText(String.valueOf(UserTB.getsquatValue()));

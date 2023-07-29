@@ -13,9 +13,9 @@ public class BlackListData {
     @SerializedName("TS")
     private String TS;        //getTS는 String으로 넘김
     @SerializedName("User_Img")
-    private byte[] User_Img;
+    private String User_Img;
 
-    public BlackListData(int BL_PK, String User_NM, int OUser_FK, String TS, byte[] User_Img) {
+    public BlackListData(int BL_PK, String User_NM, int OUser_FK, String TS, String User_Img) {
         this.BL_PK = BL_PK;
         this.User_NM = User_NM;
         this.OUser_FK = OUser_FK;
@@ -57,11 +57,11 @@ public class BlackListData {
         this.TS = TS;
     }
 
-    public byte[] getUser_Img() {
+    public String getUser_Img() {
         return User_Img;
     }
 
-    public void setUser_Img(byte[] user_Img) {
+    public void setUser_Img(String user_Img) {
         User_Img = user_Img;
     }
 }

@@ -3,10 +3,11 @@ package com.example.healthappttt.Profile;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -44,16 +45,17 @@ public class ReviewsRecdAtivity extends AppCompatActivity {
     LinearLayoutManager linearLayoutManager;
     String myPK,PK;
     String ReviewCnt;
+    Button cancel_review;
 
 
-
+    //TODO 뒤로가기, 검색창 삭제
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reviews_recd);
 
         listCnt = findViewById(R.id.listCnt);
-        searchView = findViewById(R.id.review_search);
+        //searchView = findViewById(R.id.review_search);
         recyclerView = findViewById(R.id.Review_recycle);
 
         filteredList = new ArrayList<>();
@@ -83,27 +85,34 @@ public class ReviewsRecdAtivity extends AppCompatActivity {
             getReviewList(userKey);//비동기 호출
 
         }
-
-
-        //검색 관련 매서드
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        cancel_review = findViewById(R.id.cancel_review);
+        cancel_review.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onQueryTextSubmit(String s) {
-                // 검색 버튼을 누를 때 호출됨
-                // s 변수에 검색창에 입력된 텍스트가 담겨있습니다.
-                // 이곳에서 원하는 동작을 수행하면 됩니다.
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String s) {
-                // 검색창의 텍스트가 변경될 때마다 호출됨
-                // s 변수에 검색창에 입력된 텍스트가 담겨있습니다.
-                // 이곳에서 원하는 동작을 수행하면 됩니다.
-                searchFilter(s);
-                return false;
+            public void onClick(View v) {
+                finish();
             }
         });
+
+
+//        //검색 관련 매서드
+//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String s) {
+//                // 검색 버튼을 누를 때 호출됨
+//                // s 변수에 검색창에 입력된 텍스트가 담겨있습니다.
+//                // 이곳에서 원하는 동작을 수행하면 됩니다.
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String s) {
+//                // 검색창의 텍스트가 변경될 때마다 호출됨
+//                // s 변수에 검색창에 입력된 텍스트가 담겨있습니다.
+//                // 이곳에서 원하는 동작을 수행하면 됩니다.
+//                searchFilter(s);
+//                return false;
+//            }
+//        });
     }
 
 
@@ -123,16 +132,16 @@ public class ReviewsRecdAtivity extends AppCompatActivity {
     }
 
     //검색창에서 텍스트가 바뀔때마다 해당 텍스트에 해당하는 요소를 보여주는 매서드
-    public void searchFilter(String searchText) {
-        filteredList.clear();
-
-        for(int i = 0; i < ReviewList.size(); i++){
-            if(ReviewList.get(i).getUser_NM().toLowerCase().contains(searchText.toLowerCase())) {
-                filteredList.add(ReviewList.get(i));
-            }
-        }
-        ReviewAdapter.filterReviewList(filteredList);
-    }
+//    public void searchFilter(String searchText) {
+//        filteredList.clear();
+//
+//        for(int i = 0; i < ReviewList.size(); i++){
+//            if(ReviewList.get(i).getUser_NM().toLowerCase().contains(searchText.toLowerCase())) {
+//                filteredList.add(ReviewList.get(i));
+//            }
+//        }
+//        ReviewAdapter.filterReviewList(filteredList);
+//    }
 
     //API 요청 후 응답을 SQLite로 받은후기 데이터 로컬 저장
     private void getReviewList(UserKey userKey){

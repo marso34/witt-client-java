@@ -1,6 +1,8 @@
 package com.example.healthappttt.Profile;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -29,7 +31,7 @@ public class WittHistoryActivity extends AppCompatActivity {
     BlockUserAdapter WittHistoryAdapter;
     RecyclerView recyclerView;
     LinearLayoutManager linearLayoutManager;
-
+    Button cancel_WHistory;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,48 +39,20 @@ public class WittHistoryActivity extends AppCompatActivity {
 
         // TODO 검색 매서드 WHClildFragment 살리기
 
-        //searchView = findViewById(R.id.black_search);
-        //recyclerView = findViewById(R.id.WittHistoryRecycle);
-
-        //filteredList = new ArrayList<>();
-
-//        sqLiteUtil = SQLiteUtil.getInstance(); // SQLiteUtil 객체 생성
-//        sqLiteUtil.setInitView(this,"Witt_History_TB");//위트내역 목록 로컬 db
-//        WittList = sqLiteUtil.SelectWittHistoryUser();//SELECT * FROM Witt_History_TB ORDER BY TS DESC
-
-        //WittHistoryAdapter = new BlockUserAdapter(BlackList,ReviewList, WittList ,this);//어뎁터에 차단 목록 생성
-//        linearLayoutManager = new LinearLayoutManager(getApplicationContext());
-//        recyclerView.setLayoutManager(linearLayoutManager);
-//        recyclerView.setAdapter(WittHistoryAdapter);
-
-//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener(){
-//            @Override
-//            public boolean onQueryTextSubmit(String query) {
-//                return false;
-//            }
-//
-//            @Override
-//            public boolean onQueryTextChange(String newText) {
-//                searchFilter(newText);
-//                return false;
-//            }
-//        });
 
         replaceFragment(new WHFragment());
+
+        cancel_WHistory = findViewById(R.id.cancel_WHistory);
+        cancel_WHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
     }
 
 
-//    public void searchFilter(String searchText) {
-//        filteredList.clear();
-//
-//        for(int i = 0; i < WittList.size(); i++){
-//            if(WittList.get(i).getUser_NM().toLowerCase().contains(searchText.toLowerCase())) {
-//                filteredList.add(WittList.get(i));
-//            }
-//        }
-//        WittHistoryAdapter.filterWittList(filteredList);
-//    }
 
     private void replaceFragment (Fragment fragment){ //프래그먼트 설정
         FragmentManager fragmentManager = getSupportFragmentManager();

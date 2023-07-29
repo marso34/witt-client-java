@@ -50,7 +50,6 @@ public class PreferenceHelper
         edit.putString("PW", upf.getPW());
         Log.d("putProfile","pk저장" );
         edit.putString("User_Img", upf.getUser_Img());
-
         edit.apply();
     }
 

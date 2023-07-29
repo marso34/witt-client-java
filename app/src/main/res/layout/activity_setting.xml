@@ -28,7 +28,7 @@
 
 
         <TextView
-            style="@style/chat_title"
+            style="@style/Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="설정"
@@ -38,16 +38,8 @@
 
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginBottom="12dp"
-        android:background="@drawable/rectangle"
-        android:onClick="onClickVive"
-        android:orientation="horizontal"
-        android:paddingHorizontal="16dp"
-        android:paddingTop="9dp"
-        android:paddingBottom="11dp">
+        style="@style/Profile_list_LinearLayout"
+        android:onClick="onClickVive">
 
         <TextView
             style="@style/report"
@@ -69,16 +61,8 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginBottom="12dp"
-        android:background="@drawable/rectangle"
-        android:onClick="onClickLogout"
-        android:orientation="horizontal"
-        android:paddingHorizontal="16dp"
-        android:paddingTop="9dp"
-        android:paddingBottom="11dp">
+        style="@style/Profile_list_LinearLayout"
+        android:onClick="onClickLogout">
 
         <TextView
             style="@style/report"
@@ -100,15 +84,8 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:background="@drawable/rectangle"
-        android:onClick="onClickDrop"
-        android:orientation="horizontal"
-        android:paddingHorizontal="16dp"
-        android:paddingTop="9dp"
-        android:paddingBottom="11dp">
+        style="@style/Profile_list_LinearLayout"
+        android:onClick="onClickDrop">
 
         <TextView
             style="@style/report"

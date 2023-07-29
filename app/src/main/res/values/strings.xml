@@ -32,7 +32,7 @@
     </style>
 
     <style name="report" parent="android:Widget.TextView">
-        <item name="android:fontFamily">@font/noto_sans_cjk_kr_bold</item>
+        <item name="android:fontFamily">@font/noto_sans_cjk_kr_medium</item>
         <item name="android:textColor">@color/Body</item>
         <item name="android:includeFontPadding">false</item>
         <item name="android:textStyle">normal</item>
@@ -135,6 +135,14 @@
         <item name="android:textStyle">normal</item>
         <item name="android:textSize">24sp</item>
     </style>
+
+<!--    <style name="profile_list" parent="android:Widget.TextView">-->
+<!--        <item name="android:fontFamily">@font/noto_sans_cjk_kr_medium</item>-->
+<!--        <item name="android:textColor">@color/darksyment</item>-->
+<!--        <item name="android:includeFontPadding">false</item>-->
+<!--        <item name="android:textStyle">normal</item>-->
+<!--        <item name="android:textSize">16sp</item>-->
+<!--    </style>-->
 
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>

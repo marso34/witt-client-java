@@ -1,9 +1,15 @@
 package com.example.healthappttt.Profile;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
+import android.widget.NumberPicker;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +19,7 @@ import com.example.healthappttt.Data.RetrofitClient;
 import com.example.healthappttt.R;
 import com.example.healthappttt.databinding.ActivityEditBodyInfoBinding;
 import com.example.healthappttt.interface_.ServiceApi;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,8 +37,13 @@ public class EditBodyInfo extends AppCompatActivity {
     int height,weight; //초기에 받은 값
     int Cheight,Cweight; //수정된 값
     int temp; //is_public
+    String Scolor = "#05C78C";
+    String Bcolor = "#4A5567";
     Map<String, Object> UpdateDefault; //서버로 보낼값
 
+    private BottomSheetDialog bottomSheetDialog;
+    NumberPicker HeightPicker,WeightPicker;
+    Button EditBtn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +56,7 @@ public class EditBodyInfo extends AppCompatActivity {
         apiService = RetrofitClient.getClient().create(ServiceApi.class);
         UpdateDefault = new HashMap<>();
 
-        Intent intent = getIntent(); //TODO 프로필에서 intent값 넘겨주도록 하기 (비공개이면 둘다 0으로 보내기)
+        Intent intent = getIntent(); // 프로필에서 intent값 넘겨주도록 하기 (비공개이면 둘다 0으로 보내기)
         PK = intent.getIntExtra("PK",0);
         height = intent.getIntExtra("height",1);
         weight = intent.getIntExtra("weight",1);
@@ -52,28 +64,91 @@ public class EditBodyInfo extends AppCompatActivity {
         Cheight = height;
         Cweight = weight;
 
-        setFirstBodyInfo(); //초기값 세팅
-        //datachange();//데이터 바뀔때 처리 (예외처리)
-        //TODO 공개하지 않을래요 클릭시 신장 체중 ->  비공개 + 0으로 처리
+        EditBtn = findViewById(R.id.EditBtn);
 
-        //공개로 들어왔을때//비공개로 들어왔을떄
+
+        // 바텀시트다이얼로그
+        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view = inflater.inflate(R.layout.input_height_weight,null,false);
+
+        HeightPicker = view.findViewById(R.id.heightPicker);
+        WeightPicker = view.findViewById(R.id.weightPicker);
+        setNumPicker(view ,HeightPicker, WeightPicker);
+
+        setFirstBodyInfo(); //초기값 세팅
 
         setSecret();//비공개 버튼 클릭시 처리
 
-        setInfo();
+        setInfo();//수정하기
 
+        binding.controlDialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                EditBtn.setTextColor(Color.parseColor("#FFFFFF"));//텍스트 흰색
+//                EditBtn.setBackgroundColor(Color.parseColor("#05C78C"));//배경 시그니처
+            }
+        });
+
+    }
+
+    public void setNumPicker(View view,NumberPicker HeightPicker,NumberPicker WeightPicker) {
+
+        bottomSheetDialog = new BottomSheetDialog(this);
+        bottomSheetDialog.setContentView(view);
+
+        HeightPicker.setMaxValue(300); //최대값
+        HeightPicker.setMinValue(100); //최소값
+        if(temp == 0){
+            HeightPicker.setValue(170);// 초기값
+        }else{
+            HeightPicker.setValue(height);
+        }
+
+        WeightPicker.setMaxValue(200); //최대값
+        WeightPicker.setMinValue(30); //최소값
+        if(temp == 0){
+            WeightPicker.setValue(60);// 초기값
+        }else{
+            WeightPicker.setValue(weight);
+        }
+
+
+        TextView SelectBtn =  view.findViewById(R.id.selectBtn);
+        SelectBtn.setOnClickListener(v -> {
+            binding.height.setText(HeightPicker.getValue() + ""); // 스트링으로 바꾸기 편하게
+            binding.weight.setText(WeightPicker.getValue() + "");
+            Cheight = HeightPicker.getValue();
+            Cweight = WeightPicker.getValue();
+            bottomSheetDialog.dismiss();
+        });
 
     }
 
 
     private void setFirstBodyInfo() {
         if (temp != 0) {
+            binding.controlDialog.setEnabled(true);
             binding.height.setText(String.valueOf(height));
             binding.weight.setText(String.valueOf(weight));
+            HeightPicker.setValue(height);
+            WeightPicker.setValue(weight);
+            binding.checksecret.setTextColor(Color.parseColor(Bcolor));
         } else {
+            binding.controlDialog.setEnabled(false);
             binding.height.setText("비공개");binding.weight.setText("비공개");
+            binding.checksecret.setTextColor(Color.parseColor(Scolor));
             binding.checksecret.setChecked(true);
         }
+        // 키,몸무게 수정 다이얼로그
+        binding.BodyBottomdialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(temp != 0){
+                    bottomSheetDialog.show();
+                }
+            }
+        });
+
         //뒤로가기 버튼
         binding.cancelEditbody.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,18 +205,22 @@ public class EditBodyInfo extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(binding.checksecret.isChecked()){
-                    binding.height.setEnabled(false); binding.weight.setEnabled(false);
+                    binding.controlDialog.setEnabled(false);
                     binding.height.setText("비공개"); binding.weight.setText("비공개");
+                    binding.checksecret.setTextColor(Color.parseColor(Scolor));
                     Log.d("checksecret weight: ",Cweight +" 비공개" );
                     temp = 0;
                 }else {
-                    binding.height.setEnabled(true); binding.weight.setEnabled(true);
+                    binding.controlDialog.setEnabled(true);
                     binding.height.setText(String.valueOf(Cheight)); binding.weight.setText(String.valueOf(Cweight));
-                    datachange();
+                    binding.checksecret.setTextColor(Color.parseColor(Bcolor));
+//                    datachange();
                     Log.d("checksecret weight: ",Cweight +" 공개" );
                     Log.d("checksecret weight: ","공개" );
                     temp = 1;
                 }
+                binding.EditBtn.setTextColor(Color.parseColor("#FFFFFF"));//텍스트 흰색
+                binding.EditBtn.setBackgroundColor(Color.parseColor("#05C78C"));//배경 시그니처
             }
         });
     }
@@ -151,26 +230,20 @@ public class EditBodyInfo extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(binding.checksecret.isChecked()){
-                    //TODO 로컬에 키,몸무게 0으로 저장
-                    UserTB.setBodyInfo(0,0,0);
-                    Log.d("수정된 키: ", String.valueOf(UserTB.getheight()));
-                    Log.d("수정된 키: ", String.valueOf(UserTB.getweight()));
-                    Log.d("setInfo ","비공개" );
-                    //TODO 서버에 키, 몸무게 0으로 저장 + is_public = 0
+                    // 로컬에 키,몸무게 0으로 저장
+                    UserTB.setBodyInfo(height,weight,0);
+                    Log.d("setInfo ","비공개 키: "+height );
+                    // 서버에 키, 몸무게 초기값 저장 + is_public = 0
                     UpdateDefault.put("PK",PK);
                     UpdateDefault.put("height",0);
                     UpdateDefault.put("weight",0);
                     UpdateDefault.put("public",0);
 
                 }else {
-                    binding.height.clearFocus();
-                    binding.weight.clearFocus();
-                    //TODO 로컬에 키,몸무게 저장
+                    // 로컬에 키,몸무게 저장
                     UserTB.setBodyInfo(Cheight,Cweight,1);
-                    Log.d("수정된 키: ", String.valueOf(UserTB.getheight()));
-                    Log.d("수정된 키: ", String.valueOf(UserTB.getweight()));
                     Log.d("setInfo ","공개" );
-                    //TODO 서버에 키, 몸무게저장 + is_public = 1
+                    // 서버에 키, 몸무게저장 + is_public = 1
                     UpdateDefault.put("PK",PK);
                     UpdateDefault.put("height",Cheight);
                     UpdateDefault.put("weight",Cweight);
@@ -205,7 +278,6 @@ public class EditBodyInfo extends AppCompatActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.d("editvol ","destroy");
         binding = null;
     }
 
