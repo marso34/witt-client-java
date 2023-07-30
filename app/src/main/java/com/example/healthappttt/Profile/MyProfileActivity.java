@@ -141,7 +141,7 @@ public class MyProfileActivity extends AppCompatActivity {
 
             // 상대 pk -> 상대 프로필 정보 가져오기 + 화면에 뿌려주기
             getOtherProfile(userKey);
-            //getOtherRoutine(userKey.getPk()); // 상대방 루틴
+            getOtherRoutine(userKey.getPk()); // 상대방 루틴
 
             // 화면 전환
             OtherViewChangeBlock();

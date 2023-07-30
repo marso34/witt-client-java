@@ -25,7 +25,7 @@ import io.socket.emitter.Emitter;
 public class SocketSingleton {
     private static volatile SocketSingleton instance;
     private Socket mSocket;
-    private String serverUrl = "http://3.36.47.252:1337/";
+    private String serverUrl = "http://15.165.49.106:1337/";
     private boolean isConnected = false;
     private Context context;
     private SQLiteUtil sqLiteUtil;
@@ -122,16 +122,18 @@ public class SocketSingleton {
 //                        alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
                         //채팅방 생성알림
                         alarmManager.onAlarm("New","새로운 위트가 왔어요");
-                        if(chatF!=null && !chatF.chatflag) {
-                            chatF.chatflag = true;
+
                             new Thread(new Runnable() {
                                 @Override
                                 public void run() {
+                                    if(chatF!=null && !chatF.chatflag) {
+                                        chatF.chatflag = true;
                                     chatF.getUsersFromServer();
                                     chatF.getLastMSG(chatRoomId,String.valueOf(preferenceHelper.getPK()),context);
+                                    }
                                 }
                             }).start();
-                        }
+
                         flag = true;
                     }
                     if (chatRoomId != null) {

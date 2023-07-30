@@ -47,7 +47,8 @@ public interface ServiceApi {
 
     @POST("/profile/getBlackList")// 차단목록에서 차단 유저 리스트 가져오는 api
     Call<List<BlackListData>> getBlackList(@Body UserKey userKey);
-
+    @POST("/profile/insertBL")
+    Call<String> insertBL(@Body pkData pD);
     @POST("/profile/getReviewList") //받은 후기에서 후기 리스트 가져오는 api
     Call<List<ReviewListData>> getReviewList(@Body UserKey userKey);
 
@@ -56,7 +57,10 @@ public interface ServiceApi {
 
     @POST("/profile/getWittHistory")//위트 내역 리스트 가져오기
     Call<List<WittListData>> getWittHistory(@Body UserKey userKey);
-
+    @POST("/leaveChatRoom")
+    Call<String> leaveChatRoom(@Body pkData pk);
+    @POST("/BlackChatRoom")
+    Call<String> blackChatRoom(@Body pkData pk);
     @POST("/profile/EditBodyInfo")// 수정된 키 몸무게 정보 업데이트
     Call<String> EditBodyInfo(@Body Map<String, Object> BodyInfo);
 
@@ -95,8 +99,14 @@ public interface ServiceApi {
     @POST("/routine/SelectRoutine")
     Call<List<RoutineData>> selectRoutine(@Body GetRoutine data);
 
-    @POST("/record/RecordExercise")
-    Call<List<Integer>> recordExercise(@Body RecordData data);
+    @POST("/routine/SelectAllRoutine")
+    Call<List<RoutineData>> selectAllRoutine(@Body pkData data);
+
+    @POST("/record/CreateRecord")
+    Call<List<Integer>> createRecord(@Body RecordData data);
+
+    @POST("/record/SelectAllRecord")
+    Call<List<RecordData>> selectAllRecord(@Body pkData data);
 //    ----------------------------------------------------------------------------------------------
 
     @POST("/review/SendReivew")

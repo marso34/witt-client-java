@@ -48,16 +48,26 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
     }
     public void setInitView(Context context, String tableName) {
         this.table = tableName;
+            if (context != null) {
+                DBHelper dbHelper = new DBHelper(context, "Witt", null, 1);
+                try {
+                    boolean flag = false;
+                    while (flag == false) {
+                        if (dbHelper.getWritableDatabase() != null) {
+                            db = dbHelper.getWritableDatabase();
+                            dbHelper.onCreate(db);
+                            flag = true;
+                        } else {
+                            dbHelper = new DBHelper(context, "Witt", null, 1);
+                        }
+                    }
 
-        DBHelper dbHelper = new DBHelper(context, "Witt", null, 1);
-        try {
-            db = dbHelper.getWritableDatabase();
-            dbHelper.onCreate(db);
+                } catch (SQLiteException e) {
+                    e.printStackTrace();
+                    Log.e(table, " 데이터 베이스를 열 수 없음");
+                }
+            }
 
-        } catch (SQLiteException e) {
-            e.printStackTrace();
-            Log.e(table, " 데이터 베이스를 열 수 없음");
-        }
     }
     
     // 다른 메서드들
@@ -124,39 +134,40 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
 
     }
     public void insert(AlarmInfo al) {
-        try {
-            // SQLite 데이터베이스에 접근합니다. 여기서 'dbHelper'는 SQLiteOpenHelper 클래스의 객체로 초기화되어야 합니다.
-            // db = dbHelper.getWritableDatabase();
+        if (table != null && table.equals("NOTIFY_TB")) {
+            String query = "SELECT COUNT(*) FROM NOTIFY_TB WHERE USER_FK = ? AND NOTIFY_PK = ?";
+            String[] selectionArgs = {String.valueOf(al.getNotifyKey()), String.valueOf(al.getNotifyKey())};
 
-            if (table != null && table.equals("NOTIFY_TB")) {
+            Cursor cursor = db.rawQuery(query, selectionArgs);
+            cursor.moveToFirst();
+            int notifyCount = cursor.getInt(0);
+            cursor.close();
+
+            if (notifyCount == 0) {
                 ContentValues values = new ContentValues();
                 values.put("USER_FK", al.getUserKey());
-                values.put("NOTIFY_PK",al.getNotifyKey());
+                values.put("NOTIFY_PK", al.getNotifyKey());
+                values.put("OUSER_NM",al.getOUSER_NM());
                 values.put("OTHER_USER_FK", al.getOUserKey());
                 values.put("NOTIFY_CATEGORY", al.getCat());
                 values.put("LINK_PK", al.getLink());
                 values.put("CREATED_TIME", al.getTS());
-                values.put("READ_TIME",al.getTS());
+                values.put("READ_TIME", al.getTS());
                 // 'IS_READ' 컬럼은 디폴트 값으로 설정되므로, 삽입 시 별도로 설정할 필요가 없습니다.
+
                 long result = db.insert("NOTIFY_TB", null, values);
                 if (result == -1) {
-                    // 레코드 삽입이 실패한 경우 처리할 코드를 작성합니다.
-                    // 예: Log 출력, 사용자에게 실패를 알리는 메시지 표시 등
                     Log.e("INSERT", "레코드 삽입 실패");
                 } else {
-                    // 레코드 삽입이 성공한 경우 처리할 코드를 작성합니다.
-                    // 예: 사용자에게 성공을 알리는 메시지 표시 등
                     Log.d("INSERT", "레코드 삽입 성공");
                 }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (db != null) {
-                db.close(); // 데이터베이스를 사용한 후 반드시 닫아줍니다.
+            } else {
+                // 이미 해당 USER_FK와 NOTIFY_PK가 존재하는 경우에 대한 처리를 추가할 수 있습니다.
             }
         }
+        db.close(); // 데이터베이스를 사용한 후 반드시 닫아줍니다.
     }
+
 
     /**
      * 이 메소드는 BLACK_LIST_TB 데이터를 삽입하는 메서드입니다.
@@ -281,24 +292,48 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         Log.d(TAG, "insert : " + ts);
             try {
                 if (table != null &&table.equals("CHAT_MSG_TB")) {
-                    ContentValues values = new ContentValues();
-                    values.put("MSG_PK", chatPk);
-                    values.put("USER_FK", userKey);
-                    values.put("MSG", message);
-                    values.put("CHAT_ROOM_FK", chatRoomId);
+                    int isReadValue = getIsReadValue(userKey,chatRoomId);
+                    if (isReadValue != 3) {
+                        ContentValues values = new ContentValues();
+                        values.put("MSG_PK", chatPk);
+                        values.put("USER_FK", userKey);
+                        values.put("MSG", message);
+                        values.put("CHAT_ROOM_FK", chatRoomId);
+                        values.put("TS", ts);
+                        values.put("MYFLAG", myFlag);
+                        values.put("SUCCESS", Success);
+                        long rowId = db.insertOrThrow("CHAT_MSG_TB", null, values);
 
-                    values.put("TS", ts);
-                    values.put("MYFLAG", myFlag);
-                    values.put("SUCCESS", Success);
-                    long rowId = db.insertOrThrow("CHAT_MSG_TB", null, values);
-
-                    Log.d(TAG, "insert: 삽인완료" + lastKey);
+                        Log.d(TAG, "insert: 삽인완료" + lastKey);
+                    }
                 }
             }  finally {
                 db.close();
                 return lastKey;
             }
     }
+    private int getIsReadValue(int userKey, int chatRoomId) {
+        int isReadValue = -1;
+        Cursor cursor = null;
+        try {
+            String query = "SELECT ISCLOSE FROM CHAT_ROOM_TB WHERE CHAT_ROOM_PK = ? AND USER_FK = ?";
+            String[] selectionArgs = {String.valueOf(chatRoomId),String.valueOf(userKey)};
+            cursor = db.rawQuery(query, selectionArgs);
+            if (cursor != null && cursor.moveToFirst()) {
+                isReadValue = cursor.getInt(cursor.getColumnIndexOrThrow("ISCLOSE"));
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return isReadValue;
+    }
+
+
+
+
+
 
 
 
@@ -396,10 +431,11 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
             if (table.equals("CHAT_ROOM_TB")) {
                 ContentValues values = new ContentValues();
                 for (UserChat u : U) {
-                    if (table.equals("CHAT_ROOM_TB")) {
+                    if (table.equals("CHAT_ROOM_TB") && u.getFAV() == 1) {
                         int chatRoomId = u.getChatRoomId();
+
                         // Check if the CHAT_ROOM_PK exists in the database
-                        boolean chatRoomExists = checkChatRoomExists(chatRoomId);
+                        boolean chatRoomExists = checkChatRoomExists(userKey,chatRoomId);
                         if (!chatRoomExists) {
                             values.put("USER_FK", userKey);
                             values.put("CHAT_ROOM_PK", u.getChatRoomId());
@@ -409,25 +445,10 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
                             values.put("FAV", 0);
                             //헬스장 이름 넣기.
                             values.put("TS", u.getTS());
+                            values.put("GYM_NM",u.getGNM());
+                            values.put("ADR",u.getGADS());
                             long result = db.insert(table, null, values);
                             Log.d(table, result + "성공");
-                        }
-                        else{
-                            // CHAT_ROOM_TB에 U<UserChat>값을 업데이ㅌ
-                            values.put("USER_FK", userKey);
-                            values.put("LAST_MSG_INDEX", 1);
-                            values.put("OTHER_USER_FK", u.getOtherUserKey());
-                            values.put("OTHER_USER_NM", u.getUserNM());
-                            values.put("FAV", 0);
-                            //헬스장 이름 넣기.
-                            values.put("TS", u.getTS());
-
-                            int rowsAffected = db.update(table, values, "CHAT_ROOM_PK=?", new String[]{String.valueOf(chatRoomId)});
-                            if (rowsAffected > 0) {
-                                Log.d(table, "업데이트 성공");
-                            } else {
-                                Log.d(table, "업데이트 실패");
-                            }
                         }
                     }else Log.d(table, "실패 삽입 챗티방");
                 }
@@ -437,16 +458,21 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
             db.close();
         }
     }
-    private boolean checkChatRoomExists(int chatRoomId) {
+    private boolean checkChatRoomExists(int userKey,int chatRoomId) {
         // Perform a database query to check if the CHAT_ROOM_PK exists in the table
         // Return true if it exists, false otherwise
-        String query = "SELECT CHAT_ROOM_PK FROM CHAT_ROOM_TB WHERE CHAT_ROOM_PK=?";
-        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(chatRoomId)});
-        boolean exists = cursor != null && cursor.getCount() > 0;
-        if (cursor != null) {
-            cursor.close();
+        boolean exists = true;
+        if (table.equals("CHAT_ROOM_TB")) {
+            String query = "SELECT CHAT_ROOM_PK FROM CHAT_ROOM_TB WHERE CHAT_ROOM_PK=? AND USER_FK = ? AND ISCLOSE = ? ";
+            Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(chatRoomId), String.valueOf(userKey), "1"});
+            exists = cursor != null && cursor.getCount() > 0;
+            if (cursor != null) {
+                cursor.close();
+            }
+            Log.d(TAG, "checkChatRoomExists: " + exists);
         }
-        return exists;
+            return exists;
+
     }
 
     public void delete(int PK) {
@@ -454,6 +480,24 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         try {
             int result = db.delete(table, selection, new String[]{String.valueOf(PK)});
             Log.i(table, +result + "개 row delete 성공");
+        } finally {
+            db.close();
+        }
+    }
+
+    public void deleteMulti(ArrayList<String> PK) { // 여러개
+        try {
+            String s = "delete  from " + table + " where PK NOT IN (";
+
+            for (int i = 0; i < PK.size(); i++) {
+                s += PK.get(i);
+                if (i < PK.size()-1)
+                    s += ", ";
+            }
+            s += ")";
+
+            Log.d("삭제 sql", s);
+            db.execSQL(s);
         } finally {
             db.close();
         }
@@ -467,27 +511,31 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
             db.close();
         }
     }
-    
-    public void deleteChatRoom(int chatRoomPk) {
-        db.execSQL("DELETE FROM CHAT_MSG_TB WHERE CHAT_ROOM_FK =" + chatRoomPk);
-        db.close();
-        Log.d(TAG, "deleteChatRoom: 삭제완료"+chatRoomPk);
-        }
 
-    public void deleteChatRoom() {
+    public void BlackChatRoom(int userKey, int chatRoomPk) {
         try {
-
-
-            if (table.equals("CHAT_ROOM_TB")) {
-                db.execSQL("DELETE FROM CHAT_ROOM_TB");
-
-            }
-        }
-        finally {
+            String deleteQuery = "UPDATE CHAT_ROOM_TB SET ISCLOSE = ? WHERE CHAT_ROOM_PK = ? AND USER_FK = ?";
+            db.execSQL(deleteQuery, new Object[]{"3",chatRoomPk, userKey});
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
             db.close();
-            Log.d(TAG, "deleteChatRoom: 성공");
         }
     }
+
+
+    public void deleteChatRoom(int userKey, int chatRoomPk) {
+        try {
+            String deleteQuery = "DELETE FROM CHAT_ROOM_TB WHERE CHAT_ROOM_PK = ? AND USER_FK = ?";
+            db.execSQL(deleteQuery, new Object[]{chatRoomPk, userKey});
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            db.close();
+        }
+    }
+
+
 
     public void deleteMSG(int chatPk){
         try {
@@ -546,6 +594,61 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
             db.close();
         }
     } // 운동 기록을 수정할 수 있게 할지는 아직 모름
+
+    public void UpdateOrInsert(RoutineData routine) {
+        ContentValues values = new ContentValues();
+
+        try {
+            values.put("PK", routine.getID());
+            values.put("CAT", routine.getCat());
+            values.put("Time", routine.getTime());
+            values.put("Day_Of_Week", routine.getDayOfWeek());
+
+            Cursor cursor = db.query(table, null,  "PK = ?", new String[]{String.valueOf(routine.getID())}, null, null, null);
+            if (cursor.moveToFirst()) {
+                // 존재하면 업데이트 수행
+                int result = db.update(table, values, "PK = ?", new String[]{String.valueOf(routine.getID())});
+                Log.d(table, result + "업데이트 성공");
+                cursor.close();
+            } else {
+                // 존재하지 않으면 삽입 수행
+                long result = db.insert(table, null, values);
+                Log.d(table, result + "삽입 성공");
+                cursor.close();
+            }
+        } finally {
+            db.close();
+        }
+    }
+
+    public void UpdateOrInsert(RecordData record) {
+        ContentValues values = new ContentValues();
+
+        try {
+            values.put("PK", record.getID());
+            values.put("OUser_FK", record.getoUserID());
+            values.put("PROMISE_FK", record.getPromiseID());
+            values.put("Start_Time", record.getStartTime());
+            values.put("End_Time", record.getEndTime());
+            values.put("Run_Time", record.getEndTime());
+            values.put("CAT", record.getCat());
+
+            Cursor cursor = db.query(table, null,  "PK = ?", new String[]{String.valueOf(record.getID())}, null, null, null);
+            if (cursor.moveToFirst()) {
+                // 존재하면 업데이트 수행
+                int result = db.update(table, values, "PK = ?", new String[]{String.valueOf(record.getID())});
+                Log.d(table, result + "업데이트 성공");
+                cursor.close();
+            } else {
+                // 존재하지 않으면 삽입 수행
+                long result = db.insert(table, null, values);
+                Log.d(table, result + "삽입 성공");
+                cursor.close();
+            }
+        } finally {
+            db.close();
+        }
+    }
 
     public void UpdateOrInsert(ExerciseData exercise) {
         ContentValues values = new ContentValues();
@@ -885,28 +988,32 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
     public ArrayList<UserChat> selectChatRoom(String userKey) {
         ArrayList<UserChat> uc = new ArrayList<>();
 
-            try (Cursor cursor = db.rawQuery("SELECT CHAT_ROOM_PK, OTHER_USER_FK, OTHER_USER_NM, TS FROM CHAT_ROOM_TB WHERE USER_FK = ?", new String[]{userKey})) {
-                if (table != null && table.equals("CHAT_ROOM_TB")) {
-                    int chatRoomPkIndex = cursor.getColumnIndex("CHAT_ROOM_PK");
-                    int otherUserFkIndex = cursor.getColumnIndex("OTHER_USER_FK");
-                    int otherUserNmIndex = cursor.getColumnIndex("OTHER_USER_NM");
-                    int tsIndex = cursor.getColumnIndex("TS");
-                    while (cursor.moveToNext()) {
-                        int CHAT_ROOM_PK = cursor.getInt(chatRoomPkIndex);
-                        int OTHER_USER_FK = cursor.getInt(otherUserFkIndex);
-                        String OTHER_USER_NM = cursor.getString(otherUserNmIndex);
-                        String TS = cursor.getString(tsIndex);
-                        uc.add(new UserChat(OTHER_USER_NM, OTHER_USER_FK, CHAT_ROOM_PK, TS));
-                        Log.d(TAG, "SelectMSG: 값얻어옴");
-                    }
-                }
-            } finally {
-                db.close();
-                return uc;
+        String query = "SELECT CHAT_ROOM_PK, OTHER_USER_FK, OTHER_USER_NM, TS, GYM_NM, ADR " +
+                "FROM CHAT_ROOM_TB " +
+                "WHERE USER_FK = ? AND ISCLOSE = ?";
+
+        String[] selectionArgs = { userKey,"1" };
+
+        try (Cursor cursor = db.rawQuery(query, selectionArgs)) {
+            if (cursor != null && cursor.moveToFirst()) {
+                do {
+                    Log.d(TAG, "selectChatRoom: sss");
+                    int CHAT_ROOM_PK = cursor.getInt(cursor.getColumnIndexOrThrow("CHAT_ROOM_PK"));
+                    int OTHER_USER_FK = cursor.getInt(cursor.getColumnIndexOrThrow("OTHER_USER_FK"));
+                    String OTHER_USER_NM = cursor.getString(cursor.getColumnIndexOrThrow("OTHER_USER_NM"));
+                    String TS = cursor.getString(cursor.getColumnIndexOrThrow("TS"));
+                    String GYM_NM = cursor.getString(cursor.getColumnIndexOrThrow("GYM_NM"));
+                    String ADR = cursor.getString(cursor.getColumnIndexOrThrow("ADR"));
+                    uc.add(new UserChat(OTHER_USER_NM, OTHER_USER_FK, CHAT_ROOM_PK, TS, GYM_NM, ADR,1));
+                } while (cursor.moveToNext());
             }
+        } finally {
+            db.close();
+        }
 
-
+        return uc;
     }
+
 
     public MSG SelectMSG(String userKey,int chatPk){
         MSG m = null;
@@ -1027,9 +1134,9 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
                 Log.d(TAG, "selectLastMsgwwww:sssssaaaaa ");
                 String sql = "";
 
-                    sql = "SELECT OTHER_USER_NM FROM CHAT_ROOM_TB WHERE USER_FK = ? AND CHAT_ROOM_PK = ?";
+                    sql = "SELECT OTHER_USER_NM FROM CHAT_ROOM_TB WHERE USER_FK = ? AND CHAT_ROOM_PK = ? AND ISCLOSE = ?";
 
-                String[] selectionArgs = {userKey, chatRoomId};
+                String[] selectionArgs = {userKey, chatRoomId,"1"};
                 Cursor cursor = db.rawQuery(sql, selectionArgs);
                 if (cursor != null && cursor.moveToFirst()) {
                     int otherUserNameIndex = cursor.getColumnIndex("OTHER_USER_NM");
@@ -1108,43 +1215,50 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         // TS 값을 처리하는 로직 추가
     }
 
-    public ArrayList<AlarmInfo> SelectAlarms(String userKey) {
-        ArrayList<AlarmInfo> alarmInfos = null;
+    public ArrayList<AlarmInfo> selectAlarms(String userKey) {
+        ArrayList<AlarmInfo> alarmInfos = new ArrayList<>();
+
         try {
             if (table != null && table.equals("NOTIFY_TB")) {
-                alarmInfos = new ArrayList<>();
-                String sql = "SELECT NOTIFY_PK ,OTHER_USER_FK ,NOTIFY_CATEGORY ,LINK_PK ,CREATED_TIME ,READ_TIME, OUSER_NM FROM NOTIFY_TB WHERE USER_FK = ?";
+                String sql = "SELECT NOTIFY_PK, OTHER_USER_FK, NOTIFY_CATEGORY, LINK_PK, CREATED_TIME, READ_TIME, OUSER_NM FROM NOTIFY_TB WHERE USER_FK = ?";
                 String[] selectionArgs = {userKey};
                 Cursor cursor = db.rawQuery(sql, selectionArgs);
-                if (cursor != null && cursor.moveToFirst()) {
-                    do {
+
+                if (cursor != null) {
+                    while (cursor.moveToNext()) {
                         int notifyKey = cursor.getInt(cursor.getColumnIndexOrThrow("NOTIFY_PK"));
                         int otherUserKey = cursor.getInt(cursor.getColumnIndexOrThrow("OTHER_USER_FK"));
                         int link = cursor.getInt(cursor.getColumnIndexOrThrow("LINK_PK"));
                         int cat = cursor.getInt(cursor.getColumnIndexOrThrow("NOTIFY_CATEGORY"));
-                        String read_TS = cursor.getString(cursor.getColumnIndexOrThrow("READ_TIME"));
-                        String TS = cursor.getString(cursor.getColumnIndexOrThrow("CREATED_TIME"));
-                        String OUSER_NM = cursor.getString(cursor.getColumnIndexOrThrow("OUSER_NM"));
+                        String readTime = cursor.getString(cursor.getColumnIndexOrThrow("READ_TIME"));
+                        String createTime = cursor.getString(cursor.getColumnIndexOrThrow("CREATED_TIME"));
+                        String otherUserName = cursor.getString(cursor.getColumnIndexOrThrow("OUSER_NM"));
+
                         // Create the AlarmInfo object and add it to the list
-                        AlarmInfo alarmInfo = new AlarmInfo(notifyKey, Integer.parseInt(userKey), otherUserKey, link, cat, read_TS, TS,OUSER_NM);
+                        AlarmInfo alarmInfo = new AlarmInfo(notifyKey, Integer.parseInt(userKey), otherUserKey, link, cat, readTime, createTime, otherUserName);
                         alarmInfos.add(alarmInfo);
 
                         // Check if the alarm has been read (based on your condition to determine if it's read)
                         // If it's read, update the READ_TIME in the database
-                        if (notifyKey != -1) {
+                        if (notifyKey != -1 && !readTime.equals("READ")) {
                             ContentValues values = new ContentValues();
                             values.put("READ_TIME", "READ");
                             db.update("NOTIFY_TB", values, "NOTIFY_PK = ?", new String[]{String.valueOf(notifyKey)});
                         }
+                    }
 
-                    } while (cursor.moveToNext());
+                    cursor.close();
                 }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         } finally {
             db.close();
             return alarmInfos;
         }
+
     }
+
     public int SelectLastAlarm(String userKey){// 테스팅 안함
         int lastKey = -1;
         if (table != null && table.equals("NOTIFY_TB")) {
@@ -1167,9 +1281,6 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         }
         return lastKey;
     }
-
-
-
 
     public void DropUser(Context context) {
         try {
