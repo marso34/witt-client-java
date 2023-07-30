@@ -182,7 +182,7 @@ public class CreateRoutineActivity extends AppCompatActivity implements CRSetTim
 
     private void Terminate() {
         AlertDialog.Builder alert_ex = new AlertDialog.Builder(this);
-        alert_ex.setMessage("루틴 추가를 취소할까요?");
+        alert_ex.setMessage("루틴 생성을 취소할까요?");
         alert_ex.setPositiveButton("예", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -195,7 +195,7 @@ public class CreateRoutineActivity extends AppCompatActivity implements CRSetTim
                 // 아니오 누를 시 아무것도 안 함
             }
         });
-        alert_ex.setTitle("테스트");
+        alert_ex.setTitle("루틴 생성 취소");
 
         AlertDialog alert = alert_ex.create();
         alert.show();

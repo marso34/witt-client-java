@@ -623,11 +623,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-
-
-
-
     private void getUserInfo(String userEmail) {
         GetUserInfo.getUserInfo(userEmail, new Callback<GetUserInfo>() {
             @Override

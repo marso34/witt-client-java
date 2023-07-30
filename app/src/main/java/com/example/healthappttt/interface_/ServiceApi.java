@@ -96,8 +96,14 @@ public interface ServiceApi {
     @POST("/routine/SelectRoutine")
     Call<List<RoutineData>> selectRoutine(@Body GetRoutine data);
 
-    @POST("/record/RecordExercise")
-    Call<List<Integer>> recordExercise(@Body RecordData data);
+    @POST("/routine/SelectAllRoutine")
+    Call<List<RoutineData>> selectAllRoutine(@Body pkData data);
+
+    @POST("/record/CreateRecord")
+    Call<List<Integer>> createRecord(@Body RecordData data);
+
+    @POST("/record/SelectAllRecord")
+    Call<List<RecordData>> selectAllRecord(@Body pkData data);
 //    ----------------------------------------------------------------------------------------------
 
     @POST("/review/SendReivew")

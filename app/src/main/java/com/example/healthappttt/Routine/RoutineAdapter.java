@@ -28,6 +28,7 @@ import com.example.healthappttt.Data.pkData;
 import com.example.healthappttt.R;
 import com.example.healthappttt.User.AreaAdapter;
 import com.example.healthappttt.interface_.ServiceApi;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -99,33 +100,20 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
         mainViewHolder.EditBtn.setOnClickListener(v -> {
             int position = mainViewHolder.getAbsoluteAdapterPosition();
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            View dialogView = LayoutInflater.from(parent.getContext()).inflate(R.layout.routine_edit_popup, null);
+            BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(context);
+            View bottomView = LayoutInflater.from(parent.getContext()).inflate(R.layout.routine_edit_popup, null);
 
-            Button edit = dialogView.findViewById(R.id.edit);
-            Button copyBtn = dialogView.findViewById(R.id.copy);
-            Button deleteBtn = dialogView.findViewById(R.id.delete);
+            TextView edit = bottomView.findViewById(R.id.edit);
+            TextView deleteBtn = bottomView.findViewById(R.id.delete);
 
-            builder.setView(dialogView);
-            AlertDialog alertDialog  = builder.create();
-            alertDialog.getWindow().setGravity(Gravity.BOTTOM);   //다이얼로그 하단
-            alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            alertDialog.show();
+            bottomSheetDialog.setContentView(bottomView);
 
             edit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     int position = mainViewHolder.getAbsoluteAdapterPosition();
                     onClickRoutine.onClickRoutine(routines.get(position));
-                    alertDialog.dismiss();
-                }
-            });
-
-            copyBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(context, "추후 업데이트 예정입니다.", Toast.LENGTH_SHORT).show();
-                    alertDialog.dismiss();
+                    bottomSheetDialog.dismiss();
                 }
             });
 
@@ -133,9 +121,11 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
                 @Override
                 public void onClick(View v) {
                     DeleteToDB(position); // "예" 클릭시 삭제
-                    alertDialog.dismiss();
+                    bottomSheetDialog.dismiss();
                 }
             });
+
+            bottomSheetDialog.show();
         });
 
         return mainViewHolder;

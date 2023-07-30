@@ -30,6 +30,7 @@ import android.widget.Toast;
 import com.example.healthappttt.Data.Exercise.ExerciseData;
 import com.example.healthappttt.Data.Exercise.RoutineData;
 import com.example.healthappttt.R;
+import com.example.healthappttt.Record.ExerciseResultFragment;
 import com.example.healthappttt.databinding.FragmentErRecordingBinding;
 
 import java.text.SimpleDateFormat;
