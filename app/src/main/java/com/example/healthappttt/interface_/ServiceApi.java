@@ -32,8 +32,6 @@ import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
-import retrofit2.http.Field;
-import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
@@ -80,6 +78,9 @@ public interface ServiceApi {
     Call<ArrayList<AlarmInfo>> getAlarmList(@Body pkData data);
     @POST("/profile/updateRPT")//신고하기
     Call<String> updateRPT(@Body Map<String, Object> RPT);
+
+    @POST("/mail/reportmail") // 신고 메일 보내기
+    Call<String> reportmail(@Body Map<String,String> data);
 
 //    ----------------------------------------------------------------------------------------------
     @POST("/routine/CreateRoutine")

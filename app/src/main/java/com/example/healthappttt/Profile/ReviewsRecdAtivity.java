@@ -162,7 +162,7 @@ public class ReviewsRecdAtivity extends AppCompatActivity {
                             int Check_Box = Review.getCheck_Box();
                             String TS = Review.getTS();
                             String User_NM = Review.getUser_NM();
-                            byte[] User_Img = Review.getUser_Img();
+                            String User_Img = Review.getUser_Img();
 
                             ReviewListdata = new ReviewListData(Review_PK, User_FK, RPT_User_FK, Text_Con, Check_Box, TS, User_NM, User_Img); //서버에서 받아온 데이터 형식으로 바꿔야함
                             Log.d("Review에서 객체화한거", String.valueOf(Review.getReview_PK()));

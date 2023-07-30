@@ -8,29 +8,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.healthappttt.Data.User.BlackListData;
-import com.example.healthappttt.Data.User.ReviewListData;
-import com.example.healthappttt.Data.SQLiteUtil;
-import com.example.healthappttt.Data.User.WittListData;
 import com.example.healthappttt.R;
-import com.example.healthappttt.User.BlockUserAdapter;
-
-import java.util.ArrayList;
 
 public class WittHistoryActivity extends AppCompatActivity {
 
-    SQLiteUtil sqLiteUtil;
 
-    androidx.appcompat.widget.SearchView searchView;
-    ArrayList<BlackListData> BlackList;
-    ArrayList<ReviewListData> ReviewList;
-    ArrayList<WittListData> WittList,filteredList;
-    BlockUserAdapter WittHistoryAdapter;
-    RecyclerView recyclerView;
-    LinearLayoutManager linearLayoutManager;
     Button cancel_WHistory;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
