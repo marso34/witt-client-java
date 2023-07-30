@@ -140,7 +140,16 @@ public class EditBodyInfo extends AppCompatActivity {
             binding.checksecret.setChecked(true);
         }
         // 키,몸무게 수정 다이얼로그
-        binding.BodyBottomdialog.setOnClickListener(new View.OnClickListener() {
+        // 키,몸무게 수정 다이얼로그
+        binding.height.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(temp != 0){
+                    bottomSheetDialog.show();
+                }
+            }
+        });
+        binding.weight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(temp != 0){
