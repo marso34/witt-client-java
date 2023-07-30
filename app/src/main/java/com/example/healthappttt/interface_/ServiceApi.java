@@ -56,7 +56,11 @@ public interface ServiceApi {
     @POST("/profile/deleteFromServer") //차단하기에서 차단 항목 삭제하는 api
     Call<Integer> deleteFromServer(@Body UserKey BL_PK);
 
+<<<<<<< Updated upstream
     @POST("/profile/getWittHistory")//위트 내역 리스트 가져오기
+=======
+    @POST("/profile/getWittHistory")
+>>>>>>> Stashed changes
     Call<List<WittListData>> getWittHistory(@Body UserKey userKey);
 
     @POST("/profile/EditBodyInfo")// 수정된 키 몸무게 정보 업데이트
