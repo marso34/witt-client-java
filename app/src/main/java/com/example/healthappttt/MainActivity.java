@@ -345,16 +345,36 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(intent, NOTIFICATION_PERMISSION_REQUEST_CODE);
             } else {
                 // 이미 알림 허용 권한이 있는 경우
-                sendNotification();
+
             }
         } else {
             // Android Oreo 이전 버전은 채널 생성이 필요 없음
-            sendNotification();
         }
     }
 
 
-    // 권한 요청 결과를 처리하는 메서드 (onActivityResult를 사용하도록 액티비티에서 오버라이드 해야 합니다.)
+    // 권한 요청 결과를 처리하는 메서드 (onActivityResult를 사용하도록 액티비티에서 오버라이드 해야 합니다.)private void createNotificationChannelAndSendNotification() {
+    //    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+    //        NotificationManager notificationManager = getSystemService(NotificationManager.class);
+    //        if (notificationManager != null && !notificationManager.areNotificationsEnabled()) {
+    //            // 채널 생성
+    //            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "My Channel", NotificationManager.IMPORTANCE_HIGH);
+    //            notificationManager.createNotificationChannel(channel);
+    //
+    //            // 알림 허용 권한 요청
+    //            Intent intent = new Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
+    //                    .putExtra(Settings.EXTRA_APP_PACKAGE, getPackageName())
+    //                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+    //            startActivityForResult(intent, NOTIFICATION_PERMISSION_REQUEST_CODE);
+    //        } else {
+    //            // 이미 알림 허용 권한이 있는 경우에는 알림을 보내지 않음
+    //            // 또는 허용 여부를 확인하는 로직을 추가하여 필요한 경우에만 알림을 보낼 수도 있음
+    //            // 예시: sendNotification() 함수를 호출하기 전에 조건을 추가하여 필요한 경우에만 알림을 보냄
+    //        }
+    //    } else {
+    //        // Android Oreo 이전 버전은 채널 생성이 필요 없음
+    //        sendNotification();
+    //    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

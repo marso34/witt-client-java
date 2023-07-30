@@ -122,16 +122,18 @@ public class SocketSingleton {
 //                        alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
                         //채팅방 생성알림
                         alarmManager.onAlarm("New","새로운 위트가 왔어요");
-                        if(chatF!=null && !chatF.chatflag) {
-                            chatF.chatflag = true;
+
                             new Thread(new Runnable() {
                                 @Override
                                 public void run() {
+                                    if(chatF!=null && !chatF.chatflag) {
+                                        chatF.chatflag = true;
                                     chatF.getUsersFromServer();
                                     chatF.getLastMSG(chatRoomId,String.valueOf(preferenceHelper.getPK()),context);
+                                    }
                                 }
                             }).start();
-                        }
+
                         flag = true;
                     }
                     if (chatRoomId != null) {

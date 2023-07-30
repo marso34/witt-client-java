@@ -5,6 +5,7 @@ import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -48,6 +49,7 @@ public class alarmActivity extends AppCompatActivity {
         SwipeRefreshLayout mSwipeRefreshLayout = findViewById(R.id.swipe_layout);
         sqLiteUtil = SQLiteUtil.getInstance();
         setRecyclerView();
+
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -65,7 +67,7 @@ public class alarmActivity extends AppCompatActivity {
                             lastVisibleItemPosition = ((LinearLayoutManager) layoutManager).findLastVisibleItemPosition();
                         }
 
-                        if (totalItemCount - 3 <= lastVisibleItemPosition && !updating) {
+                            if (totalItemCount - 3 <= lastVisibleItemPosition && !updating) {
                             postsUpdate(true);
                         }
 
@@ -80,33 +82,27 @@ public class alarmActivity extends AppCompatActivity {
 
         // Load the initial data
         postsUpdate(false);
+        View view = findViewById(R.id.backBtn);
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     private void setRecyclerView() {
-        adapter = new AlarmAdapter(this, alarmList);
+        adapter = new AlarmAdapter(this, alarmList); // 확인: adapter에 alarmList의 참조를 설정하는 코드가 포함되어 있는지 확인
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
     }
 
+
     private void postsUpdate(final boolean clear) {
         try {
             getAlarmListFromServer();
-        }
-        finally {
-            if (clear)
-                alarmList.clear();
-            // Perform any background task or network request to fetch new alarm data here
-            // For now, let's just add some dummy data to demonstrate
-            // Replace this with your actual data retrieval logic
-            // Dummy data
-            sqLiteUtil.setInitView(this, "NOTIFY_TB");
-            alarmList.addAll(sqLiteUtil.SelectAlarms(String.valueOf(preferenceHelper.getPK())));
-            for(AlarmInfo a : alarmList){
-                Log.d(TAG, "postsUpdate: "+a.getNotifyKey()+a.getCat());
-            }
-            adapter.notifyDataSetChanged();
-            updating = false;
+        } finally {
         }
     }
 
@@ -124,13 +120,18 @@ public class alarmActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     ArrayList<AlarmInfo> alarmListResponse = response.body(); // 수정: response.body()를 따로 변수에 저장
                     if (alarmListResponse != null) { // 수정: null 체크 추가
-                        alarmList = alarmListResponse;
-                        for (AlarmInfo al : alarmList) {
-                            sqLiteUtil.setInitView(getApplication(), "NOTIFY_TB");
-                            Log.d(TAG, "onResponse: alarm" + al.getTS().toString()); // 수정: 각 알람 정보를 로그로 확인
+                        ArrayList<AlarmInfo> alist = alarmListResponse;
+                        for (AlarmInfo al : alist) {
+                            sqLiteUtil.setInitView(getBaseContext(), "NOTIFY_TB");
                             sqLiteUtil.insert(al);
                         }
 
+                        sqLiteUtil.setInitView(getBaseContext(), "NOTIFY_TB");
+                        ArrayList<AlarmInfo> al = sqLiteUtil.selectAlarms(String.valueOf(preferenceHelper.getPK()));
+
+                        alarmList.addAll(al) ;
+                        adapter.notifyDataSetChanged(); // 확인: adapter에 변경된 alarmList를 반영하는 코드가 포함되어 있는지 확인
+                        updating = false;
                     } else {
                         Log.e(TAG, "onResponse: Alarm list is null"); // 수정: Alarm list가 null일 때 로그
                     }
