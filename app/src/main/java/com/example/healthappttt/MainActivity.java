@@ -4,8 +4,6 @@ import static android.content.ContentValues.TAG;
 
 import android.Manifest;
 import android.app.AlarmManager;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -15,7 +13,6 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -39,6 +36,7 @@ import com.example.healthappttt.Data.User.ReviewListData;
 import com.example.healthappttt.Data.User.UserKey;
 import com.example.healthappttt.Data.User.UserProfile;
 import com.example.healthappttt.Data.User.WittListData;
+import com.example.healthappttt.Home.AlarmManagerCustom;
 import com.example.healthappttt.Home.HomeFragment;
 import com.example.healthappttt.Home.alarmActivity;
 import com.example.healthappttt.Profile.MyProfileActivity;
@@ -87,11 +85,11 @@ public class MainActivity extends AppCompatActivity {
     Intent serviceIntent;
     private int login;
     private SocketSingleton socketSingleton;
-
+    private AlarmManagerCustom amc;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         login = 1;
-
+        amc = AlarmManagerCustom.getInstance(this);
         String uk = getIntent().getStringExtra("userKey");
 
         if(uk != null){
@@ -296,23 +294,7 @@ public class MainActivity extends AppCompatActivity {
     // 알림 채널 생성과 푸시 알림 전송을 위한 메서드
     private void createNotificationChannelAndSendNotification() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            if (notificationManager != null && !notificationManager.areNotificationsEnabled()) {
-                // 채널 생성
-                NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "My Channel", NotificationManager.IMPORTANCE_HIGH);
-                notificationManager.createNotificationChannel(channel);
-
-                // 알림 허용 권한 요청
-                Intent intent = new Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
-                        .putExtra(Settings.EXTRA_APP_PACKAGE, getPackageName())
-                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivityForResult(intent, NOTIFICATION_PERMISSION_REQUEST_CODE);
-            } else {
-                // 이미 알림 허용 권한이 있는 경우
-
-            }
-        } else {
-            // Android Oreo 이전 버전은 채널 생성이 필요 없음
+            amc.onAlarm("Wellcome!!","반가워용!!");
         }
     }
 
@@ -339,24 +321,7 @@ public class MainActivity extends AppCompatActivity {
     //        // Android Oreo 이전 버전은 채널 생성이 필요 없음
     //        sendNotification();
     //    }
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == NOTIFICATION_PERMISSION_REQUEST_CODE) {
-            // 알림 허용 권한 설정화면에서 돌아온 경우
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                NotificationManager notificationManager = getSystemService(NotificationManager.class);
-                if (notificationManager != null && notificationManager.areNotificationsEnabled()) {
-                    // 사용자가 알림 허용 권한을 부여한 경우
-                    // 여기서 푸시 알림을 보내는 작업을 수행하세요.
-                    sendNotification();
-                } else {
-                    // 사용자가 알림 허용 권한을 거부한 경우 또는 아직 설정하지 않은 경우
-                    // 권한을 부여해야 정상적인 동작을 하도록 안내해줄 수 있습니다.
-                }
-            }
-        }
-    }
+
     private void sendNotification() {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.witt_logo)

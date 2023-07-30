@@ -85,6 +85,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             public void onClick(View view) {
                 signIn();
 //                GoMain("2");
+//                GoMain("115");
 //                GoMain("119");
             }
         });

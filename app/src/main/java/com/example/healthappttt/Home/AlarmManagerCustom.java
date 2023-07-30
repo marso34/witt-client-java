@@ -114,10 +114,15 @@ public class AlarmManagerCustom {
 
     // 커스텀 알림 표시
     public void showCustomNotification() {
+        String GROUP_KEY = title;
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "Witt_Channel")
                 .setSmallIcon(R.drawable.notification_icon)
                 .setContentTitle(title)
-                .setContentText(content);
+                .setContentText(content)
+                .setAutoCancel(true)
+                .setOnlyAlertOnce(true)
+                .setGroup(GROUP_KEY)
+                .setGroupSummary(true);
         Intent tapIntent = new Intent(context, LoginActivity.class);
         tapIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent tapPendingIntent = PendingIntent.getActivity(context, 0, tapIntent, PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
