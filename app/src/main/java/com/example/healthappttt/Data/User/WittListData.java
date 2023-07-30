@@ -15,9 +15,9 @@ public class WittListData {
     @SerializedName("User_NM")
     private String User_NM;
     @SerializedName("User_Img")
-    private byte[] User_Img;
+    private String User_Img;
 
-    public WittListData(int RECORD_PK, int USER_FK, int OUser_FK, String TS, String User_NM, byte[] User_Img) {
+    public WittListData(int RECORD_PK, int USER_FK, int OUser_FK, String TS, String User_NM, String User_Img) {
         this.RECORD_PK = RECORD_PK;
         this.USER_FK = USER_FK;
         this.OUser_FK = OUser_FK;
@@ -61,10 +61,10 @@ public class WittListData {
         User_NM = user_NM;
     }
 
-    public byte[] getUser_Img() {
+    public String getUser_Img() {
         return User_Img;
     }
-    public void setUser_Img(byte[] user_Img) {
+    public void setUser_Img(String user_Img) {
         User_Img = user_Img;
     }
 }

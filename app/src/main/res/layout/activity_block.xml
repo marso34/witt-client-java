@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:background="@drawable/rounded_bottom"
-        android:paddingBottom="15dp"
+        android:paddingBottom="12dp"
         >
 
 
@@ -79,7 +79,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:paddingHorizontal="16dp"
-        android:paddingTop="20dp">
+        android:paddingTop="12dp">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/blockrecycle"

@@ -147,48 +147,12 @@ public class MainActivity extends AppCompatActivity {
                         "경도 : " + latitude + "\n" +
                         "고도  : " + altitude);
 
-//                DocumentReference washingtonRef = db.collection("users").document(user.getUid());
-//                washingtonRef
-//                        .update("lat", latitude)
-//                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-//                            @Override
-//                            public void onSuccess(Void aVoid) {
-//                                Log.d(TAG, "DocumentSnapshot successfully updated!");
-//                            }
-//                        })
-//                        .addOnFailureListener(new OnFailureListener() {
-//                            @Override
-//                            public void onFailure(@NonNull Exception e) {
-//                                Log.w(TAG, "Error updating document", e);
-//                            }
-//                        });
-//                washingtonRef
-//                        .update("lon", longitude)
-//                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-//                            @Override
-//                            public void onSuccess(Void aVoid) {
-//                                Log.d(TAG, "DocumentSnapshot successfully updated!");
-//                            }
-//                        })
-//                        .addOnFailureListener(new OnFailureListener() {
-//                            @Override
-//                            public void onFailure(@NonNull Exception e) {
-//                                Log.w(TAG, "Error updating document", e);
-//                            }
-//                        });
+
             }
             else {
                 Log.d("wwwwww","qeqeqeqeqe");
             }
-//            위치정보를 원하는 시간, 거리마다 갱신해준다.
-//            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-//                    5000,
-//                    4,
-//                    gpsLocationListener);
-//            lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
-//                    5000,
-//                    4,
-//                    gpsLocationListener);
+
                     }
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
@@ -299,7 +263,7 @@ public class MainActivity extends AppCompatActivity {
                             prefhelper.putProfile(userProfile); // 로컬에 UserProfile 객체를 저장한다.
                         Log.d(TAG, "onResponse:ll "+userProfile.getUSER_PK());
                         socketSingleton = SocketSingleton.getInstance(getBaseContext());
-//             Log.d("Profile", "USER_PK: " + USER_PK + ", Email: " + Email + ", IP: " + IP + ", Platform: " + Platform + ", User_NM: " + User_NM + ", User_Img: " + User_Img + "PW: " + PW);
+//             Log.d("Profile", "USER_PK: " + USER_PK + ", Email: " + Email + ", `IP: " + IP + ", Platform: " + Platform + ", User_NM: " + User_NM + ", User_Img: " + User_Img + "PW: " + PW);
 
                     } else {
                         //서버에서 반환된 값이 null인 경우 처리할 코드
@@ -425,7 +389,7 @@ public class MainActivity extends AppCompatActivity {
                             int Check_Box = Review.getCheck_Box();
                             String TS = Review.getTS();
                             String User_NM = Review.getUser_NM();
-                            byte[] User_Img = Review.getUser_Img();
+                            String User_Img = Review.getUser_Img();
 
                             ReviewList = new ReviewListData(Review_PK, User_FK, RPT_User_FK, Text_Con, Check_Box, TS, User_NM, User_Img); //서버에서 받아온 데이터 형식으로 바꿔야함
                             Log.d("ReviewList_main에서 객체화한거", String.valueOf(Review.getReview_PK()));
@@ -459,7 +423,7 @@ public class MainActivity extends AppCompatActivity {
                             int OUser_FK = Witt.getOUser_FK();
                             String TS = Witt.getTS();
                             String User_NM = Witt.getUser_NM();
-                            byte[] User_Img = Witt.getUser_Img();
+                            String User_Img = Witt.getUser_Img();
 
                             wittList = new WittListData(RECORD_PK,USER_FK,OUser_FK,TS,User_NM,User_Img);
                             Log.d("WittHistory_main에서", String.valueOf(Witt.getUser_NM()));
@@ -586,11 +550,6 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.replace(R.id.frame_layout, fragment);
         fragmentTransaction.commit();
     }
-
-
-
-
-
 
 
     private void getUserInfo(String userEmail) {

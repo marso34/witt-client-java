@@ -25,6 +25,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import org.checkerframework.checker.units.qual.C;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 public class ExerciseInputAdapter extends RecyclerView.Adapter<ExerciseInputAdapter.MainViewHolder> {
     private Context context;
@@ -186,6 +187,8 @@ public class ExerciseInputAdapter extends RecyclerView.Adapter<ExerciseInputAdap
                 str += (SetOrTime/60) + "시간 ";
             if (SetOrTime%60 > 0)
                 str += (SetOrTime%60) + "분";
+            if (SetOrTime == 0)
+                str = "0";
 
             holder.CardioTime.setText(str);
         } else {

@@ -2,11 +2,9 @@
 <androidx.core.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Profile.DropUserActivity"
-    android:backgroundTint="#FFFFFF">
+    android:background="@color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -33,95 +31,53 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="김도현님이"
-            style="@style/chat_title"/>
+            style="@style/Title"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="계정을 탈퇴하려는 이유가 궁금해요"
-            style="@style/chat_title"
+            style="@style/Title"
             android:layout_marginBottom="8dp"/>
 
         <TextView
+            style="@style/Subtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="탈퇴 후 7일 동안 위트 계정을 생성할 수 없어요"
-            android:fontFamily="@font/spoqa_han_sans_neo"
-            android:textSize="12dp"
-            android:textColor="#677489"
             android:layout_marginBottom="56dp"/>
 
 
 
         <CheckedTextView
             android:id="@+id/Drop_ck0"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:text="사용하지 않는 앱이에요"
-            android:layout_marginBottom="12dp"
-            android:background="@drawable/rectangle_20dp"
-            android:elevation="3dp"
-            android:paddingTop="9dp"
-            android:paddingLeft="16dp"
-            android:paddingBottom="11dp"
-            android:paddingHorizontal="16dp"
+            android:outlineSpotShadowColor="@color/Background_2"
             android:gravity="center"
-            style="@style/report"/>
+            style="@style/Custom_checkTextView" />
         <CheckedTextView
             android:id="@+id/Drop_ck1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:text="오류가 생겨서 쓸 수 없어요"
-            android:layout_marginBottom="12dp"
-            android:background="@drawable/rectangle_20dp"
-            android:elevation="3dp"
-            android:paddingTop="9dp"
-            android:paddingLeft="16dp"
-            android:paddingBottom="11dp"
-            android:paddingHorizontal="16dp"
+            android:outlineSpotShadowColor="@color/Background_2"
             android:gravity="center"
-            style="@style/report"/>
+            style="@style/Custom_checkTextView" />
         <CheckedTextView
             android:id="@+id/Drop_ck2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:text="개인정보가 불안해요"
-            android:layout_marginBottom="12dp"
-            android:background="@drawable/rectangle_20dp"
-            android:elevation="3dp"
-            android:paddingTop="9dp"
-            android:paddingLeft="16dp"
-            android:paddingBottom="11dp"
-            android:paddingHorizontal="16dp"
+            android:outlineSpotShadowColor="@color/Background_2"
             android:gravity="center"
-            style="@style/report"/>
+            style="@style/Custom_checkTextView" />
         <CheckedTextView
             android:id="@+id/Drop_ck3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:text="앱 사용법을 모르겠어요"
-            android:layout_marginBottom="12dp"
-            android:background="@drawable/rectangle"
-            android:elevation="3dp"
-            android:paddingTop="9dp"
-            android:paddingLeft="16dp"
-            android:paddingBottom="11dp"
-            android:paddingHorizontal="16dp"
+            android:outlineSpotShadowColor="@color/Background_2"
             android:gravity="center"
-            style="@style/report"/>
+            style="@style/Custom_checkTextView" />
         <CheckedTextView
             android:id="@+id/Drop_ck4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:text="위트메이트가 운동에 도움되는지 모르겠어요"
-            android:layout_marginBottom="12dp"
-            android:background="@drawable/rectangle_20dp"
-            android:elevation="3dp"
-            android:paddingTop="9dp"
-            android:paddingLeft="16dp"
-            android:paddingBottom="11dp"
-            android:paddingHorizontal="16dp"
+            android:outlineSpotShadowColor="@color/Background_2"
             android:gravity="center"
-            style="@style/report"/>
+            style="@style/Custom_checkTextView" />
 
 
         <LinearLayout
@@ -129,6 +85,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:background="@drawable/rounded_top"
+            android:outlineSpotShadowColor="@color/Background_2"
             android:layout_marginTop="40dp"
             android:paddingVertical="12dp"
             android:paddingHorizontal="16dp">

@@ -32,18 +32,20 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ExerciseRecordActivity extends AppCompatActivity implements ERSelectRoutineFragment.OnFragmentInteractionListener, ERSelectUserFragment.OnFragmentInteractionListener, ERRecordingFragment.OnFragmentInteractionListener {
+public class ExerciseRecordActivity extends AppCompatActivity implements ERSelectRoutineFragment.OnFragmentInteractionListener, ERSelectUserFragment.OnFragmentInteractionListener, ERRecordingFragment.OnFragmentInteractionListener, ExerciseResultFragment.OnFragmentInteractionListener {
     private ServiceApi service;
     private SQLiteUtil sqLiteUtil;
     private PreferenceHelper prefhelper;
 
     private int dayOfWeek;
-    private ArrayList<RoutineData> routines; // 지금은 요일에 루틴 하나를 만들지만
+
 //    private RoutineData routine;          // 여러개 만들 수도 있음
+    private ArrayList<RoutineData> routines; // 지금은 요일에 루틴 하나를 만들지만
     private RecordData record;
 
     private int oUserID, promiseID;
     private String startTime, endTime, runTime;
+    private String name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,11 +92,11 @@ public class ExerciseRecordActivity extends AppCompatActivity implements ERSelec
     }
 
     private void SaveToDB() {
-        service.recordExercise(record).enqueue(new Callback<List<Integer>>() {
+        service.createRecord(record).enqueue(new Callback<List<Integer>>() {
             @Override
             public void onResponse(Call<List<Integer>> call, Response<List<Integer>> response) {
                 if (response.isSuccessful()) {
-                    Toast.makeText(ExerciseRecordActivity.this, "기록 성공", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(ExerciseRecordActivity.this, "기록 성공", Toast.LENGTH_SHORT).show();
                     Log.d("성공", "운동 기록 성공");
 
                     List<Integer> list = response.body();
@@ -177,6 +179,15 @@ public class ExerciseRecordActivity extends AppCompatActivity implements ERSelec
         record.setExercises(recordExercises);
 
         SaveToDB();
+    }
+
+    @Override
+    public void onFinish() {
+        if (oUserID > 0) {
+            replaceFragment(ERReviewFragment.newInstance("name", oUserID));
+        } else {
+            finish();
+        }
     }
 
 //    @Override

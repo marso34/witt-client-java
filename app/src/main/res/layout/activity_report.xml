@@ -9,19 +9,33 @@
 
 
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="56dp">
+
+            <ImageView
+                android:id="@+id/cancle_report"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/baseline_arrow_back_ios_new_24"/>
+
+        </androidx.appcompat.widget.Toolbar>
+
+
+
+
+
+
+        <LinearLayout
         android:id="@+id/rrr"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:layout_marginHorizontal="16dp">
-
-        <Button
-            android:id="@+id/cancle_report"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:background="@drawable/baseline_arrow_back_ios_new_24"
-            android:backgroundTint="@color/Background_3"
-            android:layout_marginBottom="16dp"/>
 
         <TextView
             style="@style/Title"
@@ -49,89 +63,41 @@
 
         <CheckedTextView
             android:id="@+id/RPT_ck1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="전문 피트니스 PT업자 같아요."
-            android:layout_marginBottom="12dp"
-            android:background="@drawable/rectangle_20dp"
-            android:elevation="3dp"
-            android:paddingTop="9dp"
-            android:paddingLeft="16dp"
-            android:paddingBottom="11dp"
-            android:paddingHorizontal="16dp"
+            android:text="전문 피트니스 PT업자 같아요"
+            android:outlineSpotShadowColor="@color/Background_2"
             android:gravity="center"
-            style="@style/report"/>
+            style="@style/Custom_checkTextView" />
         <CheckedTextView
             android:id="@+id/RPT_ck2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="비매너 사용자에요."
-            android:layout_marginBottom="12dp"
-            android:background="@drawable/rectangle_20dp"
-            android:elevation="3dp"
-            android:paddingTop="9dp"
-            android:paddingLeft="16dp"
-            android:paddingBottom="11dp"
-            android:paddingHorizontal="16dp"
+            android:text="비매너 사용자에요"
+            android:outlineSpotShadowColor="@color/Background_2"
             android:gravity="center"
-            style="@style/report"/>
+            style="@style/Custom_checkTextView" />
         <CheckedTextView
             android:id="@+id/RPT_ck3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="욕설을 해요."
-            android:layout_marginBottom="12dp"
-            android:background="@drawable/rectangle_20dp"
-            android:elevation="3dp"
-            android:paddingTop="9dp"
-            android:paddingLeft="16dp"
-            android:paddingBottom="11dp"
-            android:paddingHorizontal="16dp"
+            android:text="욕설을 해요"
+            android:outlineSpotShadowColor="@color/Background_2"
             android:gravity="center"
-            style="@style/report"/>
+            style="@style/Custom_checkTextView" />
         <CheckedTextView
             android:id="@+id/RPT_ck4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="성희롱을 해요."
-            android:layout_marginBottom="12dp"
-            android:background="@drawable/rectangle_20dp"
-            android:elevation="3dp"
-            android:paddingTop="9dp"
-            android:paddingLeft="16dp"
-            android:paddingBottom="11dp"
-            android:paddingHorizontal="16dp"
+            android:text="성희롱을 해요"
+            android:outlineSpotShadowColor="@color/Background_2"
             android:gravity="center"
-            style="@style/report"/>
+            style="@style/Custom_checkTextView" />
         <CheckedTextView
             android:id="@+id/RPT_ck5"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="종교활동을 강요해요."
-            android:layout_marginBottom="12dp"
-            android:background="@drawable/rectangle_20dp"
-            android:elevation="3dp"
-            android:paddingTop="9dp"
-            android:paddingLeft="16dp"
-            android:paddingBottom="11dp"
-            android:paddingHorizontal="16dp"
+            android:text="종교활동을 강요해요"
+            android:outlineSpotShadowColor="@color/Background_2"
             android:gravity="center"
-            style="@style/report"/>
+            style="@style/Custom_checkTextView" />
 
         <CheckedTextView
             android:id="@+id/RPT_ck8"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="폭력을 사용해요."
-            android:layout_marginBottom="12dp"
-            android:background="@drawable/rectangle_20dp"
-            android:elevation="3dp"
-            android:paddingTop="9dp"
-            android:paddingLeft="16dp"
-            android:paddingBottom="11dp"
-            android:paddingHorizontal="16dp"
+            android:text="폭력을 사용해요"
+            android:outlineSpotShadowColor="@color/Background_2"
             android:gravity="center"
-            style="@style/report"/>
+            style="@style/Custom_checkTextView" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -185,5 +151,6 @@
 
         </LinearLayout>
 
+    </LinearLayout>
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

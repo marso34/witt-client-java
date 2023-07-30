@@ -55,7 +55,8 @@ public interface ServiceApi {
     @POST("/profile/deleteFromServer") //차단하기에서 차단 항목 삭제하는 api
     Call<Integer> deleteFromServer(@Body UserKey BL_PK);
 
-    @POST("/profile/getWittHistory")//위트 내역 리스트 가져오기
+
+    @POST("/profile/getWittHistory")
     Call<List<WittListData>> getWittHistory(@Body UserKey userKey);
     @POST("/leaveChatRoom")
     Call<String> leaveChatRoom(@Body pkData pk);
@@ -83,6 +84,9 @@ public interface ServiceApi {
     @POST("/profile/updateRPT")//신고하기
     Call<String> updateRPT(@Body Map<String, Object> RPT);
 
+    @POST("/mail/reportmail") // 신고 메일 보내기
+    Call<String> reportmail(@Body Map<String,String> data);
+
 //    ----------------------------------------------------------------------------------------------
     @POST("/routine/CreateRoutine")
     Call<List<Integer>> createRoutine(@Body RoutineData data);
@@ -96,8 +100,14 @@ public interface ServiceApi {
     @POST("/routine/SelectRoutine")
     Call<List<RoutineData>> selectRoutine(@Body GetRoutine data);
 
-    @POST("/record/RecordExercise")
-    Call<List<Integer>> recordExercise(@Body RecordData data);
+    @POST("/routine/SelectAllRoutine")
+    Call<List<RoutineData>> selectAllRoutine(@Body pkData data);
+
+    @POST("/record/CreateRecord")
+    Call<List<Integer>> createRecord(@Body RecordData data);
+
+    @POST("/record/SelectAllRecord")
+    Call<List<RecordData>> selectAllRecord(@Body pkData data);
 //    ----------------------------------------------------------------------------------------------
 
     @POST("/review/SendReivew")

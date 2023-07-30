@@ -23,6 +23,7 @@ import com.example.healthappttt.Data.RetrofitClient;
 import com.example.healthappttt.Data.User.email;
 import com.example.healthappttt.MainActivity;
 import com.example.healthappttt.R;
+import com.example.healthappttt.SplashActivity;
 import com.example.healthappttt.interface_.DataReceiverService;
 import com.example.healthappttt.interface_.ServiceApi;
 import com.example.healthappttt.interface_.ServiceTracker;
@@ -53,6 +54,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private SignInButton mGoogleSignInButton;
     private ActivityResultLauncher<Intent> startActivityResult; // startActivityForResult 대체 방법
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,15 +83,16 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         mGoogleSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                signIn();
+                signIn();
 //                GoMain("2");
-                GoMain("115");
+//                GoMain("115");
+//                GoMain("119");
             }
         });
         int runningServices = ServiceTracker.countRunningServices(this, DataReceiverService.class);
         Log.d("loginActivity", "Running services: " + runningServices);
 
-        //updateUI(GoogleSignIn.getLastSignedInAccount(this));
+        updateUI(GoogleSignIn.getLastSignedInAccount(this)); //자동로그인
     }
 
     private void signIn() {
@@ -151,7 +155,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                 sendData(email, name);
 
                             } else {
-                                GoMain(responseString);
+                                GoSplash(responseString);
+                                //GoMain(responseString);
                             }
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -202,6 +207,17 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         Log.d(TAG, "GoMain: "+userKey);
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("userKey",userKey);
+        startActivity(intent);
+        finish();
+    }
+
+    private void GoSplash(String userKey ){ //스플래쉬 액티비티 시작
+        Log.d(TAG, "GoSplash: "+userKey);
+        SharedPreferences preferences = getSharedPreferences("GoSplash", MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("userKeyinLogin", userKey);
+        editor.apply();
+        Intent intent = new Intent(this, SplashActivity.class);
         startActivity(intent);
         finish();
     }

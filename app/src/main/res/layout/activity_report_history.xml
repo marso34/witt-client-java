@@ -47,12 +47,12 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingHorizontal="10dp">
+        android:orientation="vertical">
 
         <LinearLayout
             android:id="@+id/r0"
-            style="@style/Profile_list_LinearLayout">
+            android:outlineSpotShadowColor="@color/Background_2"
+            style="@style/JLinearLayoutStyle">
 
             <TextView
                 android:id="@+id/ReportText0"
@@ -78,7 +78,8 @@
 
         <LinearLayout
             android:id="@+id/r1"
-            style="@style/Profile_list_LinearLayout">
+            android:outlineSpotShadowColor="@color/Background_2"
+            style="@style/JLinearLayoutStyle">
 
             <TextView
                 android:id="@+id/ReportText1"
@@ -104,7 +105,8 @@
 
         <LinearLayout
             android:id="@+id/r2"
-            style="@style/Profile_list_LinearLayout">
+            android:outlineSpotShadowColor="@color/Background_2"
+            style="@style/JLinearLayoutStyle">
 
             <TextView
                 android:id="@+id/ReportText2"
@@ -130,7 +132,8 @@
 
         <LinearLayout
             android:id="@+id/r3"
-            style="@style/Profile_list_LinearLayout">
+            android:outlineSpotShadowColor="@color/Background_2"
+            style="@style/JLinearLayoutStyle">
 
             <TextView
                 android:id="@+id/ReportText3"
@@ -156,7 +159,8 @@
 
         <LinearLayout
             android:id="@+id/r4"
-            style="@style/Profile_list_LinearLayout">
+            android:outlineSpotShadowColor="@color/Background_2"
+            style="@style/JLinearLayoutStyle">
 
             <TextView
                 android:id="@+id/ReportText4"
@@ -182,7 +186,8 @@
 
         <LinearLayout
             android:id="@+id/r5"
-            style="@style/Profile_list_LinearLayout">
+            android:outlineSpotShadowColor="@color/Background_2"
+            style="@style/JLinearLayoutStyle">
 
             <TextView
                 android:id="@+id/ReportText5"

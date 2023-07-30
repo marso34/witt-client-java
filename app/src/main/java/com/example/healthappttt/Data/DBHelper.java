@@ -121,8 +121,6 @@ public class DBHelper extends SQLiteOpenHelper {
                 + "READ_TIME VARCHAR(30)"
                 + ");";
         db.execSQL(createNotifyTableQuery);
-
-
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.example.healthappttt.Record;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -13,12 +14,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.example.healthappttt.Data.Exercise.ExerciseData;
 import com.example.healthappttt.Data.Exercise.RecordData;
 import com.example.healthappttt.Data.Exercise.RoutineData;
 import com.example.healthappttt.R;
 import com.example.healthappttt.User.AreaAdapter;
+import com.example.healthappttt.WorkOut.ExerciseRecordAdapter;
 import com.example.healthappttt.databinding.FragmentExerciseResultBinding;
 
 import java.text.SimpleDateFormat;
@@ -35,6 +39,7 @@ public class ExerciseResultFragment extends Fragment {
     FragmentExerciseResultBinding binding;
 
     private AreaAdapter catAdapter;
+    private ExerciseResultAdapter Adapter;
 
     private int totalSet, totalCount, totalVolume;
 
@@ -54,6 +59,25 @@ public class ExerciseResultFragment extends Fragment {
     private RoutineData routine;
     private RecordData record;
     private String date;
+
+
+    private OnFragmentInteractionListener mListener;
+
+    public interface OnFragmentInteractionListener {
+        void onFinish();
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+
+        if (context instanceof OnFragmentInteractionListener) {
+            mListener = (OnFragmentInteractionListener) context;
+        } else {
+            throw new ClassCastException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
 
     public ExerciseResultFragment() {
         // Required empty public constructor
@@ -100,7 +124,7 @@ public class ExerciseResultFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         binding = FragmentExerciseResultBinding.inflate(inflater);
 
         return binding.getRoot();
@@ -113,7 +137,6 @@ public class ExerciseResultFragment extends Fragment {
 //        String ExerciseTime = betweenTime(recordData.getStartTime(), recordData.getEndTime()); // 운동 시간, 휴식 시간 포함
 //        String RunTime = recordData.getRunTime();                                              // RunTime은 순수하게 운동한 시간, 휴식시간 제외 시간
 //        String RestTime = betweenTime(ExerciseTime, RunTime);                                  // RunTime은 휴식시간. 운동 시간 - RuntTime
-
 //        binding.runTime.setText(parse(RunTime));
 //        binding.restTime.setText(parse(RestTime));
 
@@ -126,9 +149,10 @@ public class ExerciseResultFragment extends Fragment {
         binding.volume.setText(totalVolume + "");
         binding.runTime.setText(record.getRunTime() + "");
 
-        binding.nextBtn.setOnClickListener(v -> {
-            requireActivity().finish();
-        });
+        setRecyclerView();
+
+
+        binding.nextBtn.setOnClickListener(v -> mListener.onFinish());
     }
 
     @Override
@@ -147,9 +171,9 @@ public class ExerciseResultFragment extends Fragment {
         String result = "";
         int h = Integer.parseInt(hour), m = Integer.parseInt(min), s = Integer.parseInt(sec);
 
-        if (h > 0)     result += h + "시간 ";
-        if (m > 0)     result += m + "분 ";
-        if (s > 0)     result += s + "초";
+        if (h > 0)          result += h + "시간 ";
+        if (m > 0)          result += m + "분 ";
+        if (s > 0)          result += s + "초";
         if (result == null) result = "0초";
 
         return result;
@@ -192,7 +216,6 @@ public class ExerciseResultFragment extends Fragment {
 
         return 0;
     }
-
 
     private void setTotals() {
         for (ExerciseData e : record.getExercises()) {
@@ -246,5 +269,12 @@ public class ExerciseResultFragment extends Fragment {
         binding.catRecyclerView.setHasFixedSize(true);
         binding.catRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         binding.catRecyclerView.setAdapter(catAdapter);
+    }
+
+    private void setRecyclerView() {
+        Adapter = new ExerciseResultAdapter(routine.getExercises(), record.getExercises());
+        binding.recyclerView.setHasFixedSize(true);
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.recyclerView.setAdapter(Adapter);
     }
 }

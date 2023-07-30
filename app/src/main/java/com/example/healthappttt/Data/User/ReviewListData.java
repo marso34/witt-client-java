@@ -19,9 +19,9 @@ public class ReviewListData {
     @SerializedName("User_NM")
     private String User_NM;
     @SerializedName("User_Img")
-    private byte[] User_Img;
+    private String User_Img;
 
-    public ReviewListData(int Review_PK,int User_FK, int RPT_User_FK, String Text_Con, int Check_Box, String TS,String User_NM,byte[] User_Img) {
+    public ReviewListData(int Review_PK, int User_FK, int RPT_User_FK, String Text_Con, int Check_Box, String TS, String User_NM, String User_Img) {
         this.Review_PK = Review_PK;
         this.User_FK = User_FK;
         this.RPT_User_FK = RPT_User_FK;
@@ -86,10 +86,10 @@ public class ReviewListData {
     public void setUser_NM(String user_NM) {
         User_NM = user_NM;
     }
-    public byte[] getUser_Img() {
+    public String getUser_Img() {
         return User_Img;
     }
-    public void setUser_Img(byte[] user_Img) {
+    public void setUser_Img(String user_Img) {
         User_Img = user_Img;
     }
 }
