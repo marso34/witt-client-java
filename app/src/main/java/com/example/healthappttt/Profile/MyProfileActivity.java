@@ -2,13 +2,22 @@ package com.example.healthappttt.Profile;
 
 import static android.content.ContentValues.TAG;
 
+import android.Manifest;
+import android.app.Dialog;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -16,7 +25,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.healthappttt.Data.Chat.SocketSingleton;
@@ -25,17 +37,24 @@ import com.example.healthappttt.Data.Exercise.RoutineData;
 import com.example.healthappttt.Data.PreferenceHelper;
 import com.example.healthappttt.Data.RetrofitClient;
 import com.example.healthappttt.Data.SQLiteUtil;
+import com.example.healthappttt.Data.User.ImageCacheManager;
 import com.example.healthappttt.Data.User.UserKey;
 import com.example.healthappttt.Data.WittSendData;
 import com.example.healthappttt.R;
 import com.example.healthappttt.Routine.RoutineActivity;
 import com.example.healthappttt.Routine.RoutineAdapter;
+import com.example.healthappttt.Sign.LoginActivity;
 import com.example.healthappttt.databinding.ActivityMyprofileBinding;
 import com.example.healthappttt.interface_.ServiceApi;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -67,11 +86,13 @@ public class MyProfileActivity extends AppCompatActivity {
     TextView Psqaut,Pbench,Pdeadlift;
     Map<String,Object> userDefault;
     Map<String,Object> OuserDefault;
-    String myPK,PK, URI;
+    String myPK,PK;
     String MyName, OtherName;
     String MyGym;
     int dayOfWeek;
 
+    private Bitmap downloadedBitmap;
+    private String imageUri;
 
     String otherUserKey;
     @Override
@@ -82,6 +103,8 @@ public class MyProfileActivity extends AppCompatActivity {
         apiService = RetrofitClient.getClient().create(ServiceApi.class); // create메서드로 api서비스 인터페이스의 구현제 생성
         binding = ActivityMyprofileBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+
 
 
 
@@ -102,11 +125,36 @@ public class MyProfileActivity extends AppCompatActivity {
         Intent intent = getIntent();//넘겨받은 pk를 담은 번들
         PK = intent.getStringExtra("PK");
 
-        String uri = UserTB.getUser_IMG(); //이미지 가져오는 부분
-        if(uri != null)
-        {
-            String fileName = uri.substring(uri.lastIndexOf("/") + 1);
-            getImage(fileName);
+//        String uri = UserTB.getUser_IMG(); //이미지 가져오는 부분
+//        if(uri != null)
+//        {
+//            String fileName = uri.substring(uri.lastIndexOf("/") + 1);
+//            getImage(fileName);
+//        }
+
+        String fileName = "your_file_name.jpg"; // 저장된 이미지 파일 이름을 입력하세요.
+        downloadedBitmap = ImageCacheManager.getInstance().getDownloadedBitmap();;
+        if (downloadedBitmap != null) {
+            // 저장된 이미지가 있을 경우 해당 이미지를 사용
+            Log.d(TAG, "이미지는 캐시된 이미지를 사용 중입니다.");
+            ProfileImg.setImageBitmap(downloadedBitmap);
+            ProfileImg.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // 클릭 시 이미지를 팝업 창으로 전체 화면에 띄웁니다.
+                    BitmapDrawable bitmapDrawable = (BitmapDrawable) ProfileImg.getDrawable();
+                    Bitmap bitmap = bitmapDrawable.getBitmap();
+                    showFullScreenImagePopup(bitmap);
+                }
+            });
+        } else {
+            // 저장된 이미지가 없을 경우 서버에서 이미지 다운로드
+            Log.d(TAG, "이미지는 서버에서 다운로드한 이미지를 사용 중입니다.");
+            String uri = UserTB.getUser_IMG(); // 이미지 가져오는 부분
+            if (uri != null) {
+                String fileName1 = uri.substring(uri.lastIndexOf("/") + 1);
+                getImage(fileName1);
+            }
         }
 
 
@@ -477,27 +525,59 @@ public class MyProfileActivity extends AppCompatActivity {
     }
     private void getImage(String imageUri) {
 
+        if (downloadedBitmap == null) {
+            this.imageUri = imageUri;
 
-        ServiceApi apiService = RetrofitClient.getClient().create(ServiceApi.class);
+            ServiceApi apiService = RetrofitClient.getClient().create(ServiceApi.class);
 
-        Call<ResponseBody> call = apiService.getImage(imageUri);
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                if (response.isSuccessful()) {
-                    Log.d(TAG, "이미지 다운 성공");
-                    Bitmap bitmap = BitmapFactory.decodeStream(response.body().byteStream());
-                    ProfileImg.setImageBitmap(bitmap);
-                } else {
-                    Log.d(TAG, "이미지 다운 실패");
+            Call<ResponseBody> call = apiService.getImage(imageUri);
+            call.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    if (response.isSuccessful()) {
+                        Log.d(TAG, "이미지 다운 성공");
+                        downloadedBitmap = BitmapFactory.decodeStream(response.body().byteStream());
+                        ProfileImg.setImageBitmap(downloadedBitmap);
+
+                        // 이미지를 로컬에 저장하기 위한 권한 요청
+                        requestPermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+                        ImageCacheManager.getInstance().setDownloadedBitmap(downloadedBitmap);
+
+                        ProfileImg.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                // 클릭 시 이미지를 팝업 창으로 전체 화면에 띄웁니다.
+                                BitmapDrawable bitmapDrawable = (BitmapDrawable) ProfileImg.getDrawable();
+                                Bitmap bitmap = bitmapDrawable.getBitmap();
+                                showFullScreenImagePopup(bitmap);
+                            }
+                        });
+                    } else {
+                        Log.d(TAG, "이미지 다운 실패");
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Log.d(TAG, "이미지 다운 에러");
-            }
-        });
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Log.d(TAG, "이미지 다운 에러");
+                }
+            });
+        }
+        else {
+            // 이미지가 이미 다운로드된 경우에는 저장된 이미지를 사용
+            ProfileImg.setImageBitmap(downloadedBitmap);
+
+            ProfileImg.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // 클릭 시 이미지를 팝업 창으로 전체 화면에 띄웁니다.
+                    BitmapDrawable bitmapDrawable = (BitmapDrawable) ProfileImg.getDrawable();
+                    Bitmap bitmap = bitmapDrawable.getBitmap();
+                    showFullScreenImagePopup(bitmap);
+                }
+            });
+        }
     }
 
     private void sendMessageToServer(String messageText, int chatRoomPk,int chatPk) {
@@ -562,6 +642,52 @@ public class MyProfileActivity extends AppCompatActivity {
 
         binding = null;
     }
+
+    private void showFullScreenImagePopup(Bitmap bitmap) {
+        Dialog dialog = new Dialog(this, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+        dialog.setContentView(R.layout.popup_image_layout);
+
+        ImageView fullScreenImageView = dialog.findViewById(R.id.fullScreenImageView);
+        fullScreenImageView.setImageBitmap(bitmap);
+
+        ImageView backButton = dialog.findViewById(R.id.backButton);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss(); // 뒤로가기 버튼 클릭 시 팝업 창을 닫습니다.
+            }
+        });
+
+        dialog.show();
+    }
+    private void saveImageToInternalStorage() {
+        if (downloadedBitmap != null && imageUri != null) {
+            String fileName = imageUri; // 저장할 이미지 파일 이름을 입력하세요.
+            try {
+                FileOutputStream fos = openFileOutput(fileName, Context.MODE_PRIVATE);
+                downloadedBitmap.compress(Bitmap.CompressFormat.JPEG, 90, fos);
+                fos.close();
+
+                ImageCacheManager.getInstance().setDownloadedBitmap(downloadedBitmap);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    private ActivityResultLauncher<String> requestPermissionLauncher = registerForActivityResult(
+            new ActivityResultContracts.RequestPermission(), isGranted -> {
+                if (isGranted) {
+                    // 권한이 허용된 경우 이미지 저장 처리
+                    saveImageToInternalStorage();
+                } else {
+                    // 권한이 거부된 경우 처리할 로직 작성
+                    // 예를 들면, 사용자에게 권한이 필요하다는 안내 메시지를 보여줄 수 있습니다.
+                    Toast.makeText(this, "이미지 저장 권한을 허용해주세요.", Toast.LENGTH_SHORT).show();
+                }
+            }
+    );
+
+
     //받은 후기
 //    public void onClickReviewReceived(View view) {
 //        Intent intent = new Intent(MyProfileActivity.this, ReviewsRecdAtivity.class);

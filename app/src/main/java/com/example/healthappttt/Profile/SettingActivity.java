@@ -1,6 +1,8 @@
 package com.example.healthappttt.Profile;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -8,6 +10,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.healthappttt.Data.User.ImageCacheManager;
 import com.example.healthappttt.R;
 import com.example.healthappttt.Sign.LoginActivity;
 import com.example.healthappttt.interface_.DataReceiverService;
@@ -35,7 +38,7 @@ public class SettingActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void onClickLogout(View view) { //로그아웃
+    public void onClickLogout(View view) { // 로그아웃
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.google_sign_in_client_id))
                 .requestEmail()
@@ -49,8 +52,10 @@ public class SettingActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<Void> task) {
                         DataReceiverService.setNormalExit(true);
                         stopService(serviceIntent);
-                        // Update UI after sign out
+                        clearUserLoginInfo();
+                        // Clear all activities and go to LoginActivity
                         Intent intent = new Intent(SettingActivity.this, LoginActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
                         finish();
                     }
@@ -63,6 +68,13 @@ public class SettingActivity extends AppCompatActivity {
                 });
     }
 
+    private void clearUserLoginInfo() {
+        // Clear user login information from SharedPreferences or any other storage mechanism
+        SharedPreferences preferences = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.clear();
+        editor.apply();
+    }
     public void onClickDrop(View view) { //탈퇴하기
         Intent intent = new Intent(SettingActivity.this,DropUserActivity.class);
         startActivity(intent);
