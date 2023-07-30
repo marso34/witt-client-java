@@ -33,14 +33,11 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class SplashActivity extends AppCompatActivity {
-    private ServiceApi service;
     private SQLiteUtil sqLiteUtil;
-
 
     private SocketSingleton socketSingleton;
 
     private ServiceApi apiService;
-    private SQLiteUtil sqLiteUtil;
     private PreferenceHelper prefhelper;
 
     private BlackListData BlackList;
@@ -53,7 +50,6 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
       
-        service = RetrofitClient.getClient().create(ServiceApi.class);
         apiService = RetrofitClient.getClient().create(ServiceApi.class);
       
       
@@ -98,8 +94,8 @@ public class SplashActivity extends AppCompatActivity {
                 Log.e("API_CALL", "API호출 실패: " + t.getMessage());
             }
         });
-
     }
+
     //API 요청 후 응답을 SQLite로 차단테이블 데이터 로컬 저장
     private void getBlackList(UserKey userKey) {
         Call<List<BlackListData>> call = apiService.getBlackList(userKey);
@@ -121,12 +117,15 @@ public class SplashActivity extends AppCompatActivity {
                             String User_Img = Black.getUser_Img();
                             BlackList = new BlackListData(BL_PK, User_NM, OUser_FK, TS,User_Img); //서버에서 받아온 데이터 형식으로 바꿔야함
 
-                            SaveBlackList(BlackList);//로컬db에 차단목록 저장 매서드
+//                            SaveBlackList(BlackList);//로컬db에 차단목록 저장 매서드
                         }
                     } else { Log.d("getBlackList","리스트가 null");}
                 } else {
                     Log.e("getBlackList", "API 요청 실패. 응답 코드: " + response.code());        
                 }
+            }
+
+            @Override
             public void onFailure(Call<List<BlackListData>> call, Throwable t) {
                 Log.e("getBlackList", "API 요청실패, 에러메세지: " + t.getMessage());
             }
@@ -134,7 +133,7 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void SyncRoutine(int pk) {
-        service.selectAllRoutine(new pkData(pk)).enqueue(new Callback<List<RoutineData>>() {
+        apiService.selectAllRoutine(new pkData(pk)).enqueue(new Callback<List<RoutineData>>() {
             @Override
             public void onResponse(Call<List<RoutineData>> call, Response<List<RoutineData>> response) {
                 if (response.isSuccessful()) {
@@ -161,7 +160,7 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void SyncRecord(int pk) {
-        service.selectAllRecord(new pkData(pk)).enqueue(new Callback<List<RecordData>>() {
+        apiService.selectAllRecord(new pkData(pk)).enqueue(new Callback<List<RecordData>>() {
             @Override
             public void onResponse(Call<List<RecordData>> call, Response<List<RecordData>> response) {
                 if (response.isSuccessful()) {
@@ -177,18 +176,19 @@ public class SplashActivity extends AppCompatActivity {
                     Toast.makeText(SplashActivity.this, "기록 불러오기 실패!!!", Toast.LENGTH_SHORT).show();
                     Log.d("실패", "기록 불러오기 실패");
                 }
-              
-        public void onFailure(Call<List<RecordData>> call, Throwable t) {
-          Toast.makeText(SplashActivity.this, "서버 연결 실패..", Toast.LENGTH_SHORT).show();
-          Log.d("서버 연결 실패", t.getMessage());
-        }
-    }
+            }
 
-            
+            @Override
+            public void onFailure(Call<List<RecordData>> call, Throwable t) {
+              Toast.makeText(SplashActivity.this, "서버 연결 실패..", Toast.LENGTH_SHORT).show();
+              Log.d("서버 연결 실패", t.getMessage());
+            }
+        });
+    }
 
 
     //API 요청 후 응답을 SQLite로 받은후기 데이터 로컬 저장
-    private void getReviewList(UserKey userKey){
+    private void getReviewList(UserKey userKey) {
         Call<List<ReviewListData>> call = apiService.getReviewList(userKey);
         call.enqueue(new Callback<List<ReviewListData>>() {
             @Override
@@ -209,7 +209,7 @@ public class SplashActivity extends AppCompatActivity {
                             String User_Img = Review.getUser_Img();
 
                             ReviewList = new ReviewListData(Review_PK, User_FK, RPT_User_FK, Text_Con, Check_Box, TS, User_NM, User_Img); //서버에서 받아온 데이터 형식으로 바꿔야함
-                            SaveReviewList(ReviewList);//로컬db에 받은 후기 저장 매서드
+//                            SaveReviewList(ReviewList);//로컬db에 받은 후기 저장 매서드
                         }
                     } else { Log.d("getReviewList","리스트가 null");}
                 }else {
@@ -228,10 +228,10 @@ public class SplashActivity extends AppCompatActivity {
         call.enqueue(new Callback<List<WittListData>>() {
             @Override
             public void onResponse(Call<List<WittListData>> call, Response<List<WittListData>> response) {
-                if (response.isSuccessful()){
+                if (response.isSuccessful()) {
                     List<WittListData> WittList = response.body();
-                    if(WittList != null){
-                        for(WittListData Witt : WittList){
+                    if (WittList != null) {
+                        for (WittListData Witt : WittList) {
                             Log.d("WittList데이터", String.valueOf(Witt.getUSER_FK()));
                             int RECORD_PK = Witt.getRECORD_PK();
                             int USER_FK = Witt.getUSER_FK();
@@ -240,13 +240,16 @@ public class SplashActivity extends AppCompatActivity {
                             String User_NM = Witt.getUser_NM();
                             String User_Img = Witt.getUser_Img();
 
-                            wittList = new WittListData(RECORD_PK,USER_FK,OUser_FK,TS,User_NM,User_Img);
+                            wittList = new WittListData(RECORD_PK, USER_FK, OUser_FK, TS, User_NM, User_Img);
                             SaveWittList(wittList);//로컬db에 받은 후기 저장 매서드
                         }
-                    } else { Log.d("getWittHistory","리스트가 null");}
-                }else{
+                    } else {
+                        Log.d("getWittHistory", "리스트가 null");
+                    }
+                } else {
                     Log.e("getWittHistory", "API 요청 실패. 응답 코드: " + response.code());
                 }
+            }
               
             @Override
             public void onFailure(Call<List<WittListData>> call, Throwable t) {
