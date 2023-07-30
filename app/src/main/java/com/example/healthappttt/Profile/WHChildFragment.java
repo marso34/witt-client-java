@@ -92,7 +92,7 @@ public class WHChildFragment extends Fragment {
         myPK = String.valueOf(UserTB.getPK());// 로컬 내 PK
 
         filteredList = new ArrayList<>();
-        oneWeekAgoList = new ArrayList<>();//1주                   날짜 비교하여 넣어지는 리스트
+        oneWeekAgoList = new ArrayList<>();//1주           날짜 비교하여 넣어지는 리스트
         oneMonthAgoList = new ArrayList<>();//1개월
         oneYearAgoList = new ArrayList<>();//1년
 
@@ -316,7 +316,7 @@ public class WHChildFragment extends Fragment {
                                         int OUser_FK = Witt.getOUser_FK();
                                         String TS = Witt.getTS();
                                         String User_NM = Witt.getUser_NM();
-                                        byte[] User_Img = Witt.getUser_Img();
+                                        String User_Img = Witt.getUser_Img();
 
                                         wittListData = new WittListData(RECORD_PK,USER_FK,OUser_FK,TS,User_NM,User_Img);
                                         Log.d("WittHistory 프로필에서", String.valueOf(Witt.getUser_NM()));

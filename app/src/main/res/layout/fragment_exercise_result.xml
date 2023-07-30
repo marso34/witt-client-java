@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     tools:context=".Record.ExerciseResultFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -159,37 +158,37 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginVertical="6dp"
                         android:layout_marginHorizontal="16dp"
-                        android:paddingTop="9dp"
-                        android:paddingHorizontal="16dp"
-                        android:paddingBottom="11dp"
-                        android:orientation="horizontal"
+                        android:layout_marginVertical="6dp"
                         android:background="@drawable/rectangle_16dp"
+                        android:elevation="4dp"
+                        android:orientation="horizontal"
                         android:outlineSpotShadowColor="@color/Background_2"
-                        android:elevation="4dp">
+                        android:paddingHorizontal="16dp"
+                        android:paddingTop="9dp"
+                        android:paddingBottom="11dp">
 
                         <TextView
+                            style="@style/Body"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="총 횟수"
-                            style="@style/Body"/>
+                            android:text="총 횟수" />
 
                         <TextView
                             android:id="@+id/count"
+                            style="@style/Body"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="0"
-                            style="@style/Body"/>
+                            android:text="0" />
 
                         <TextView
+                            style="@style/Body"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="4dp"
-                            android:textColor="@color/Background_3"
                             android:text="회"
-                            style="@style/Body"/>
+                            android:textColor="@color/Background_3" />
 
                     </LinearLayout>
 

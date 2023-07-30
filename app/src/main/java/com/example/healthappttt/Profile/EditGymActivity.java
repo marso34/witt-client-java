@@ -2,7 +2,6 @@ package com.example.healthappttt.Profile;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.preference.Preference;
 import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,11 +26,11 @@ public class EditGymActivity extends AppCompatActivity implements EditGymFragmen
         Intent intent = getIntent();
         MyName = intent.getStringExtra("MyName");
         MyGym = intent.getStringExtra("MyGym");
-//        GymAdress = intent.getStringExtra("GymAdress");
+        GymAdress = intent.getStringExtra("GymAdress");
 
         UserTB = new PreferenceHelper("UserTB",this);
 
-        EditGymFragment fragment = EditGymFragment.newInstance(MyName, MyGym);
+        EditGymFragment fragment = EditGymFragment.newInstance(MyName, MyGym, GymAdress);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.ContentLayout2, fragment)
                 .commit();
@@ -61,15 +60,16 @@ public class EditGymActivity extends AppCompatActivity implements EditGymFragmen
         Log.d("위치 정보", userLat + " " + userLon);
         Log.d("위치 정보", gymName + " " + gymAdress);
         Log.d("위치 정보", gymLat + " " + gymLon);
-
-        // 저장하고
-
+        LocInfo locInfo = new LocInfo(userLat,userLon,gymName,gymLat,gymLon,gymAdress);
+        // 저장
+        UserTB.setLoc(locInfo);
+        replaceFragment(EditGymFragment.newInstance(MyName, MyGym, GymAdress)); // MyName, MyGym, GymAdress
 //        finish(); // or
-//        replaceFragment(EditGymFragment.newInstance(MyName, MyGym)); // MyName, MyGym, GymAdress
+
     }
 
     @Override
     public void onCancel() {
-        replaceFragment(EditGymFragment.newInstance(MyName, MyGym)); // MyName, MyGym, GymAdress
+        replaceFragment(EditGymFragment.newInstance(MyName, MyGym, GymAdress)); // MyName, MyGym, GymAdress
     }
 }

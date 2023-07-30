@@ -921,7 +921,7 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
                             cursor.getInt(4),           //Check_Box
                             cursor.getString(5),        // TS
                             cursor.getString(6),        //User_NM
-                            cursor.getBlob(7)           //User_Img
+                            cursor.getString(7)           //User_Img
                     );
                     reviewListData.add(e);
                     Log.d("SQLite SelectReviewUser", "리뷰리스트데이터: " + e.getText_Con());
@@ -952,7 +952,7 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
                             cursor.getInt(2),           //OUser_FK
                             cursor.getString(3),        // TS
                             cursor.getString(4),        //User_NM
-                            cursor.getBlob(5)           //User_Img
+                            cursor.getString(5)           //User_Img
                     );
                     wittListData.add(e);
                     Log.d("SQLite SelectWittHis", "위트내역 리스트 데이터: " + e.getTS());

@@ -83,6 +83,9 @@ public interface ServiceApi {
     @POST("/profile/updateRPT")//신고하기
     Call<String> updateRPT(@Body Map<String, Object> RPT);
 
+    @POST("/mail/reportmail") // 신고 메일 보내기
+    Call<String> reportmail(@Body Map<String,String> data);
+
 //    ----------------------------------------------------------------------------------------------
     @POST("/routine/CreateRoutine")
     Call<List<Integer>> createRoutine(@Body RoutineData data);
