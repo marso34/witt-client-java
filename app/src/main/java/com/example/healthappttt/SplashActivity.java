@@ -67,10 +67,12 @@ public class SplashActivity extends AppCompatActivity {
         SyncRoutine(prefhelper.getPK());
         SyncRecord(prefhelper.getPK());
 
-         getuserProfile(userKey);
-         getBlackList(userKey);
-         getReviewList(userKey);
-         getWittHistory(userKey);
+        getuserProfile(userKey);
+        getBlackList(userKey);
+        getReviewList(userKey);
+        getWittHistory(userKey);
+
+
 
         if(userKey != null) {
             Log.d(TAG, "유저키: " + userKey);
