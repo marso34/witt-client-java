@@ -459,6 +459,24 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         }
     }
 
+    public void deleteMulti(ArrayList<String> PK) { // 여러개
+        try {
+            String s = "delete  from " + table + " where PK NOT IN (";
+
+            for (int i = 0; i < PK.size(); i++) {
+                s += PK.get(i);
+                if (i < PK.size()-1)
+                    s += ", ";
+            }
+            s += ")";
+
+            Log.d("삭제 sql", s);
+            db.execSQL(s);
+        } finally {
+            db.close();
+        }
+    }
+
     //로컬 db에서 해당 pk를 가진 행을 삭제하는 매서드
     public void deleteFromBlackListTable(int pk) {
         try{
@@ -546,6 +564,61 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
             db.close();
         }
     } // 운동 기록을 수정할 수 있게 할지는 아직 모름
+
+    public void UpdateOrInsert(RoutineData routine) {
+        ContentValues values = new ContentValues();
+
+        try {
+            values.put("PK", routine.getID());
+            values.put("CAT", routine.getCat());
+            values.put("Time", routine.getTime());
+            values.put("Day_Of_Week", routine.getDayOfWeek());
+
+            Cursor cursor = db.query(table, null,  "PK = ?", new String[]{String.valueOf(routine.getID())}, null, null, null);
+            if (cursor.moveToFirst()) {
+                // 존재하면 업데이트 수행
+                int result = db.update(table, values, "PK = ?", new String[]{String.valueOf(routine.getID())});
+                Log.d(table, result + "업데이트 성공");
+                cursor.close();
+            } else {
+                // 존재하지 않으면 삽입 수행
+                long result = db.insert(table, null, values);
+                Log.d(table, result + "삽입 성공");
+                cursor.close();
+            }
+        } finally {
+            db.close();
+        }
+    }
+
+    public void UpdateOrInsert(RecordData record) {
+        ContentValues values = new ContentValues();
+
+        try {
+            values.put("PK", record.getID());
+            values.put("OUser_FK", record.getoUserID());
+            values.put("PROMISE_FK", record.getPromiseID());
+            values.put("Start_Time", record.getStartTime());
+            values.put("End_Time", record.getEndTime());
+            values.put("Run_Time", record.getEndTime());
+            values.put("CAT", record.getCat());
+
+            Cursor cursor = db.query(table, null,  "PK = ?", new String[]{String.valueOf(record.getID())}, null, null, null);
+            if (cursor.moveToFirst()) {
+                // 존재하면 업데이트 수행
+                int result = db.update(table, values, "PK = ?", new String[]{String.valueOf(record.getID())});
+                Log.d(table, result + "업데이트 성공");
+                cursor.close();
+            } else {
+                // 존재하지 않으면 삽입 수행
+                long result = db.insert(table, null, values);
+                Log.d(table, result + "삽입 성공");
+                cursor.close();
+            }
+        } finally {
+            db.close();
+        }
+    }
 
     public void UpdateOrInsert(ExerciseData exercise) {
         ContentValues values = new ContentValues();
@@ -1167,9 +1240,6 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         }
         return lastKey;
     }
-
-
-
 
     public void DropUser(Context context) {
         try {

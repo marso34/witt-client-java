@@ -93,7 +93,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
 
             holder.Name.setText(userInfo.getName());
 
-
             if (str.equals("")) {
                 holder.GymName.setText("선택된 헬스장이 없어요");
                 holder.GymName.setTextColor(Color.parseColor(Background_2));

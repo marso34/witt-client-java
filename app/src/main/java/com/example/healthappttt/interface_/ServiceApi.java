@@ -100,8 +100,8 @@ public interface ServiceApi {
     @POST("/record/CreateRecord")
     Call<List<Integer>> createRecord(@Body RecordData data);
 
-    @POST("/record/SelectAllExercise")
-    Call<List<RecordData>> selectAllExercise(@Body pkData data);
+    @POST("/record/SelectAllRecord")
+    Call<List<RecordData>> selectAllRecord(@Body pkData data);
 //    ----------------------------------------------------------------------------------------------
 
     @POST("/review/SendReivew")

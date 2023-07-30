@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.healthappttt.Data.Chat.UserChat;
 import com.example.healthappttt.R;
 import com.example.healthappttt.User.UserGenAdapter;
+import com.example.healthappttt.User.WittUserAdapter;
 import com.example.healthappttt.databinding.FragmentErSelectUserBinding;
 
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ import io.reactivex.rxjava3.annotations.NonNull;
  */
 public class ERSelectUserFragment extends Fragment {
     FragmentErSelectUserBinding binding;
-    private UserGenAdapter adapter;
+    private WittUserAdapter adapter;
 
     private ArrayList<UserChat> test;
 
@@ -115,7 +116,7 @@ public class ERSelectUserFragment extends Fragment {
     private void setRecyclerView() {
         test = new ArrayList<>();
 
-        adapter = new UserGenAdapter(getContext(), test, 3);
+//        adapter = new WittUserAdapter(getContext(), );
         binding.recyclerView.setHasFixedSize(true);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.recyclerView.setAdapter(adapter);
