@@ -95,19 +95,23 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(createTableQuery);
 
         String createChat_Room_TableQuery = "CREATE TABLE if not exists CHAT_ROOM_TB ("
+                + "LOC_CHAT_ROOM_PK INTEGER,"
                 + "USER_FK INT,"
-                + "CHAT_ROOM_PK INT primary key,"
+                + "CHAT_ROOM_PK INT,"
                 + "LAST_MSG_INDEX INT,"
                 + "OTHER_USER_FK INT,"
                 + "OTHER_USER_NM VARCHAR(30),"
                 + "FAV INT ,"
                 + "GYM_NM VARCHAR(30),"
-                + "TS  VARCHAR(30)"
+                + "ADR VARCHAR(100),"
+                + "TS  VARCHAR(30),"
+                + "ISCLOSE INT DEFAULT 1"//열린상태 2는 닫힌상태
                 + ");";
         db.execSQL(createChat_Room_TableQuery);
 
         String createNotifyTableQuery = "CREATE TABLE if not exists NOTIFY_TB ("
-                + "NOTIFY_PK INT PRIMARY KEY,"
+                + "LOC_NTF_PK INTEGER,"
+                + "NOTIFY_PK INT,"
                 + "USER_FK INT,"
                 + "OTHER_USER_FK INTEGER DEFAULT -1,"
                 + "OUSER_NM VARCHAR(30),"

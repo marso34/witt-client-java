@@ -25,6 +25,7 @@ public class SplashActivity extends AppCompatActivity {
     private ServiceApi service;
     private SQLiteUtil sqLiteUtil;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

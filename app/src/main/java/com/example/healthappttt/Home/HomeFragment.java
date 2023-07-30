@@ -1,41 +1,29 @@
 package com.example.healthappttt.Home;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager2.widget.ViewPager2;
 
-import com.example.healthappttt.Data.Exercise.ExerciseComparator;
-import com.example.healthappttt.Data.Exercise.ExerciseData;
 import com.example.healthappttt.Data.Exercise.RoutineData;
 import com.example.healthappttt.Data.SQLiteUtil;
 import com.example.healthappttt.R;
-import com.example.healthappttt.Routine.ExerciseAdapter;
 import com.example.healthappttt.User.AreaAdapter;
 import com.example.healthappttt.databinding.FragmentHomeBinding;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
-import java.util.function.ObjIntConsumer;
 
 public class HomeFragment extends Fragment {
     FragmentHomeBinding binding;

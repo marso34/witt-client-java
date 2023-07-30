@@ -167,10 +167,7 @@
             android:name=".Chat.ChatActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".Sign.googleMaps"
-            android:exported="false"
-            android:screenOrientation="portrait" />
+
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -217,7 +214,6 @@
         <!-- android:exported="true" /> -->
         <activity
             android:name=".Sign.LoginActivity"
-            android:excludeFromRecents="true"
             android:exported="true"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"

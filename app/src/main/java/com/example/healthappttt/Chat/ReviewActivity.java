@@ -1,7 +1,5 @@
 package com.example.healthappttt.Chat;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -11,9 +9,10 @@ import android.view.View;
 import android.widget.CheckedTextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.healthappttt.Data.PreferenceHelper;
 import com.example.healthappttt.Data.RetrofitClient;
-import com.example.healthappttt.Data.SQLiteUtil;
 import com.example.healthappttt.Data.User.ReviewData;
 import com.example.healthappttt.R;
 import com.example.healthappttt.databinding.ActivityReviewBinding;
@@ -45,6 +44,7 @@ public class ReviewActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
 
         binding = ActivityReviewBinding.inflate(getLayoutInflater());
@@ -75,6 +75,7 @@ public class ReviewActivity extends AppCompatActivity {
         service = RetrofitClient.getClient().create(ServiceApi.class);
         prefhelper = new PreferenceHelper("UserTB", this);
         pk = prefhelper.getPK();
+
 //  ------------------------------------------------------------------------------------------------
 
         binding.userName.setText(name);
@@ -119,6 +120,7 @@ public class ReviewActivity extends AppCompatActivity {
             }
         });
 
+
         binding.send.setOnClickListener(v -> sendToServer());
 
         setCheckedTextViewListeners();
@@ -152,6 +154,7 @@ public class ReviewActivity extends AppCompatActivity {
                 }
             }
         };
+
 
         View.OnClickListener badCheckedListener = new View.OnClickListener() {
             @Override
@@ -201,6 +204,7 @@ public class ReviewActivity extends AppCompatActivity {
         binding.gootTxtView.setCardBackgroundColor(Color.parseColor(Signature_Toggle));
         binding.badTxtView.setCardBackgroundColor(Color.parseColor(Backgrount_1));
     }
+
 
     private void setBadIcon() {
         binding.goodImg.setAlpha(0.2f);

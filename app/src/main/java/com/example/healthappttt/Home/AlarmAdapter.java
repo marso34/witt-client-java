@@ -16,11 +16,11 @@ import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.healthappttt.Data.AlarmInfo;
-import com.example.healthappttt.Data.SQLiteUtil;
 import com.example.healthappttt.R;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
@@ -55,12 +55,11 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.MainViewHold
         return new MainViewHolder(view);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onBindViewHolder(@NonNull final MainViewHolder holder, int position) {
         AlarmInfo alarmInfo = mDataset.get(position);
-        Log.d(TAG, "onBindViewHolder: ");
-        SQLiteUtil sqLiteUtil = SQLiteUtil.getInstance();
-
+        Log.d(TAG, "onBindViewHolder:alalal "+ alarmInfo.getOUSER_NM() + alarmInfo.getCat());
 
         // Set data based on the alarm category
         switch (alarmInfo.getCat()) {
@@ -69,14 +68,14 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.MainViewHold
                 holder.catImg.setImageResource(R.drawable.logo_test);
                 // Set other data for category 1
                 holder.contents.setText(alarmInfo.getOUSER_NM()+"님이 위트를 보냈어요");
-                holder.time.setText("n월 m일");
+                holder.time.setText(extractDateTime(alarmInfo.getTS()));
                 break;
             case 2:
                 holder.title.setText("후기를 받았어요");
                 holder.catImg.setImageResource(R.drawable.ic_baseline_email_24);
                 // Set other data for category 1
                 holder.contents.setText(alarmInfo.getOUSER_NM()+"님이 후기를 보냈어요");
-                holder.time.setText("n월 m일");
+                holder.time.setText(extractDateTime(alarmInfo.getTS()));
                 break;
             case 3:
                 // Set data for category 3
@@ -96,22 +95,34 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.MainViewHold
             holder.itemView.findViewById(R.id.out).setBackgroundResource(R.drawable.round_line);
         }
     }
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     public String extractDateTime(String dateString) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        if(dateString == "-1"){
+        if (dateString.equals("-1")) { // 문자열 비교를 equals 메서드를 사용하여 변경
             return "";
-        }
-        else {
+        } else {
             // 문자열을 LocalDateTime 객체로 변환
             LocalDateTime dateTime = LocalDateTime.parse(dateString, formatter);
-            // 현재 날짜 가져오기
-            LocalDate currentDate = LocalDate.now();
+            // 현재 날짜와 시간 가져오기
+            LocalDateTime currentDateTime = LocalDateTime.now();
+            LocalDate currentDate = currentDateTime.toLocalDate();
+            LocalTime currentTime = currentDateTime.toLocalTime();
+
             if (dateTime.toLocalDate().isEqual(currentDate)) {
                 // 날짜가 오늘이면 시간과 분 추출
                 int hour = dateTime.getHour();
                 int minute = dateTime.getMinute();
-                return String.format("%02d:%02d", hour, minute);
+                if (hour == currentTime.getHour()) {
+                    // 현재 시간과 같은 시간대라면 분만 계산하여 표시
+                    int diffMinute = currentTime.getMinute() - minute;
+                    return diffMinute + "분 전";
+                } else {
+                    // 현재 시간과 다른 시간대라면 시간과 분 계산하여 표시
+                    int diffHour = currentTime.getHour() - hour;
+                    int diffMinute = currentTime.getMinute() - minute;
+                    return diffHour + "시간전 ";
+                }
             } else {
                 // 날짜가 오늘이 아니면 월과 일 추출
                 int month = dateTime.getMonthValue();
@@ -120,6 +131,7 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.MainViewHold
             }
         }
     }
+
     @Override
     public int getItemCount() {
         return mDataset.size();
