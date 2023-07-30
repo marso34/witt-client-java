@@ -2,6 +2,8 @@ package com.example.healthappttt;
 
 import static android.content.ContentValues.TAG;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -52,17 +54,43 @@ public class SplashActivity extends AppCompatActivity {
       
         apiService = RetrofitClient.getClient().create(ServiceApi.class);
       
-      
         prefhelper = new PreferenceHelper("UserTB",this);
         sqLiteUtil = SQLiteUtil.getInstance();
 
         //한사람당 한계정 사용시 가능함 (로그아웃 mvp에서 제외 예정)
         userKey = new UserKey(prefhelper.getPK());
 
-        getuserProfile(userKey);
-        getBlackList(userKey);
-        getReviewList(userKey);
-        getWittHistory(userKey);
+//         getuserProfile(userKey);
+//         getBlackList(userKey);
+//         getReviewList(userKey);
+//         getWittHistory(userKey);
+      
+        SharedPreferences preferences = getSharedPreferences("GoSplash", MODE_PRIVATE);
+        String userKey = preferences.getString("userKeyinLogin", "");
+
+        if(userKey != null) {
+            Log.d(TAG, "유저키: " + userKey);
+            try {
+                // 함수들 호출 및 실행
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                // MainActivity 이동
+                GoMain(userKey);
+            }
+        }
+
+        else
+            Log.d(TAG, "유저키 널값");
+    }
+
+    //함수 실행
+    private void GoMain(String userKey){
+        Log.d(TAG, "GoMain: "+userKey);
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("userKey",userKey);
+        startActivity(intent);
+        finish();
     }
 
     private void getuserProfile(UserKey userKey) {
