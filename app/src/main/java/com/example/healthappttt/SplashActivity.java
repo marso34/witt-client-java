@@ -60,13 +60,17 @@ public class SplashActivity extends AppCompatActivity {
         //한사람당 한계정 사용시 가능함 (로그아웃 mvp에서 제외 예정)
         userKey = new UserKey(prefhelper.getPK());
 
-//         getuserProfile(userKey);
-//         getBlackList(userKey);
-//         getReviewList(userKey);
-//         getWittHistory(userKey);
-      
         SharedPreferences preferences = getSharedPreferences("GoSplash", MODE_PRIVATE);
-        String userKey = preferences.getString("userKeyinLogin", "");
+        String userKey2 = preferences.getString("userKeyinLogin", "");
+
+
+        SyncRoutine(prefhelper.getPK());
+        SyncRecord(prefhelper.getPK());
+
+         getuserProfile(userKey);
+         getBlackList(userKey);
+         getReviewList(userKey);
+         getWittHistory(userKey);
 
         if(userKey != null) {
             Log.d(TAG, "유저키: " + userKey);
@@ -76,7 +80,7 @@ public class SplashActivity extends AppCompatActivity {
                 e.printStackTrace();
             } finally {
                 // MainActivity 이동
-                GoMain(userKey);
+                GoMain(userKey2);
             }
         }
 
