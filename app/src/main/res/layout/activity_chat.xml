@@ -11,26 +11,27 @@
     <RelativeLayout
         android:id="@+id/Toolbar"
         android:layout_width="match_parent"
-        android:layout_height="82dp"
+        android:layout_height="58dp"
         android:background="@drawable/rounded_bottom"
         android:elevation="3dp">
 
         <Button
+            android:id="@+id/backBtn"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_alignParentRight="false"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
             android:background="@drawable/backchatroom"
             android:gravity="bottom"></Button>
 
         <TextView
             android:id="@+id/toolbarName"
             style="@style/Headline"
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="38dp"
+            android:layout_marginTop="14dp"
             android:gravity="center"
             android:text="이름"
             android:textColor="@color/black"
@@ -41,8 +42,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_marginTop="40dp"
-            android:layout_marginRight="10dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="16dp"
             android:src="@drawable/ic_baseline_more_vert_24" />
     </RelativeLayout>
 
@@ -99,7 +100,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="5dp"
+                android:padding="9dp"
                 android:weightSum="100">
                 <FrameLayout
                     android:layout_width="match_parent"

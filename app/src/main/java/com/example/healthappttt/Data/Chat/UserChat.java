@@ -21,28 +21,39 @@ public class UserChat {
     private String lastChatTime;
     @SerializedName("timeStamp")
     private String TS;
+    @SerializedName("GYM_NM")
+    private String GNM;
+    @SerializedName("GYM_Adress")
+    private String GADS;
+    @SerializedName("FAV")
+    private int FAV;
 
-
-    public UserChat(String userNM, int otherUserKey, int chatRoomId, String lastChat, String lastChatTime, String TS) {
+    public UserChat(String userNM, int otherUserKey, int chatRoomId, String lastChat, String lastChatTime, String TS,String GNM,String GADS) {
         this.userNM = userNM;
         this.otherUserKey = otherUserKey;
         this.chatRoomId = chatRoomId;
         this.lastChat = lastChat;
         this.lastChatTime = lastChatTime;
         this.TS = TS;
-
+        this.GNM = GNM;
+        this.GADS =GADS;
     }
 
-    public UserChat(String other_user_nm,int otherUserKey, int chatRoomId, String TS) {
+    public UserChat(String other_user_nm,int otherUserKey, int chatRoomId, String TS,String GNM,String GADS,int FAV) {
         this.userNM = other_user_nm;
         this.otherUserKey = otherUserKey;
         this.chatRoomId = chatRoomId;
         this.lastChat = "";
         this.lastChatTime = "";
         this.TS = TS;
+        this.GNM = GNM;
+        this.GADS =GADS;
+        this.FAV = FAV;
 
     }
-
+    public int getFAV(){ return FAV; }
+    public String getGNM (){ return GNM; }
+    public String getGADS (){ return GADS; }
     public String getTS() {
         return TS;
     }

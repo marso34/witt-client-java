@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.healthappttt.Data.Exercise.ExerciseData;
 import com.example.healthappttt.Data.Exercise.RoutineData;
@@ -161,7 +162,25 @@ public class CRInputDetailFragment extends Fragment {
 
         binding.backBtn.setOnClickListener(v -> mListener.onRoutineExDetail(exercises, false));
 
-        binding.nextBtn.setOnClickListener(v -> mListener.onRoutineExDetail(exercises, true));
+        binding.nextBtn.setOnClickListener(v -> {
+            if (exercises.size() > 0) {
+                int cnt = 0;
+
+                for (ExerciseData e: routine.getExercises()) {
+                    if (e.getSetOrTime() == 0) {
+                        Toast.makeText(getContext(), "운동 정보를 입력해주세요", Toast.LENGTH_SHORT).show();
+                        break;
+                    }
+                    cnt++;
+                }
+
+                if (cnt == routine.getExercises().size())
+                    mListener.onRoutineExDetail(exercises, true);
+            }
+            else {
+                Toast.makeText(getContext(), "운동을 추가해주세요", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
@@ -170,7 +189,6 @@ public class CRInputDetailFragment extends Fragment {
 
         binding = null;
     }
-
 
     private void setRecyclerView() {
         adapter = new ExerciseInputAdapter(getContext(), exercises);

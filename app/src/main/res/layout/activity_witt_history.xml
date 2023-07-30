@@ -20,9 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:orientation="horizontal"
-            app:contentInsetStart="16dp"
-
-            >
+            app:contentInsetStart="16dp">
 
             <Button
                 android:id="@+id/cancel_WHistory"

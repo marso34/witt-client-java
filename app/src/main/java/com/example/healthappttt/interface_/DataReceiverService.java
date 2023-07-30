@@ -67,7 +67,7 @@ public class DataReceiverService extends Service {
     public static void setNormalExit(boolean normalExit) {
         DataReceiverService.normalExit = normalExit;
     }
-    public void showRoutineAlarm() {
+//    public void showRoutineAlarm() {
 //        Intent receiverIntent = new Intent(this, AlarmRecevier.class);
 //        sqLiteUtil.setInitView(getBaseContext(), "RT_TB");
 //        Calendar calendar = Calendar.getInstance();
@@ -100,7 +100,7 @@ public class DataReceiverService extends Service {
 //                e.printStackTrace();
 //            }
 //        }
-    }
+//    }
 
 
     @Override

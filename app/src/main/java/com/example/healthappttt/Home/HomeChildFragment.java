@@ -188,6 +188,9 @@ public class HomeChildFragment extends Fragment {
                 if (response.isSuccessful()) {
                     Log.d("Response", "Successful");
 
+                    Log.d("pk", response.body() + "");
+
+
                     UserList.clear();
                     for (UserInfo value : response.body()) {
                         UserList.add(value);

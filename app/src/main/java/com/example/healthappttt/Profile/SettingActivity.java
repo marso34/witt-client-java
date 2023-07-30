@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,16 +25,24 @@ import com.google.android.gms.tasks.Task;
 public class SettingActivity extends AppCompatActivity {
     private GoogleSignInClient mGoogleSignInClient;
     Intent serviceIntent;
-
+    Button cancel_setting;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
 
+        cancel_setting = findViewById(R.id.cancel_setting);
+        cancel_setting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
     }
 
     public void onClickVive(View view) { //진동 설정
-        //TODO 해야함 (진동,소리..)
+        // (진동,소리..)
         Intent intent = new Intent(SettingActivity.this, SetAlarmActivity.class);
         startActivity(intent);
     }

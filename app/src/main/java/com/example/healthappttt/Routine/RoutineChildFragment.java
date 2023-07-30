@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.healthappttt.Chat.ReviewActivity;
+import com.example.healthappttt.Data.Exercise.ExerciseData;
 import com.example.healthappttt.Data.Exercise.GetRoutine;
 import com.example.healthappttt.Data.Exercise.RecordData;
 import com.example.healthappttt.Data.Exercise.RoutineData;
@@ -31,6 +32,7 @@ import com.example.healthappttt.Data.RetrofitClient;
 import com.example.healthappttt.Data.SQLiteUtil;
 import com.example.healthappttt.Data.pkData;
 import com.example.healthappttt.R;
+import com.example.healthappttt.SplashActivity;
 import com.example.healthappttt.databinding.FragmentRoutineChildBinding;
 import com.example.healthappttt.interface_.ServiceApi;
 import com.google.gson.annotations.SerializedName;
@@ -141,6 +143,9 @@ public class RoutineChildFragment extends Fragment {
         });
 
         prefhelper = new PreferenceHelper("UserTB", getContext());
+        sqLiteUtil = SQLiteUtil.getInstance();
+        service = RetrofitClient.getClient().create(ServiceApi.class);
+
         routines = new ArrayList<>();
 
         return binding.getRoot();
@@ -151,7 +156,6 @@ public class RoutineChildFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         if (code == prefhelper.getPK()) { // 내 루틴 표시
-            sqLiteUtil = SQLiteUtil.getInstance();
             sqLiteUtil.setInitView(getContext(), "RT_TB");
 
             routines = sqLiteUtil.SelectRoutine(dayOfWeek);
@@ -170,7 +174,7 @@ public class RoutineChildFragment extends Fragment {
         } else { // 남의 루틴 표시, 여기는 서버에서 받아오는 코드
             binding.addRoutine.setVisibility(View.GONE);
 
-            service = RetrofitClient.getClient().create(ServiceApi.class);
+
             service.selectRoutine(new GetRoutine(code, dayOfWeek)).enqueue(new Callback<List<RoutineData>>() {
                 @Override
                 public void onResponse(Call<List<RoutineData>> call, Response<List<RoutineData>> response) {

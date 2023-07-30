@@ -95,7 +95,7 @@ public class PreferenceHelper
          **/
         edit.putInt("benchValue",exPerfInfo.getBenchValue());
         edit.putInt("squatValue",exPerfInfo.getSquatValue());
-        edit.putInt("deadliftValue",exPerfInfo.getDeadliftValue());
+        edit.putInt("deadValue",exPerfInfo.getDeadliftValue());
         edit.putInt("totalValue",exPerfInfo.getBenchValue() + exPerfInfo.getSquatValue() + exPerfInfo.getDeadliftValue());
         /**
          * bodyInfo 저장
@@ -155,9 +155,9 @@ public class PreferenceHelper
 
     //필요한 변수 setter 매소드 생성
     public void setPK(int pk) {
-        app_prefs.edit().putInt("USER_PK",pk);
-        app_prefs.edit().apply();
-        Log.d("setPK: ", String.valueOf(pk));
+        SharedPreferences.Editor edit = app_prefs.edit();
+        edit.putInt("USER_PK",pk);
+        edit.apply();
     }
     public void setBodyInfo(int height, int weight, int temp) {
         SharedPreferences.Editor edit = app_prefs.edit();
@@ -175,6 +175,16 @@ public class PreferenceHelper
         edit.apply();
     }
 
+    public void setLoc(LocInfo locInfo) {
+        SharedPreferences.Editor edit = app_prefs.edit();
+        edit.putFloat("userLat", (float) locInfo.getUserLat());
+        edit.putFloat("userLon", (float) locInfo.getUserLon());
+        edit.putString("gymNm",locInfo.getGymNm());
+        edit.putFloat("gymLat", (float) locInfo.getGymLat());
+        edit.putFloat("gymLon", (float) locInfo.getGymLon());
+        edit.putString("gymAdress", locInfo.getGymAdress());
+        edit.apply();
+    }
 
 
     //

@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.healthappttt.Data.PreferenceHelper;
 import com.example.healthappttt.Data.RetrofitClient;
 import com.example.healthappttt.R;
 import com.example.healthappttt.interface_.ServiceApi;
@@ -26,6 +27,7 @@ import retrofit2.Response;
 public class ReportActivity extends AppCompatActivity {
 
     private ServiceApi apiService;
+    private PreferenceHelper UserTB;
     private CheckedTextView[] checkedTextViews; //체크박스들 모음
     private int selection, mypk,otherUserKey;
     private Button GO_RPT;
@@ -40,6 +42,7 @@ public class ReportActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_report);
 
+        UserTB = new PreferenceHelper("UserTB",this);
         apiService = RetrofitClient.getClient().create(ServiceApi.class);
         selection = 0;
 
@@ -163,14 +166,37 @@ public class ReportActivity extends AppCompatActivity {
     }
 
     public void sendEmail() {
-        Intent email = new Intent(Intent.ACTION_SEND);
-        email.setType("plane/text");
-        String[] address = {"hwstar1204@gmail.com"};
-        email.putExtra(Intent.EXTRA_EMAIL,address);
-        email.putExtra(Intent.EXTRA_SUBJECT,"Witt 신고");
-        email.putExtra(Intent.EXTRA_TEXT,txt.getText());
-        startActivity(email);
-        finish();
+//        Intent email = new Intent(Intent.ACTION_SEND);
+//        email.setType("plane/text");
+//        String[] address = {"hwstar1204@gmail.com"};
+//        email.putExtra(Intent.EXTRA_EMAIL,address);
+//        email.putExtra(Intent.EXTRA_SUBJECT,"Witt 신고");
+//        email.putExtra(Intent.EXTRA_TEXT,txt.getText());
+//        startActivity(email);
+
+
+        Map<String,String> data = new HashMap<>();
+        data.put("User_Email",UserTB.getEmail());
+        data.put("context", String.valueOf(txt.getText()));
+        data.put("OuserNM",otherUserName);
+        Call<String> call = apiService.reportmail(data);
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                String test = response.body();
+                Log.d("reportmail 요청 성공 "," context :"+ test);
+                finish();
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Log.d("reportmail","메일 요청 실패");
+                finish();
+            }
+        });
+
+
+
     }
 
     public void RPT(Map<String, Object> RPTMap, boolean i) {

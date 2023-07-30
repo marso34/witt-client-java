@@ -31,6 +31,9 @@ public class WHFragment extends Fragment {
         viewPager = view.findViewById(R.id.wh_view_pager);
         tabLayout = view.findViewById(R.id.wh_tab_layout);
 
+        //selectedTablayout();// 텝 레이아웃 xml
+
+
         pagerAdapter = new WittPagerAdapter(this);
         pagerAdapter.createFragment(0);
         pagerAdapter.createFragment(1);
@@ -56,5 +59,25 @@ public class WHFragment extends Fragment {
             case 3: period = "1년"; break;
         }
         return period;
+    }
+
+
+    public void selectedTablayout() {
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
     }
 }

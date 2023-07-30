@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -82,7 +83,7 @@ public class MyProfileActivity extends AppCompatActivity {
 
     Button  cancel_Mprofile,cancel_Oprofile;
     ImageView ProfileImg;
-    TextView infoName,Pname,Pgender,Plocatoin;
+    TextView Pname,Pgender,Plocatoin;
     TextView Psqaut,Pbench,Pdeadlift;
     Map<String,Object> userDefault;
     Map<String,Object> OuserDefault;
@@ -110,7 +111,7 @@ public class MyProfileActivity extends AppCompatActivity {
 
         cancel_Mprofile = findViewById(R.id.cancel_Mprofile);
         //텍스트
-        infoName = findViewById(R.id.infoName);
+
         Pname = findViewById(R.id.name);
         Pgender = findViewById(R.id.gender);
         Psqaut = findViewById(R.id.Psqaut);
@@ -191,7 +192,7 @@ public class MyProfileActivity extends AppCompatActivity {
 
             // 상대 pk -> 상대 프로필 정보 가져오기 + 화면에 뿌려주기
             getOtherProfile(userKey);
-            //getOtherRoutine(userKey.getPk()); // 상대방 루틴
+            getOtherRoutine(userKey.getPk()); // 상대방 루틴
 
             // 화면 전환
             OtherViewChangeBlock();
@@ -203,7 +204,7 @@ public class MyProfileActivity extends AppCompatActivity {
 
     public void setOtherProfileView() {
         //내프로필(text+수정하기), 차단목록, 설정 탈퇴 안보이게
-        binding.myprofile.setVisibility(View.GONE);
+        binding.infoName.setText("상세 프로필");
         binding.black.setVisibility(View.GONE);
         binding.set.setVisibility(View.GONE);
         //상세 프로필(text),루틴, 신고내역 오늘 루틴, 위트 보내기 보이게
@@ -245,7 +246,6 @@ public class MyProfileActivity extends AppCompatActivity {
                     Log.d("getOtherProfile 이름:", User_NM);
                     OtherName = User_NM;
                     //받아온 상대 정보 뿌려주기
-                    infoName.setText("상세 프로필");
                     Pname.setText(User_NM);
 
                     Psqaut.setText(String.valueOf(squatValue));
@@ -348,6 +348,7 @@ public class MyProfileActivity extends AppCompatActivity {
                 Intent intent = new Intent(MyProfileActivity.this,EditGymActivity.class);
                 intent.putExtra("MyName",Pname.getText());
                 intent.putExtra("MyGym",Plocatoin.getText());
+                intent.putExtra("GymAdress",UserTB.getGYMAdress());
                 startActivity(intent);
                 Log.d("실행순서: ","myprofileActivity->EditActivity->EditFragment");
             }
@@ -627,10 +628,16 @@ public class MyProfileActivity extends AppCompatActivity {
             binding.Psqaut.setText(String.valueOf(UserTB.getsquatValue()));
             binding.Pbench.setText(String.valueOf(UserTB.getbenchValue()));
             binding.Pdeadlift.setText(String.valueOf(UserTB.getdeadValue()));
-        }else{
-            Log.d("onResume():","마이프로필 X");
+            //헬스장
+            String GYMNM = UserTB.getGYMNM();
+            if(GYMNM.equals("")){
+                binding.MyLocation.setText("선택된 헬스장이 없어요");
+                binding.MyLocation.setTextColor(Color.parseColor("#D1D8E2"));
+                binding.MapImg.setImageTintList(getResources().getColorStateList(R.color.Background_2));
+            }else{
+                binding.MyLocation.setText(GYMNM);
+            }
         }
-
 
     }
 
@@ -686,70 +693,5 @@ public class MyProfileActivity extends AppCompatActivity {
                 }
             }
     );
-
-
-    //받은 후기
-//    public void onClickReviewReceived(View view) {
-//        Intent intent = new Intent(MyProfileActivity.this, ReviewsRecdAtivity.class);
-//        intent.putExtra("PK",PK);
-//        startActivity(intent);
-//    }
-//    //위트 내역
-//    public void onClickWittHistory(View view) {
-//        Intent intent = new Intent(MyProfileActivity.this, WittHistoryActivity.class);
-//        intent.putExtra("PK",PK);
-//        startActivity(intent);
-//    }
-//    //차단목록
-//    public void onClickBlackList(View view) {
-//        Intent intent = new Intent(MyProfileActivity.this, BlackActivity.class);
-//        startActivity(intent);
-//    }
-//    //설정하기
-//    public void onClickSetting(View view) {
-//        Intent intent = new Intent(MyProfileActivity.this,SettingActivity.class);
-//        startActivity(intent);
-//    }
-//    //상대 루틴
-//    public void onClickRoutine(View view) {
-//        Intent intent = new Intent(MyProfileActivity.this, RoutineActivity.class);
-//        intent.putExtra("code",Integer.valueOf(PK)); //pk
-//        intent.putExtra("name",OtherName);//이름
-//        startActivity(intent);
-//    }
-//    //신고 내역
-//    public void onClickReport(View view) {
-//        Intent intent = new Intent(MyProfileActivity.this, ReportHistoryActivity.class);
-//        intent.putExtra("PK",PK);
-//        startActivity(intent);
-//    }
-//
-//
-//    //내 정보 수정
-//    public void onClickProfileEdit(View view) {
-//        Intent intent = new Intent(MyProfileActivity.this, MyProfileEdit.class);
-//
-//        Bundle bundle = new Bundle();
-//        for (Map.Entry<String, Object> entry : userDefault.entrySet()) {
-//            String key = entry.getKey();
-//            Object value = entry.getValue();
-//
-//            if (value instanceof String) {
-//                bundle.putString(key, (String) value);
-//            } else if (value instanceof Integer) {
-//                bundle.putInt(key, (Integer) value);
-//            }
-//            // 다른 데이터 타입에 따라 추가적인 처리
-//        }
-//
-//        intent.putExtras(bundle);
-//        editProfileLauncher.launch(intent);
-//    }
-//    //위트 보내기
-//    public void onClickSendWitt(View view) {
-//        Log.d("onClickSendWitt","위트보내기 눌림");
-//        wittSendData = new WittSendData(UserTB.getPK(),Integer.valueOf(PK),UserTB.getUser_NM(),OuserDefault.get("USER_NM").toString());
-//        getWittUserData(wittSendData);
-//    }
 }
 
