@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:gravity="center"
     android:background="@drawable/rounded_top">
 
-    <View
+    <androidx.cardview.widget.CardView
         android:layout_width="50dp"
         android:layout_height="4dp"
         android:layout_marginTop="12dp"
-        android:background="@color/Box" />
+        app:cardBackgroundColor="@color/Box"
+        app:cardCornerRadius="2dp"
+        app:cardElevation="0dp"/>
 
     <FrameLayout
         android:layout_width="match_parent"

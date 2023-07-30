@@ -96,7 +96,7 @@ public class ExerciseRecordActivity extends AppCompatActivity implements ERSelec
             @Override
             public void onResponse(Call<List<Integer>> call, Response<List<Integer>> response) {
                 if (response.isSuccessful()) {
-                    Toast.makeText(ExerciseRecordActivity.this, "기록 성공", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(ExerciseRecordActivity.this, "기록 성공", Toast.LENGTH_SHORT).show();
                     Log.d("성공", "운동 기록 성공");
 
                     List<Integer> list = response.body();
@@ -183,7 +183,7 @@ public class ExerciseRecordActivity extends AppCompatActivity implements ERSelec
 
     @Override
     public void onFinish() {
-        if (1 > 0) {
+        if (oUserID > 0) {
             replaceFragment(ERReviewFragment.newInstance("name", oUserID));
         } else {
             finish();

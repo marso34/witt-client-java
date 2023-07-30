@@ -143,6 +143,9 @@ public class RoutineChildFragment extends Fragment {
         });
 
         prefhelper = new PreferenceHelper("UserTB", getContext());
+        sqLiteUtil = SQLiteUtil.getInstance();
+        service = RetrofitClient.getClient().create(ServiceApi.class);
+
         routines = new ArrayList<>();
 
         return binding.getRoot();
@@ -151,9 +154,8 @@ public class RoutineChildFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        service = RetrofitClient.getClient().create(ServiceApi.class);
+
         if (code == prefhelper.getPK()) { // 내 루틴 표시
-            sqLiteUtil = SQLiteUtil.getInstance();
             sqLiteUtil.setInitView(getContext(), "RT_TB");
 
             routines = sqLiteUtil.SelectRoutine(dayOfWeek);

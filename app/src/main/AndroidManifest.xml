@@ -204,7 +204,6 @@
         <activity
             android:name=".WorkOut.ExerciseRecordActivity"
             android:exported="false"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".WorkOut.ExerciseResultActivity"

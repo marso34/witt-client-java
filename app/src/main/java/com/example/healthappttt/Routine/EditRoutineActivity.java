@@ -136,7 +136,18 @@ public class EditRoutineActivity extends AppCompatActivity {
             if (routine.getExercises().size() <= 0) {
                 Toast.makeText(this, "운동이 없어요", Toast.LENGTH_SHORT).show();
             } else {
-                UpdateToDB();
+                int cnt = 0;
+
+                for (ExerciseData e: routine.getExercises()) {
+                    if (e.getSetOrTime() == 0) {
+                        Toast.makeText(this, "운동 정보를 입력해주세요", Toast.LENGTH_SHORT).show();
+                        break;
+                    }
+                    cnt++;
+                }
+
+                if (cnt == routine.getExercises().size())
+                    UpdateToDB();
             }
         });
     }
