@@ -17,16 +17,15 @@
             <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                 android:id="@+id/swipelayout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerView"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:paddingTop="6dp"
                     android:paddingBottom="100dp"
-                    android:clipToPadding="false"
-                    tools:listitem="@layout/adapter_user"/>
+                    android:clipToPadding="false"/>
 
             </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

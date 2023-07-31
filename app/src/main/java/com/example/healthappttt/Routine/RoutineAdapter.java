@@ -68,7 +68,7 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
     public static class MainViewHolder extends RecyclerView.ViewHolder {
         public LinearLayout RoutineLayout, NullLayout;
         public ImageView TimeIcon, EditBtn;
-        public TextView TimeTxt;
+        public TextView DayOfWeekTxt, TimeTxt;
 
         public RecyclerView CatRecyclerView;
         public AreaAdapter CatAdapter;
@@ -85,6 +85,7 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
             this.TimeIcon = view.findViewById(R.id.timeIcon);
             this.TimeTxt = view.findViewById(R.id.timeTxt);
             this.EditBtn = view.findViewById(R.id.editBtn);
+            this.DayOfWeekTxt = view.findViewById(R.id.dayOfWeek);
 
             this.CatRecyclerView = view.findViewById(R.id.catRecyclerView);
             this.ExRecyclerView = view.findViewById(R.id.exRecyclerView);
@@ -166,6 +167,8 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
                 holder.EditBtn.setVisibility(View.GONE);
             } else { // 다른 사람 루틴
                 holder.EditBtn.setVisibility(View.GONE);
+                holder.DayOfWeekTxt.setVisibility(View.VISIBLE);
+                holder.DayOfWeekTxt.setText(getDayOfWeek(routines.get(position).getDayOfWeek()));
             }
 
             setCatRecyclerView(holder.CatRecyclerView, holder.CatAdapter, position);
@@ -181,6 +184,20 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.MainView
         if (routines.size() == 0)   return 1;
 
         return routines.size();
+    }
+
+    private String getDayOfWeek(int dayOfWeek) {
+        switch (dayOfWeek) {
+            case 0: return "일";
+            case 1: return "월";
+            case 2: return "화";
+            case 3: return "수";
+            case 4: return "목";
+            case 5: return "금";
+            case 6: return "토";
+        }
+
+        return "";
     }
 
     private void DeleteToDB(int position) {

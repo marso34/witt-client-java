@@ -12,12 +12,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.healthappttt.Data.UserInfo;
 import com.example.healthappttt.Profile.MyProfileActivity;
 import com.example.healthappttt.R;
+import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 
@@ -30,9 +32,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
 
     private static final String Signature = "#05C78C";
     private static final String Background_2 = "#D1D8E2";
-
     private static final String Body = "#4A5567";
-
+    private static final String White = "#ffffff";
+    private static final String Transparent = "#00000000";
     private static final String Orange = "#FC673F";
     private static final String Yellow = "#F2BB57";
     private static final String Blue = "#579EF2";
@@ -48,9 +50,11 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
     }
 
     static class MainViewHolder extends RecyclerView.ViewHolder {
+        public MaterialCardView CardView;
+        public LinearLayout DefaultLayout;
         public TextView Name, GymName, GymAdress;
         public ImageView MapIcon, TimeIcon;
-        public TextView TimeTxt;
+        public TextView TimeTxt, Anymore;
 
         public RecyclerView recyclerView;
 
@@ -58,6 +62,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
 
         MainViewHolder(@NonNull View itemView) {
             super(itemView);
+
+            this.CardView = itemView.findViewById(R.id.cardView);
+            this.DefaultLayout = itemView.findViewById(R.id.defaultLayout);
 
             this.Name =  itemView.findViewById(R.id.UNE);
             this.GymName = itemView.findViewById(R.id.gymName);
@@ -67,14 +74,17 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
             this.TimeIcon = itemView.findViewById(R.id.timeIcon);
             this.TimeTxt = itemView.findViewById(R.id.timeTxt);
 
-            recyclerView = itemView.findViewById(R.id.recyclerView);
+            this.recyclerView = itemView.findViewById(R.id.recyclerView);
+
+            this.Anymore = itemView.findViewById(R.id.anymore);
+
         }
     }
 
     @NonNull
     @Override
     public MainViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View cardView = (View) LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_user, parent, false);
+        View cardView = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_user, parent, false);
         final MainViewHolder mainViewHolder = new MainViewHolder(cardView);
 
         return mainViewHolder;
@@ -82,7 +92,12 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull final MainViewHolder holder, int position) {
-        if (mDataset.size() > 0) {
+        if (mDataset.size() > 0 && position != mDataset.size()) {
+            holder.DefaultLayout.setVisibility(View.VISIBLE);
+            holder.Anymore.setVisibility(View.GONE);
+            holder.CardView.setCardBackgroundColor(Color.parseColor(White));
+            holder.CardView.setCardElevation(6f);
+
             UserInfo userInfo = mDataset.get(position);
             Log.d("유저 이름!", userInfo.getName());
             Log.d("유저 PK!", String.valueOf(userInfo.getUserKey()));
@@ -93,7 +108,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
 
             holder.Name.setText(userInfo.getName());
 
-            if (str.equals("")) {
+            if (str.equals("") || str == null) {
                 holder.GymName.setText("선택된 헬스장이 없어요");
                 holder.GymName.setTextColor(Color.parseColor(Background_2));
                 holder.GymAdress.setVisibility(View.GONE);
@@ -144,47 +159,17 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
                     mContext.startActivity(intent);
                 }
             });
+        } else if(position == mDataset.size()) {
+            holder.DefaultLayout.setVisibility(View.GONE);
+            holder.Anymore.setVisibility(View.VISIBLE);
+            holder.CardView.setCardBackgroundColor(Color.parseColor(Transparent));
+            holder.CardView.setCardElevation(0f);
         }
+    }
 
-
-//        holder.PreferredTime.setText(userInfo.getTime()+ "");
-
-//        holder.ExerciseNames.clear();
-//        holder.recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
-//        holder.recyclerView.setAdapter(holder.Adapter);
-//        holder.recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
-//        holder.recyclerView.setAdapter(holder.Adapter);
-//        Integer exerciseCat = userInfo.getRoutineCategory();
-//                            Log.d("rrr", "Document exists!");
-//                            if ((exerciseCat & 0x1) == 0x1) {
-//                                String a = "가슴";
-//                                    holder.ExerciseNames.add(a);
-//                            }
-//                            if ((exerciseCat & 0x2) ==    0x2) {
-//                                String a = "등";
-//                                holder.ExerciseNames.add(a);
-//                            }
-//                            if ((exerciseCat & 0x4) == 0x4) {
-//                                String a = "어깨";
-//                                holder.ExerciseNames.add(a);
-//                            }
-//                            if ((exerciseCat & 0x8) == 0x8) {
-//                                String a = "하체";
-//                                holder.ExerciseNames.add(a);
-//                            }
-//                            if ((exerciseCat & 0x10) == 0x10) {
-//                                String a = "팔";
-//                                holder.ExerciseNames.add(a);
-//                            }
-//                            if ((exerciseCat & 0x20) == 0x20) {
-//                                String a = "복근";
-//                                holder.ExerciseNames.add(a);
-//                            }
-//                            if ((exerciseCat & 0x40) == 0x40) {
-//                                String a = "유산소";
-//                                holder.ExerciseNames.add(a);
-//                            }
-//                    holder.Adapter.notifyDataSetChanged();
+    @Override
+    public int getItemCount() {
+        return mDataset.size() + 1;
     }
 
     @Override
@@ -260,9 +245,5 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
 //            case 6:
 //                dayOfWeek = "sat";break; // 토
 //        }
-    }
-    @Override
-    public int getItemCount() {
-        return mDataset.size();
     }
 }

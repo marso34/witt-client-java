@@ -170,12 +170,14 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     } else {
                         // 서버로 데이터 전송 실패
                         Toast.makeText(LoginActivity.this, "로그인 실패", Toast.LENGTH_SHORT).show();
+                        mGoogleSignInButton.setVisibility(View.VISIBLE);
                         Log.d(TAG, "sendTokenToServer fail");
                     }
                 }
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
                     Toast.makeText(LoginActivity.this, "서버로부터 응답이 없습니다.", Toast.LENGTH_SHORT).show();
+                    mGoogleSignInButton.setVisibility(View.VISIBLE);
                     Log.e(TAG, "sendTokenToServer error: " + t.getMessage());
                 }
             });

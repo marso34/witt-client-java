@@ -63,18 +63,18 @@ public class SplashActivity extends AppCompatActivity {
         SharedPreferences preferences = getSharedPreferences("GoSplash", MODE_PRIVATE);
         String userKey2 = preferences.getString("userKeyinLogin", "");
 
-        SyncRoutine(prefhelper.getPK());
-        SyncRecord(prefhelper.getPK());
 
-        getuserProfile(userKey);
-        getBlackList(userKey);
-        getReviewList(userKey);
-        getWittHistory(userKey);
-
-        if(userKey2 != null) {
-            Log.d(TAG, "유저키: " + userKey2);
+        if(userKey != null) {
+            Log.d(TAG, "유저키: " + userKey);
             try {
                 // 함수들 호출 및 실행
+                SyncRoutine(prefhelper.getPK());
+                SyncRecord(prefhelper.getPK());
+
+                getuserProfile(userKey);
+                getBlackList(userKey);
+                getReviewList(userKey);
+                getWittHistory(userKey);
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
@@ -180,7 +180,7 @@ public class SplashActivity extends AppCompatActivity {
                     Log.d("실패", "루틴 불러오기 실패");
                 }
             }
-
+          
             public void onFailure(Call<List<RoutineData>> call, Throwable t) {
                 Toast.makeText(SplashActivity.this, "서버 연결 실패..", Toast.LENGTH_SHORT).show();
                 Log.d("서버 연결 실패", t.getMessage());

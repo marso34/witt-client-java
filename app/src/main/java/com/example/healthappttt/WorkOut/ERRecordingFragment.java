@@ -271,7 +271,7 @@ public class ERRecordingFragment extends Fragment {
     }
 
     private void setRecyclerView() {
-        adapter = new ExerciseRecordAdapter(exercises);
+        adapter = new ExerciseRecordAdapter(getContext(), exercises);
         binding.recyclerView.setHasFixedSize(true);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.recyclerView.setAdapter(adapter);

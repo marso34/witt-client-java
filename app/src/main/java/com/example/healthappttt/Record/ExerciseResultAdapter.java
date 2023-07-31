@@ -68,7 +68,7 @@ public class ExerciseResultAdapter extends RecyclerView.Adapter<ExerciseResultAd
         if (routine.getSetOrTime() == record.getSetOrTime()) {
             holder.CheckedImg.setImageResource(R.drawable.baseline_check_circle_24_g);
             holder.CheckedImg.setVisibility(View.VISIBLE);
-            holder.ExerciseLayout.setStrokeWidth(1);
+            holder.ExerciseLayout.setStrokeWidth(2);
         } else {
             holder.CheckedImg.setVisibility(View.GONE);
             holder.ExerciseLayout.setStrokeWidth(0);

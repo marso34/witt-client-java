@@ -217,7 +217,6 @@
         <activity
             android:name=".Sign.LoginActivity"
             android:exported="true"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:taskAffinity=""
             android:usesCleartextTraffic="true">

@@ -210,7 +210,7 @@ public class ERSelectUserFragment extends Fragment {
             holder.routineLayout.setVisibility(View.GONE);
             holder.Name.setText(searchUsers.get(position).getUserNM());
 
-            if (gymName.equals("")) {
+            if (gymName.equals("") || gymName == null) {
                 holder.MapIcon.setColorFilter(Color.parseColor(Background_2));
                 holder.GymName.setTextColor(Color.parseColor(Background_2));
                 holder.GymName.setText("선택된 헬스장이 없어요");
