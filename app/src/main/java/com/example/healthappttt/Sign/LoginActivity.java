@@ -57,6 +57,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private GoogleApiClient mGoogleApiClient;
     private SignInButton mGoogleSignInButton;
     private ActivityResultLauncher<Intent> startActivityResult; // startActivityForResult 대체 방법
+    private String chatRoomId;
+    private String oUserKey;
+    private String oUserName;
 
     private PreferenceHelper prefhelper;
 
@@ -64,6 +67,16 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        chatRoomId = null;
+        oUserKey = null;
+        oUserName = null;
+        Intent intent = getIntent();
+        if (intent != null) {
+            chatRoomId = intent.getStringExtra("chatRoomId__");
+            oUserKey = intent.getStringExtra("userKey__");
+            oUserName = intent.getStringExtra("oUserName__");
+            Log.d(TAG, "lklsslsl"+chatRoomId+oUserKey+oUserName);
+        }
         prefhelper = new PreferenceHelper("UserTB",this);
 
         startActivityResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
@@ -93,9 +106,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             @Override
             public void onClick(View view) {
                 signIn();
-//                GoMain("2");
-//                GoMain("115");
-//                GoMain("119");
+//                GoSplash("1");
             }
         });
         int runningServices = ServiceTracker.countRunningServices(this, DataReceiverService.class);
@@ -106,7 +117,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-        startActivityResult.launch(signInIntent); // startActivityForResult 대체 방법
+        startActivityResult.launch(signInIntent);
+        // startActivityForResult 대체 방법
 //        startActivityForResult(signInIntent, RC_SIGN_IN); // 이제 사용 X
     }
 //
@@ -227,7 +239,13 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         Log.d(TAG, "GoSplash: "+userKey);
         prefhelper.setPK(Integer.parseInt(userKey));
         Intent intent = new Intent(this, SplashActivity.class);
+        if(chatRoomId!=null && oUserKey != null && oUserName != null){
+            intent.putExtra("chatRoomId__",chatRoomId);
+            intent.putExtra("userKey__",oUserKey);
+            intent.putExtra("oUserName__",oUserName);
+            Log.d(TAG, "onCreate: chatatlog");
+        }
         startActivity(intent);
-        finish();
+        finishAffinity();
     }
 }

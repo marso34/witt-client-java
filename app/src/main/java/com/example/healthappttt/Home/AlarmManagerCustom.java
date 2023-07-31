@@ -25,6 +25,8 @@ public class AlarmManagerCustom {
     private String title;
     private String content;
     private int flags;
+    private String userKey;
+    private String chatRoomId;
     // 프라이빗 생성자
     private AlarmManagerCustom(Context context) {
         this.context = context.getApplicationContext();
@@ -37,13 +39,16 @@ public class AlarmManagerCustom {
         }
         return instance;
     }
-    public void onAlarm(String title, String content){
+
+    public void onAlarm(String title, String content, String userKey, String chatRoomId){
         this.title = title;
         this.content = content;
-        createNotificationChannel();
-        setSounds(1);
-
-
+        this.chatRoomId = chatRoomId;
+        this.userKey = userKey;
+        if(content != null) {
+            createNotificationChannel();
+            setSounds(1);
+        }
 //        Intent receiverIntent = new Intent(context, AlarmRecevier.class);
 //        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, alarmID, receiverIntent, PendingIntent.FLAG_IMMUTABLE);
 //        Calendar calendar = Calendar.getInstance();
@@ -123,7 +128,13 @@ public class AlarmManagerCustom {
                 .setOnlyAlertOnce(true)
                 .setGroup(GROUP_KEY)
                 .setGroupSummary(true);
-        Intent tapIntent = new Intent(context, LoginActivity.class);
+
+        Intent tapIntent;
+//api level 21.. deprecated..
+        tapIntent = new Intent(context, LoginActivity.class);
+        tapIntent.putExtra("chatRoomId__", chatRoomId);
+        tapIntent.putExtra("userKey__", userKey);
+        tapIntent.putExtra("oUserName__", title);
         tapIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent tapPendingIntent = PendingIntent.getActivity(context, 0, tapIntent, PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
         builder.setContentIntent(tapPendingIntent);

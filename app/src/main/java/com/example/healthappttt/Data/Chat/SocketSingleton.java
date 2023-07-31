@@ -121,18 +121,24 @@ public class SocketSingleton {
 //                        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 //                        alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
                         //채팅방 생성알림
-                        alarmManager.onAlarm("New","새로운 위트가 왔어요");
+                        sqLiteUtil.setInitView(context,"CHAT_ROOM_TB");
+                        String otherUserNM = sqLiteUtil.selectOtherUserName(String.valueOf(preferenceHelper.getPK()),chatRoomId);
 
-                            new Thread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    if(chatF!=null && !chatF.chatflag) {
-                                        chatF.chatflag = true;
+                        sqLiteUtil.setInitView(context,"CHAT_ROOM_TB");
+                        String otherUserKey = sqLiteUtil.selectOtherUserKey(String.valueOf(preferenceHelper.getPK()),chatRoomId);
+                        if(alarmManager!= null)
+                            alarmManager.onAlarm(otherUserNM,"새로운 위트가 왔어요",otherUserKey,chatRoomId);
+
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if(chatF!=null && !chatF.chatflag) {
+                                    chatF.chatflag = true;
                                     chatF.getUsersFromServer();
                                     chatF.getLastMSG(chatRoomId,String.valueOf(preferenceHelper.getPK()),context);
-                                    }
                                 }
-                            }).start();
+                            }
+                        }).start();
 
                         flag = true;
                     }
@@ -140,25 +146,28 @@ public class SocketSingleton {
                         int CRI = Integer.parseInt(chatRoomId);
                         SqlLiteSaveMessage(Integer.parseInt(chat_Pk),preferenceHelper.getPK(), 2, message, CRI,TS);
                         mSocket.emit("completeMessage");
-                            if(chatActivity != null && chatActivity.getChatRoomId().equals(chatRoomId)) {
-                                if (!chatActivity.getUpdatingMSG()) {
-                                    chatActivity.setUpdatingMSG(true);
-                                    new Thread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            Log.d(TAG, "run: " + chatActivity.getUpdatingMSG());
-                                            chatActivity.getMSG(1);
-                                        }
-                                    }).start();
-                                }
+                        if(chatActivity != null && chatActivity.getChatRoomId().equals(chatRoomId)) {
+                            if (!chatActivity.getUpdatingMSG()) {
+                                chatActivity.setUpdatingMSG(true);
+                                new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Log.d(TAG, "run: " + chatActivity.getUpdatingMSG());
+                                        chatActivity.getMSG(1);
+                                    }
+                                }).start();
                             }
+                        }
                         else {
                             if(flag == false) {
 //                                createNotificationChannel();
 //                                showCustomNotification(chatRoomId, message); // 채팅 메시지 알림 표시
                                 sqLiteUtil.setInitView(context, "CHAT_ROOM_TB");
                                 String otherUserNM = sqLiteUtil.selectOtherUserName(String.valueOf(preferenceHelper.getPK()),chatRoomId);
-                                alarmManager.onAlarm(otherUserNM,message);
+                                sqLiteUtil.setInitView(context,"CHAT_ROOM_TB");
+                                String otherUserKey = sqLiteUtil.selectOtherUserKey(String.valueOf(preferenceHelper.getPK()),chatRoomId);
+                                if(alarmManager != null)
+                                    alarmManager.onAlarm(otherUserNM,message,otherUserKey,chatRoomId);
                                 if(chatF!=null && !chatF.chatflag) {
                                     chatF.chatflag = true;
                                     new Thread(new Runnable() {
@@ -223,8 +232,10 @@ public class SocketSingleton {
         });
     }
     public void SqlLiteSaveMessage(int chatPk,int userKey, int myFlag, String message, int chatRoomId,String ts) {
-        sqLiteUtil.setInitView(context.getApplicationContext(), "CHAT_MSG_TB");
-        sqLiteUtil.insert(chatPk,userKey, myFlag, message, chatRoomId, 1,ts);
+        if(context.getApplicationContext() != null) {
+            sqLiteUtil.setInitView(context.getApplicationContext(), "CHAT_MSG_TB");
+            sqLiteUtil.insert(chatPk, userKey, myFlag, message, chatRoomId, 1, ts);
+        }
     }
 
     private void insertSocket() {

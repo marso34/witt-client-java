@@ -23,6 +23,7 @@ import com.example.healthappttt.Data.PreferenceHelper;
 import com.example.healthappttt.Data.RetrofitClient;
 import com.example.healthappttt.Data.SQLiteUtil;
 import com.example.healthappttt.Data.pkData;
+import com.example.healthappttt.MainActivity;
 import com.example.healthappttt.R;
 import com.example.healthappttt.User.UserListAdapter;
 import com.example.healthappttt.interface_.ServiceApi;
@@ -43,6 +44,7 @@ public class ChattingFragment extends Fragment {
     private SQLiteUtil sqLiteUtil;
     public boolean chatflag = false;
     private SocketSingleton socketSingleton;
+    private View rootView;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -75,7 +77,7 @@ public class ChattingFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // 레이아웃을 inflate합니다.
-        View view = inflater.inflate(R.layout.fragment_chatting, container, false);
+        rootView = inflater.inflate(R.layout.fragment_chatting, container, false);
         userList = new ArrayList<>();
         sqLiteUtil = SQLiteUtil.getInstance();
         sqLiteUtil.setEmptyDB();
@@ -83,7 +85,7 @@ public class ChattingFragment extends Fragment {
         socketSingleton = SocketSingleton.getInstance(getContext());
         socketSingleton.setChatFragment(this);
         // 리사이클러뷰를 초기화합니다.
-        userlistRecyclerView = view.findViewById(R.id.recyclerView2);
+        userlistRecyclerView = rootView.findViewById(R.id.recyclerView);
         userlistRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         // 유저 목록을 가져와서 userList에 저장합니다.
@@ -93,7 +95,15 @@ public class ChattingFragment extends Fragment {
         userlistRecyclerView.setAdapter(userListAdapter);
         // 어댑터의 아이템 클릭 리스너를 설정합니다.
         getUsersFromServer();
-        return view;
+
+        View mh = rootView.findViewById(R.id.moveHome);
+        mh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity)requireActivity()).goToHome();
+            }
+        });
+        return rootView;
     }
 
     @Override
@@ -108,79 +118,83 @@ public class ChattingFragment extends Fragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                try{
+                if(c != null){
                     sqLiteUtil.setInitView(c, "CHAT_MSG_TB");
-                }finally {
                     MSG m = sqLiteUtil.selectLastMsg(chatRoomId, userKey, 2);
                     Handler handler = new Handler(Looper.getMainLooper());
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
-                            for (UserChat uc : userList) {
-                                if (uc.getChatRoomId() == Integer.parseInt(chatRoomId)) {
-                                    uc.setLastChat(m.getMessage());
-                                    uc.setLastChatTime(m.timestampString());
-                                    break;
+                            try {
+                                for (UserChat uc : userList) {
+                                    if (uc.getChatRoomId() == Integer.parseInt(chatRoomId)) {
+                                        uc.setLastChat(m.getMessage());
+                                        uc.setLastChatTime(m.timestampString());
+                                        userListAdapter.notifyDataSetChanged();
+                                        break;
+                                    }
                                 }
                             }
-                            userListAdapter.notifyDataSetChanged();
-                            chatflag = false;
+                            finally {
+                                chatflag = false;
+                            }
+
                         }
+
                     });
                 }
-                }
-                // 메인 스레드로 UI 갱신 작업 보냄
+            }
+            // 메인 스레드로 UI 갱신 작업 보냄
 
         }).start();
     }
     // 서버에서 유저 목록을 가져오는 메소드입니다.
     public void getUsersFromServer() {// 이건 챗프레그먼트 켜질때문 부르도록 다른곳에있는 이거 전부 getLastMSG로 바꾸기
-        // 서버로부터 유저 목록을 가져와서 List<UserChat>로 반환합니다.
-       try {
-//           sqLiteUtil.setInitView(getContext(),"CHAT_ROOM_TB");
-//           int lastKey = sqLiteUtil.getMaxChatRoomPK(prefhelper.getPK());
-           ServiceApi apiService = RetrofitClient.getClient().create(ServiceApi.class);
-           Log.d(TAG, "getUsersFromServer: "+String.valueOf(prefhelper.getPK()));
-           Call<List<UserChat>> call = apiService.getUsers(new pkData(prefhelper.getPK())); // 유저키 얻어와서 넣기
-           call.enqueue(new Callback<List<UserChat>>() {
-               @Override
-               public void onResponse(Call<List<UserChat>> call, Response<List<UserChat>> response) {
-                   if (response.isSuccessful()) {
-                      try {
-                          List<UserChat> users = response.body();
-                          for (UserChat u : users) Log.d(TAG, "onResponse: uuu" + u.getUserNM());
-                          if(getContext() != null) {
-                              sqLiteUtil.setInitView(getContext(), "CHAT_ROOM_TB");
-                              sqLiteUtil.insert(prefhelper.getPK(), users);
-                          }
-                      }
-                      finally {
-                          if(getContext() != null) {
-                              sqLiteUtil.setInitView(getContext(), "CHAT_ROOM_TB");
-                              List<UserChat> users = sqLiteUtil.selectChatRoom(String.valueOf(prefhelper.getPK()));
-                              for (UserChat u : users)
-                                  Log.d(TAG, "getUsersFromServer: " + u.getChatRoomId());
-                              userList.clear();
-                              userList.addAll(users);
-                              userListAdapter.notifyDataSetChanged();
-                              chatflag = false;
-                          }
-                      }
-                       // userList에 데이터가 추가된 후에 실행되어야 하는 로직을 여기에 작성합니다.
-                   } else {
-                       Toast.makeText(getContext(), "Failed to retrieve user list", Toast.LENGTH_SHORT).show();
-                   }
-               }
-               @Override
-               public void onFailure(Call<List<UserChat>> call, Throwable t) {
-                   Toast.makeText(getContext(), "Failed to retrieve user list", Toast.LENGTH_SHORT).show();
-               }
-           });
+        if(chatflag == false) {
+            chatflag= true;
+            ServiceApi apiService = RetrofitClient.getClient().create(ServiceApi.class);
+            Log.d(TAG, "getUsersFromServer: " + String.valueOf(prefhelper.getPK()));
+            Call<List<UserChat>> call = apiService.getUsers(new pkData(prefhelper.getPK())); // 유저키 얻어와서 넣기
+            call.enqueue(new Callback<List<UserChat>>() {
+                @Override
+                public void onResponse(Call<List<UserChat>> call, Response<List<UserChat>> response) {
+                    if (response.isSuccessful()) {
+                        try {
+                            List<UserChat> users = response.body();
+                            for (UserChat u : users) Log.d(TAG, "onResponse: uuu" + u.getUserNM());
+                            if (getContext() != null) {
+                                sqLiteUtil.setInitView(getContext(), "CHAT_ROOM_TB");
+                                sqLiteUtil.insert(prefhelper.getPK(), users);
+                            }
+                            userList.clear();
+                            userList.addAll(users);
+                            userListAdapter.notifyDataSetChanged();
+                            if(rootView !=null) {
+                                if (!userList.isEmpty()) {
+                                    rootView.findViewById(R.id.emptylayout).setVisibility(View.GONE);
+                                    rootView.findViewById(R.id.userListLayout).setVisibility(View.VISIBLE);
+                                } else {
+                                    rootView.findViewById(R.id.emptylayout).setVisibility(View.VISIBLE);
+                                    rootView.findViewById(R.id.userListLayout).setVisibility(View.GONE);
+                                }
+                            }
+                        } finally {
+                            chatflag = false;
+                        }
+                    } else {
+                        Toast.makeText(getContext(), "Failed to retrieve user list", Toast.LENGTH_SHORT).show();
+                    }
+                }
 
-       }
-        finally {
+                @Override
+                public void onFailure(Call<List<UserChat>> call, Throwable t) {
+                    Toast.makeText(getContext(), "Failed to retrieve user list", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
 
-       }
+
+
 
     }
 }

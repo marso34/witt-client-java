@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.healthappttt.Data.Chat.SocketSingleton;
+import com.example.healthappttt.Data.Chat.UserChat;
 import com.example.healthappttt.Data.Exercise.ExerciseData;
 import com.example.healthappttt.Data.Exercise.RecordData;
 import com.example.healthappttt.Data.Exercise.RoutineData;
@@ -26,6 +27,8 @@ import com.example.healthappttt.interface_.ServiceApi;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -42,6 +45,13 @@ public class SplashActivity extends AppCompatActivity {
     private BlackListData BlackList;
     private ReviewListData ReviewList;
     private WittListData wittList;
+    private ArrayList<UserChat> Us;
+    private UserChat u;
+
+    private String chatRoomId;
+    private String oUserKey;
+    private String oUserName;
+
 
     UserKey userKey;
     int IuserKey;
@@ -49,9 +59,19 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-      
+        chatRoomId = null;
+        oUserKey = null;
+        oUserName = null;
+        Intent intent = getIntent();
+        if (intent != null) {
+            chatRoomId = intent.getStringExtra("chatRoomId__");
+            oUserKey = intent.getStringExtra("userKey__");
+            oUserName = intent.getStringExtra("oUserName__");
+            Log.d(TAG, "onCreate: chatatspl");
+            Log.d(TAG, chatRoomId+oUserKey+oUserName);
+        }
         apiService = RetrofitClient.getClient().create(ServiceApi.class);
-      
+
         prefhelper = new PreferenceHelper("UserTB",this);
         sqLiteUtil = SQLiteUtil.getInstance();
 
@@ -64,8 +84,8 @@ public class SplashActivity extends AppCompatActivity {
             Log.d(TAG, "유저키: " + userKey);
             try {
                 // 함수들 호출 및 실행
-                SyncRoutine(prefhelper.getPK());
-                SyncRecord(prefhelper.getPK());
+                SyncRoutine(IuserKey);
+                SyncRecord(IuserKey);
 
                 getuserProfile(userKey);
                 getBlackList(userKey);
@@ -86,9 +106,46 @@ public class SplashActivity extends AppCompatActivity {
         Log.d(TAG, "GoMain: "+userKey);
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("userKey",userKey);
-        Log.d("스플래시에서 넘기는 pk:",userKey+"" );
+        if(chatRoomId!=null && oUserKey != null && oUserName != null){
+            intent.putExtra("chatRoomId__",chatRoomId);
+            intent.putExtra("userKey__",oUserKey);
+            intent.putExtra("oUserName__",oUserName);
+            Log.d(TAG, "GoMain: plagg");
+        }
         startActivity(intent);
-        finish();
+        finishAffinity();
+    }
+    private void getChatRooms(){
+        ServiceApi apiService = RetrofitClient.getClient().create(ServiceApi.class);
+        Call<List<UserChat>> call = apiService.getUsers(new pkData(userKey.getPk())); // 유저키 얻어와서 넣기
+        call.enqueue(new Callback<List<UserChat>>() {
+            @Override
+            public void onResponse(Call<List<UserChat>> call, Response<List<UserChat>> response) {
+                if (response.isSuccessful()) {
+
+                    List<UserChat> users = response.body();
+                    saveChatRooms(users);
+
+                    // userList에 데이터가 추가된 후에 실행되어야 하는 로직을 여기에 작성합니다.
+                }
+            }
+            @Override
+            public void onFailure(Call<List<UserChat>> call, Throwable t) {
+            }
+        });
+
+    }
+
+    public String extractName(String inputString) {
+        String namePattern = "!!~(.*?)~!!"; // 정규표현식 패턴: !!~(이름)~!!
+        Pattern pattern = Pattern.compile(namePattern);
+        Matcher matcher = pattern.matcher(inputString);
+
+        if (matcher.find()) {
+            return matcher.group(1)+"님이 위트를 보냈습니다."; // 매칭된 그룹(이름) 반환
+        } else {
+            return null; // 이름이 매칭되지 않으면 빈 문자열 반환
+        }
     }
 
     private void SyncRoutine(int pk) {
@@ -201,7 +258,7 @@ public class SplashActivity extends AppCompatActivity {
                         }
                     } else { Log.d("getBlackList","리스트가 null");}
                 } else {
-                    Log.e("getBlackList", "API 요청 실패. 응답 코드: " + response.code());        
+                    Log.e("getBlackList", "API 요청 실패. 응답 코드: " + response.code());
                 }
             }
 
@@ -275,7 +332,7 @@ public class SplashActivity extends AppCompatActivity {
                     Log.e("getWittHistory", "API 요청 실패. 응답 코드: " + response.code());
                 }
             }
-              
+
             @Override
             public void onFailure(Call<List<WittListData>> call, Throwable t) {
                 Log.e("getWittHistory", "API 요청실패, 에러메세지: " + t.getMessage());
@@ -349,7 +406,7 @@ public class SplashActivity extends AppCompatActivity {
             sqLiteUtil.insertWH(wittListData);
         }
     }
-                                                        
+
     private void saveRoutine(ArrayList<RoutineData> routines) {
         ArrayList<String> notDeletePk = new ArrayList<>();
 
@@ -385,4 +442,17 @@ public class SplashActivity extends AppCompatActivity {
         sqLiteUtil.setInitView(this, "RECORD_TB");
         sqLiteUtil.deleteMulti(notDeletePk);
     }
+
+    private void saveChatRooms(List<UserChat> users){
+        if(this != null) {
+            sqLiteUtil.setInitView(this, "CHAT_ROOM_TB");
+            sqLiteUtil.deleteAllChatRoom();
+            sqLiteUtil.setInitView(this, "CHAT_ROOM_TB");
+            sqLiteUtil.insert(userKey.getPk(),users);
+
+
+        }
+    }
+
+
 }
