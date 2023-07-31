@@ -83,14 +83,14 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/rectangle"
                         android:backgroundTint="@color/Blue_Toggle"
-                        android:shadowColor="#579FF333"
                         android:elevation="3dp"
-                        android:paddingVertical="2dp"
-                        android:paddingHorizontal="8dp"
                         android:gravity="center"
+                        android:paddingHorizontal="8dp"
+                        android:paddingVertical="2dp"
+                        android:shadowColor="#579FF333"
                         android:text="남자"
-                        android:textSize="11dp"
-                        android:textColor="@color/Notion" />
+                        android:textColor="@color/Notion"
+                        android:textSize="11dp" />
 
                     <TextView
                         android:id="@+id/name"

@@ -18,7 +18,7 @@
             android:layout_height="56dp">
 
             <ImageView
-                android:id="@+id/cancle_report"
+                android:id="@+id/crt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/baseline_arrow_back_ios_new_24"/>
@@ -42,7 +42,7 @@
             android:id="@+id/reportname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="김도현님을" />
+            android:text="님을" />
         <TextView
             style="@style/Title"
             android:layout_width="wrap_content"

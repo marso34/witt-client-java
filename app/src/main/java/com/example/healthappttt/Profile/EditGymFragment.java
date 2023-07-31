@@ -1,7 +1,9 @@
 package com.example.healthappttt.Profile;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -90,6 +92,18 @@ public class EditGymFragment extends Fragment {
         // Inflate the layout for this fragment
         binding = FragmentEditGymBinding.inflate(inflater);
 
+        if(!MyGym.equals("")) {
+            binding.Gym.setText(MyGym);
+            binding.locDetail.setText(GymAdress); //헬스장 주소
+            Log.d("EditFragment","!!!equals");
+        } else {
+            binding.Gym.setText("선택된 헬스장이 없어요");
+            binding.Gym.setTextColor(Color.parseColor("#D1D8E2"));
+            binding.locDetail.setVisibility(View.INVISIBLE);
+            binding.mapIcon.setBackgroundColor(Color.parseColor("#D1D8E2"));
+            Log.d("EditFragment","equals");
+        }
+
         return binding.getRoot();
     }
 
@@ -98,8 +112,11 @@ public class EditGymFragment extends Fragment {
         super.onViewCreated(view,savedInstanceState);
 
         binding.MyName.setText(MyName+"님의");
+
         binding.Gym.setText(MyGym);
         binding.locDetail.setText(GymAdress); //헬스장 주소
+
+
 
         binding.cancelEditgym.setOnClickListener(v -> requireActivity().finish());
 

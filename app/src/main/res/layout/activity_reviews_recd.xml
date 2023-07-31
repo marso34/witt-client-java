@@ -63,6 +63,7 @@
     </androidx.appcompat.widget.Toolbar>
 
     <LinearLayout
+        android:id="@+id/nulllinear"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -75,7 +76,9 @@
         android:layout_height="wrap_content"
         android:scrollbars="none"
         android:scrollbarFadeDuration="0"
-        tools:listitem="@layout/adapter_blockuser" />
+        tools:listitem="@layout/adapter_blockuser"/>
+
+
 
     </LinearLayout>
 

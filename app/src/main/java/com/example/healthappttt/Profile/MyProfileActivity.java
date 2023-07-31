@@ -6,6 +6,7 @@ import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -254,6 +255,7 @@ public class MyProfileActivity extends AppCompatActivity {
                     } else{
                         Pgender.setText("여자");
                         Pgender.setTextColor(Color.parseColor("#F257AF")); // 핑크색
+                        Pgender.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FDE6F3")));
                     }
 
                     if(temp == 0){
@@ -314,6 +316,7 @@ public class MyProfileActivity extends AppCompatActivity {
         } else{
             Pgender.setText("여자");
             Pgender.setTextColor(Color.parseColor("#F257AF")); // 핑크색
+            Pgender.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FDE6F3")));
         }
 
         if(data.get("temp").toString().equals("0")){

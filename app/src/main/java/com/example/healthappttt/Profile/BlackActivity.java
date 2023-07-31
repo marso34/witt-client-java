@@ -47,14 +47,12 @@ public class BlackActivity extends AppCompatActivity {
         sqLiteUtil.setInitView(this,"BLACK_LIST_TB");//차단 목록 로컬 db
         BlackList = sqLiteUtil.SelectBlackUser();//SELECT * FROM BLACK_LIST_TB
 
+
         BlackAdapter = new BlockUserAdapter(BlackList,ReviewList, WittList,this);//어뎁터에 차단 목록 생성
         linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(BlackAdapter);
 
-       // BlockList.add(new UserProfile("이형원")); //리스트에 추가 -> 매서드로 변경 필요
-      //  BlockList.add(new UserProfile("dkh"));
-       // BlockList.add(new UserProfile("hwstar"));
         BlackAdapter.notifyDataSetChanged(); //변경점을 어뎁터에 알림
 
 
@@ -76,7 +74,10 @@ public class BlackActivity extends AppCompatActivity {
                 searchFilter(s);
                 return false;
             }
-        });
+            });
+
+      //  BlockList.add(new UserProfile("dkh")); //리스트에 추가 -> 매서드로 변경 필요
+       // BlockList.add(new UserProfile("hwstar"));
 
         cancel_black = findViewById(R.id.cancel_black);
         cancel_black.setOnClickListener(new View.OnClickListener() {

@@ -247,9 +247,9 @@ public class WHChildFragment extends Fragment {
                 if (adata.after(oneWeekAgo) && adata.before(today)) {
                     // 1주 전부터 오늘 사이의 데이터
                     oneWeekAgoList.add(WittList.get(n));
-                    Log.d("add1 일주일전", String.valueOf(adata.after(oneWeekAgo)));
-                    Log.d("add1 데이터 시간 ",WittList.get(0).getTS());
-                    Log.d("add1 일주일전", String.valueOf(adata.before(today)));
+//                    Log.d("add1 일주일전", String.valueOf(adata.after(oneWeekAgo)));
+//                    Log.d("add1 데이터 시간 ",WittList.get(0).getTS());
+//                    Log.d("add1 일주일전", String.valueOf(adata.before(today)));
                 }
 
                 calendar.setTime(today);//오늘 날짜로 다시 설정
@@ -259,7 +259,7 @@ public class WHChildFragment extends Fragment {
                 if (adata.after(oneMonthAgo) && adata.before(today)) {
                     // 1개월 전부터 오늘 사이의 데이터
                     oneMonthAgoList.add(WittList.get(n));
-                    Log.d("add2 데이터 시간 ",WittList.get(0).getTS());
+//                    Log.d("add2 데이터 시간 ",WittList.get(0).getTS());
                 }
 
                 calendar.setTime(today);
@@ -269,7 +269,7 @@ public class WHChildFragment extends Fragment {
                 if (adata.after(oneYearAgo) && adata.before(today)) {
                     // 1년 전부터 오늘 사이의 데이터
                     oneYearAgoList.add(WittList.get(n));
-                    Log.d("add3  ",WittList.get(0).getTS());
+//                    Log.d("add3  ",WittList.get(0).getTS());
                 }
 
             }catch (ParseException e) {

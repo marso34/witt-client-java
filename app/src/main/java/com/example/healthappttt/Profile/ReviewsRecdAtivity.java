@@ -46,7 +46,7 @@ public class ReviewsRecdAtivity extends AppCompatActivity {
     int myPK,PK;
     String ReviewCnt;
     Button cancel_review;
-
+    TextView nullreview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +56,6 @@ public class ReviewsRecdAtivity extends AppCompatActivity {
         listCnt = findViewById(R.id.listCnt);
         //searchView = findViewById(R.id.review_search);
         recyclerView = findViewById(R.id.Review_recycle);
-
         filteredList = new ArrayList<>();
         UserTB = new PreferenceHelper("UserTB", this);
 
@@ -71,7 +70,10 @@ public class ReviewsRecdAtivity extends AppCompatActivity {
             sqLiteUtil = SQLiteUtil.getInstance(); // SQLiteUtil 객체 생성
             sqLiteUtil.setInitView(this, "REVIEW_TB");//리뷰 목록 로컬 db
             ReviewList = sqLiteUtil.SelectReviewUser();//SELECT * FROM REVIEW_TB
+
             setView();
+
+
 
         } else {//상대가 받은 후기
 //            Log.d("상대가 받은 후기 상대 pk: ", PK + " - " + myPK);
@@ -168,7 +170,11 @@ public class ReviewsRecdAtivity extends AppCompatActivity {
                             ReviewList.add(ReviewListdata);
                         }
                         setView();
-                    } else { Log.d("getReviewList","리스트가 null");}
+                    } else {
+                        Log.d("getReviewList","리스트가 null");
+                            nullreview.setVisibility(View.VISIBLE);
+                            recyclerView.setVisibility(View.GONE);
+                    }
                 }else {
                     Log.e("getReviewList", "응답 오류 응답 코드: " + response.code());
                 }
