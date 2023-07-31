@@ -92,12 +92,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull final MainViewHolder holder, int position) {
-        if (mDataset.size() > 0 && position != mDataset.size()) {
+        if (mDataset.size() > 0) {
             holder.DefaultLayout.setVisibility(View.VISIBLE);
-//            holder.Anymore.setVisibility(View.GONE);
-//            holder.CardView.setCardBackgroundColor(Color.parseColor(White));
-//            holder.CardView.setCardElevation(6f);
-
             UserInfo userInfo = mDataset.get(position);
             Log.d("유저 이름!", userInfo.getName());
             Log.d("유저 PK!", String.valueOf(userInfo.getUserKey()));
@@ -159,11 +155,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
                     mContext.startActivity(intent);
                 }
             });
-        } else if(position == mDataset.size()) {
-//            holder.DefaultLayout.setVisibility(View.GONE);
-//            holder.Anymore.setVisibility(View.VISIBLE);
-//            holder.CardView.setCardBackgroundColor(Color.parseColor(Transparent));
-//            holder.CardView.setCardElevation(0f);
         }
     }
 
