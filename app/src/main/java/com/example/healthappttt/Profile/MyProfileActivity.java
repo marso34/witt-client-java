@@ -64,6 +64,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Random;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -95,6 +96,8 @@ public class MyProfileActivity extends AppCompatActivity {
     private Bitmap downloadedBitmap;
     private String imageUri;
 
+
+    int[] imageResources = {R.drawable.man_3d_light, R.drawable.woman_3d_light};
     String otherUserKey;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -556,12 +559,16 @@ public class MyProfileActivity extends AppCompatActivity {
                         });
                     } else {
                         Log.d(TAG, "이미지 다운 실패");
+                        int randomIndex = new Random().nextInt(imageResources.length);
+                        ProfileImg.setImageResource(imageResources[randomIndex]);
                     }
                 }
 
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
                     Log.d(TAG, "이미지 다운 에러");
+                    int randomIndex = new Random().nextInt(imageResources.length);
+                    ProfileImg.setImageResource(imageResources[randomIndex]);
                 }
             });
         }
