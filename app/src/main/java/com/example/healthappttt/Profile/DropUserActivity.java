@@ -2,6 +2,7 @@ package com.example.healthappttt.Profile;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -39,6 +40,7 @@ public class DropUserActivity extends AppCompatActivity {
     private TextView reportname;
     private EditText txt;
     private Map<String, Object> DropMap; //서버로 보내는 데이터
+    private boolean isButtonClickable = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,7 +125,7 @@ public class DropUserActivity extends AppCompatActivity {
                 String inputText = txt.getText().toString().trim();
                 if (!isAnyChecked) {//하나도 체크되지 않은 경우
                     if(inputText.isEmpty()){//체크도 안하고 텍스트도 안적었을 경우
-                        v.setClickable(false);
+                        disableButtonForOneSecond();
                         Toast.makeText(DropUserActivity.this, "탈퇴 사유를 하나 이상 체크해주세요", Toast.LENGTH_SHORT).show();
                     }else { //체크는 안하고 텍스트만 적은 경우 -> 이메일 전송 후 창 닫기
                         Log.d("ReportActivity : ", "체크표시를 안하고 텍스트만 적었을때");
@@ -247,6 +249,21 @@ public class DropUserActivity extends AppCompatActivity {
         }
         selection >>= 1;
         DropMap.put("CONT",selection);
+    }
+
+    private void disableButtonForOneSecond() {
+        // 버튼 클릭 불가능하도록 상태 변경
+        isButtonClickable = false;
+        GO_Drop.setEnabled(false);
+
+        // 1초 후에 버튼 클릭 가능하도록 상태 변경
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                isButtonClickable = true;
+                GO_Drop.setEnabled(true);
+            }
+        }, 1000); // 1000 밀리초 = 1초
     }
 
     public void backToSetting() {
