@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -48,6 +49,8 @@ public class ERSelectUserFragment extends Fragment {
     // TODO: Rename and change types of parameters
 
     private ArrayList<UserChat> users;
+    private ArrayList<UserChat> searchUsers;
+
 
     private OnFragmentInteractionListener mListener;
 
@@ -84,6 +87,7 @@ public class ERSelectUserFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             users = (ArrayList<UserChat>) getArguments().getSerializable(ARG_USERS);
+            searchUsers = (ArrayList<UserChat>) users.clone();
         }
     }
 
@@ -101,6 +105,19 @@ public class ERSelectUserFragment extends Fragment {
 
         binding.backBtn.setOnClickListener(v -> mListener.onSelectUser(-1, ""));
 
+        binding.search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                searchUser(newText);
+                return false;
+            }
+        });
+
         binding.nextBtn.setOnClickListener(v -> mListener.onSelectUser(OUser_PK, name));
 
         setRecyclerView();
@@ -114,12 +131,21 @@ public class ERSelectUserFragment extends Fragment {
     }
 
     private void setRecyclerView() {
-//        test = new ArrayList<>();
-
         adapter = new WittUserAdapter();
         binding.recyclerView.setHasFixedSize(true);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.recyclerView.setAdapter(adapter);
+    }
+
+    private void searchUser(String searchTxt) {
+        searchUsers.clear();
+
+        for (UserChat user : users) {
+            if (user.getUserNM().contains(searchTxt))
+                searchUsers.add(user);
+        }
+
+        adapter.notifyDataSetChanged();
     }
 
     private class WittUserAdapter extends RecyclerView.Adapter<WittUserAdapter.MainViewHolder> {
@@ -155,13 +181,13 @@ public class ERSelectUserFragment extends Fragment {
             mainViewHolder.CardView.setOnClickListener(v -> {
                 int position = mainViewHolder.getAbsoluteAdapterPosition();
 
-                if (OUser_PK != users.get(position).getOtherUserKey()) {
+                if (OUser_PK != searchUsers.get(position).getOtherUserKey()) {
                     binding.nextBtn.setTextColor(Color.parseColor(White));
                     binding.nextBtn.setBackground(getContext().getDrawable(R.drawable.rectangle_green_20dp));
                     binding.nextBtn.setText("선택하기");
 
-                    name = users.get(position).getUserNM();
-                    OUser_PK = users.get(position).getOtherUserKey();
+                    name = searchUsers.get(position).getUserNM();
+                    OUser_PK = searchUsers.get(position).getOtherUserKey();
                 } else {
                     binding.nextBtn.setTextColor(Color.parseColor(Body));
                     binding.nextBtn.setBackground(getContext().getDrawable(R.drawable.rectangle_20dp));
@@ -179,10 +205,10 @@ public class ERSelectUserFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull MainViewHolder holder, int position) {
-            String gymName = users.get(position).getGNM();
+            String gymName = searchUsers.get(position).getGNM();
 
             holder.routineLayout.setVisibility(View.GONE);
-            holder.Name.setText(users.get(position).getUserNM());
+            holder.Name.setText(searchUsers.get(position).getUserNM());
 
             if (gymName.equals("")) {
                 holder.MapIcon.setColorFilter(Color.parseColor(Background_2));
@@ -193,10 +219,10 @@ public class ERSelectUserFragment extends Fragment {
                 holder.MapIcon.setColorFilter(Color.parseColor(Signature));
                 holder.GymName.setTextColor(Color.parseColor(Body));
                 holder.GymName.setText(gymName);
-                holder.GymAdress.setText(users.get(position).getGADS());
+                holder.GymAdress.setText(searchUsers.get(position).getGADS());
             }
 
-            if (OUser_PK == users.get(position).getOtherUserKey()) {
+            if (OUser_PK == searchUsers.get(position).getOtherUserKey()) {
                 holder.CardView.setStrokeWidth(2);
                 holder.NameCardView.setStrokeWidth(2);
                 holder.CheckIcon.setVisibility(View.VISIBLE);
@@ -209,7 +235,7 @@ public class ERSelectUserFragment extends Fragment {
 
         @Override
         public int getItemCount() {
-            return users.size();
+            return searchUsers.size();
         }
     }
 }
