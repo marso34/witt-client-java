@@ -52,20 +52,13 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         if (context != null) {
             DBHelper dbHelper = new DBHelper(context, "Witt", null, 1);
             try {
-                while (true) {
-                    if (dbHelper != null) {
-                        db = dbHelper.getWritableDatabase();
-                        dbHelper.onCreate(db);
-                        break;
-                    } else {
-                        dbHelper = new DBHelper(context, "Witt", null, 1);
-                    }
-                }
+                db = dbHelper.getWritableDatabase();
             } catch (SQLiteException e) {
                 e.printStackTrace();
-                Log.e(table, " 데이터 베이스를 열 수 없음");
+                Log.e(table, "데이터베이스를 열 수 없음");
             }
         }
+
 
         // 다른 메서드들
     }
