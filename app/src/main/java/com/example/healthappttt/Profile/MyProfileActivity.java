@@ -60,8 +60,6 @@ import retrofit2.Response;
 
 
 public class MyProfileActivity extends AppCompatActivity {
-
-
     private ActivityMyprofileBinding binding;
     private PreferenceHelper UserTB;
     private SQLiteUtil sqLiteUtil;

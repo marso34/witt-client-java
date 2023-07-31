@@ -71,7 +71,7 @@ public class SUSelectGymFragment extends Fragment implements OnMapReadyCallback,
     private static final String Body = "#4A5567";
     private static final String Signature = "#05C78C";
     private static final String White = "#ffffff";
-    private static final String Backgrount_2 = "#D1D8E2";
+    private static final String Background_2 = "#D1D8E2";
 
     private static final int PERMISSION_REQUEST_CODE = 1;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;

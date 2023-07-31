@@ -130,7 +130,7 @@ public class SUSelectGenderFragment extends Fragment {
         binding.maleImg.setAlpha(1f);
         binding.femaleImg.setAlpha(0.2f);
 
-        binding.maleCard.setStrokeWidth(1);
+        binding.maleCard.setStrokeWidth(2);
         binding.femaleCard.setStrokeWidth(0);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
@@ -152,7 +152,7 @@ public class SUSelectGenderFragment extends Fragment {
         binding.femaleImg.setAlpha(1f);
 
         binding.maleCard.setStrokeWidth(0);
-        binding.femaleCard.setStrokeWidth(1);
+        binding.femaleCard.setStrokeWidth(2);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             binding.maleCard.setOutlineSpotShadowColor(Color.parseColor(Backgrount_1));

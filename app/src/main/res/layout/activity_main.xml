@@ -63,11 +63,14 @@
             android:layout_height="64dp"
             android:background="@drawable/rounded_top"
             android:layout_gravity="bottom"
+            app:labelVisibilityMode="labeled"
+            app:itemTextAppearanceActive="@style/Overline"
+            app:itemTextAppearanceInactive="@style/Overline"
             app:itemBackground="@color/transparent"
             app:itemHorizontalTranslationEnabled="false"
-            app:labelVisibilityMode="labeled"
             app:itemIconTint="@drawable/menu_selector_color"
             app:itemTextColor="@drawable/menu_selector_color"
+            app:itemPaddingBottom="12dp"
             app:elevation="20dp"
             app:menu="@menu/bottom_nav_menu" />
 

@@ -6,9 +6,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
@@ -82,6 +85,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
         // Set up Google Sign In Button`
         mGoogleSignInButton = (SignInButton)findViewById(R.id.sign_in_button);
+        TextView temp = (TextView) mGoogleSignInButton.getChildAt(0);
+        temp.setText("Google 계정으로 가입");
+        temp.setTextAppearance(this, R.style.Title);
+        temp.setTextColor(Color.parseColor("#4A5567"));
         mGoogleSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -131,7 +138,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     }
 
     private void updateUI(@Nullable GoogleSignInAccount account) {
-
         if (account != null) {
             // Get Google ID token
             String token = account.getIdToken();
@@ -166,17 +172,21 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     } else {
                         // 서버로 데이터 전송 실패
                         Toast.makeText(LoginActivity.this, "로그인 실패", Toast.LENGTH_SHORT).show();
+                        mGoogleSignInButton.setVisibility(View.VISIBLE);
                         Log.d(TAG, "sendTokenToServer fail");
                     }
                 }
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
                     Toast.makeText(LoginActivity.this, "서버로부터 응답이 없습니다.", Toast.LENGTH_SHORT).show();
+                    mGoogleSignInButton.setVisibility(View.VISIBLE);
                     Log.e(TAG, "sendTokenToServer error: " + t.getMessage());
                 }
             });
 
             // Send token to server for verification
+        } else {
+            mGoogleSignInButton.setVisibility(View.VISIBLE);
         }
     }
 

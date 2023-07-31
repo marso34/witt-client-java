@@ -60,29 +60,24 @@ public class SplashActivity extends AppCompatActivity {
         IuserKey = prefhelper.getPK();
         userKey = new UserKey(IuserKey);
 
-        SyncRoutine(IuserKey);
-        SyncRecord(IuserKey);
-
-        getuserProfile(userKey);
-        getBlackList(userKey);
-        getReviewList(userKey);
-        getWittHistory(userKey);
-
-
-
         if(userKey != null) {
             Log.d(TAG, "유저키: " + userKey);
             try {
                 // 함수들 호출 및 실행
+                SyncRoutine(prefhelper.getPK());
+                SyncRecord(prefhelper.getPK());
+
+                getuserProfile(userKey);
+                getBlackList(userKey);
+                getReviewList(userKey);
+                getWittHistory(userKey);
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
                 // MainActivity 이동
                 GoMain(IuserKey);
             }
-        }
-
-        else
+        } else
             Log.d(TAG, "유저키 널값");
     }
 
