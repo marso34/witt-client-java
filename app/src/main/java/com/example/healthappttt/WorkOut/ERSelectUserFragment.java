@@ -1,6 +1,7 @@
 package com.example.healthappttt.WorkOut;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.healthappttt.Data.Chat.UserChat;
 import com.example.healthappttt.R;
 import com.example.healthappttt.databinding.FragmentErSelectUserBinding;
+import com.google.android.material.card.MaterialCardView;
 
 import java.util.ArrayList;
 
@@ -31,24 +33,26 @@ public class ERSelectUserFragment extends Fragment {
     FragmentErSelectUserBinding binding;
     private WittUserAdapter adapter;
 
-    private ArrayList<UserChat> test;
+    private static final String Body = "#4A5567";
+    private static final String Signature = "#05C78C";
+    private static final String White = "#ffffff";
+    private static final String Background_2 = "#D1D8E2";
 
     private int OUser_PK;
-
+    private String name;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_USERS = "users";
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+
+    private ArrayList<UserChat> users;
 
     private OnFragmentInteractionListener mListener;
 
     public interface OnFragmentInteractionListener {
-        void onSelectUser(int OUser_PK);
+        void onSelectUser(int OUser_PK, String name);
     }
 
     @Override
@@ -67,12 +71,11 @@ public class ERSelectUserFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static ERSelectUserFragment newInstance() {
+    public static ERSelectUserFragment newInstance(ArrayList<UserChat> users) {
         ERSelectUserFragment fragment = new ERSelectUserFragment();
-//        Bundle args = new Bundle();
-//        args.putString(ARG_PARAM1, param1);
-//        args.putString(ARG_PARAM2, param2);
-//        fragment.setArguments(args);
+        Bundle args = new Bundle();
+        args.putSerializable(ARG_USERS, users);
+        fragment.setArguments(args);
         return fragment;
     }
 
@@ -80,11 +83,8 @@ public class ERSelectUserFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            users = (ArrayList<UserChat>) getArguments().getSerializable(ARG_USERS);
         }
-
-//        OUser_PK = 0; // 임시값
     }
 
     @Override
@@ -99,9 +99,9 @@ public class ERSelectUserFragment extends Fragment {
     public void onViewCreated(@androidx.annotation.NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        binding.backBtn.setOnClickListener(v -> mListener.onSelectUser(-1));
+        binding.backBtn.setOnClickListener(v -> mListener.onSelectUser(-1, ""));
 
-        binding.nextBtn.setOnClickListener(v -> mListener.onSelectUser(OUser_PK));
+        binding.nextBtn.setOnClickListener(v -> mListener.onSelectUser(OUser_PK, name));
 
         setRecyclerView();
     }
@@ -114,7 +114,7 @@ public class ERSelectUserFragment extends Fragment {
     }
 
     private void setRecyclerView() {
-        test = new ArrayList<>();
+//        test = new ArrayList<>();
 
         adapter = new WittUserAdapter();
         binding.recyclerView.setHasFixedSize(true);
@@ -126,14 +126,16 @@ public class ERSelectUserFragment extends Fragment {
 
 
         class MainViewHolder extends RecyclerView.ViewHolder {
+            public MaterialCardView CardView, NameCardView;
             public LinearLayout routineLayout;
             public TextView Name, GymName, GymAdress;
             public ImageView MapIcon, CheckIcon;
-
-
+            
             public MainViewHolder(@androidx.annotation.NonNull View view) {
                 super(view);
-
+            
+                this.CardView = view.findViewById(R.id.cardView);
+                this.NameCardView = view.findViewById(R.id.nameCardView);
                 this.routineLayout = view.findViewById(R.id.routine);
                 this.Name =  view.findViewById(R.id.UNE);
                 this.GymName = view.findViewById(R.id.gymName);
@@ -150,17 +152,64 @@ public class ERSelectUserFragment extends Fragment {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_user, parent, false);
             final MainViewHolder mainViewHolder = new MainViewHolder(view);
 
+            mainViewHolder.CardView.setOnClickListener(v -> {
+                int position = mainViewHolder.getAbsoluteAdapterPosition();
+
+                if (OUser_PK != users.get(position).getOtherUserKey()) {
+                    binding.nextBtn.setTextColor(Color.parseColor(White));
+                    binding.nextBtn.setBackground(getContext().getDrawable(R.drawable.rectangle_green_20dp));
+                    binding.nextBtn.setText("선택하기");
+
+                    name = users.get(position).getUserNM();
+                    OUser_PK = users.get(position).getOtherUserKey();
+                } else {
+                    binding.nextBtn.setTextColor(Color.parseColor(Body));
+                    binding.nextBtn.setBackground(getContext().getDrawable(R.drawable.rectangle_20dp));
+                    binding.nextBtn.setText("건너뛰기");
+
+                    name = "";
+                    OUser_PK = 0;
+                }
+
+                adapter.notifyDataSetChanged();
+            });
+
             return mainViewHolder;
         }
 
         @Override
         public void onBindViewHolder(@NonNull MainViewHolder holder, int position) {
+            String gymName = users.get(position).getGNM();
+
             holder.routineLayout.setVisibility(View.GONE);
+            holder.Name.setText(users.get(position).getUserNM());
+
+            if (gymName.equals("")) {
+                holder.MapIcon.setColorFilter(Color.parseColor(Background_2));
+                holder.GymName.setTextColor(Color.parseColor(Background_2));
+                holder.GymName.setText("선택된 헬스장이 없어요");
+                holder.GymAdress.setText("");
+            } else {
+                holder.MapIcon.setColorFilter(Color.parseColor(Signature));
+                holder.GymName.setTextColor(Color.parseColor(Body));
+                holder.GymName.setText(gymName);
+                holder.GymAdress.setText(users.get(position).getGADS());
+            }
+
+            if (OUser_PK == users.get(position).getOtherUserKey()) {
+                holder.CardView.setStrokeWidth(2);
+                holder.NameCardView.setStrokeWidth(2);
+                holder.CheckIcon.setVisibility(View.VISIBLE);
+            } else {
+                holder.CardView.setStrokeWidth(0);
+                holder.NameCardView.setStrokeWidth(0);
+                holder.CheckIcon.setVisibility(View.GONE);
+            }
         }
 
         @Override
         public int getItemCount() {
-            return 0;
+            return users.size();
         }
     }
 }

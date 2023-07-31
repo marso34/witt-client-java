@@ -6,9 +6,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
@@ -80,6 +83,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
         // Set up Google Sign In Button`
         mGoogleSignInButton = (SignInButton)findViewById(R.id.sign_in_button);
+        TextView temp = (TextView) mGoogleSignInButton.getChildAt(0);
+        temp.setText("Google 계정으로 가입");
+        temp.setTextAppearance(this, R.style.Title);
+        temp.setTextColor(Color.parseColor("#4A5567"));
         mGoogleSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -129,7 +136,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     }
 
     private void updateUI(@Nullable GoogleSignInAccount account) {
-
         if (account != null) {
             // Get Google ID token
             String token = account.getIdToken();
@@ -175,6 +181,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             });
 
             // Send token to server for verification
+        } else {
+            mGoogleSignInButton.setVisibility(View.VISIBLE);
         }
     }
 

@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.healthappttt.Data.Chat.UserChat;
 import com.example.healthappttt.Data.RetrofitClient;
 import com.example.healthappttt.Data.Exercise.ExerciseData;
 import com.example.healthappttt.Data.PreferenceHelper;
@@ -37,15 +38,15 @@ public class ExerciseRecordActivity extends AppCompatActivity implements ERSelec
     private SQLiteUtil sqLiteUtil;
     private PreferenceHelper prefhelper;
 
-    private int dayOfWeek;
-
-//    private RoutineData routine;          // 여러개 만들 수도 있음
+    private ArrayList<UserChat> users;
     private ArrayList<RoutineData> routines; // 지금은 요일에 루틴 하나를 만들지만
+//    private RoutineData routine;          // 여러개 만들 수도 있음
     private RecordData record;
 
+    private int dayOfWeek;
     private int oUserID, promiseID;
-    private String startTime, endTime, runTime;
     private String name;
+    private String startTime, endTime, runTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +71,9 @@ public class ExerciseRecordActivity extends AppCompatActivity implements ERSelec
 
             Collections.sort(routines, new RoutineComparator());
         }
+
+        sqLiteUtil.setInitView(this, "CHAT_ROOM_TB");
+        users = sqLiteUtil.selectChatRoom(Integer.toString(prefhelper.getPK()));
 
         if (routines.size() > 0)
             replaceFragment(ERSelectRoutineFragment.newInstance(dayOfWeek, routines.get(0)));
@@ -150,17 +154,21 @@ public class ExerciseRecordActivity extends AppCompatActivity implements ERSelec
     @Override
     public void onSelectRoutine(boolean isBack) {
         if (isBack)    finish();
-        else           replaceFragment(ERSelectUserFragment.newInstance());
+        else if (users.size() > 0)
+            replaceFragment(ERSelectUserFragment.newInstance(users));
+        else
+            replaceFragment(ERRecordingFragment.newInstance(routines.get(0).getExercises()));
     }
 
     @Override
-    public void onSelectUser(int oUserID) { // 나중에 유저 전달로 변경
+    public void onSelectUser(int oUserID, String name) { // 나중에 유저 전달로 변경
         if (oUserID < 0) // 뒤로가기 버튼
             replaceFragment(ERSelectRoutineFragment.newInstance(dayOfWeek, routines.get(0)));
         else if (oUserID == 0) { // 유저 선택 안 함
             replaceFragment(ERRecordingFragment.newInstance(routines.get(0).getExercises())); // ERRecordingFragment로 이동
         } else { // 유저 선택
             this.oUserID = oUserID;
+            this.name = name;
             replaceFragment(ERRecordingFragment.newInstance(routines.get(0).getExercises())); // ERRecordingFragment로 이동
         }
     }
@@ -184,7 +192,7 @@ public class ExerciseRecordActivity extends AppCompatActivity implements ERSelec
     @Override
     public void onFinish() {
         if (oUserID > 0) {
-            replaceFragment(ERReviewFragment.newInstance("name", oUserID));
+            replaceFragment(ERReviewFragment.newInstance(name, oUserID));
         } else {
             finish();
         }
