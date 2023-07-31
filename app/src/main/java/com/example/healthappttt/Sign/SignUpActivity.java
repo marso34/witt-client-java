@@ -219,38 +219,43 @@ private void sendTokenToServer() {
 
     private void uploadImage() {
 
-        ServiceApi apiService = RetrofitClient.getClient().create(ServiceApi.class);
-        String imagePath = getRealPathFromUri(userImageUri);
-           File imageFile = new File(imagePath);
+
+        if(userImageUri != null) {
+            ServiceApi apiService = RetrofitClient.getClient().create(ServiceApi.class);
+            String imagePath = getRealPathFromUri(userImageUri);
+            File imageFile = new File(imagePath);
             RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), imageFile);
             MultipartBody.Part imagePart = MultipartBody.Part.createFormData("image", imageFile.getName(), requestBody);
 
-        Call<UploadResponse> call = apiService.uploadImage(imagePart);
-        call.enqueue(new Callback<UploadResponse>() {
-            @Override
-            public void onResponse(Call<UploadResponse> call, Response<UploadResponse> response) {
-                if (response.isSuccessful()) {
+            Call<UploadResponse> call = apiService.uploadImage(imagePart);
+            call.enqueue(new Callback<UploadResponse>() {
+                @Override
+                public void onResponse(Call<UploadResponse> call, Response<UploadResponse> response) {
+                    if (response.isSuccessful()) {
 
-                    Log.d(TAG, "sendTokenToServer success");
-                    UploadResponse uploadResponse = response.body();
+                        Log.d(TAG, "sendTokenToServer success");
+                        UploadResponse uploadResponse = response.body();
 
-                    String imageUrl = uploadResponse.getImageUrl();
-                    seturi = imageUrl;
+                        String imageUrl = uploadResponse.getImageUrl();
+                        seturi = imageUrl;
 
 
+                        sendTokenToServer();
 
-                    sendTokenToServer();
-
-                } else {
-                    Log.d(TAG, "sendTokenToServer fail");
+                    } else {
+                        Log.d(TAG, "sendTokenToServer fail");
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<UploadResponse> call, Throwable t) {
-                Log.e("Upload Error", "통신 실패: " + t.getMessage());
-            }
-        });
+                @Override
+                public void onFailure(Call<UploadResponse> call, Throwable t) {
+                    Log.e("Upload Error", "통신 실패: " + t.getMessage());
+                }
+            });
+
+        }
+        else
+            Log.e("Upload Error", "이미지 없음");
     }
 
     private String getRealPathFromUri(Uri uri) {
