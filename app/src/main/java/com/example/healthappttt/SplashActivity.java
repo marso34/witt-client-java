@@ -47,6 +47,12 @@ public class SplashActivity extends AppCompatActivity {
     private WittListData wittList;
     private ArrayList<UserChat> Us;
     private UserChat u;
+
+    private String chatRoomId;
+    private String oUserKey;
+    private String oUserName;
+
+
     UserKey userKey;
     int IuserKey;
     @Override
@@ -117,8 +123,8 @@ public class SplashActivity extends AppCompatActivity {
             public void onResponse(Call<List<UserChat>> call, Response<List<UserChat>> response) {
                 if (response.isSuccessful()) {
 
-                        List<UserChat> users = response.body();
-                        saveChatRooms(users);
+                    List<UserChat> users = response.body();
+                    saveChatRooms(users);
 
                     // userList에 데이터가 추가된 후에 실행되어야 하는 로직을 여기에 작성합니다.
                 }
