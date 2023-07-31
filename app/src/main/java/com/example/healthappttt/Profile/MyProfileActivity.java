@@ -338,7 +338,7 @@ public class MyProfileActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MyProfileActivity.this,EditGymActivity.class);
                 intent.putExtra("MyName",Pname.getText());
-                intent.putExtra("MyGym",Plocatoin.getText());
+                intent.putExtra("MyGym", UserTB.getGYMNM());
                 intent.putExtra("GymAdress",UserTB.getGYMAdress());
                 startActivity(intent);
                 Log.d("실행순서: ","myprofileActivity->EditActivity->EditFragment");

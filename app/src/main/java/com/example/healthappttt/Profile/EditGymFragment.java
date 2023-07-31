@@ -70,7 +70,7 @@ public class EditGymFragment extends Fragment {
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, MyName);
         args.putString(ARG_PARAM2, MyGym);
-        args.putString(ARG_PARAM3,GymAdress);
+        args.putString(ARG_PARAM3, GymAdress);
         fragment.setArguments(args);
         return fragment;
     }
@@ -78,45 +78,47 @@ public class EditGymFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        UserTB = new PreferenceHelper("UserTB",getContext());
+        UserTB = new PreferenceHelper("UserTB", getContext());
         if (getArguments() != null) {
             MyName = getArguments().getString(ARG_PARAM1);
             MyGym = getArguments().getString(ARG_PARAM2);
             GymAdress = getArguments().getString(ARG_PARAM3);
+
+            Log.d("테스트3", MyGym + "   ddd");
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         binding = FragmentEditGymBinding.inflate(inflater);
-
-        if(!MyGym.equals("")) {
-            binding.Gym.setText(MyGym);
-            binding.locDetail.setText(GymAdress); //헬스장 주소
-            Log.d("EditFragment","!!!equals");
-        } else {
-            binding.Gym.setText("선택된 헬스장이 없어요");
-            binding.Gym.setTextColor(Color.parseColor("#D1D8E2"));
-            binding.locDetail.setVisibility(View.INVISIBLE);
-            binding.mapIcon.setBackgroundColor(Color.parseColor("#D1D8E2"));
-            Log.d("EditFragment","equals");
-        }
 
         return binding.getRoot();
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState){
-        super.onViewCreated(view,savedInstanceState);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        if(MyGym.equals("") || MyGym == null) {
+            binding.Gym.setText("선택된 헬스장이 없어요");
+            binding.Gym.setTextColor(Color.parseColor("#D1D8E2"));
+            binding.locDetail.setVisibility(View.INVISIBLE);
+            binding.mapIcon.setColorFilter(Color.parseColor("#D1D8E2"));
+            Log.d("EditFragment","equals");
+        } else {
+            binding.Gym.setText(MyGym);
+            binding.locDetail.setText(GymAdress); //헬스장 주소
+            Log.d("EditFragment","!!!equals");
+        }
+
+        Log.d("테스트2", MyGym + "   ddd");
+
 
         binding.MyName.setText(MyName+"님의");
 
-        binding.Gym.setText(MyGym);
-        binding.locDetail.setText(GymAdress); //헬스장 주소
-
-
+//        binding.Gym.setText(MyGym);
+//        binding.locDetail.setText(GymAdress); //헬스장 주소
 
         binding.cancelEditgym.setOnClickListener(v -> requireActivity().finish());
 
@@ -126,9 +128,9 @@ public class EditGymFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        binding.MyName.setText(UserTB.getUser_NM()+"님의");
-        binding.Gym.setText(UserTB.getGYMNM());
-        binding.locDetail.setText(UserTB.getGYMAdress()); //헬스장 주소
+//        binding.MyName.setText(UserTB.getUser_NM()+"님의");
+//        binding.Gym.setText(UserTB.getGYMNM());
+//        binding.locDetail.setText(UserTB.getGYMAdress()); //헬스장 주소
     }
 
     @Override

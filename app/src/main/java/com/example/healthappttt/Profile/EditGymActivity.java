@@ -30,6 +30,8 @@ public class EditGymActivity extends AppCompatActivity implements EditGymFragmen
 
         UserTB = new PreferenceHelper("UserTB",this);
 
+        Log.d("테스트1", MyGym + "   ddd");
+
         EditGymFragment fragment = EditGymFragment.newInstance(MyName, MyGym, GymAdress);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.ContentLayout2, fragment)
@@ -41,8 +43,6 @@ public class EditGymActivity extends AppCompatActivity implements EditGymFragmen
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.ContentLayout2, fragment).commit();      // Fragment로 사용할 MainActivity내의 layout공간을 선택합니다.
     }
-
-
 
     @Override
     public void EditGymInfo() {

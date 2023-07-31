@@ -65,7 +65,6 @@ public class SignUpActivity extends AppCompatActivity implements SUSelectGymFrag
             platform = intent.getIntExtra("platform", 0);
         }
 
-
         height = 170;
         weight = 60;
         gender = -1;
