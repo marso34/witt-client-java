@@ -23,6 +23,7 @@ import com.example.healthappttt.Data.PreferenceHelper;
 import com.example.healthappttt.Data.RetrofitClient;
 import com.example.healthappttt.Data.SQLiteUtil;
 import com.example.healthappttt.Data.pkData;
+import com.example.healthappttt.MainActivity;
 import com.example.healthappttt.R;
 import com.example.healthappttt.User.UserListAdapter;
 import com.example.healthappttt.interface_.ServiceApi;
@@ -43,6 +44,7 @@ public class ChattingFragment extends Fragment {
     private SQLiteUtil sqLiteUtil;
     public boolean chatflag = false;
     private SocketSingleton socketSingleton;
+    private View rootView;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -75,7 +77,7 @@ public class ChattingFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // 레이아웃을 inflate합니다.
-        View view = inflater.inflate(R.layout.fragment_chatting, container, false);
+        rootView = inflater.inflate(R.layout.fragment_chatting, container, false);
         userList = new ArrayList<>();
         sqLiteUtil = SQLiteUtil.getInstance();
         sqLiteUtil.setEmptyDB();
@@ -83,7 +85,7 @@ public class ChattingFragment extends Fragment {
         socketSingleton = SocketSingleton.getInstance(getContext());
         socketSingleton.setChatFragment(this);
         // 리사이클러뷰를 초기화합니다.
-        userlistRecyclerView = view.findViewById(R.id.recyclerView);
+        userlistRecyclerView = rootView.findViewById(R.id.recyclerView);
         userlistRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         // 유저 목록을 가져와서 userList에 저장합니다.
@@ -93,7 +95,15 @@ public class ChattingFragment extends Fragment {
         userlistRecyclerView.setAdapter(userListAdapter);
         // 어댑터의 아이템 클릭 리스너를 설정합니다.
         getUsersFromServer();
-        return view;
+
+        View mh = rootView.findViewById(R.id.moveHome);
+        mh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity)requireActivity()).goToHome();
+            }
+        });
+        return rootView;
     }
 
     @Override
@@ -159,6 +169,15 @@ public class ChattingFragment extends Fragment {
                             userList.clear();
                             userList.addAll(users);
                             userListAdapter.notifyDataSetChanged();
+                            if(rootView !=null) {
+                                if (!userList.isEmpty()) {
+                                    rootView.findViewById(R.id.emptylayout).setVisibility(View.GONE);
+                                    rootView.findViewById(R.id.userListLayout).setVisibility(View.VISIBLE);
+                                } else {
+                                    rootView.findViewById(R.id.emptylayout).setVisibility(View.VISIBLE);
+                                    rootView.findViewById(R.id.userListLayout).setVisibility(View.GONE);
+                                }
+                            }
                         } finally {
                             chatflag = false;
                         }
