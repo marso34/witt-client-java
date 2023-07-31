@@ -3,7 +3,6 @@ package com.example.healthappttt;
 import static android.content.ContentValues.TAG;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -11,6 +10,9 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.healthappttt.Data.Chat.SocketSingleton;
+import com.example.healthappttt.Data.Exercise.ExerciseData;
+import com.example.healthappttt.Data.Exercise.RecordData;
+import com.example.healthappttt.Data.Exercise.RoutineData;
 import com.example.healthappttt.Data.PreferenceHelper;
 import com.example.healthappttt.Data.RetrofitClient;
 import com.example.healthappttt.Data.SQLiteUtil;
@@ -19,11 +21,6 @@ import com.example.healthappttt.Data.User.ReviewListData;
 import com.example.healthappttt.Data.User.UserKey;
 import com.example.healthappttt.Data.User.UserProfile;
 import com.example.healthappttt.Data.User.WittListData;
-import com.example.healthappttt.Data.Exercise.ExerciseData;
-import com.example.healthappttt.Data.Exercise.RecordData;
-import com.example.healthappttt.Data.Exercise.RoutineData;
-import com.example.healthappttt.Data.RetrofitClient;
-import com.example.healthappttt.Data.SQLiteUtil;
 import com.example.healthappttt.Data.pkData;
 import com.example.healthappttt.interface_.ServiceApi;
 
@@ -47,6 +44,7 @@ public class SplashActivity extends AppCompatActivity {
     private WittListData wittList;
 
     UserKey userKey;
+    int IuserKey;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,11 +56,9 @@ public class SplashActivity extends AppCompatActivity {
         sqLiteUtil = SQLiteUtil.getInstance();
 
         //한사람당 한계정 사용시 가능함 (로그아웃 mvp에서 제외 예정)
-        userKey = new UserKey(prefhelper.getPK());
 
-        SharedPreferences preferences = getSharedPreferences("GoSplash", MODE_PRIVATE);
-        String userKey2 = preferences.getString("userKeyinLogin", "");
-
+        IuserKey = prefhelper.getPK();
+        userKey = new UserKey(IuserKey);
 
         if(userKey != null) {
             Log.d(TAG, "유저키: " + userKey);
@@ -79,19 +75,74 @@ public class SplashActivity extends AppCompatActivity {
                 e.printStackTrace();
             } finally {
                 // MainActivity 이동
-                GoMain(userKey2);
+                GoMain(IuserKey);
             }
         } else
             Log.d(TAG, "유저키 널값");
     }
 
     //함수 실행
-    private void GoMain(String userKey){
+    private void GoMain(int userKey){
         Log.d(TAG, "GoMain: "+userKey);
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("userKey",userKey);
+        Log.d("스플래시에서 넘기는 pk:",userKey+"" );
         startActivity(intent);
         finish();
+    }
+
+    private void SyncRoutine(int pk) {
+        apiService.selectAllRoutine(new pkData(pk)).enqueue(new Callback<List<RoutineData>>() {
+            @Override
+            public void onResponse(Call<List<RoutineData>> call, Response<List<RoutineData>> response) {
+                if (response.isSuccessful()) {
+                    Log.d("성공", "루틴 불러오기 성공");
+
+                    ArrayList<RoutineData> routines = (ArrayList<RoutineData>) response.body();
+
+                    for (int i = 0; i < response.body().size(); i++)
+                        routines.get(i).setExercises(response.body().get(i).getExercises());
+
+                    saveRoutine(routines);
+//                    로컬하고 동기화
+                } else {
+                    Toast.makeText(SplashActivity.this, "루틴 불러오기 실패!!!", Toast.LENGTH_SHORT).show();
+                    Log.d("실패", "루틴 불러오기 실패");
+                }
+            }
+
+            public void onFailure(Call<List<RoutineData>> call, Throwable t) {
+                Toast.makeText(SplashActivity.this, "서버 연결 실패..", Toast.LENGTH_SHORT).show();
+                Log.d("서버 연결 실패", t.getMessage());
+            }
+        });
+    }
+
+    private void SyncRecord(int pk) {
+        apiService.selectAllRecord(new pkData(pk)).enqueue(new Callback<List<RecordData>>() {
+            @Override
+            public void onResponse(Call<List<RecordData>> call, Response<List<RecordData>> response) {
+                if (response.isSuccessful()) {
+
+                    ArrayList<RecordData> records = (ArrayList<RecordData>) response.body();
+
+                    for (int i = 0; i < response.body().size(); i++)
+                        records.get(i).setExercises(response.body().get(i).getExercises());
+
+                    saveRecods(records);
+                    // 로컬하고 동기화
+                } else {
+                    Toast.makeText(SplashActivity.this, "기록 불러오기 실패!!!", Toast.LENGTH_SHORT).show();
+                    Log.d("실패", "기록 불러오기 실패");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<RecordData>> call, Throwable t) {
+                Toast.makeText(SplashActivity.this, "서버 연결 실패..", Toast.LENGTH_SHORT).show();
+                Log.d("서버 연결 실패", t.getMessage());
+            }
+        });
     }
 
     private void getuserProfile(UserKey userKey) {
@@ -146,7 +197,7 @@ public class SplashActivity extends AppCompatActivity {
                             String User_Img = Black.getUser_Img();
                             BlackList = new BlackListData(BL_PK, User_NM, OUser_FK, TS,User_Img); //서버에서 받아온 데이터 형식으로 바꿔야함
 
-//                            SaveBlackList(BlackList);//로컬db에 차단목록 저장 매서드
+                            SaveBlackList(BlackList);//로컬db에 차단목록 저장 매서드
                         }
                     } else { Log.d("getBlackList","리스트가 null");}
                 } else {
@@ -160,61 +211,6 @@ public class SplashActivity extends AppCompatActivity {
             }
         });
     }
-
-    private void SyncRoutine(int pk) {
-        apiService.selectAllRoutine(new pkData(pk)).enqueue(new Callback<List<RoutineData>>() {
-            @Override
-            public void onResponse(Call<List<RoutineData>> call, Response<List<RoutineData>> response) {
-                if (response.isSuccessful()) {
-                    Log.d("성공", "루틴 불러오기 성공");
-
-                    ArrayList<RoutineData> routines = (ArrayList<RoutineData>) response.body();
-
-                    for (int i = 0; i < response.body().size(); i++)
-                        routines.get(i).setExercises(response.body().get(i).getExercises());
-
-                    saveRoutine(routines);
-//                    로컬하고 동기화
-                } else {
-                    Toast.makeText(SplashActivity.this, "루틴 불러오기 실패!!!", Toast.LENGTH_SHORT).show();
-                    Log.d("실패", "루틴 불러오기 실패");
-                }
-            }
-          
-            public void onFailure(Call<List<RoutineData>> call, Throwable t) {
-                Toast.makeText(SplashActivity.this, "서버 연결 실패..", Toast.LENGTH_SHORT).show();
-                Log.d("서버 연결 실패", t.getMessage());
-            }
-        });
-    }
-
-    private void SyncRecord(int pk) {
-        apiService.selectAllRecord(new pkData(pk)).enqueue(new Callback<List<RecordData>>() {
-            @Override
-            public void onResponse(Call<List<RecordData>> call, Response<List<RecordData>> response) {
-                if (response.isSuccessful()) {
-
-                    ArrayList<RecordData> records = (ArrayList<RecordData>) response.body();
-
-                    for (int i = 0; i < response.body().size(); i++)
-                        records.get(i).setExercises(response.body().get(i).getExercises());
-
-                    saveRecods(records);
-                    // 로컬하고 동기화
-                } else {
-                    Toast.makeText(SplashActivity.this, "기록 불러오기 실패!!!", Toast.LENGTH_SHORT).show();
-                    Log.d("실패", "기록 불러오기 실패");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<RecordData>> call, Throwable t) {
-              Toast.makeText(SplashActivity.this, "서버 연결 실패..", Toast.LENGTH_SHORT).show();
-              Log.d("서버 연결 실패", t.getMessage());
-            }
-        });
-    }
-
 
     //API 요청 후 응답을 SQLite로 받은후기 데이터 로컬 저장
     private void getReviewList(UserKey userKey) {
@@ -238,7 +234,7 @@ public class SplashActivity extends AppCompatActivity {
                             String User_Img = Review.getUser_Img();
 
                             ReviewList = new ReviewListData(Review_PK, User_FK, RPT_User_FK, Text_Con, Check_Box, TS, User_NM, User_Img); //서버에서 받아온 데이터 형식으로 바꿔야함
-//                            SaveReviewList(ReviewList);//로컬db에 받은 후기 저장 매서드
+                            SaveReviewList(ReviewList);//로컬db에 받은 후기 저장 매서드
                         }
                     } else { Log.d("getReviewList","리스트가 null");}
                 }else {

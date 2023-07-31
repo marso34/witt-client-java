@@ -30,7 +30,7 @@
             android:id="@+id/dropname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="김도현님이"
+            android:text="님이"
             style="@style/Title"/>
         <TextView
             android:layout_width="wrap_content"

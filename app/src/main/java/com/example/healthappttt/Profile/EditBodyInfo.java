@@ -81,13 +81,6 @@ public class EditBodyInfo extends AppCompatActivity {
 
         setInfo();//수정하기
 
-        binding.controlDialog.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                EditBtn.setTextColor(Color.parseColor("#FFFFFF"));//텍스트 흰색
-//                EditBtn.setBackgroundColor(Color.parseColor("#05C78C"));//배경 시그니처
-            }
-        });
 
     }
 
@@ -228,8 +221,6 @@ public class EditBodyInfo extends AppCompatActivity {
                     Log.d("checksecret weight: ","공개" );
                     temp = 1;
                 }
-                binding.EditBtn.setTextColor(Color.parseColor("#FFFFFF"));//텍스트 흰색
-                binding.EditBtn.setBackgroundColor(Color.parseColor("#05C78C"));//배경 시그니처
             }
         });
     }

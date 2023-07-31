@@ -22,6 +22,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.healthappttt.Data.PreferenceHelper;
 import com.example.healthappttt.Data.RetrofitClient;
 import com.example.healthappttt.Data.User.email;
 import com.example.healthappttt.MainActivity;
@@ -57,12 +58,13 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private SignInButton mGoogleSignInButton;
     private ActivityResultLauncher<Intent> startActivityResult; // startActivityForResult 대체 방법
 
-
+    private PreferenceHelper prefhelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        prefhelper = new PreferenceHelper("UserTB",this);
 
         startActivityResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
             @Override
@@ -223,10 +225,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     private void GoSplash(String userKey ){ //스플래쉬 액티비티 시작
         Log.d(TAG, "GoSplash: "+userKey);
-        SharedPreferences preferences = getSharedPreferences("GoSplash", MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putString("userKeyinLogin", userKey);
-        editor.apply();
+        prefhelper.setPK(Integer.parseInt(userKey));
         Intent intent = new Intent(this, SplashActivity.class);
         startActivity(intent);
         finish();

@@ -20,7 +20,6 @@ public class WittHistoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_witt_history);
 
-        // TODO 검색 매서드 WHClildFragment 살리기
 
 
         replaceFragment(new WHFragment());

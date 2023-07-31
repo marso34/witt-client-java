@@ -4,21 +4,14 @@ import static android.content.ContentValues.TAG;
 
 import android.Manifest;
 import android.app.Dialog;
-import android.content.ContentResolver;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -29,7 +22,6 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.healthappttt.Data.Chat.SocketSingleton;
@@ -44,18 +36,13 @@ import com.example.healthappttt.Data.WittSendData;
 import com.example.healthappttt.R;
 import com.example.healthappttt.Routine.RoutineActivity;
 import com.example.healthappttt.Routine.RoutineAdapter;
-import com.example.healthappttt.Sign.LoginActivity;
 import com.example.healthappttt.databinding.ActivityMyprofileBinding;
 import com.example.healthappttt.interface_.ServiceApi;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -64,6 +51,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Random;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -85,7 +73,7 @@ public class MyProfileActivity extends AppCompatActivity {
     TextView Psqaut,Pbench,Pdeadlift;
     Map<String,Object> userDefault;
     Map<String,Object> OuserDefault;
-    String myPK,PK;
+    int myPK,PK;
     String MyName, OtherName;
     String MyGym;
     int dayOfWeek;
@@ -93,6 +81,8 @@ public class MyProfileActivity extends AppCompatActivity {
     private Bitmap downloadedBitmap;
     private String imageUri;
 
+
+    int[] imageResources = {R.drawable.man_3d_light, R.drawable.woman_3d_light};
     String otherUserKey;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,10 +92,6 @@ public class MyProfileActivity extends AppCompatActivity {
         apiService = RetrofitClient.getClient().create(ServiceApi.class); // create메서드로 api서비스 인터페이스의 구현제 생성
         binding = ActivityMyprofileBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
-
-
-
 
         cancel_Mprofile = findViewById(R.id.cancel_Mprofile);
         //텍스트
@@ -122,7 +108,7 @@ public class MyProfileActivity extends AppCompatActivity {
         UserTB = new PreferenceHelper("UserTB",this);
 
         Intent intent = getIntent();//넘겨받은 pk를 담은 번들
-        PK = intent.getStringExtra("PK");
+        PK = intent.getIntExtra("PK",0);
 
 //        String uri = UserTB.getUser_IMG(); //이미지 가져오는 부분
 //        if(uri != null)
@@ -164,9 +150,9 @@ public class MyProfileActivity extends AppCompatActivity {
 
         dayOfWeek = intent.getIntExtra("dayOfWeek",calendar.get(Calendar.DAY_OF_WEEK) - 1);
 
-        myPK = String.valueOf(UserTB.getPK());// 로컬 내 PK
+        myPK = UserTB.getPK();// 로컬 내 PK
         /** 마이 프로필 */
-        if(PK.equals(myPK) ){ // 내 pk이면 마이 프로필
+        if(PK == myPK ){ // 내 pk이면 마이 프로필
             Log.d("프로필에서 로컬pk와 넘겨받은pk",PK + " " + myPK);
 
             userDefault = new HashMap<>();// 회원가입시 입력했던 데이터들 로컬에서 받기
@@ -182,9 +168,8 @@ public class MyProfileActivity extends AppCompatActivity {
             CommonViewChangeBlock();
         /** 상세 프로필*/
         }else { // 내 pk가 아니면 상대 프로필
-            Log.d("메인에서 넘겨받은 상대 pk: ",PK);
-            int PKI = Integer.parseInt(PK);
-            UserKey userKey = new UserKey(PKI);
+            Log.d("메인에서 넘겨받은 상대 pk: ",PK+"");
+            UserKey userKey = new UserKey(PK);
             //상세 프로필일때 화면 구성
             setOtherProfileView();
 
@@ -205,12 +190,18 @@ public class MyProfileActivity extends AppCompatActivity {
         binding.infoName.setText("상세 프로필");
         binding.black.setVisibility(View.GONE);
         binding.set.setVisibility(View.GONE);
-        //상세 프로필(text),루틴, 신고내역 오늘 루틴, 위트 보내기 보이게
+        //상세 프로필(text),루틴, 신고내역 오늘 루틴
         binding.totalRoutine.setVisibility(View.VISIBLE);
         binding.report.setVisibility(View.VISIBLE);
         binding.rt.setVisibility(View.VISIBLE);
-        binding.SendWitt.setVisibility(View.VISIBLE);
-        binding.view3.setVisibility(View.VISIBLE);
+
+        //위트를 이미 보낸 사람일 경우
+        sqLiteUtil = SQLiteUtil.getInstance();
+        sqLiteUtil.setInitView(this, "CHAT_ROOM_TB");//리뷰 목록 로컬 db
+        if(!sqLiteUtil.Wittsended(PK)){
+            binding.SendWitt.setVisibility(View.VISIBLE);
+            binding.view3.setVisibility(View.VISIBLE);
+        }
     }
 
     private void setRecyclerView(ArrayList<RoutineData> routines) {
@@ -265,6 +256,7 @@ public class MyProfileActivity extends AppCompatActivity {
                     } else{
                         Pgender.setText("여자");
                         Pgender.setTextColor(Color.parseColor("#F257AF")); // 핑크색
+                        Pgender.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FDE6F3")));
                     }
 
                     if(temp == 0){
@@ -325,6 +317,7 @@ public class MyProfileActivity extends AppCompatActivity {
         } else{
             Pgender.setText("여자");
             Pgender.setTextColor(Color.parseColor("#F257AF")); // 핑크색
+            Pgender.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FDE6F3")));
         }
 
         if(data.get("temp").toString().equals("0")){
@@ -357,7 +350,7 @@ public class MyProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MyProfileActivity.this, EditBodyInfo.class);
-                intent.putExtra("PK",UserTB.getPK());
+                intent.putExtra("PK",myPK);
                 intent.putExtra("height",UserTB.getheight());
                 intent.putExtra("weight",UserTB.getweight());
                 intent.putExtra("temp",UserTB.gettemp());
@@ -370,7 +363,7 @@ public class MyProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MyProfileActivity.this, EditWeightVolumes.class);
-                intent.putExtra("PK",UserTB.getPK());
+                intent.putExtra("PK",myPK);
                 intent.putExtra("squatValue",UserTB.getsquatValue());
                 intent.putExtra("benchValue",UserTB.getbenchValue());
                 intent.putExtra("deadValue",UserTB.getdeadValue());
@@ -404,7 +397,7 @@ public class MyProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MyProfileActivity.this, RoutineActivity.class);
-                intent.putExtra("code",Integer.valueOf(PK)); //pk
+                intent.putExtra("code",PK); //pk
                 intent.putExtra("name",OtherName);//이름
                 startActivity(intent);
             }
@@ -431,7 +424,7 @@ public class MyProfileActivity extends AppCompatActivity {
 //                UserTB.getUser_NM();내 이름
                 String timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
 
-                wittSendData = new WittSendData(UserTB.getPK(),Integer.valueOf(PK),UserTB.getUser_NM(),OuserDefault.get("USER_NM").toString(),timestamp);
+                wittSendData = new WittSendData(UserTB.getPK(),PK,UserTB.getUser_NM(),OuserDefault.get("USER_NM").toString(),timestamp);
                 getWittUserData(wittSendData,timestamp);
 
 
@@ -494,11 +487,11 @@ public class MyProfileActivity extends AppCompatActivity {
                     try {
                         try {
                             sqLiteUtil.setInitView(getApplicationContext(), "CHAT_MSG_TB");
-                            chatkey = sqLiteUtil.getLastMyMsgPK(String.valueOf(response.body()), myPK);
+                            chatkey = sqLiteUtil.getLastMyMsgPK(String.valueOf(response.body()), String.valueOf(myPK));
                             chatkey = chatkey + 1;
                         } finally {
                             sqLiteUtil.setInitView(getApplicationContext(), "CHAT_MSG_TB");
-                            sqLiteUtil.insert(chatkey, Integer.parseInt(myPK), 1, "!%$$#@@$%^!!~" + UserTB.getUser_NM() + "~!!^%$@@#$$%!", response.body(), 0, ts);
+                            sqLiteUtil.insert(chatkey, myPK, 1, "!%$$#@@$%^!!~" + UserTB.getUser_NM() + "~!!^%$@@#$$%!", response.body(), 0, ts);
                             Log.d("TAG", "chatPk보내기" + chatkey + ts);
                             Log.d("TAG", "chatPk보내기" + otherUserKey);
                             //채팅방 로컬 저장 코드 넣기
@@ -554,12 +547,16 @@ public class MyProfileActivity extends AppCompatActivity {
                         });
                     } else {
                         Log.d(TAG, "이미지 다운 실패");
+                        int randomIndex = new Random().nextInt(imageResources.length);
+                        ProfileImg.setImageResource(imageResources[randomIndex]);
                     }
                 }
 
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
                     Log.d(TAG, "이미지 다운 에러");
+                    int randomIndex = new Random().nextInt(imageResources.length);
+                    ProfileImg.setImageResource(imageResources[randomIndex]);
                 }
             });
         }
@@ -583,8 +580,8 @@ public class MyProfileActivity extends AppCompatActivity {
         try {
             SocketSingleton socketSingleton = SocketSingleton.getInstance(this);
             JSONObject data = new JSONObject();
-            data.put("myUserKey", myPK);
-            data.put("otherUserKey", PK);
+            data.put("myUserKey", String.valueOf(myPK));
+            data.put("otherUserKey", String.valueOf(PK));
             data.put("chatRoomId", chatRoomPk);
             data.put("messageText", messageText);
             data.put("chatPk",chatPk);
@@ -601,7 +598,7 @@ public class MyProfileActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         //수정하고 뒤로갔을때 다시 보여줄 데이터
-        if (PK.equals(myPK)) {
+        if (PK == myPK) {
             //키, 몸무게
             if (UserTB.gettemp() == 0) {
                 binding.cm.setVisibility(View.VISIBLE);

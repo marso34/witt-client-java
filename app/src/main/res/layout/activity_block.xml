@@ -52,7 +52,7 @@
             android:layout_gravity="right"
             android:layout_marginRight="125dp"
             android:gravity="center"
-            android:text="--"
+            android:text="0"
             android:textColor="@color/Background_3"
             android:textSize="15dp" />
 
@@ -73,8 +73,8 @@
 
 
 
-
     <LinearLayout
+        android:id="@+id/nulllienar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"

@@ -90,19 +90,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         login = 1;
         amc = AlarmManagerCustom.getInstance(this);
-        String uk = getIntent().getStringExtra("userKey");
-
-        if(uk != null){
-            userKey = new UserKey(Integer.parseInt(uk));
-        }
-        else Log.d(TAG, "onCreate: 유저키 없음");
-        Log.d("sub2에서 받은pk:", String.valueOf(userKey.getPk()));
+        int uk = getIntent().getIntExtra("userKey",0);
+        Log.d("메인에서 받는 pk:",uk+"" );
+        userKey = new UserKey(uk);
+//        else Log.d(TAG, "onCreate: 유저키 없음");
+        Log.d("메인 userKey:", String.valueOf(userKey.getPk()));
         createNotificationChannelAndSendNotification();
-        apiService = RetrofitClient.getClient().create(ServiceApi.class); // create메서드로 api서비스 인터페이스의 구현제 생성
 
+        apiService = RetrofitClient.getClient().create(ServiceApi.class); // create메서드로 api서비스 인터페이스의 구현제 생성
         sqLiteUtil = SQLiteUtil.getInstance(); //sqllite 객체
         prefhelper = new PreferenceHelper("UserTB",this);
-        prefhelper.setPK(Integer.parseInt(uk));
 
         getuserProfile(userKey); //유저키
 
@@ -198,7 +195,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         binding.myInformation.setOnClickListener(view -> {
-                //showUserInfoPopup(useremail); // 자신의 이메일 정보를 보여주는 팝업
             Intent intent = new Intent(MainActivity.this, MyProfileActivity.class);
             intent.putExtra("PK", uk);
             //Log.d("main에서 넘겨주는 myPK",uk);

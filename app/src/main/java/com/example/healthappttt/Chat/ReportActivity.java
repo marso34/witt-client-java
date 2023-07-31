@@ -2,11 +2,13 @@ package com.example.healthappttt.Chat;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckedTextView;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +37,9 @@ public class ReportActivity extends AppCompatActivity {
     private EditText txt;
     private String otherUserName;
     private Map<String, Object> RPTMap; //서버로 보내는 데이터
+    private boolean isButtonClickable = true;
+
+    ImageView cancle_report;
 
 
     @Override
@@ -64,6 +69,7 @@ public class ReportActivity extends AppCompatActivity {
 
     }
 
+
     public void setview() {
         GO_RPT = findViewById(R.id.GO_RPT);
         txt = findViewById(R.id.RPT_txt);
@@ -79,6 +85,14 @@ public class ReportActivity extends AppCompatActivity {
                 findViewById(R.id.RPT_ck5),
                 findViewById(R.id.RPT_ck8)
         };
+
+        cancle_report = findViewById(R.id.crt);
+        cancle_report.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     public void setCheckedTextViewListeners() {
@@ -114,33 +128,33 @@ public class ReportActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 boolean isAnyChecked = false;
-
                 for (CheckedTextView checkedTextView : checkedTextViews) {
                     if (checkedTextView.isChecked()) {
                         isAnyChecked = true;
                         break; // 체크된 항목이 하나라도 있으면 반복문 중단
                     }
                 }
-
+                String inputText = txt.getText().toString().trim();
                 if (!isAnyChecked) {//하나도 체크되지 않은 경우
-                    if(txt.getText() == null){//체크도 안하고 텍스트도 안적었을 경우
-                        v.setClickable(false);
+                    if(inputText.isEmpty()){//체크도 안하고 텍스트도 안적었을 경우
+
+                        disableButtonForOneSecond(); //1초간 클릭 막기
+
                         Toast.makeText(ReportActivity.this, "신고 내용을 하나 이상 체크해주세요", Toast.LENGTH_SHORT).show();
                     }else { //체크는 안하고 텍스트만 적은 경우 -> 이메일 전송 후 창 닫기
                         Log.d("ReportActivity : ", "체크표시를 안하고 텍스트만 적었을때");
+                        v.setClickable(true);
                         sendEmail();
                     }
                 } else {
                     setCheckBit(checkedTextViews);
-                    if(txt.getText() == null){
+                    if(inputText.isEmpty()){
                         //서버db에 저장 and email 전송 X
                         Log.d("ReportActivity : ","체크표시하고 텍스트 안적었을때" );
-
                         RPT(RPTMap, false);
                     }else {
                         //서버db에 저장 and email 전송 O
                         Log.d("ReportActivity : ","둘다 적었을때");
-
                         RPT(RPTMap, true);
                     }
 
@@ -174,29 +188,26 @@ public class ReportActivity extends AppCompatActivity {
 //        email.putExtra(Intent.EXTRA_TEXT,txt.getText());
 //        startActivity(email);
 
-
         Map<String,String> data = new HashMap<>();
         data.put("User_Email",UserTB.getEmail());
         data.put("context", String.valueOf(txt.getText()));
         data.put("OuserNM",otherUserName);
+
         Call<String> call = apiService.reportmail(data);
         call.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 String test = response.body();
-                Log.d("reportmail 요청 성공 "," context :"+ test);
+                Log.d("reportEmail 요청 성공 "," context :"+ test);
                 finish();
             }
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
-                Log.d("reportmail","메일 요청 실패");
+                Log.d("reportEmail","메일 요청 실패");
                 finish();
             }
         });
-
-
-
     }
 
     public void RPT(Map<String, Object> RPTMap, boolean i) {
@@ -224,6 +235,19 @@ public class ReportActivity extends AppCompatActivity {
         });
 
     }
+    private void disableButtonForOneSecond() {
+        // 버튼 클릭 불가능하도록 상태 변경
+        isButtonClickable = false;
+        GO_RPT.setEnabled(false);
 
+        // 1초 후에 버튼 클릭 가능하도록 상태 변경
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                isButtonClickable = true;
+                GO_RPT.setEnabled(true);
+            }
+        }, 1000); // 1000 밀리초 = 1초
+    }
 
 }

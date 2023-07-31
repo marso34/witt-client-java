@@ -28,14 +28,10 @@ public class ReportHistoryActivity extends AppCompatActivity {
     private ActivityReportHistoryBinding binding;
     private ServiceApi apiService;
 
-
     ReportHistory reportHistory;
     ArrayList<ReportHistory> ReportList;
-//   BlockUserAdapter ReportAdapter;
-//    RecyclerView recyclerView;
-//    LinearLayoutManager linearLayoutManager;
-    int PK;
     Button cancel_reported;
+    int PK;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +45,7 @@ public class ReportHistoryActivity extends AppCompatActivity {
         ReportList = new ArrayList<>();
 
         Intent intent = getIntent();
-        PK = Integer.parseInt(intent.getStringExtra("PK"));//넘겨 받은 PK
+        PK = intent.getIntExtra("PK",0);//넘겨 받은 PK
         UserKey userKey = new UserKey(PK);
 
         getReportList(userKey);

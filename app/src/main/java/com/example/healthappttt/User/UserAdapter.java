@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -22,6 +21,7 @@ import com.example.healthappttt.R;
 import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
+
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -150,7 +150,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
                 @Override
                 public void onClick(View view) {
                     Log.d("상세 프로필", "userAdapter에서 클릭처리");
-                    String adapterUserKey = String.valueOf(userInfo.getUserKey());
+                    int adapterUserKey = userInfo.getUserKey();
                     Intent intent = new Intent(mContext, MyProfileActivity.class);
 
                     intent.putExtra("PK", adapterUserKey);
