@@ -232,8 +232,10 @@ public class SocketSingleton {
         });
     }
     public void SqlLiteSaveMessage(int chatPk,int userKey, int myFlag, String message, int chatRoomId,String ts) {
-        sqLiteUtil.setInitView(context.getApplicationContext(), "CHAT_MSG_TB");
-        sqLiteUtil.insert(chatPk,userKey, myFlag, message, chatRoomId, 1,ts);
+        if(context.getApplicationContext() != null) {
+            sqLiteUtil.setInitView(context.getApplicationContext(), "CHAT_MSG_TB");
+            sqLiteUtil.insert(chatPk, userKey, myFlag, message, chatRoomId, 1, ts);
+        }
     }
 
     private void insertSocket() {

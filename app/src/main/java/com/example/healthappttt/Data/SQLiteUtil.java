@@ -48,30 +48,27 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
     }
     public void setInitView(Context context, String tableName) {
         this.table = tableName;
-            if (context != null) {
-                DBHelper dbHelper = new DBHelper(context, "Witt", null, 1);
-                try {
-                    boolean flag = false;
-                    while (flag == false) {
-                        if (dbHelper.getWritableDatabase() != null) {
-                            db = dbHelper.getWritableDatabase();
-                            dbHelper.onCreate(db);
-                            flag = true;
-                        } else {
-                            dbHelper = new DBHelper(context, "Witt", null, 1);
-                        }
+
+        if (context != null) {
+            DBHelper dbHelper = new DBHelper(context, "Witt", null, 1);
+            try {
+                while (true) {
+                    if (dbHelper != null) {
+                        db = dbHelper.getWritableDatabase();
+                        dbHelper.onCreate(db);
+                        break;
+                    } else {
+                        dbHelper = new DBHelper(context, "Witt", null, 1);
                     }
-
-                } catch (SQLiteException e) {
-                    e.printStackTrace();
-                    Log.e(table, " 데이터 베이스를 열 수 없음");
                 }
+            } catch (SQLiteException e) {
+                e.printStackTrace();
+                Log.e(table, " 데이터 베이스를 열 수 없음");
             }
+        }
 
+        // 다른 메서드들
     }
-    
-    // 다른 메서드들
-
     /**
      * 이 메소드는 Witt_History_TB 데이터를 삽입하는 메서드입니다. ( 서버 유저테이블+Ex_Record )
      */
@@ -241,7 +238,7 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
     }
 
     public int getLastMyMsgPK(String chatRoomId,String userKey) {
-        int lastMsgPK = -1;
+        int lastMsgPK = 0;
         try {
             // MSG_PK 열의 마지막 튜플을 얻기 위한 쿼리를 작성합니다.
             if (table != null && table.equals("CHAT_MSG_TB")) {
@@ -304,8 +301,7 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         Log.d(TAG, "insert : " + ts);
             try {
                 if (table != null &&table.equals("CHAT_MSG_TB")) {
-                    int isReadValue = getIsReadValue(userKey,chatRoomId);
-                    if (isReadValue == -1) {
+                    {
                         ContentValues values = new ContentValues();
                         values.put("MSG_PK", chatPk);
                         values.put("USER_FK", userKey);

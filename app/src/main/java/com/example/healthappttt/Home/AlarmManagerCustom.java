@@ -6,15 +6,13 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.widget.RemoteViews;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.example.healthappttt.R;
 import com.example.healthappttt.Sign.LoginActivity;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class AlarmManagerCustom {
 
@@ -26,9 +24,9 @@ public class AlarmManagerCustom {
     private  boolean enableSound;
     private String title;
     private String content;
+    private int flags;
     private String userKey;
     private String chatRoomId;
-    private int flags;
     // 프라이빗 생성자
     private AlarmManagerCustom(Context context) {
         this.context = context.getApplicationContext();
@@ -40,22 +38,6 @@ public class AlarmManagerCustom {
             instance = new AlarmManagerCustom(context);
         }
         return instance;
-    }
-
-    public void onAlarm(String title, String content){
-        this.title = title;
-        this.content = content;
-        this.userKey = null;
-        this.chatRoomId = null;
-        if(content != null) {
-            createNotificationChannel();
-            setSounds(1);
-        }
-//        Intent receiverIntent = new Intent(context, AlarmRecevier.class);
-//        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, alarmID, receiverIntent, PendingIntent.FLAG_IMMUTABLE);
-//        Calendar calendar = Calendar.getInstance();
-//        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-//        alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
     }
 
     public void onAlarm(String title, String content, String userKey, String chatRoomId){
@@ -106,11 +88,10 @@ public class AlarmManagerCustom {
             enableSound = false;
         }
     }
-
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            String channelId = title;
-            String channelName = title;
+            String channelId = "Witt_Channel";
+            String channelName = "WittChannel";
             // 진동 설정
             int imp = NotificationManager.IMPORTANCE_HIGH;
 //            if (enableVibration) {
@@ -126,66 +107,47 @@ public class AlarmManagerCustom {
 
             // 알림 채널에 대한 추가 설정
 
-            if(context!= null) {
-                NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
-                if (notificationManager != null) {
-                    notificationManager.createNotificationChannel(channel);
-                }
+
+
+            NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
+            if (notificationManager != null) {
+                notificationManager.createNotificationChannel(channel);
             }
         }
         showCustomNotification();
     }
 
-    public String  convertToCustomTimeFormat() {
-        long currentTimeMillis = System.currentTimeMillis();
-        SimpleDateFormat sdf = new SimpleDateFormat("a hh:mm");
-
-        String customTimeFormat = sdf.format(new Date(currentTimeMillis));
-        return customTimeFormat;
-    }
     // 커스텀 알림 표시
     public void showCustomNotification() {
         String GROUP_KEY = title;
-        NotificationCompat.MessagingStyle messagingStyle = new NotificationCompat.MessagingStyle(title)
-                .setGroupConversation(true);
-
-        // Add messages to the messaging style
-        messagingStyle.addMessage(new NotificationCompat.MessagingStyle.Message(
-                content,
-                System.currentTimeMillis(),
-                title
-        ));
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, GROUP_KEY)
-                .setSmallIcon(R.drawable.ic_baseline_email_24)
-                .setContentTitle("Message")
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "Witt_Channel")
+                .setSmallIcon(R.drawable.notification_icon)
                 .setContentTitle(title)
                 .setContentText(content)
                 .setAutoCancel(true)
                 .setOnlyAlertOnce(true)
                 .setGroup(GROUP_KEY)
                 .setGroupSummary(true);
+
         Intent tapIntent;
-
-
 //api level 21.. deprecated..
-            tapIntent = new Intent(context, LoginActivity.class);
-            tapIntent.putExtra("chatRoomId", chatRoomId);
-            tapIntent.putExtra("userKey", userKey);
-            tapIntent.putExtra("oUserName", title);
-        ;
+        tapIntent = new Intent(context, LoginActivity.class);
+        tapIntent.putExtra("chatRoomId__", chatRoomId);
+        tapIntent.putExtra("userKey__", userKey);
+        tapIntent.putExtra("oUserName__", title);
         tapIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent tapPendingIntent = PendingIntent.getActivity(context, 0, tapIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+        PendingIntent tapPendingIntent = PendingIntent.getActivity(context, 0, tapIntent, PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
         builder.setContentIntent(tapPendingIntent);
-//        RemoteViews customLayout = new RemoteViews(context.getPackageName(), R.layout.custom_notification_layout);
-//        //이미지 뭐 띄울지.
-//        customLayout.setTextViewText(R.id.notification_title, title);
-//        customLayout.setTextViewText(R.id.notification_content, content);
-//        builder.setCustomContentView(customLayout);
+        RemoteViews customLayout = new RemoteViews(context.getPackageName(), R.layout.custom_notification_layout);
+        //이미지 뭐 띄울지.
+        customLayout.setTextViewText(R.id.notification_title, title);
+        customLayout.setTextViewText(R.id.notification_content, content);
+        builder.setCustomContentView(customLayout);
 
 
         // 알림 생성 및 표시
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-        notificationManager.notify(alarmID, builder.build());
+        notificationManager.notify(alarmID++, builder.build());
     }
 
     // 알림 해제

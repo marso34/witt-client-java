@@ -267,6 +267,7 @@ public class ChatActivity extends AppCompatActivity{
                         if(getApplicationContext() !=null) {
                             sqLiteUtil.setInitView(getApplicationContext(), "CHAT_MSG_TB");
                             sqLiteUtil.insert(chatkey, Integer.parseInt(userKey), 1, messageText, Integer.parseInt(chatRoomId), 0, ts);
+                            Log.d(TAG, "onClick: 보내기" + chatkey);
                             sendMessageToServer(messageText, chatkey, ts);
                         }
                     }

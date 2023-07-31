@@ -66,9 +66,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         oUserName = null;
         Intent intent = getIntent();
         if (intent != null) {
-            chatRoomId = intent.getStringExtra("chatRoomId");
-            oUserKey = intent.getStringExtra("userKey");
-            oUserName = intent.getStringExtra("oUserName");
+            chatRoomId = intent.getStringExtra("chatRoomId__");
+            oUserKey = intent.getStringExtra("userKey__");
+            oUserName = intent.getStringExtra("oUserName__");
             Log.d(TAG, "lklsslsl"+chatRoomId+oUserKey+oUserName);
         }
         startActivityResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
