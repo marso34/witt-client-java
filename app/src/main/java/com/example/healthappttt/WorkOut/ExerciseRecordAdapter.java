@@ -4,8 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,12 +23,16 @@ import com.google.android.material.card.MaterialCardView;
 import java.util.ArrayList;
 
 public class ExerciseRecordAdapter extends RecyclerView.Adapter<ExerciseRecordAdapter.MainViewHolder>  {
+    Context context;
+
+    private static final String Signature = "#05C78C";
+    private static final String Box = "#E3E8EF";
+
     private static ArrayList<ExerciseData> exercises;
     private OnExerciseClick onExerciseClick;
 
-    private static final String Signature = "#05C78C";
-
-    public ExerciseRecordAdapter(ArrayList<ExerciseData> exercises) {
+    public ExerciseRecordAdapter(Context context, ArrayList<ExerciseData> exercises) {
+        this.context = context;
         this.exercises = exercises;
     }
 
@@ -73,8 +79,8 @@ public class ExerciseRecordAdapter extends RecyclerView.Adapter<ExerciseRecordAd
                 onExerciseClick.onExerciseClick(position, mainViewHolder.CardioTxt, mainViewHolder.progressBar);
 
                 if (mainViewHolder.progressBar.getProgress() == mainViewHolder.progressBar.getMax()) {
-                    mainViewHolder.ExerciseCard.setStrokeWidth(1);
-                    mainViewHolder.NameCard.setStrokeWidth(1);
+                    mainViewHolder.ExerciseCard.setStrokeWidth(2);
+                    mainViewHolder.NameCard.setStrokeWidth(2);
 
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                         mainViewHolder.ExerciseCard.setOutlineSpotShadowColor(Color.parseColor(Signature));
@@ -121,6 +127,9 @@ public class ExerciseRecordAdapter extends RecyclerView.Adapter<ExerciseRecordAd
                 detail += " · " + CntOrDis + "회";
             if (SetOrTime != 0)
                 detail += " · " + SetOrTime + "세트";
+
+            SeperatedProgressbar bgProgress = new SeperatedProgressbar(context, Color.parseColor(Signature), Color.parseColor(Box), progressMaxValue);
+            holder.progressBar.setProgressDrawable(bgProgress);
         }
 
         holder.DetailTxt.setText(detail);

@@ -73,7 +73,7 @@ public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapte
                 selectExerciseIndex.add(cat + " " + this.exercises.get(position).getExerciseName());
 
                 mainViewHolder.CheckedImg.setVisibility(View.VISIBLE);
-                mainViewHolder.ExerciseLayout.setStrokeWidth(1);
+                mainViewHolder.ExerciseLayout.setStrokeWidth(2);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
                     mainViewHolder.ExerciseLayout.setOutlineSpotShadowColor(Color.parseColor(Signature));
             } else {
@@ -100,7 +100,7 @@ public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapte
             if (e.equals(cat + " " + name)) {
                 holder.isChecked = true;
                 holder.CheckedImg.setVisibility(View.VISIBLE);
-                holder.ExerciseLayout.setStrokeWidth(1);
+                holder.ExerciseLayout.setStrokeWidth(2);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
                     holder.ExerciseLayout.setOutlineSpotShadowColor(Color.parseColor(Signature));
 

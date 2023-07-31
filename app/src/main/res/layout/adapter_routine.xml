@@ -38,10 +38,24 @@
                 android:orientation="horizontal"
                 android:gravity="left">
 
+                <TextView
+                    android:id="@+id/dayOfWeek"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginRight="9dp"
+                    android:background="@drawable/rectangle_16dp_bg1"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center"
+                    android:textColor="@color/Background_3"
+                    android:text="월"
+                    style="@style/Caption"
+                    android:visibility="gone"/>
+
                 <ImageView
                     android:id="@+id/timeIcon"
                     android:layout_width="22dp"
                     android:layout_height="22dp"
+                    android:layout_gravity="center_vertical"
                     android:src="@drawable/baseline_wb_sunny_24"/>
 
                 <TextView
@@ -58,7 +72,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/catRecyclerView"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"/>
 
             <ImageView
                 android:id="@+id/editBtn"

@@ -84,8 +84,8 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
                 values.put("User_NM",WittList.getUser_NM());
                 values.put("User_Img",WittList.getUser_Img());
 
-                long result = db.insert(table,null,values);
-                Log.d("Witt_History_TB",result+"성공");
+//                long result = db.insert(table,null,values);
+//                Log.d("Witt_History_TB",result+"성공");
             }else {
                 Log.d("Witt_History_TB","매서드 형식 오류 ");
             }
@@ -120,8 +120,8 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
                 values.put("User_NM",reviewList.getUser_NM());
                 values.put("User_Img",reviewList.getUser_Img());
 
-                long result = db.insert(table,null,values);
-                Log.d("ReviewTB",result+"성공");
+//                long result = db.insert(table,null,values);
+//                Log.d("ReviewTB",result+"성공");
             }else {
                 Log.d("ReviewTB","매서드 형식 오류 ");
             }
@@ -180,8 +180,8 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
                 values.put("TS", BlackList.getTS());
                 values.put("User_Img",BlackList.getUser_Img());
 
-                long result = db.insert(table,null,values);
-                Log.d("blackTB",result + "성공");
+//                long result = db.insert(table,null,values);
+//                Log.d("blackTB",result + "성공");
             } else  {
                 Log.d("Black_TB","매서드 형식 오류 ");
             }
@@ -904,10 +904,8 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
 
                 while(cursor.moveToNext()) {
                     ReviewListData e = new ReviewListData( cursor.getInt(0) );    //Check_Box
-
-
                     reviewListData.add(e);
-                    Log.d("SQLite SelectEvaluation", "받은평가데이터: " + e.getCheck_Box());
+//                    Log.d("SQLite SelectEvaluation", "받은평가데이터: " + e.getCheck_Box());
                 }
                 return reviewListData;
             } else {
@@ -941,7 +939,7 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
                             cursor.getString(7)           //User_Img
                     );
                     reviewListData.add(e);
-                    Log.d("SQLite SelectReviewUser", "리뷰리스트데이터: " + e.getText_Con());
+//                    Log.d("SQLite SelectReviewUser", "리뷰리스트데이터: " + e.getText_Con());
                 }
                 return reviewListData;
             } else {
@@ -959,7 +957,6 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
                 String sql = "SELECT * FROM Witt_History_TB ORDER BY TS DESC";//날짜별 내림차순으로 정렬하여 select
 
                 Cursor cursor = db.rawQuery(sql, null);
-                Log.d("커서 sqliteutil", cursor.getColumnName(0));
                 ArrayList<WittListData> wittListData = new ArrayList<>();
 
                 while (cursor.moveToNext()) {
@@ -972,7 +969,7 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
                             cursor.getString(5)           //User_Img
                     );
                     wittListData.add(e);
-                    Log.d("SQLite SelectWittHis", "위트내역 리스트 데이터: " + e.getTS());
+//                    Log.d("SQLite SelectWittHis", "위트내역 리스트 데이터: " + e.getTS());
                 }
                 return wittListData;
             } else {
@@ -998,7 +995,25 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         }
 
     }
+    //TODO selectWittsended
+    public boolean Wittsended(int PK) {
+        String query = "SELECT OTHER_USER_FK FROM CHAT_ROOM_TB " +
+                        "WHERE OTHER_USER_FK = ?";
+        String[] selectionArgs = {String.valueOf(PK)};
 
+
+        try(Cursor cursor = db.rawQuery(query, selectionArgs)){
+            if(cursor != null && cursor.moveToFirst()) {
+                Log.d(TAG,"상대 pk 있다");
+                return true;
+            }else{
+                Log.d(TAG,"상대 pk 없다");
+                return false;
+            }
+        }finally {
+            db.close();
+        }
+    }
 
 
 

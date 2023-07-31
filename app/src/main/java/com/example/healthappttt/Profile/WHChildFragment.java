@@ -20,7 +20,6 @@ import com.example.healthappttt.Data.PreferenceHelper;
 import com.example.healthappttt.Data.RetrofitClient;
 import com.example.healthappttt.Data.SQLiteUtil;
 import com.example.healthappttt.Data.User.BlackListData;
-import com.example.healthappttt.Data.User.ReportHistory;
 import com.example.healthappttt.Data.User.ReviewListData;
 import com.example.healthappttt.Data.User.UserKey;
 import com.example.healthappttt.Data.User.WittListData;
@@ -46,8 +45,6 @@ public class WHChildFragment extends Fragment {
     private ArrayList<WittListData> oneWeekAgoList, oneMonthAgoList, oneYearAgoList;
     ArrayList<BlackListData> BlackList;
     ArrayList<ReviewListData> ReviewList;
-    ArrayList<ReportHistory> ReportList;
-    private List<String> dateList;
     WittListData wittListData;
     BlockUserAdapter WittHistoryAdapter;
 
@@ -62,14 +59,13 @@ public class WHChildFragment extends Fragment {
     Calendar calendar= Calendar.getInstance();
     Date today = calendar.getTime();
     Date oneWeekAgo, oneMonthAgo, oneYearAgo;
-    String myPK,PK;
+    int myPK,PK;
 
     public WHChildFragment() {}
 
     public WHChildFragment(int period) {//position
         this.period = period;
         WittList = new ArrayList<>();
-        //Log.d("getFragment", String.valueOf(getFragment()));
     }
 
     public static WHChildFragment newInstance(int number){
@@ -88,27 +84,26 @@ public class WHChildFragment extends Fragment {
         UserTB = new PreferenceHelper("UserTB", getContext());
 
         Intent intent = getActivity().getIntent();
-        PK = intent.getStringExtra("PK");//넘겨 받은 PK
-        myPK = String.valueOf(UserTB.getPK());// 로컬 내 PK
+        PK = intent.getIntExtra("PK",0);//넘겨 받은 PK
+        myPK = UserTB.getPK();// 로컬 내 PK
 
         filteredList = new ArrayList<>();
         oneWeekAgoList = new ArrayList<>();//1주           날짜 비교하여 넣어지는 리스트
         oneMonthAgoList = new ArrayList<>();//1개월
         oneYearAgoList = new ArrayList<>();//1년
 
-        if (PK.equals(myPK)) { //나의 위트 내역
-            Log.d("나의 위트내역 ", PK + " - " + myPK);
+        if (PK == myPK) { //나의 위트 내역
+            //Log.d("나의 위트내역 ", PK + " - " + myPK);
             sqLiteUtil = SQLiteUtil.getInstance(); // SQLiteUtil 객체 생성
             sqLiteUtil.setInitView(getContext(),"Witt_History_TB");//위트내역 목록 로컬 db
             WittList = sqLiteUtil.SelectWittHistoryUser();//SELECT * FROM Witt_History_TB ORDER BY TS DESC
 
             setView();
         } else { //상대 위트 내역
-            Log.d("상대 위트내역 상대 pk: ", PK + " - " + myPK);
+            //Log.d("상대 위트내역 상대 pk: ", PK + " - " + myPK);
             apiService = RetrofitClient.getClient().create(ServiceApi.class);
             WittList = new ArrayList<>();
-            int PKI = Integer.parseInt(PK);
-            UserKey userKey = new UserKey(PKI);
+            UserKey userKey = new UserKey(PK);
 
             getWittHistory(userKey);
         }
@@ -127,17 +122,6 @@ public class WHChildFragment extends Fragment {
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.activity_whchild_fragment, container, false);
         recyclerView = view.findViewById(R.id.wh_recyclerView);
         searchView = getActivity().findViewById(R.id.black_search);
-
-//        if (!PK.equals(myPK)) {
-//            Log.d("상대 위트내역 상대 pk: ", PK + " - " + myPK);
-//            apiService = RetrofitClient.getClient().create(ServiceApi.class);
-//            WittList = new ArrayList<>();
-//            int PKI = Integer.parseInt(PK);
-//            UserKey userKey = new UserKey(PKI);
-//
-//            getWittHistory(userKey);
-//        }
-
 
         switch (period) {
             case 0:
@@ -163,7 +147,7 @@ public class WHChildFragment extends Fragment {
 
 
         setRecyclerView();
-        if (PK.equals(myPK)) {
+        if (PK == myPK) {
             SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.wh_swipe_layout);
             swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
@@ -263,9 +247,9 @@ public class WHChildFragment extends Fragment {
                 if (adata.after(oneWeekAgo) && adata.before(today)) {
                     // 1주 전부터 오늘 사이의 데이터
                     oneWeekAgoList.add(WittList.get(n));
-                    Log.d("add1 일주일전", String.valueOf(adata.after(oneWeekAgo)));
-                    Log.d("add1 데이터 시간 ",WittList.get(0).getTS());
-                    Log.d("add1 일주일전", String.valueOf(adata.before(today)));
+//                    Log.d("add1 일주일전", String.valueOf(adata.after(oneWeekAgo)));
+//                    Log.d("add1 데이터 시간 ",WittList.get(0).getTS());
+//                    Log.d("add1 일주일전", String.valueOf(adata.before(today)));
                 }
 
                 calendar.setTime(today);//오늘 날짜로 다시 설정
@@ -275,7 +259,7 @@ public class WHChildFragment extends Fragment {
                 if (adata.after(oneMonthAgo) && adata.before(today)) {
                     // 1개월 전부터 오늘 사이의 데이터
                     oneMonthAgoList.add(WittList.get(n));
-                    Log.d("add2 데이터 시간 ",WittList.get(0).getTS());
+//                    Log.d("add2 데이터 시간 ",WittList.get(0).getTS());
                 }
 
                 calendar.setTime(today);
@@ -285,7 +269,7 @@ public class WHChildFragment extends Fragment {
                 if (adata.after(oneYearAgo) && adata.before(today)) {
                     // 1년 전부터 오늘 사이의 데이터
                     oneYearAgoList.add(WittList.get(n));
-                    Log.d("add3  ",WittList.get(0).getTS());
+//                    Log.d("add3  ",WittList.get(0).getTS());
                 }
 
             }catch (ParseException e) {

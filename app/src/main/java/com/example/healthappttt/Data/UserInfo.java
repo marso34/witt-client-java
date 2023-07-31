@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class UserInfo {
     @SerializedName("UserKey")
-    private long userKey;
+    private int userKey;
     @SerializedName("Name")
     private String name;
     @SerializedName("GymName")
@@ -27,7 +27,7 @@ public class UserInfo {
 
     private Integer distance = 0;
     // Getters and Setters
-    public long getUserKey() {
+    public int getUserKey() {
         return userKey;
     }
     public void setDistance(Integer D){
@@ -37,7 +37,7 @@ public class UserInfo {
         return distance;
     }
 
-    public void setUserKey(long userKey) {
+    public void setUserKey(int userKey) {
         this.userKey = userKey;
     }
     public String getName() {

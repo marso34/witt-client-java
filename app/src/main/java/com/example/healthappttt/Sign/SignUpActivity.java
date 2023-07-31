@@ -2,18 +2,12 @@ package com.example.healthappttt.Sign;
 
 import static android.content.ContentValues.TAG;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.widget.Toast;
-
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -35,14 +29,12 @@ import com.example.healthappttt.R;
 import com.example.healthappttt.interface_.ServiceApi;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -72,7 +64,6 @@ public class SignUpActivity extends AppCompatActivity implements SUSelectGymFrag
             name = intent.getStringExtra("name");
             platform = intent.getIntExtra("platform", 0);
         }
-
 
         height = 170;
         weight = 60;
@@ -197,9 +188,10 @@ private void sendTokenToServer() {
                     UserClass sharedUser = new UserClass(getUserDT(), getPhoneInfo(), getMannerInfo(), getLocInfo(), getExPerInfo(), getBodyInfo());
                     UserTB.putMembership(sharedUser);
                     Log.d("shared 로컬 저장 회원가입 pk:", String.valueOf(userKey));
+                    UserTB.setPK(userKey); //pk 저장
 
                     Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
-                    intent.putExtra("userKey", String.valueOf(userKey));
+                    intent.putExtra("userKey", userKey);
                     startActivity(intent);
                     finish();
                     Log.d(TAG, "업로드 성공");
@@ -219,38 +211,46 @@ private void sendTokenToServer() {
 
     private void uploadImage() {
 
-        ServiceApi apiService = RetrofitClient.getClient().create(ServiceApi.class);
-        String imagePath = getRealPathFromUri(userImageUri);
-           File imageFile = new File(imagePath);
+
+        if(userImageUri != null) {
+            ServiceApi apiService = RetrofitClient.getClient().create(ServiceApi.class);
+            String imagePath = getRealPathFromUri(userImageUri);
+            File imageFile = new File(imagePath);
             RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), imageFile);
             MultipartBody.Part imagePart = MultipartBody.Part.createFormData("image", imageFile.getName(), requestBody);
 
-        Call<UploadResponse> call = apiService.uploadImage(imagePart);
-        call.enqueue(new Callback<UploadResponse>() {
-            @Override
-            public void onResponse(Call<UploadResponse> call, Response<UploadResponse> response) {
-                if (response.isSuccessful()) {
+            Call<UploadResponse> call = apiService.uploadImage(imagePart);
+            call.enqueue(new Callback<UploadResponse>() {
+                @Override
+                public void onResponse(Call<UploadResponse> call, Response<UploadResponse> response) {
+                    if (response.isSuccessful()) {
 
-                    Log.d(TAG, "sendTokenToServer success");
-                    UploadResponse uploadResponse = response.body();
+                        Log.d(TAG, "sendTokenToServer success");
+                        UploadResponse uploadResponse = response.body();
 
-                    String imageUrl = uploadResponse.getImageUrl();
-                    seturi = imageUrl;
+                        String imageUrl = uploadResponse.getImageUrl();
+                        seturi = imageUrl;
 
 
+                        sendTokenToServer();
 
-                    sendTokenToServer();
-
-                } else {
-                    Log.d(TAG, "sendTokenToServer fail");
+                    } else {
+                        Log.d(TAG, "sendTokenToServer fail");
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<UploadResponse> call, Throwable t) {
-                Log.e("Upload Error", "통신 실패: " + t.getMessage());
-            }
-        });
+                @Override
+                public void onFailure(Call<UploadResponse> call, Throwable t) {
+                    Log.e("Upload Error", "통신 실패: " + t.getMessage());
+                }
+            });
+
+        }
+        else {
+            Log.e("Upload Error", "이미지 없음");
+            seturi = "이미지 없음";
+            sendTokenToServer();
+        }
     }
 
     private String getRealPathFromUri(Uri uri) {

@@ -2,6 +2,7 @@ package com.example.healthappttt.Profile;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -30,7 +31,7 @@ import retrofit2.Response;
 public class DropUserActivity extends AppCompatActivity {
     private ServiceApi apiService;
     private SQLiteUtil sqLiteUtil;
-    private PreferenceHelper preferenceHelper;
+    private PreferenceHelper UserTB;
     private CheckedTextView[] checkedTextViews; //체크박스들 모음
     private int selection, mypk;
     private String myname;
@@ -39,17 +40,18 @@ public class DropUserActivity extends AppCompatActivity {
     private TextView reportname;
     private EditText txt;
     private Map<String, Object> DropMap; //서버로 보내는 데이터
+    private boolean isButtonClickable = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drop_user);
         apiService = RetrofitClient.getClient().create(ServiceApi.class);
-        preferenceHelper = new PreferenceHelper("UserTB", DropUserActivity.this);
+        UserTB = new PreferenceHelper("UserTB", DropUserActivity.this);
         sqLiteUtil = SQLiteUtil.getInstance();
 
-        myname = preferenceHelper.getUser_NM();
-        mypk = preferenceHelper.getPK();
+        myname = UserTB.getUser_NM();
+        mypk = UserTB.getPK();
 
         setview();// 체크 뷰 및 다른 뷰 정의
 
@@ -123,38 +125,30 @@ public class DropUserActivity extends AppCompatActivity {
                 String inputText = txt.getText().toString().trim();
                 if (!isAnyChecked) {//하나도 체크되지 않은 경우
                     if(inputText.isEmpty()){//체크도 안하고 텍스트도 안적었을 경우
-                        v.setClickable(false);
+                        disableButtonForOneSecond();
                         Toast.makeText(DropUserActivity.this, "탈퇴 사유를 하나 이상 체크해주세요", Toast.LENGTH_SHORT).show();
                     }else { //체크는 안하고 텍스트만 적은 경우 -> 이메일 전송 후 창 닫기
                         Log.d("ReportActivity : ", "체크표시를 안하고 텍스트만 적었을때");
-
                         DROP(DropMap, true);
-
-                        //TODO 서버에서 유저 PK 삭제 + 로컬 db 삭제
+                        // 서버에서 유저 PK 삭제 + 로컬 db 삭제
                     }
-                } else {//TODO 1. 선택한 체크박스 서버 FEEDBACK_TB에 저장 (PK연결은 하자만 이 투플은 삭제하지 않도록)
-                        //TODO 2. 서버에서 유저 PK 삭제 + (로컬db도 삭제)
-                        //TODO 0722할일 : 텍스트가 널인지 아닌지 구별 못하는거 다시 검토
+                } else {// 1. 선택한 체크박스 서버 FEEDBACK_TB에 저장 (PK연결은 하자만 이 투플은 삭제하지 않도록)
+                        // 2. 서버에서 유저 PK 삭제 + (로컬db도 삭제)
+                        // 텍스트가 널인지 아닌지 구별 못하는거 다시 검토
                     setCheckBit(checkedTextViews);
                     if(inputText.isEmpty()){
                         //서버db에 피드백 저장 and email 전송 X
                         Log.d("ReportActivity : ","체크표시하고 텍스트 안적었을때" );
-
                         DROP(DropMap, false);
-
                         //CommonDROP();
 
                     }else {
                         Log.d("텍스트: ", String.valueOf(txt.getText()));
                         //서버db에 피드백 저장 and email 전송 O
                         Log.d("ReportActivity : ","둘다 적었을때");
-
                         DROP(DropMap, true);
-
                         //sendEmail();
                         //CommonDROP();
-
-
                     }
                 }
 
@@ -199,12 +193,12 @@ public class DropUserActivity extends AppCompatActivity {
         //TODO 실제로 삭제되는지 확인 해야함 TEST !!!!!!!!!!!
 
         //로컬 shared 삭제
-        preferenceHelper.deleteUserTB();
+        UserTB.deleteUserTB();
         sqLiteUtil.DropUser(DropUserActivity.this);
 
         Toast.makeText(DropUserActivity.this, "탈퇴완료", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(DropUserActivity.this, LoginActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK); //쌓인 엑티비티 스택 모두 삭제
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         finish();
@@ -213,16 +207,33 @@ public class DropUserActivity extends AppCompatActivity {
     }
 
     public void sendEmail() {
-        Intent email = new Intent(Intent.ACTION_SEND);
-        email.setType("plane/text");
-        String[] address = {"hwstar1204@gmail.com"};
-        email.putExtra(Intent.EXTRA_EMAIL,address);
-        email.putExtra(Intent.EXTRA_SUBJECT,"Witt 탈퇴 내역");
-        email.putExtra(Intent.EXTRA_TEXT,txt.getText());
-        Log.d("sendEmail()","startAtctivityResult 시작 ");
-        startActivity(email);
-        //startActivityForResult(email,10);
-        //setResult(RESULT_OK,email);
+//        Intent email = new Intent(Intent.ACTION_SEND);
+//        email.setType("plane/text");
+//        String[] address = {"hwstar1204@gmail.com"};
+//        email.putExtra(Intent.EXTRA_EMAIL,address);
+//        email.putExtra(Intent.EXTRA_SUBJECT,"Witt 탈퇴 내역");
+//        email.putExtra(Intent.EXTRA_TEXT,txt.getText());
+//        startActivity(email);
+
+        Map<String,String> data = new HashMap<>();
+        data.put("User_Email",UserTB.getEmail());
+        data.put("context", String.valueOf(txt.getText()));
+        data.put("OuserNM", "탈퇴내역입니다." );
+        Call<String> call = apiService.reportmail(data);
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                String test = response.body();
+//                Log.d("DropUserEmail 요청 성공 "," context :"+ test);
+                finish();
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+//                Log.d("DropUserEmail","메일 요청 실패");
+                finish();
+            }
+        });
     }
     /** 체크된 박스들 비트연산  */
     public void setCheckBit(CheckedTextView[] array) {
@@ -238,6 +249,21 @@ public class DropUserActivity extends AppCompatActivity {
         }
         selection >>= 1;
         DropMap.put("CONT",selection);
+    }
+
+    private void disableButtonForOneSecond() {
+        // 버튼 클릭 불가능하도록 상태 변경
+        isButtonClickable = false;
+        GO_Drop.setEnabled(false);
+
+        // 1초 후에 버튼 클릭 가능하도록 상태 변경
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                isButtonClickable = true;
+                GO_Drop.setEnabled(true);
+            }
+        }, 1000); // 1000 밀리초 = 1초
     }
 
     public void backToSetting() {

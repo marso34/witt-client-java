@@ -174,7 +174,7 @@ public class CRSetTimeFragment extends Fragment {
 //  ---------------------------전부 끄고------------------------------------------------------------
         switch (t) { // 필요한 것만 켜기
             case 0:
-                binding.morning.setStrokeWidth(1);
+                binding.morning.setStrokeWidth(2);
                 binding.morningIcon.setColorFilter(Color.parseColor(Orange));
                 binding.morningTxt.setTextColor(Color.parseColor(Orange));
                 binding.morningDetail.setTextColor(Color.parseColor(Orange));
@@ -182,7 +182,7 @@ public class CRSetTimeFragment extends Fragment {
                     binding.morning.setOutlineSpotShadowColor(Color.parseColor(Orange));
                 break;
             case 1:
-                binding.afternoon.setStrokeWidth(1);
+                binding.afternoon.setStrokeWidth(2);
                 binding.afternoonIcon.setColorFilter(Color.parseColor(Yellow));
                 binding.afternoonTxt.setTextColor(Color.parseColor(Yellow));
                 binding.afternoonDetail.setTextColor(Color.parseColor(Yellow));
@@ -190,7 +190,7 @@ public class CRSetTimeFragment extends Fragment {
                     binding.afternoon.setOutlineSpotShadowColor(Color.parseColor(Yellow));
                 break;
             case 2:
-                binding.evening.setStrokeWidth(1);
+                binding.evening.setStrokeWidth(2);
                 binding.eveningIcon.setColorFilter(Color.parseColor(Blue));
                 binding.eveningTxt.setTextColor(Color.parseColor(Blue));
                 binding.eveningDetail.setTextColor(Color.parseColor(Blue));
@@ -198,7 +198,7 @@ public class CRSetTimeFragment extends Fragment {
                     binding.evening.setOutlineSpotShadowColor(Color.parseColor(Blue));
                 break;
             case 3:
-                binding.dawn.setStrokeWidth(1);
+                binding.dawn.setStrokeWidth(2);
                 binding.dawnIcon.setColorFilter(Color.parseColor(Purple));
                 binding.dawnTxt.setTextColor(Color.parseColor(Purple));
                 binding.dawnDetail.setTextColor(Color.parseColor(Purple));
