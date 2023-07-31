@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         login = 1;
-        amc = AlarmManagerCustom.getInstance(this);
+        socketSingleton = SocketSingleton.getInstance(this);
         chatRoomId = null;
         oUserKey = null;
         chatRoomId = getIntent().getStringExtra("chatRoomId__");
@@ -306,7 +306,7 @@ public class MainActivity extends AppCompatActivity {
                         UserProfile userProfile = profileList.get(0); // 첫번째 UserProfile 객체를 가져온다.
                             prefhelper.putProfile(userProfile); // 로컬에 UserProfile 객체를 저장한다.
                         Log.d(TAG, "onResponse:ll "+userProfile.getUSER_PK());
-                        socketSingleton = SocketSingleton.getInstance(getBaseContext());
+
 //             Log.d("Profile", "USER_PK: " + USER_PK + ", Email: " + Email + ", `IP: " + IP + ", Platform: " + Platform + ", User_NM: " + User_NM + ", User_Img: " + User_Img + "PW: " + PW);
 
                     } else {

@@ -1,7 +1,5 @@
 package com.example.healthappttt.Home;
 
-import android.app.Activity;
-import android.app.ActivityManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -12,13 +10,11 @@ import android.os.Build;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
-import com.example.healthappttt.MainActivity;
 import com.example.healthappttt.R;
 import com.example.healthappttt.Sign.LoginActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 public class AlarmManagerCustom {
 
@@ -51,8 +47,10 @@ public class AlarmManagerCustom {
         this.content = content;
         this.userKey = null;
         this.chatRoomId = null;
-        createNotificationChannel();
-        setSounds(1);
+        if(content != null) {
+            createNotificationChannel();
+            setSounds(1);
+        }
 //        Intent receiverIntent = new Intent(context, AlarmRecevier.class);
 //        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, alarmID, receiverIntent, PendingIntent.FLAG_IMMUTABLE);
 //        Calendar calendar = Calendar.getInstance();
@@ -65,8 +63,10 @@ public class AlarmManagerCustom {
         this.content = content;
         this.chatRoomId = chatRoomId;
         this.userKey = userKey;
-        createNotificationChannel();
-        setSounds(1);
+        if(content != null) {
+            createNotificationChannel();
+            setSounds(1);
+        }
 //        Intent receiverIntent = new Intent(context, AlarmRecevier.class);
 //        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, alarmID, receiverIntent, PendingIntent.FLAG_IMMUTABLE);
 //        Calendar calendar = Calendar.getInstance();
@@ -126,9 +126,11 @@ public class AlarmManagerCustom {
 
             // 알림 채널에 대한 추가 설정
 
-            NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
-            if (notificationManager != null) {
-                notificationManager.createNotificationChannel(channel);
+            if(context!= null) {
+                NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
+                if (notificationManager != null) {
+                    notificationManager.createNotificationChannel(channel);
+                }
             }
         }
         showCustomNotification();
@@ -166,22 +168,10 @@ public class AlarmManagerCustom {
 
 
 //api level 21.. deprecated..
-        ActivityManager manager = (ActivityManager) context.getSystemService( Activity.ACTIVITY_SERVICE );
-        List<ActivityManager.RunningTaskInfo> list = manager.getRunningTasks(1);
-
-            if (list.size() >0) {
-                tapIntent = new Intent(context, MainActivity.class);
-                tapIntent.putExtra("chatRoomId__", chatRoomId);
-                tapIntent.putExtra("userKey__", userKey);
-                tapIntent.putExtra("oUserName__", title);
-            }
-
-        else {
             tapIntent = new Intent(context, LoginActivity.class);
             tapIntent.putExtra("chatRoomId", chatRoomId);
             tapIntent.putExtra("userKey", userKey);
             tapIntent.putExtra("oUserName", title);
-        }
         ;
         tapIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent tapPendingIntent = PendingIntent.getActivity(context, 0, tapIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);

@@ -126,18 +126,19 @@ public class SocketSingleton {
 
                         sqLiteUtil.setInitView(context,"CHAT_ROOM_TB");
                         String otherUserKey = sqLiteUtil.selectOtherUserKey(String.valueOf(preferenceHelper.getPK()),chatRoomId);
-                        alarmManager.onAlarm(otherUserNM,"새로운 위트가 왔어요",otherUserKey,chatRoomId);
+                        if(alarmManager!= null)
+                            alarmManager.onAlarm(otherUserNM,"새로운 위트가 왔어요",otherUserKey,chatRoomId);
 
-                            new Thread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    if(chatF!=null && !chatF.chatflag) {
-                                        chatF.chatflag = true;
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if(chatF!=null && !chatF.chatflag) {
+                                    chatF.chatflag = true;
                                     chatF.getUsersFromServer();
                                     chatF.getLastMSG(chatRoomId,String.valueOf(preferenceHelper.getPK()),context);
-                                    }
                                 }
-                            }).start();
+                            }
+                        }).start();
 
                         flag = true;
                     }
@@ -145,18 +146,18 @@ public class SocketSingleton {
                         int CRI = Integer.parseInt(chatRoomId);
                         SqlLiteSaveMessage(Integer.parseInt(chat_Pk),preferenceHelper.getPK(), 2, message, CRI,TS);
                         mSocket.emit("completeMessage");
-                            if(chatActivity != null && chatActivity.getChatRoomId().equals(chatRoomId)) {
-                                if (!chatActivity.getUpdatingMSG()) {
-                                    chatActivity.setUpdatingMSG(true);
-                                    new Thread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            Log.d(TAG, "run: " + chatActivity.getUpdatingMSG());
-                                            chatActivity.getMSG(1);
-                                        }
-                                    }).start();
-                                }
+                        if(chatActivity != null && chatActivity.getChatRoomId().equals(chatRoomId)) {
+                            if (!chatActivity.getUpdatingMSG()) {
+                                chatActivity.setUpdatingMSG(true);
+                                new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Log.d(TAG, "run: " + chatActivity.getUpdatingMSG());
+                                        chatActivity.getMSG(1);
+                                    }
+                                }).start();
                             }
+                        }
                         else {
                             if(flag == false) {
 //                                createNotificationChannel();
@@ -165,7 +166,8 @@ public class SocketSingleton {
                                 String otherUserNM = sqLiteUtil.selectOtherUserName(String.valueOf(preferenceHelper.getPK()),chatRoomId);
                                 sqLiteUtil.setInitView(context,"CHAT_ROOM_TB");
                                 String otherUserKey = sqLiteUtil.selectOtherUserKey(String.valueOf(preferenceHelper.getPK()),chatRoomId);
-                                alarmManager.onAlarm(otherUserNM,message,otherUserKey,chatRoomId);
+                                if(alarmManager != null)
+                                    alarmManager.onAlarm(otherUserNM,message,otherUserKey,chatRoomId);
                                 if(chatF!=null && !chatF.chatflag) {
                                     chatF.chatflag = true;
                                     new Thread(new Runnable() {

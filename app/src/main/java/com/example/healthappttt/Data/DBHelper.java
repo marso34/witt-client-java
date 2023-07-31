@@ -83,7 +83,8 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(WittRecordsql);
 
         String createTableQuery = "CREATE TABLE if not exists CHAT_MSG_TB ("
-                + "MSG_PK INTEGER,"
+                + "LOCOL_MSG_PK INTEGER,"
+                + "MSG_PK INT,"
                 + "USER_FK INT,"
                 + "MYFLAG INT ,"
                 + "CHAT_ROOM_FK INT, "

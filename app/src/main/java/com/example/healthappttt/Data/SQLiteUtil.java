@@ -245,7 +245,7 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
         try {
             // MSG_PK 열의 마지막 튜플을 얻기 위한 쿼리를 작성합니다.
             if (table != null && table.equals("CHAT_MSG_TB")) {
-                String query = "SELECT MAX(MSG_PK) FROM CHAT_MSG_TB WHERE USER_FK = ? AND CHAT_ROOM_FK = ? AND MYFLAG = ?";
+                String query = "SELECT MAX(MSG_PK) FROM CHAT_MSG_TB WHERE USER_FK = ? AND CHAT_ROOM_FK = ?";
                 String[] selectionArgs = {userKey, chatRoomId,"1"};
                 Cursor cursor = db.rawQuery(query, selectionArgs);
                 if (cursor.moveToFirst()) {
