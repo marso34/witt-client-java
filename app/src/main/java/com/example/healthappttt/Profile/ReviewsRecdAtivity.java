@@ -43,12 +43,11 @@ public class ReviewsRecdAtivity extends AppCompatActivity {
     BlockUserAdapter ReviewAdapter;
     RecyclerView recyclerView;
     LinearLayoutManager linearLayoutManager;
-    String myPK,PK;
+    int myPK,PK;
     String ReviewCnt;
     Button cancel_review;
 
 
-    //TODO 뒤로가기, 검색창 삭제
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,24 +62,22 @@ public class ReviewsRecdAtivity extends AppCompatActivity {
 
 
         Intent intent = getIntent();
-        PK = intent.getStringExtra("PK");//넘겨 받은 PK
-        myPK = String.valueOf(UserTB.getPK());// 로컬 내 PK
+        PK = intent.getIntExtra("PK",0);//넘겨 받은 PK
+        myPK =UserTB.getPK();// 로컬 내 PK
 
-        if (PK.equals(myPK)) { //나의 받은 후기
-            Log.d("나의 받은 후기 ", PK + " - " + myPK);
+        if (PK == myPK) { //나의 받은 후기
+//            Log.d("나의 받은 후기 ", PK + " - " + myPK);
 
             sqLiteUtil = SQLiteUtil.getInstance(); // SQLiteUtil 객체 생성
             sqLiteUtil.setInitView(this, "REVIEW_TB");//리뷰 목록 로컬 db
             ReviewList = sqLiteUtil.SelectReviewUser();//SELECT * FROM REVIEW_TB
-            //Log.d("ReviewActivity첫번째 PK값: ", String.valueOf(ReviewList.get(0).getReview_PK()));
             setView();
 
         } else {//상대가 받은 후기
-            Log.d("상대가 받은 후기 상대 pk: ", PK + " - " + myPK);
+//            Log.d("상대가 받은 후기 상대 pk: ", PK + " - " + myPK);
             apiService = RetrofitClient.getClient().create(ServiceApi.class); // create메서드로 api서비스 인터페이스의 구현제 생성
             ReviewList = new ArrayList<>();
-            int PKI = Integer.parseInt(PK);
-            UserKey userKey = new UserKey(PKI);
+            UserKey userKey = new UserKey(PK);
 
             getReviewList(userKey);//비동기 호출
 
