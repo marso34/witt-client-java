@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -54,7 +55,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
         public LinearLayout DefaultLayout;
         public TextView Name, GymName, GymAdress;
         public ImageView MapIcon, TimeIcon;
-        public TextView TimeTxt, Anymore;
+        public TextView TimeTxt;
 
         public RecyclerView recyclerView;
 
@@ -63,7 +64,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
         MainViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            this.CardView = itemView.findViewById(R.id.cardView);
+//            this.CardView = itemView.findViewById(R.id.cardView);
             this.DefaultLayout = itemView.findViewById(R.id.defaultLayout);
 
             this.Name =  itemView.findViewById(R.id.UNE);
@@ -76,16 +77,15 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
 
             this.recyclerView = itemView.findViewById(R.id.recyclerView);
 
-            this.Anymore = itemView.findViewById(R.id.anymore);
-
+//            this.Anymore = itemView.findViewById(R.id.anymore);
         }
     }
 
     @NonNull
     @Override
     public MainViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View cardView = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_user, parent, false);
-        final MainViewHolder mainViewHolder = new MainViewHolder(cardView);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_user, parent, false);
+        final MainViewHolder mainViewHolder = new MainViewHolder(view);
 
         return mainViewHolder;
     }
@@ -94,9 +94,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
     public void onBindViewHolder(@NonNull final MainViewHolder holder, int position) {
         if (mDataset.size() > 0 && position != mDataset.size()) {
             holder.DefaultLayout.setVisibility(View.VISIBLE);
-            holder.Anymore.setVisibility(View.GONE);
-            holder.CardView.setCardBackgroundColor(Color.parseColor(White));
-            holder.CardView.setCardElevation(6f);
+//            holder.Anymore.setVisibility(View.GONE);
+//            holder.CardView.setCardBackgroundColor(Color.parseColor(White));
+//            holder.CardView.setCardElevation(6f);
 
             UserInfo userInfo = mDataset.get(position);
             Log.d("유저 이름!", userInfo.getName());
@@ -160,16 +160,16 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
                 }
             });
         } else if(position == mDataset.size()) {
-            holder.DefaultLayout.setVisibility(View.GONE);
-            holder.Anymore.setVisibility(View.VISIBLE);
-            holder.CardView.setCardBackgroundColor(Color.parseColor(Transparent));
-            holder.CardView.setCardElevation(0f);
+//            holder.DefaultLayout.setVisibility(View.GONE);
+//            holder.Anymore.setVisibility(View.VISIBLE);
+//            holder.CardView.setCardBackgroundColor(Color.parseColor(Transparent));
+//            holder.CardView.setCardElevation(0f);
         }
     }
 
     @Override
     public int getItemCount() {
-        return mDataset.size() + 1;
+        return mDataset.size();
     }
 
     @Override
