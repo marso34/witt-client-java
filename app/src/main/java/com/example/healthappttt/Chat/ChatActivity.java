@@ -329,12 +329,13 @@ public class ChatActivity extends AppCompatActivity{
                     List<MSG> msgList = response.body();
                     if (msgList != null) {
                         for (MSG msg : msgList) {
-                            sqLiteUtil.setInitView(getApplicationContext(), "CHAT_MSG_TB");
-                            String name1 = extractName(msg.getMessage());
+                                String name1 = extractName(msg.getMessage());
                             Log.d(TAG, "onResponse: ts" + msg.timestampString());
                             if (name1 != null) {
+                                sqLiteUtil.setInitView(getApplicationContext(), "CHAT_MSG_TB");
                                 sqLiteUtil.insert(msg.getKey(),Integer.parseInt(userKey), msg.getMyFlag(),name1, Integer.parseInt(chatRoomId), 1,msg.timestampString());
                             } else {
+                                sqLiteUtil.setInitView(getApplicationContext(), "CHAT_MSG_TB");
                                 sqLiteUtil.insert(msg.getKey(),Integer.parseInt(userKey), msg.getMyFlag(),msg.getMessage(), Integer.parseInt(chatRoomId), 1,msg.timestampString());
                             }
                             Log.d(TAG, "onResponse: msg"+msg.getMessage());
@@ -474,7 +475,7 @@ public class ChatActivity extends AppCompatActivity{
                                         Log.d(TAG, "onResponse: 실행");
                                         try {
                                             sqLiteUtil.setInitView(getBaseContext(), "CHAT_ROOM_TB");
-                                            sqLiteUtil.BlackChatRoom(preferenceHelper.getPK(), Integer.parseInt(chatRoomId));
+                                            sqLiteUtil.deleteChatRoom(preferenceHelper.getPK(), Integer.parseInt(chatRoomId));
                                         } finally {
                                             finish();
                                         }

@@ -53,14 +53,24 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private GoogleApiClient mGoogleApiClient;
     private SignInButton mGoogleSignInButton;
     private ActivityResultLauncher<Intent> startActivityResult; // startActivityForResult 대체 방법
-
-
+    private String chatRoomId;
+    private String oUserKey;
+    private String oUserName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
+        chatRoomId = null;
+        oUserKey = null;
+        oUserName = null;
+        Intent intent = getIntent();
+        if (intent != null) {
+            chatRoomId = intent.getStringExtra("chatRoomId");
+            oUserKey = intent.getStringExtra("userKey");
+            oUserName = intent.getStringExtra("oUserName");
+            Log.d(TAG, "lklsslsl"+chatRoomId+oUserKey+oUserName);
+        }
         startActivityResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
             @Override
             public void onActivityResult(ActivityResult data) { // 원래 onActivityResult에 있던 내용
@@ -83,10 +93,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         mGoogleSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                signIn();
-//                GoMain("2");
-//                GoMain("115");
-//                GoMain("119");
+//                signIn();
+                GoSplash("1");
             }
         });
         int runningServices = ServiceTracker.countRunningServices(this, DataReceiverService.class);
@@ -97,7 +105,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-        startActivityResult.launch(signInIntent); // startActivityForResult 대체 방법
+        startActivityResult.launch(signInIntent);
+        // startActivityForResult 대체 방법
 //        startActivityForResult(signInIntent, RC_SIGN_IN); // 이제 사용 X
     }
 //
@@ -218,7 +227,13 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         editor.putString("userKeyinLogin", userKey);
         editor.apply();
         Intent intent = new Intent(this, SplashActivity.class);
+        if(chatRoomId!=null && oUserKey != null && oUserName != null){
+            intent.putExtra("chatRoomId__",chatRoomId);
+            intent.putExtra("userKey__",oUserKey);
+            intent.putExtra("oUserName__",oUserName);
+            Log.d(TAG, "onCreate: chatatlog");
+        }
         startActivity(intent);
-        finish();
+        finishAffinity();
     }
 }

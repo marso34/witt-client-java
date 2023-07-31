@@ -4,24 +4,92 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Home.HomeChildFragment">
-
+    android:background="#F2F5F9"
+    android:orientation="vertical"
+    tools:context=".Chat.ChattingFragment">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
     <!-- TODO: Update blank fragment layout -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_bottom"
+        android:outlineSpotShadowColor="@color/Background_2"
+        android:elevation="8dp">
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+             />
 
+    </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="8dp"
-        android:orientation="vertical" >
-         <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView2"
+        android:orientation="vertical">
+        <LinearLayout
+            android:id="@+id/userListLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:listitem="@layout/user_layout"
-                android:layout_marginTop="20dp"
-                />
-       </LinearLayout>
+                android:paddingTop="6dp"
+                android:paddingBottom="100dp"
+                android:clipToPadding="false"
+                tools:listitem="@layout/user_layout"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/emptylayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="156dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:visibility="gone">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="위트를 보내거나 위트를 받은 위트메이트가 없어요"
+                style="@style/Subtitle"/>
 
+            <LinearLayout
+                android:id="@+id/moveHome"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="5dp"
+                android:paddingLeft="12dp"
+                android:paddingBottom="7dp"
+                android:layout_marginTop="16dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:background="@drawable/rectangle_14dp_box"
+                android:outlineSpotShadowColor="@color/Background_3"
+                android:elevation="8dp">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/Subtitle"
+                    android:text="위트 메이트 찾기"
+                    style="@style/Caption"/>
+
+                <ImageView
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginRight="8dp"
+                    android:src="@drawable/ic_baseline_arrow_forward_ios_24"
+                    app:tint="@color/Subtitle"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>
 </FrameLayout>

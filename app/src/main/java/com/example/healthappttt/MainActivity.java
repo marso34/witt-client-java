@@ -4,6 +4,8 @@ import static android.content.ContentValues.TAG;
 
 import android.Manifest;
 import android.app.AlarmManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -25,6 +27,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.healthappttt.Chat.ChatActivity;
 import com.example.healthappttt.Chat.ChattingFragment;
 import com.example.healthappttt.Data.Chat.SocketSingleton;
 import com.example.healthappttt.Data.PreferenceHelper;
@@ -73,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
     private WittListData wittList;
     UserKey userKey;
     private SQLiteUtil sqLiteUtil;
-
+    public static boolean isMainActivityVisible = false;
     private boolean isConnected = false;  // 소켓 연결 여부 확인
 
     private static final int RC_SIGN_IN = 123;
@@ -86,12 +89,27 @@ public class MainActivity extends AppCompatActivity {
     private int login;
     private SocketSingleton socketSingleton;
     private AlarmManagerCustom amc;
+    private String chatRoomId;
+    private String oUserKey;
+    private String oUserName;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         login = 1;
         amc = AlarmManagerCustom.getInstance(this);
-        String uk = getIntent().getStringExtra("userKey");
-
+        chatRoomId = null;
+        oUserKey = null;
+        chatRoomId = getIntent().getStringExtra("chatRoomId__");
+        oUserKey = getIntent().getStringExtra("userKey__");
+        oUserName = getIntent().getStringExtra("oUserName__");
+        Log.d(TAG, "onCreate: "+chatRoomId+oUserKey+oUserName+"sssss");
+        String uk;
+        if(oUserName ==null) {
+            uk = getIntent().getStringExtra("userKey");
+        }
+        else{
+            prefhelper = new PreferenceHelper("UserTB",this);
+            uk = String.valueOf(prefhelper.getPK());
+        }
         if(uk != null){
             userKey = new UserKey(Integer.parseInt(uk));
         }
@@ -212,6 +230,16 @@ public class MainActivity extends AppCompatActivity {
         getReviewList(userKey);
         getWittHistory(userKey);
 //         uploadImageToServer(url, userKey.toString());
+        
+        if(chatRoomId!=null && oUserKey != null && oUserName != null){
+            Log.d(TAG, "onCreate: chatat"+chatRoomId +" "+oUserKey+" "+oUserName );
+            Intent intent = new Intent(this, ChatActivity.class);
+            intent.putExtra("ChatRoomId",chatRoomId);
+            intent.putExtra("otherUserKey",oUserKey);
+            intent.putExtra("otherUserName",oUserName);
+            goChat();
+            startActivity(intent);
+        }
     }
 
     @Override
@@ -224,12 +252,28 @@ public class MainActivity extends AppCompatActivity {
             Log.d(TAG, "메인 종료");
         }
     }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        isMainActivityVisible = true;
+    }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        isMainActivityVisible = false;
+    }
     public void goToRoutine(int dayOfWeekT) {
         int temp = dayOfWeek;
         dayOfWeek = dayOfWeekT;
         binding.bottomNav.setSelectedItemId(R.id.routine);
         dayOfWeek = temp;
+    }
+    public void goToHome() {
+        binding.bottomNav.setSelectedItemId(R.id.home);
+    }
+    public void goChat(){
+        binding.bottomNav.setSelectedItemId(R.id.chatting);
     }
 
     private void setAlarmTimer() {
@@ -294,7 +338,15 @@ public class MainActivity extends AppCompatActivity {
     // 알림 채널 생성과 푸시 알림 전송을 위한 메서드
     private void createNotificationChannelAndSendNotification() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            amc.onAlarm("Wellcome!!","반가워용!!");
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            if (notificationManager != null && !notificationManager.areNotificationsEnabled()) {
+                // 채널 생성
+                NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "My Channel", NotificationManager.IMPORTANCE_HIGH);
+                notificationManager.createNotificationChannel(channel);
+            } else {
+                // 이미 알림 허용 권한이 있는 경우
+
+            }
         }
     }
 

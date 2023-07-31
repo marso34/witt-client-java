@@ -16,6 +16,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -29,7 +30,8 @@
         <activity
             android:name=".SplashActivity"
             android:theme="@style/SplashTheme"
-            android:exported="false" />
+            android:exported="false"
+           />
         <activity
             android:name=".Profile.EvaluationRecdActivity"
             android:exported="false">
@@ -108,7 +110,8 @@
         <receiver
             android:name=".interface_.AlarmRecever"
             android:enabled="true"
-            android:exported="true" />
+            android:exported="true"
+           />
 
         <activity
             android:name=".Routine.RoutineActivity"
@@ -130,7 +133,8 @@
         <service
             android:name=".interface_.DataReceiverService"
             android:enabled="true"
-            android:exported="false" />
+            android:exported="false"
+            />
 
         <activity
             android:name=".Profile.ReviewsRecdAtivity"
@@ -163,11 +167,13 @@
         <activity
             android:name=".Home.alarmActivity"
             android:exported="false"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            />
         <activity
             android:name=".Chat.ChatActivity"
             android:exported="false"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            />
 
 
         <meta-data
@@ -177,7 +183,8 @@
         <activity
             android:name=".Profile.MyProfileActivity"
             android:exported="false"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            />
         <activity
             android:name=".WorkOut.SetExerciseActivity"
             android:exported="false"
@@ -185,7 +192,8 @@
         <activity
             android:name=".MainActivity"
             android:exported="false"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            >
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -216,7 +224,7 @@
         <activity
             android:name=".Sign.LoginActivity"
             android:exported="true"
-            android:launchMode="singleTask"
+
             android:screenOrientation="portrait"
             android:taskAffinity=""
             android:usesCleartextTraffic="true">

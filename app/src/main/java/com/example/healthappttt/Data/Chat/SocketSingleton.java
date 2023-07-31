@@ -121,7 +121,12 @@ public class SocketSingleton {
 //                        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 //                        alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
                         //채팅방 생성알림
-                        alarmManager.onAlarm("New","새로운 위트가 왔어요");
+                        sqLiteUtil.setInitView(context,"CHAT_ROOM_TB");
+                        String otherUserNM = sqLiteUtil.selectOtherUserName(String.valueOf(preferenceHelper.getPK()),chatRoomId);
+
+                        sqLiteUtil.setInitView(context,"CHAT_ROOM_TB");
+                        String otherUserKey = sqLiteUtil.selectOtherUserKey(String.valueOf(preferenceHelper.getPK()),chatRoomId);
+                        alarmManager.onAlarm(otherUserNM,"새로운 위트가 왔어요",otherUserKey,chatRoomId);
 
                             new Thread(new Runnable() {
                                 @Override
@@ -158,7 +163,9 @@ public class SocketSingleton {
 //                                showCustomNotification(chatRoomId, message); // 채팅 메시지 알림 표시
                                 sqLiteUtil.setInitView(context, "CHAT_ROOM_TB");
                                 String otherUserNM = sqLiteUtil.selectOtherUserName(String.valueOf(preferenceHelper.getPK()),chatRoomId);
-                                alarmManager.onAlarm(otherUserNM,message);
+                                sqLiteUtil.setInitView(context,"CHAT_ROOM_TB");
+                                String otherUserKey = sqLiteUtil.selectOtherUserKey(String.valueOf(preferenceHelper.getPK()),chatRoomId);
+                                alarmManager.onAlarm(otherUserNM,message,otherUserKey,chatRoomId);
                                 if(chatF!=null && !chatF.chatflag) {
                                     chatF.chatflag = true;
                                     new Thread(new Runnable() {
