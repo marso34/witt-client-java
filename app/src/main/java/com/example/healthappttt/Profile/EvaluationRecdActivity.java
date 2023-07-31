@@ -30,7 +30,7 @@ public class EvaluationRecdActivity extends AppCompatActivity {
     private SQLiteUtil sqLiteUtil;
 
     UserKey userKey;
-    String myPK,PK;
+    int myPK,PK;
     ArrayList<ReviewListData> EvalList;
     TextView[] GtextView,BtextView;
     TextView listCnt1_0,listCnt1_1,listCnt1_2,listCnt1_3;
@@ -47,15 +47,15 @@ public class EvaluationRecdActivity extends AppCompatActivity {
 
         UserTB = new PreferenceHelper("UserTB", this);
         Intent intent = getIntent();
-        PK = intent.getStringExtra("PK");//넘겨 받은 PK
-        myPK = String.valueOf(UserTB.getPK());// 로컬 내 PK
+        PK = intent.getIntExtra("PK",0);//넘겨 받은 PK
+        myPK = UserTB.getPK();// 로컬 내 PK
 
         GoodEvalCNT = new int[] {0, 0, 0, 0};
         BadEvalCNT = new int[] {0, 0, 0, 0, 0, 0, 0, 0};
 
         viewsetting();
 
-        if (PK.equals(myPK)){ //나
+        if (PK == myPK){ //나
 
             sqLiteUtil = SQLiteUtil.getInstance(); // SQLiteUtil 객체 생성
             sqLiteUtil.setInitView(this, "REVIEW_TB");//리뷰 목록 로컬 db
@@ -64,7 +64,7 @@ public class EvaluationRecdActivity extends AppCompatActivity {
             setListView(EvalList);
 
         }else {//상대
-            userKey = new UserKey(Integer.parseInt(PK));
+            userKey = new UserKey(PK);
             apiService = RetrofitClient.getClient().create(ServiceApi.class); // create메서드로 api서비스 인터페이스의 구현제 생성
 
             Call<ArrayList<ReviewListData>> call = apiService.getOtherEval(userKey);

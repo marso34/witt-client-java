@@ -2,18 +2,12 @@ package com.example.healthappttt.Sign;
 
 import static android.content.ContentValues.TAG;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.widget.Toast;
-
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -35,14 +29,12 @@ import com.example.healthappttt.R;
 import com.example.healthappttt.interface_.ServiceApi;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -197,9 +189,10 @@ private void sendTokenToServer() {
                     UserClass sharedUser = new UserClass(getUserDT(), getPhoneInfo(), getMannerInfo(), getLocInfo(), getExPerInfo(), getBodyInfo());
                     UserTB.putMembership(sharedUser);
                     Log.d("shared 로컬 저장 회원가입 pk:", String.valueOf(userKey));
+                    UserTB.setPK(userKey); //pk 저장
 
                     Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
-                    intent.putExtra("userKey", String.valueOf(userKey));
+                    intent.putExtra("userKey", userKey);
                     startActivity(intent);
                     finish();
                     Log.d(TAG, "업로드 성공");
