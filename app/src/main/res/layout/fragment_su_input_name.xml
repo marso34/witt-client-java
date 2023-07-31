@@ -45,12 +45,13 @@
                 android:layout_marginBottom="20dp"
                 android:layout_gravity="center_horizontal">
 
-                <ImageButton
+                <com.example.healthappttt.Data.CircleImageView
                     android:id="@+id/galleryPicture"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="center_horizontal"
-                    android:background="@drawable/circle1" />
+                    android:background="@drawable/circle1"
+                    android:scaleType="centerCrop"/>
 
                 <ImageView
                     android:id="@+id/gallery"

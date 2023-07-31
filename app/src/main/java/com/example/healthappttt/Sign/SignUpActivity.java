@@ -247,8 +247,11 @@ private void sendTokenToServer() {
             });
 
         }
-        else
+        else {
             Log.e("Upload Error", "이미지 없음");
+            seturi = "이미지 없음";
+            sendTokenToServer();
+        }
     }
 
     private String getRealPathFromUri(Uri uri) {
