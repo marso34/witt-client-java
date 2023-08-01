@@ -504,7 +504,7 @@ public class MyProfileActivity extends AppCompatActivity {
 //api level 21.. deprecated..
                             tapIntent = new Intent(getApplicationContext(), MainActivity.class);
                             tapIntent.putExtra("chatRoomId__", response.body().toString());
-                            tapIntent.putExtra("userKey__", OuserDefault.get("USER_PK").toString());
+                            tapIntent.putExtra("userKey__", String.valueOf(PK));
                             tapIntent.putExtra("oUserName__", OuserDefault.get("USER_NM").toString());
                             tapIntent.putExtra("userKey",String.valueOf(UserTB.getPK()));
                             startActivity(tapIntent);
