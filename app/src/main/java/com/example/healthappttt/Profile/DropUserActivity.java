@@ -190,7 +190,6 @@ public class DropUserActivity extends AppCompatActivity {
 
 
     public void CommonDROP() {
-        //TODO 실제로 삭제되는지 확인 해야함 TEST !!!!!!!!!!!
 
         //로컬 shared 삭제
         UserTB.deleteUserTB();

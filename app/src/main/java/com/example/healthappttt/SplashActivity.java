@@ -18,6 +18,7 @@ import com.example.healthappttt.Data.PreferenceHelper;
 import com.example.healthappttt.Data.RetrofitClient;
 import com.example.healthappttt.Data.SQLiteUtil;
 import com.example.healthappttt.Data.User.BlackListData;
+import com.example.healthappttt.Data.User.LocInfo;
 import com.example.healthappttt.Data.User.ReviewListData;
 import com.example.healthappttt.Data.User.UserKey;
 import com.example.healthappttt.Data.User.UserProfile;
@@ -27,6 +28,7 @@ import com.example.healthappttt.interface_.ServiceApi;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -87,6 +89,7 @@ public class SplashActivity extends AppCompatActivity {
                 SyncRoutine(IuserKey);
                 SyncRecord(IuserKey);
 
+                getGym(userKey);
                 getuserProfile(userKey);
                 getBlackList(userKey);
                 getReviewList(userKey);
@@ -201,6 +204,36 @@ public class SplashActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void getGym(UserKey userKey) {
+        Call<Map<String,Object>> call = apiService.getGym(userKey);
+        call.enqueue(new Callback<Map<String, Object>>() {
+            @Override
+            public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
+                Map<String,Object> GymData = response.body();
+                if(response.isSuccessful()) {
+                    double userLat = Double.parseDouble(GymData.get("User_Lat").toString());
+                    double userLon = Double.parseDouble(GymData.get("User_Lon").toString());
+                    String gymNm =   GymData.get("GYM_NM").toString();
+                    double gymLat =  Double.parseDouble(GymData.get("GYM_Lat").toString());
+                    double gymLon =  Double.parseDouble(GymData.get("GYM_Lon").toString());
+                    String gymAdress = GymData.get("GYM_Adress").toString();
+
+
+                     LocInfo locInfo = new LocInfo(userLat,userLon,gymNm,gymLat,gymLon,gymAdress);
+                    prefhelper.setLoc(locInfo);
+                    Log.d("나의 헬스장 이름:  ",gymNm );
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Map<String, Object>> call, Throwable t) {
+                Log.d("서버 연결 실패", t.getMessage());
+            }
+        });
+
+    }
+
 
     private void getuserProfile(UserKey userKey) {
         Call<List<UserProfile>> call = apiService.getuserprofile(userKey);

@@ -593,18 +593,18 @@
 
                 </TableRow>
 
-
+                <View
+                    android:id="@+id/view3"
+                    android:layout_width="0dp"
+                    android:layout_height="140dp"
+                    android:layout_weight="1"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/setting_table"
+                    android:background="@color/white"
+                    android:visibility="gone"/>
             </TableLayout>
 
-            <View
-                android:id="@+id/view3"
-                android:layout_width="0dp"
-                android:layout_height="140dp"
-                android:layout_weight="1"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/setting_table"
-                android:background="@color/white"
-                android:visibility="gone"/>
+
 
 <!--            <View-->
 <!--                android:layout_width="0dp"-->

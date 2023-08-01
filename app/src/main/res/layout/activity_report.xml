@@ -118,9 +118,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="자세하게 적어주면 위트팀에서 문제를 해결할게요"
-                android:fontFamily="@font/spoqa_han_sans_neo"
-                android:textSize="12dp"
-                android:textColor="#677489"
                 android:layout_marginBottom="24dp"/>
 
             <EditText

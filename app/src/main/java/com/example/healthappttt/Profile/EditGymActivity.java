@@ -10,14 +10,23 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.healthappttt.Data.PreferenceHelper;
+import com.example.healthappttt.Data.RetrofitClient;
 import com.example.healthappttt.Data.User.LocInfo;
 import com.example.healthappttt.R;
 import com.example.healthappttt.Sign.SUSelectGymFragment;
+import com.example.healthappttt.interface_.ServiceApi;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class EditGymActivity extends AppCompatActivity implements EditGymFragment.OnFragmentInteractionListener, SUSelectGymFragment.OnFragmentInteractionListener {
     private PreferenceHelper UserTB;
     private String MyName, MyGym, GymAdress;
-
+    private ServiceApi apiService;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +37,7 @@ public class EditGymActivity extends AppCompatActivity implements EditGymFragmen
         MyGym = intent.getStringExtra("MyGym");
         GymAdress = intent.getStringExtra("GymAdress");
 
+        apiService = RetrofitClient.getClient().create(ServiceApi.class);
         UserTB = new PreferenceHelper("UserTB",this);
 
         Log.d("테스트1", MyGym + "   ddd");
@@ -64,6 +74,28 @@ public class EditGymActivity extends AppCompatActivity implements EditGymFragmen
         // 저장
         UserTB.setLoc(locInfo);
         replaceFragment(EditGymFragment.newInstance(MyName, MyGym, GymAdress)); // MyName, MyGym, GymAdress
+        Map<String,Object> Gymdata = new HashMap<>();
+        Gymdata.put("mypk",UserTB.getPK());
+        Gymdata.put("LocInfo",locInfo);
+        Call<String> call = apiService.EditGYM(Gymdata);
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if(response.isSuccessful()){
+                    String res = response.body();
+                    Log.d("EditGym:", res);
+                }else{
+                    Log.d("EditWeight ","서버 db에서 반환 값 없음");
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Log.d("EditWeight ","서버 응답 실패");
+            }
+        });
+
 //        finish(); // or
 
     }

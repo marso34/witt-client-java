@@ -631,6 +631,8 @@ public class MyProfileActivity extends AppCompatActivity {
                 binding.MapImg.setImageTintList(getResources().getColorStateList(R.color.Background_2));
             }else{
                 binding.MyLocation.setText(GYMNM);
+                binding.MyLocation.setTextColor(Color.parseColor("#4A5567"));
+                binding.MapImg.setImageTintList(getResources().getColorStateList(R.color.Signature));
             }
         }
 
