@@ -125,17 +125,24 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
 
             holder.Name.setText(userInfo.getName());
 
-            if (str.equals("") || str == null) {
+            if (str == null) {
                 holder.GymName.setText("선택된 헬스장이 없어요");
                 holder.GymName.setTextColor(Color.parseColor(Background_2));
                 holder.GymAdress.setVisibility(View.GONE);
                 holder.MapIcon.setColorFilter(Color.parseColor(Background_2));
             } else {
-                holder.GymName.setText(str);
-                holder.GymName.setTextColor(Color.parseColor(Body));
-                holder.GymAdress.setText(userInfo.getGymAdress());
-                holder.GymAdress.setVisibility(View.VISIBLE);
-                holder.MapIcon.setColorFilter(Color.parseColor(Signature));
+                if (str.equals("")) {
+                    holder.GymName.setText("선택된 헬스장이 없어요");
+                    holder.GymName.setTextColor(Color.parseColor(Background_2));
+                    holder.GymAdress.setVisibility(View.GONE);
+                    holder.MapIcon.setColorFilter(Color.parseColor(Background_2));
+                } else {
+                    holder.GymName.setText(str);
+                    holder.GymName.setTextColor(Color.parseColor(Body));
+                    holder.GymAdress.setText(userInfo.getGymAdress());
+                    holder.GymAdress.setVisibility(View.VISIBLE);
+                    holder.MapIcon.setColorFilter(Color.parseColor(Signature));
+                }
             }
 
             switch (userInfo.getTime()) {

@@ -228,33 +228,64 @@ public class CRSelectExerciseFragment extends Fragment {
     private void parseExercise() { // 나중에 xml 파싱으로
         exercises.add(new ExerciseData("벤치프레스",0x1));
         exercises.add(new ExerciseData("인클라인 벤치 프레스",0x1));
+        exercises.add(new ExerciseData("디클라인 벤치 프레스",0x1));
         exercises.add(new ExerciseData("케이블 크로스 오버",0x1));
-        exercises.add(new ExerciseData("펙덱 플라인 머신",0x1));
-
-        exercises.add(new ExerciseData("사이드 레터럴 레이즈",0x4));
-        exercises.add(new ExerciseData("밀리터리 프레스",0x4));
-        exercises.add(new ExerciseData("벤트 오버 레터럴 레이즈",0x4));
+        exercises.add(new ExerciseData("덤벨 플라이",0x1));
+        exercises.add(new ExerciseData("바벨 플라이",0x1));
+        exercises.add(new ExerciseData("펙덱 플라이 머신",0x1));
+        exercises.add(new ExerciseData("체스트 프레스 머신",0x1));
+        exercises.add(new ExerciseData("팔굽혀펴기",0x1));
+        exercises.add(new ExerciseData("딥스",0x1));
 
         exercises.add(new ExerciseData("렛 풀 다운",0x2));
         exercises.add(new ExerciseData("케이블 시티드 로우",0x2));
         exercises.add(new ExerciseData("풀 업",0x2));
+        exercises.add(new ExerciseData("덤벨 벤트 오버 로우",0x2));
         exercises.add(new ExerciseData("원 암 덤벨 로우",0x2));
+        exercises.add(new ExerciseData("바벨 로우",0x2));
+
+        exercises.add(new ExerciseData("사이드 레터럴 레이즈",0x4));
+        exercises.add(new ExerciseData("벤트 오버 레터럴 레이즈",0x4));
+        exercises.add(new ExerciseData("프론트 레이즈",0x4));
+        exercises.add(new ExerciseData("스미스 머신 숄더 프레스",0x4));
+        exercises.add(new ExerciseData("숄더 프레스",0x4));
+        exercises.add(new ExerciseData("밀리터리 프레스",0x4));
+        exercises.add(new ExerciseData("푸쉬프레스",0x4));
+        exercises.add(new ExerciseData("업라이트 로우",0x4));
+        exercises.add(new ExerciseData("덤벨 슈러그",0x4));
+        exercises.add(new ExerciseData("바벨 슈러그",0x4));
+        exercises.add(new ExerciseData("트랩바 데드리프트",0x4));
+        exercises.add(new ExerciseData("덤벨 데드리프트",0x4));
 
         exercises.add(new ExerciseData("레그 프레스",0x8));
+        exercises.add(new ExerciseData("레그 익스텐션",0x8));
+        exercises.add(new ExerciseData("레그 컬",0x8));
+        exercises.add(new ExerciseData("런지",0x8));
+        exercises.add(new ExerciseData("스티프 데드리프트",0x8));
         exercises.add(new ExerciseData("루마니안 데드리프트",0x8));
+        exercises.add(new ExerciseData("브릿지",0x8));
         exercises.add(new ExerciseData("바벨 스쿼트",0x8));
         exercises.add(new ExerciseData("덤벨 스쿼트",0x8));
+        exercises.add(new ExerciseData("카프 레이즈",0x8));
 
         exercises.add(new ExerciseData("바벨 컬",0x10));
         exercises.add(new ExerciseData("덤벨 컬",0x10));
-        exercises.add(new ExerciseData("트레이셉스 프레스 다운 케이블",0x10));
+        exercises.add(new ExerciseData("로프 케이블 컬",0x10));
+        exercises.add(new ExerciseData("해머 컬",0x10));
+        exercises.add(new ExerciseData("트라이셉스 프레스 다운 케이블",0x10));
+        exercises.add(new ExerciseData("라잉 트라이셉스 익스텐션",0x10));
+        exercises.add(new ExerciseData("스컬 크러셔",0x10));
+        exercises.add(new ExerciseData("트라이셉스 푸쉬 다운",0x10));
+        exercises.add(new ExerciseData("킥 백",0x10));
 
         exercises.add(new ExerciseData("싯 업",0x20));
         exercises.add(new ExerciseData("크런치",0x20));
+        exercises.add(new ExerciseData("레그 레이즈",0x20));
 
         exercises.add(new ExerciseData("사이클",0x40));
         exercises.add(new ExerciseData("트레드 밀",0x40));
         exercises.add(new ExerciseData("인클라인 트레드 밀",0x40));
+        exercises.add(new ExerciseData("스텝 밀",0x40));
 
         searchList = (ArrayList<ExerciseData>) exercises.clone();
     }

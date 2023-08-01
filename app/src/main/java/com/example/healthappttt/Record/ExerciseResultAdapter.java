@@ -1,6 +1,7 @@
 package com.example.healthappttt.Record;
 
 import android.graphics.Color;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,11 +18,15 @@ import com.example.healthappttt.Data.Exercise.RoutineData;
 import com.example.healthappttt.R;
 import com.google.android.material.card.MaterialCardView;
 
+import java.security.Signature;
 import java.util.ArrayList;
 
 public class ExerciseResultAdapter extends RecyclerView.Adapter<ExerciseResultAdapter.MainViewHolder> {
     private ArrayList<ExerciseData> routineEx;
     private ArrayList<ExerciseData> recordEx;
+
+    private static final String Signature = "#05C78C";
+    private static final String Background_3 = "#9AA5B8";
 
     public ExerciseResultAdapter(ArrayList<ExerciseData> routineEx, ArrayList<ExerciseData> recordEx) {
         this.routineEx = routineEx;
@@ -69,9 +74,13 @@ public class ExerciseResultAdapter extends RecyclerView.Adapter<ExerciseResultAd
             holder.CheckedImg.setImageResource(R.drawable.baseline_check_circle_24_g);
             holder.CheckedImg.setVisibility(View.VISIBLE);
             holder.ExerciseLayout.setStrokeWidth(2);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
+                holder.ExerciseLayout.setOutlineSpotShadowColor(Color.parseColor(Signature));
         } else {
             holder.CheckedImg.setVisibility(View.GONE);
             holder.ExerciseLayout.setStrokeWidth(0);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
+                holder.ExerciseLayout.setOutlineSpotShadowColor(Color.parseColor(Background_3));
         }
     }
 
