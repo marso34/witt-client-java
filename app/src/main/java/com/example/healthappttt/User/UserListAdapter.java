@@ -2,6 +2,8 @@ package com.example.healthappttt.User;
 
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
+import static java.lang.String.valueOf;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -32,6 +34,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserListViewHolder> {
 
     private List<UserChat> userList;
@@ -59,15 +63,15 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserLi
             @Override
             public void onClick(View view) {
                 int position = viewHolder.getAbsoluteAdapterPosition();
-                Log.d(TAG, "onClick: "+String.valueOf(position));
+                Log.d(TAG, "onClick: "+ valueOf(position));
                     UserChat user = userList.get(position);
                 Intent intent = new Intent(context, ChatActivity.class);
                 view.findViewById(R.id.circleIMG).setVisibility(View.INVISIBLE);
                 LinearLayout layout = view.findViewById(R.id.out);
                 layout.setBackgroundResource(R.drawable.round_button_white);
                 intent.putExtra("otherUserName",user.getUserNM());
-                intent.putExtra("ChatRoomId",String.valueOf(user.getChatRoomId()));
-                intent.putExtra("otherUserKey",String.valueOf(user.getOtherUserKey()));
+                intent.putExtra("ChatRoomId", valueOf(user.getChatRoomId()));
+                intent.putExtra("otherUserKey", valueOf(user.getOtherUserKey()));
                 Log.d(TAG, "onClick: "+user.getUserNM());
                 context.startActivity(intent);
             }
@@ -81,26 +85,32 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserLi
     public void onBindViewHolder(@NonNull UserListViewHolder holder, int position) {
         user = userList.get(position);
         holder.userName.setText(user.getUserNM());
-        sqLiteUtil.setInitView(context,"CHAT_MSG_TB");
-        MSG m = sqLiteUtil.selectLastMsg(String.valueOf(userList.get(position).getChatRoomId()),String.valueOf(preferenceHelper.getPK()),2);
-        Log.d(TAG, "onBindViewHolder: "+m.getISREAD()+"  "+m.getMessage());
-        if(m.getISREAD() == 2 ||m.getISREAD() == -1 ){
-            LinearLayout layout = holder.itemView.findViewById(R.id.out);
-            layout.setBackgroundResource(R.drawable.round_button_white);
-            holder.circleIMG.setVisibility(View.INVISIBLE);
-        }
-        else
-        {
-            LinearLayout layout = holder.itemView.findViewById(R.id.out);
-            layout.setBackgroundResource(R.drawable.round_line);
-            holder.circleIMG.setVisibility(View.VISIBLE);
-        }
+        MSG m = null;
+        if (context != null) {
+            m = sqLiteUtil.selectLastMsg(context, String.valueOf(userList.get(position).getChatRoomId()), String.valueOf(preferenceHelper.getPK()), 1);
 
-        if(extractName(m.getMessage()) == null)
-            holder.lastChat.setText(m.getMessage());
-        else holder.lastChat.setText(extractName(m.getMessage()));
-        holder.lastChatTime.setText(extractDateTime(m.timestampString()));
-        Log.d(TAG, "onBindViewHolder: "+m.getMessage());
+            Log.d(TAG, "onBindViewHolder: " + m.getISREAD() + "  " + m.getMessage());
+
+            if (m.getISREAD() == 2 || m.getISREAD() == -1 || m.getMyFlag() == 1) {
+                LinearLayout layout = holder.itemView.findViewById(R.id.out);
+                layout.setBackgroundResource(R.drawable.round_button_white);
+                holder.circleIMG.setVisibility(View.INVISIBLE);
+            } else {
+                LinearLayout layout = holder.itemView.findViewById(R.id.out);
+                layout.setBackgroundResource(R.drawable.round_line);
+                holder.circleIMG.setVisibility(View.VISIBLE);
+            }
+
+            if (extractName(m.getMessage()) == null)
+                holder.lastChat.setText(m.getMessage());
+            else holder.lastChat.setText(extractName(m.getMessage()));
+            holder.lastChatTime.setText(extractDateTime(m.timestampString()));
+            Log.d(TAG, "onBindViewHolder: " + m.getMessage());
+            CircleImageView PR = holder.itemView.findViewById(R.id.PRI);
+            if(preferenceHelper.getGender() == 0)
+                PR.setImageResource( R.drawable.man_3d_light);
+            else PR.setImageResource(R.drawable.woman_3d_light);
+        }
 
     }
     public String extractName(String inputString) {

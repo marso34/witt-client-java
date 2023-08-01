@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,13 +17,12 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.healthappttt.Data.Exercise.RoutineData;
 import com.example.healthappttt.Data.PreferenceHelper;
+import com.example.healthappttt.Data.RetrofitClient;
 import com.example.healthappttt.Data.User.CompareUser;
 import com.example.healthappttt.Data.User.NearUsersData;
-import com.example.healthappttt.Data.RetrofitClient;
 import com.example.healthappttt.Data.UserInfo;
 import com.example.healthappttt.MainActivity;
 import com.example.healthappttt.Routine.RoutineChildFragment;
-import com.example.healthappttt.R;
 import com.example.healthappttt.User.UserAdapter;
 import com.example.healthappttt.databinding.FragmentHomeChildBinding;
 import com.example.healthappttt.interface_.ServiceApi;
@@ -118,20 +116,20 @@ public class HomeChildFragment extends Fragment {
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        RecyclerView.LayoutManager layoutManager = binding.recyclerView.getLayoutManager();
-                        int visibleItemCount = layoutManager.getChildCount();
-                        int totalItemCount = layoutManager.getItemCount();
-                        int firstVisibleItemPosition = ((LinearLayoutManager)layoutManager).findFirstVisibleItemPosition();
-                        int lastVisibleItemPosition = ((LinearLayoutManager)layoutManager).findLastVisibleItemPosition();
-
-                        if(totalItemCount - 3 <= lastVisibleItemPosition && !updating){
-                            postsUpdate(true);
+                        if(binding != null) {
+                            RecyclerView.LayoutManager layoutManager = binding.recyclerView.getLayoutManager();
+                            int visibleItemCount = layoutManager.getChildCount();
+                            int totalItemCount = layoutManager.getItemCount();
+                            int firstVisibleItemPosition = ((LinearLayoutManager) layoutManager).findFirstVisibleItemPosition();
+                            int lastVisibleItemPosition = ((LinearLayoutManager) layoutManager).findLastVisibleItemPosition();
+                            if (totalItemCount - 3 <= lastVisibleItemPosition && !updating) {
+                                postsUpdate(true);
+                            }
+                            if (0 < firstVisibleItemPosition) {
+                                topScrolled = false;
+                            }
+                            binding.swipelayout.setRefreshing(false);
                         }
-//
-                        if(0 < firstVisibleItemPosition){
-                            topScrolled = false;
-                        }
-                        binding.swipelayout.setRefreshing(false);
                     }
                 }, 500);
             }

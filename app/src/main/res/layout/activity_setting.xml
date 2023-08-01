@@ -41,7 +41,8 @@
         style="@style/JLinearLayoutStyle"
         android:outlineSpotShadowColor="@color/Background_2"
         android:gravity="center"
-        android:onClick="onClickVive">
+        android:onClick="onClickVive"
+        android:visibility="gone">
 
         <TextView
             style="@style/report"

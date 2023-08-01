@@ -37,7 +37,6 @@ import com.example.healthappttt.Data.User.BlackListData;
 import com.example.healthappttt.Data.User.GetUserInfo;
 import com.example.healthappttt.Data.User.ReviewListData;
 import com.example.healthappttt.Data.User.UserKey;
-import com.example.healthappttt.Data.User.UserProfile;
 import com.example.healthappttt.Data.User.WittListData;
 import com.example.healthappttt.Home.AlarmManagerCustom;
 import com.example.healthappttt.Home.HomeFragment;
@@ -117,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
         sqLiteUtil = SQLiteUtil.getInstance(); //sqllite 객체
         prefhelper = new PreferenceHelper("UserTB",this);
 
-        getuserProfile(userKey); //유저키
+
 
         final LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         // MyService 실행
@@ -286,46 +285,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-
-    //API 요청 후 응답을 shared로 유저테이블 데이터 로컬 저장
-    private void getuserProfile(UserKey userKey) {
-        Call<List<UserProfile>> call = apiService.getuserprofile(userKey);
-        call.enqueue(new Callback<List<UserProfile>>() {
-            @Override
-            public void onResponse(Call<List<UserProfile>> call, Response<List<UserProfile>> response) {
-                if (response.isSuccessful()) {
-                    List<UserProfile> profileList = response.body();
-                    // 서버에서 받은 응답을 처리하는 코드를 작성합니다.
-                    if (profileList != null) {   //서버에서 반환된 값이 null이 아닌 경우 처리할 코드
-                        UserProfile userProfile = profileList.get(0); // 첫번째 UserProfile 객체를 가져온다.
-                            prefhelper.putProfile(userProfile); // 로컬에 UserProfile 객체를 저장한다.
-                        Log.d(TAG, "onResponse:ll "+userProfile.getUSER_PK());
-
-//             Log.d("Profile", "USER_PK: " + USER_PK + ", Email: " + Email + ", `IP: " + IP + ", Platform: " + Platform + ", User_NM: " + User_NM + ", User_Img: " + User_Img + "PW: " + PW);
-
-                    } else {
-                        //서버에서 반환된 값이 null인 경우 처리할 코드
-                        Log.d("MainActivity", "Response body is null"+response.body());
-                    }
-
-                } else {
-                    // 서버 응답이 실패했을때
-                    Toast.makeText(MainActivity.this, "서버 연결 실패", Toast.LENGTH_SHORT).show();
-                    Log.d("MainActivity", "서버 응답 실패. 상태코드:" + response.code());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<UserProfile>> call, Throwable t) {
-                // API 호출에 실패한 경우 처리합니다.
-                Log.d("MainActivity", "API호출 실패:");
-                Log.e("API_CALL", "API call failed: " + t.getMessage());
-            }
-        });
-
-    }
-
-
     // 알림 허용 권한을 확인하고 요청하는 메서드
     private static final String CHANNEL_ID = "my_channel_id"; // 채널 ID
 

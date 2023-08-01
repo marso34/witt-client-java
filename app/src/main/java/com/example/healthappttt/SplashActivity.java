@@ -18,6 +18,7 @@ import com.example.healthappttt.Data.PreferenceHelper;
 import com.example.healthappttt.Data.RetrofitClient;
 import com.example.healthappttt.Data.SQLiteUtil;
 import com.example.healthappttt.Data.User.BlackListData;
+import com.example.healthappttt.Data.User.LocInfo;
 import com.example.healthappttt.Data.User.ReviewListData;
 import com.example.healthappttt.Data.User.UserKey;
 import com.example.healthappttt.Data.User.UserProfile;
@@ -27,6 +28,7 @@ import com.example.healthappttt.interface_.ServiceApi;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -87,10 +89,12 @@ public class SplashActivity extends AppCompatActivity {
                 SyncRoutine(IuserKey);
                 SyncRecord(IuserKey);
 
+                getGym(userKey);
                 getuserProfile(userKey);
                 getBlackList(userKey);
                 getReviewList(userKey);
                 getWittHistory(userKey);
+
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
@@ -114,26 +118,6 @@ public class SplashActivity extends AppCompatActivity {
         }
         startActivity(intent);
         finishAffinity();
-    }
-    private void getChatRooms(){
-        ServiceApi apiService = RetrofitClient.getClient().create(ServiceApi.class);
-        Call<List<UserChat>> call = apiService.getUsers(new pkData(userKey.getPk())); // 유저키 얻어와서 넣기
-        call.enqueue(new Callback<List<UserChat>>() {
-            @Override
-            public void onResponse(Call<List<UserChat>> call, Response<List<UserChat>> response) {
-                if (response.isSuccessful()) {
-
-                    List<UserChat> users = response.body();
-                    saveChatRooms(users);
-
-                    // userList에 데이터가 추가된 후에 실행되어야 하는 로직을 여기에 작성합니다.
-                }
-            }
-            @Override
-            public void onFailure(Call<List<UserChat>> call, Throwable t) {
-            }
-        });
-
     }
 
     public String extractName(String inputString) {
@@ -201,6 +185,36 @@ public class SplashActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void getGym(UserKey userKey) {
+        Call<Map<String,Object>> call = apiService.getGym(userKey);
+        call.enqueue(new Callback<Map<String, Object>>() {
+            @Override
+            public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
+                Map<String,Object> GymData = response.body();
+                if(response.isSuccessful()) {
+                    double userLat = Double.parseDouble(GymData.get("User_Lat").toString());
+                    double userLon = Double.parseDouble(GymData.get("User_Lon").toString());
+                    String gymNm =   GymData.get("GYM_NM").toString();
+                    double gymLat =  Double.parseDouble(GymData.get("GYM_Lat").toString());
+                    double gymLon =  Double.parseDouble(GymData.get("GYM_Lon").toString());
+                    String gymAdress = GymData.get("GYM_Adress").toString();
+
+
+                     LocInfo locInfo = new LocInfo(userLat,userLon,gymNm,gymLat,gymLon,gymAdress);
+                    prefhelper.setLoc(locInfo);
+                    Log.d("나의 헬스장 이름:  ",gymNm );
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Map<String, Object>> call, Throwable t) {
+                Log.d("서버 연결 실패", t.getMessage());
+            }
+        });
+
+    }
+
 
     private void getuserProfile(UserKey userKey) {
         Call<List<UserProfile>> call = apiService.getuserprofile(userKey);
@@ -443,16 +457,7 @@ public class SplashActivity extends AppCompatActivity {
         sqLiteUtil.deleteMulti(notDeletePk);
     }
 
-    private void saveChatRooms(List<UserChat> users){
-        if(this != null) {
-            sqLiteUtil.setInitView(this, "CHAT_ROOM_TB");
-            sqLiteUtil.deleteAllChatRoom();
-            sqLiteUtil.setInitView(this, "CHAT_ROOM_TB");
-            sqLiteUtil.insert(userKey.getPk(),users);
 
-
-        }
-    }
 
 
 }

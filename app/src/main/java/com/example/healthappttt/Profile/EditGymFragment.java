@@ -120,6 +120,7 @@ public class EditGymFragment extends Fragment {
             binding.mapIcon.setColorFilter(Color.parseColor("#D1D8E2"));
             Log.d("EditFragment","equals");
         }
+        setGymView();
 
         Log.d("테스트2", MyGym + "   ddd");
 
@@ -134,12 +135,42 @@ public class EditGymFragment extends Fragment {
         binding.editGym.setOnClickListener(v -> mListner.EditGymInfo());
     }
 
+    public void setGymView() {
+        if(MyGym.equals("") || MyGym == null) {
+            binding.Gym.setText("선택된 헬스장이 없어요");
+            binding.Gym.setTextColor(Color.parseColor("#D1D8E2"));
+            binding.locDetail.setVisibility(View.INVISIBLE);
+            binding.mapIcon.setColorFilter(Color.parseColor("#D1D8E2"));
+            Log.d("EditFragment","equals");
+        } else {
+            binding.Gym.setText(MyGym);
+            binding.Gym.setTextColor(Color.parseColor("#4A5567"));
+            binding.locDetail.setVisibility(View.VISIBLE);
+            binding.locDetail.setText(GymAdress); //헬스장 주소
+            binding.locDetail.setTextColor(Color.parseColor("#D1D8E2"));
+            binding.mapIcon.setColorFilter(Color.parseColor("#05C78C"));
+            Log.d("EditFragment","!!!equals");
+        }
+    }
+
     @Override
     public void onResume() {
         super.onResume();
-//        binding.MyName.setText(UserTB.getUser_NM()+"님의");
-//        binding.Gym.setText(UserTB.getGYMNM());
-//        binding.locDetail.setText(UserTB.getGYMAdress()); //헬스장 주소
+        if(MyGym.equals("") || MyGym == null) {
+            binding.Gym.setText("선택된 헬스장이 없어요");
+            binding.Gym.setTextColor(Color.parseColor("#D1D8E2"));
+            binding.locDetail.setVisibility(View.INVISIBLE);
+            binding.mapIcon.setColorFilter(Color.parseColor("#D1D8E2"));
+            Log.d("EditFragment","equals");
+        } else {
+            binding.Gym.setText(UserTB.getGYMNM());
+            binding.Gym.setTextColor(Color.parseColor("#4A5567"));
+            binding.locDetail.setVisibility(View.VISIBLE);
+            binding.locDetail.setText(UserTB.getGYMAdress()); //헬스장 주소
+            binding.locDetail.setTextColor(Color.parseColor("#D1D8E2"));
+            binding.mapIcon.setColorFilter(Color.parseColor("#05C78C"));
+            Log.d("EditFragment","!!!equals");
+        }
     }
 
     @Override
