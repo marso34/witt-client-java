@@ -84,13 +84,25 @@ public class ExerciseRecordActivity extends AppCompatActivity implements ERSelec
     private void replaceFragment (Fragment fragment) { //프래그먼트 설정
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        if( fragment.isAdded() )
-        {
-            // Fragment 가 이미 추가되어 있으면 삭제한 후, 새로운 Fragment 를 생성한다.
-            // 새로운 Fragment 를 생성하지 않으면 2번째 보여질 때에 Fragment 가 보여지지 않는 것 같습니다.
-            fragmentTransaction.remove( fragment );
-            fragment = new Fragment();
-        }
+
+        fragmentTransaction.replace(R.id.frame_layout, fragment);
+        fragmentTransaction.commit();
+    }
+
+    private void replaceFragmentLeft(Fragment fragment) { //프래그먼트 설정
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        fragmentTransaction.setCustomAnimations(R.anim.to_left, R.anim.from_left);
+        fragmentTransaction.replace(R.id.frame_layout, fragment);
+        fragmentTransaction.commit();
+    }
+
+    private void replaceFragmentRight(Fragment fragment) { //프래그먼트 설정
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        fragmentTransaction.setCustomAnimations(R.anim.to_right, R.anim.from_right);
         fragmentTransaction.replace(R.id.frame_layout, fragment);
         fragmentTransaction.commit();
     }

@@ -2,6 +2,7 @@ package com.example.healthappttt.WorkOut;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
@@ -38,6 +40,7 @@ public class ERSelectUserFragment extends Fragment {
     private static final String Signature = "#05C78C";
     private static final String White = "#ffffff";
     private static final String Background_2 = "#D1D8E2";
+    private static final String Background_3 = "#9AA5B8";
 
     private int OUser_PK;
     private String name;
@@ -102,6 +105,13 @@ public class ERSelectUserFragment extends Fragment {
     @Override
     public void onViewCreated(@androidx.annotation.NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                mListener.onSelectUser(-1, "");
+            }
+        });
 
         binding.backBtn.setOnClickListener(v -> mListener.onSelectUser(-1, ""));
 
@@ -221,10 +231,14 @@ public class ERSelectUserFragment extends Fragment {
             }
 
             if (OUser_PK == searchUsers.get(position).getOtherUserKey()) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
+                    holder.CardView.setOutlineSpotShadowColor(Color.parseColor(Signature));
                 holder.CardView.setStrokeWidth(2);
                 holder.NameCardView.setStrokeWidth(2);
                 holder.CheckIcon.setVisibility(View.VISIBLE);
             } else {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
+                    holder.CardView.setOutlineSpotShadowColor(Color.parseColor(Background_3));
                 holder.CardView.setStrokeWidth(0);
                 holder.NameCardView.setStrokeWidth(0);
                 holder.CheckIcon.setVisibility(View.GONE);

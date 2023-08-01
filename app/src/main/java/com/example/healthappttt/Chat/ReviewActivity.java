@@ -318,6 +318,11 @@ public class ReviewActivity extends AppCompatActivity {
 
         text = String.valueOf(binding.txtEdit.getText());
 
+        if (check_box == 0 || check_box == 0x8000) {
+            Toast.makeText(this, "체크박스를 선택해주세요", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         service.sendReivew(new ReviewData(OtherPk, pk, text, check_box)).enqueue(new Callback<Integer>() {
             @Override
             public void onResponse(Call<Integer> call, Response<Integer> response) {

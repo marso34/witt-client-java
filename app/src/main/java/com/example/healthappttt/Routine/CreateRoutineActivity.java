@@ -129,7 +129,7 @@ public class CreateRoutineActivity extends AppCompatActivity implements CRSetTim
         finish();
     }
 
-    private void replaceFragment (Fragment fragment) { //프래그먼트 설정
+    private void replaceFragment(Fragment fragment) { //프래그먼트 설정
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         if( fragment.isAdded() )
@@ -139,6 +139,24 @@ public class CreateRoutineActivity extends AppCompatActivity implements CRSetTim
             fragmentTransaction.remove( fragment );
             fragment = new Fragment();
         }
+        fragmentTransaction.replace(R.id.frame_layout, fragment);
+        fragmentTransaction.commit();
+    }
+
+    private void replaceFragmentLeft(Fragment fragment) { //프래그먼트 설정
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        fragmentTransaction.setCustomAnimations(R.anim.to_left, R.anim.from_left);
+        fragmentTransaction.replace(R.id.frame_layout, fragment);
+        fragmentTransaction.commit();
+    }
+
+    private void replaceFragmentRight(Fragment fragment) { //프래그먼트 설정
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        fragmentTransaction.setCustomAnimations(R.anim.to_right, R.anim.from_right);
         fragmentTransaction.replace(R.id.frame_layout, fragment);
         fragmentTransaction.commit();
     }
@@ -175,10 +193,10 @@ public class CreateRoutineActivity extends AppCompatActivity implements CRSetTim
         else            replaceFragment(CRSelectExerciseFragment.newInstance(routine));
     } // ExerciseDetailFragment에서 호출하는 메서드
 
-    @Override
-    public void onBackPressed() {
-        Terminate();
-    } // 뒤로가기 버튼 눌렀을 때 루틴 입력을 취소할지, CreateRoutineActivity를 종료할 지 확인
+//    @Override
+//    public void onBackPressed() {
+//        Terminate();
+//    } // 뒤로가기 버튼 눌렀을 때 루틴 입력을 취소할지, CreateRoutineActivity를 종료할 지 확인
 
     private void Terminate() {
         AlertDialog.Builder alert_ex = new AlertDialog.Builder(this);

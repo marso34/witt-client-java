@@ -122,9 +122,7 @@ public class ExerciseResultFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentExerciseResultBinding.inflate(inflater);
 
         return binding.getRoot();
@@ -133,12 +131,6 @@ public class ExerciseResultFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-//        String ExerciseTime = betweenTime(recordData.getStartTime(), recordData.getEndTime()); // 운동 시간, 휴식 시간 포함
-//        String RunTime = recordData.getRunTime();                                              // RunTime은 순수하게 운동한 시간, 휴식시간 제외 시간
-//        String RestTime = betweenTime(ExerciseTime, RunTime);                                  // RunTime은 휴식시간. 운동 시간 - RuntTime
-//        binding.runTime.setText(parse(RunTime));
-//        binding.restTime.setText(parse(RestTime));
 
         setTotals();
         setRecords();
@@ -150,7 +142,6 @@ public class ExerciseResultFragment extends Fragment {
         binding.runTime.setText(record.getRunTime() + "");
 
         setRecyclerView();
-
 
         binding.nextBtn.setOnClickListener(v -> mListener.onFinish());
     }

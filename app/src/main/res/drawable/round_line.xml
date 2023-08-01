@@ -10,5 +10,5 @@
     <!-- Green stroke (outline) -->
     <stroke
         android:color="#03C78C"
-    android:width="2dp" />
+    android:width="1dp" />
 </shape>

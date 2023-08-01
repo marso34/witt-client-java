@@ -300,7 +300,8 @@ private void sendTokenToServer() {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        finish(); // 액티비티 종료
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+        finish();
     }
-
 }

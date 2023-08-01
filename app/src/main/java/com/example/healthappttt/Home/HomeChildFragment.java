@@ -150,8 +150,8 @@ public class HomeChildFragment extends Fragment {
                 int totalItemCount = layoutManager.getItemCount();
                 int firstVisibleItemPosition = ((LinearLayoutManager)layoutManager).findFirstVisibleItemPosition();
                 int lastVisibleItemPosition = ((LinearLayoutManager)layoutManager).findLastVisibleItemPosition();
-                if(totalItemCount < 1 && !updating){
-                    postsUpdate(false);
+                if(totalItemCount < 2 && !updating){ // totalItemCount < 1 -> totalItemCount < 2로 변경. 리사이클러 뷰 마지막에는 
+                    postsUpdate(false);       // "더 이상 표시할 위트메이트가 없어요 할당"
                 }
             }
         } else {
@@ -168,14 +168,12 @@ public class HomeChildFragment extends Fragment {
     }
 
     private void setRecyclerView() {
-        adapter = new UserAdapter(getContext(), (ArrayList<UserInfo>) UserList, dayOfWeek); // 나중에 routine
+        adapter = new UserAdapter(getContext(), (ArrayList<UserInfo>) UserList, dayOfWeek);
         binding.recyclerView.setHasFixedSize(true);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.recyclerView.setAdapter(adapter);
     }
-
-
-
+    
     private void getUserData() {
         ServiceApi apiInterface = RetrofitClient.getClient().create(ServiceApi.class);
         NearUsersData NR = new NearUsersData(dayOfWeek, preferenceHelper.getPK());//현재 내 유저 정보 보내서 내껀 안나오게함.
@@ -185,9 +183,7 @@ public class HomeChildFragment extends Fragment {
             public void onResponse(Call<List<UserInfo>> call, Response<List<UserInfo>> response) {
                 if (response.isSuccessful()) {
                     Log.d("Response", "Successful");
-
                     Log.d("pk", response.body() + "");
-
 
                     UserList.clear();
                     for (UserInfo value : response.body()) {

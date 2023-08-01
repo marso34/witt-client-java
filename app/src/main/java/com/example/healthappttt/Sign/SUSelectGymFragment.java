@@ -185,13 +185,15 @@ public class SUSelectGymFragment extends Fragment implements OnMapReadyCallback,
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        if (!gymName.equals("") && gymName != null) {
-            binding.selectGym.setText(gymName);
-            binding.selectGym.setTextColor(Color.parseColor(Body));
-            binding.mapIcon.setColorFilter(Color.parseColor(Signature));
-            binding.nextBtn.setBackground(getContext().getDrawable(R.drawable.rectangle_green_20dp));
-            binding.nextBtn.setTextColor(Color.parseColor(White));
-            isSelected = true;
+        if (gymName != null) {
+            if (!(gymName.equals(""))) {
+                binding.selectGym.setText(gymName);
+                binding.selectGym.setTextColor(Color.parseColor(Body));
+                binding.mapIcon.setColorFilter(Color.parseColor(Signature));
+                binding.nextBtn.setBackground(getContext().getDrawable(R.drawable.rectangle_green_20dp));
+                binding.nextBtn.setTextColor(Color.parseColor(White));
+                isSelected = true;
+            }
         }
         
         if (isEdit) {
