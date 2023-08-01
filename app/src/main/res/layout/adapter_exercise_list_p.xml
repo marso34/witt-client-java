@@ -8,7 +8,7 @@
     android:layout_height="wrap_content"
     android:paddingVertical="6dp"
     android:orientation="vertical"
-    tools:context=".Routine.ExerciseListPAdapter" >
+    tools:context="com.gwnu.witt.Routine.ExerciseListPAdapter" >
 
     <TextView
         android:id="@+id/listCat"

@@ -43,7 +43,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <com.example.healthappttt.Data.CircleImageView
+                <com.gwnu.witt.Data.CircleImageView
                     android:id="@+id/Block_Img"
                     android:layout_width="48dp"
                     android:layout_height="48dp"

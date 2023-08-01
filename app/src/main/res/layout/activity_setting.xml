@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Profile.SettingActivity"
+    tools:context="com.gwnu.witt.Profile.SettingActivity"
     android:orientation="vertical"
     android:backgroundTint="@color/back">
 

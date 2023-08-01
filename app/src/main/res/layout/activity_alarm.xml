@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Home.alarmActivity">
+    tools:context="com.gwnu.witt.Home.alarmActivity">
     <RelativeLayout
         android:id="@+id/Toolbar"
         android:layout_width="match_parent"

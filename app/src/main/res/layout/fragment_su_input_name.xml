@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
-    tools:context=".Sign.SUInputNameFragment">
+    tools:context="com.gwnu.witt.Sign.SUInputNameFragment">
 
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
@@ -45,7 +45,7 @@
                 android:layout_marginBottom="20dp"
                 android:layout_gravity="center_horizontal">
 
-                <com.example.healthappttt.Data.CircleImageView
+                <com.gwnu.witt.Data.CircleImageView
                     android:id="@+id/galleryPicture"
                     android:layout_width="100dp"
                     android:layout_height="100dp"

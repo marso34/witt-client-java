@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Routine.RoutineActivity">
+    tools:context="com.gwnu.witt.Routine.RoutineActivity">
 
     <LinearLayout
         android:layout_width="match_parent"

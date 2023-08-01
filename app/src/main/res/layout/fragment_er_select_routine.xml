@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/white"
-    tools:context=".WorkOut.ERSelectRoutineFragment">
+    tools:context="com.gwnu.witt.WorkOut.ERSelectRoutineFragment">
 
     <!-- TODO: Update blank fragment layout -->
 

@@ -57,7 +57,7 @@
 
                 </androidx.appcompat.widget.Toolbar>
 
-                <com.example.healthappttt.Data.CircleImageView
+                <com.gwnu.witt.Data.CircleImageView
                     android:id="@+id/ProfileImg"
                     android:layout_width="100dp"
                     android:layout_height="100dp"

@@ -8,7 +8,7 @@
     android:orientation="vertical"
     android:background="@color/white"
     android:outlineProvider="bounds"
-    tools:context=".Chat.ReviewActivity">
+    tools:context="com.gwnu.witt.Chat.ReviewActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"

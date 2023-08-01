@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingHorizontal="6dp"
-    tools:context=".User.UserAdapter">
+    tools:context="com.gwnu.witt.User.UserAdapter">
     <LinearLayout
         android:id="@+id/out"
         android:layout_margin="16dp"

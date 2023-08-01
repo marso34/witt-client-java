@@ -14,7 +14,7 @@
     app:cardCornerRadius="16dp"
     app:strokeColor="@color/Signature"
     app:strokeWidth="0dp"
-    tools:context=".WorkOut.ExerciseRecordAdapter">
+    tools:context="com.gwnu.witt.WorkOut.ExerciseRecordAdapter">
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Profile.WittHistoryActivity"
+    tools:context="com.gwnu.witt.Profile.WittHistoryActivity"
     android:backgroundTint="@color/white">
 
     <LinearLayout

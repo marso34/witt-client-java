@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
 
-    tools:context=".User.UserListAdapter">
+    tools:context="com.gwnu.witt.User.UserListAdapter">
 
                 <androidx.cardview.widget.CardView
                     android:src="@drawable/circle6"

@@ -16,7 +16,7 @@
     app:cardElevation="6dp"
     android:id="@+id/cardView"
     android:orientation="vertical"
-    tools:context=".User.UserAdapter">
+    tools:context="com.gwnu.witt.User.UserAdapter">
 
     <LinearLayout
         android:id="@+id/defaultLayout"
@@ -35,7 +35,7 @@
             app:rippleColor="@color/white"
             app:cardCornerRadius="16dp"
             app:cardElevation="10dp"
-            tools:context=".User.UserAdapter">
+            tools:context="com.gwnu.witt.User.UserAdapter">
 
             <LinearLayout
                 android:layout_width="match_parent"
