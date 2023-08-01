@@ -129,7 +129,7 @@ public class CreateRoutineActivity extends AppCompatActivity implements CRSetTim
         finish();
     }
 
-    private void replaceFragment (Fragment fragment) { //프래그먼트 설정
+    private void replaceFragment(Fragment fragment) { //프래그먼트 설정
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         if( fragment.isAdded() )
@@ -143,6 +143,24 @@ public class CreateRoutineActivity extends AppCompatActivity implements CRSetTim
         fragmentTransaction.commit();
     }
 
+    private void replaceFragmentLeft(Fragment fragment) { //프래그먼트 설정
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        fragmentTransaction.setCustomAnimations(R.anim.to_left, R.anim.from_left);
+        fragmentTransaction.replace(R.id.frame_layout, fragment);
+        fragmentTransaction.commit();
+    }
+
+    private void replaceFragmentRight(Fragment fragment) { //프래그먼트 설정
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        fragmentTransaction.setCustomAnimations(R.anim.to_right, R.anim.from_right);
+        fragmentTransaction.replace(R.id.frame_layout, fragment);
+        fragmentTransaction.commit();
+    }
+
     @Override
     public void onRoutineSetTime(int time) {
         if (-1 < time && time < 4) {
@@ -150,7 +168,7 @@ public class CreateRoutineActivity extends AppCompatActivity implements CRSetTim
 
         routine.setTime(time);
 
-            replaceFragment(CRSelectExerciseFragment.newInstance(routine));
+            replaceFragmentRight(CRSelectExerciseFragment.newInstance(routine));
         } else {
             Terminate();
         }
@@ -161,9 +179,9 @@ public class CreateRoutineActivity extends AppCompatActivity implements CRSetTim
         if (selectExercises != null) {
             this.routine.setExercises(selectExercises);
 
-            replaceFragment(CRInputDetailFragment.newInstance(routine));
+            replaceFragmentRight(CRInputDetailFragment.newInstance(routine));
         } else {
-            replaceFragment(CRSetTimeFragment.newInstance(time, dayOfWeek));
+            replaceFragmentLeft(CRSetTimeFragment.newInstance(time, dayOfWeek));
         }
     } // AddExerciseFragment에서 호출하는 메서드
 
@@ -172,7 +190,7 @@ public class CreateRoutineActivity extends AppCompatActivity implements CRSetTim
         this.routine.setExercises(exercises);
 
         if (isFinish)   SaveToDB(); // 받은 운동 정보 토대로 DB에 루틴, 운동 생성
-        else            replaceFragment(CRSelectExerciseFragment.newInstance(routine));
+        else            replaceFragmentLeft(CRSelectExerciseFragment.newInstance(routine));
     } // ExerciseDetailFragment에서 호출하는 메서드
 
     @Override

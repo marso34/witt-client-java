@@ -84,13 +84,25 @@ public class ExerciseRecordActivity extends AppCompatActivity implements ERSelec
     private void replaceFragment (Fragment fragment) { //프래그먼트 설정
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        if( fragment.isAdded() )
-        {
-            // Fragment 가 이미 추가되어 있으면 삭제한 후, 새로운 Fragment 를 생성한다.
-            // 새로운 Fragment 를 생성하지 않으면 2번째 보여질 때에 Fragment 가 보여지지 않는 것 같습니다.
-            fragmentTransaction.remove( fragment );
-            fragment = new Fragment();
-        }
+
+        fragmentTransaction.replace(R.id.frame_layout, fragment);
+        fragmentTransaction.commit();
+    }
+
+    private void replaceFragmentLeft(Fragment fragment) { //프래그먼트 설정
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        fragmentTransaction.setCustomAnimations(R.anim.to_left, R.anim.from_left);
+        fragmentTransaction.replace(R.id.frame_layout, fragment);
+        fragmentTransaction.commit();
+    }
+
+    private void replaceFragmentRight(Fragment fragment) { //프래그먼트 설정
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        fragmentTransaction.setCustomAnimations(R.anim.to_right, R.anim.from_right);
         fragmentTransaction.replace(R.id.frame_layout, fragment);
         fragmentTransaction.commit();
     }
@@ -120,7 +132,7 @@ public class ExerciseRecordActivity extends AppCompatActivity implements ERSelec
 
                     SaveToDev();
 
-                    replaceFragment(ExerciseResultFragment.newInstance(routines.get(0), record, ""));
+                    replaceFragmentRight(ExerciseResultFragment.newInstance(routines.get(0), record, ""));
 
                 } else {
                     Toast.makeText(ExerciseRecordActivity.this, "서버 연결에 실패", Toast.LENGTH_SHORT).show();
@@ -155,21 +167,21 @@ public class ExerciseRecordActivity extends AppCompatActivity implements ERSelec
     public void onSelectRoutine(boolean isBack) {
         if (isBack)    finish();
         else if (users.size() > 0)
-            replaceFragment(ERSelectUserFragment.newInstance(users));
+            replaceFragmentRight(ERSelectUserFragment.newInstance(users));
         else
-            replaceFragment(ERRecordingFragment.newInstance(routines.get(0).getExercises()));
+            replaceFragmentRight(ERRecordingFragment.newInstance(routines.get(0).getExercises()));
     }
 
     @Override
     public void onSelectUser(int oUserID, String name) { // 나중에 유저 전달로 변경
         if (oUserID < 0) // 뒤로가기 버튼
-            replaceFragment(ERSelectRoutineFragment.newInstance(dayOfWeek, routines.get(0)));
+            replaceFragmentLeft(ERSelectRoutineFragment.newInstance(dayOfWeek, routines.get(0)));
         else if (oUserID == 0) { // 유저 선택 안 함
-            replaceFragment(ERRecordingFragment.newInstance(routines.get(0).getExercises())); // ERRecordingFragment로 이동
+            replaceFragmentRight(ERRecordingFragment.newInstance(routines.get(0).getExercises())); // ERRecordingFragment로 이동
         } else { // 유저 선택
             this.oUserID = oUserID;
             this.name = name;
-            replaceFragment(ERRecordingFragment.newInstance(routines.get(0).getExercises())); // ERRecordingFragment로 이동
+            replaceFragmentRight(ERRecordingFragment.newInstance(routines.get(0).getExercises())); // ERRecordingFragment로 이동
         }
     }
 
