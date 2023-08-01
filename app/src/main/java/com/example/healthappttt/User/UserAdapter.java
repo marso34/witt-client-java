@@ -55,7 +55,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
         public LinearLayout DefaultLayout;
         public TextView Name, GymName, GymAdress;
         public ImageView MapIcon, TimeIcon;
-        public TextView TimeTxt;
+        public TextView TimeTxt, Anymore;
 
         public RecyclerView recyclerView;
 
@@ -64,7 +64,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
         MainViewHolder(@NonNull View itemView) {
             super(itemView);
 
-//            this.CardView = itemView.findViewById(R.id.cardView);
+            this.CardView = itemView.findViewById(R.id.cardView);
             this.DefaultLayout = itemView.findViewById(R.id.defaultLayout);
 
             this.Name =  itemView.findViewById(R.id.UNE);
@@ -77,7 +77,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
 
             this.recyclerView = itemView.findViewById(R.id.recyclerView);
 
-//            this.Anymore = itemView.findViewById(R.id.anymore);
+            this.Anymore = itemView.findViewById(R.id.anymore);
         }
     }
 
@@ -87,13 +87,34 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_user, parent, false);
         final MainViewHolder mainViewHolder = new MainViewHolder(view);
 
+        mainViewHolder.CardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int position = mainViewHolder.getAbsoluteAdapterPosition();
+
+                if (position != mDataset.size()) {
+                    Log.d("상세 프로필", "userAdapter에서 클릭처리");
+                    int adapterUserKey = mDataset.get(position).getUserKey();
+                    Intent intent = new Intent(mContext, MyProfileActivity.class);
+
+                    intent.putExtra("PK", adapterUserKey);
+                    intent.putExtra("dayOfWeek", dayOfWeek);
+                    mContext.startActivity(intent);
+                }
+            }
+        });
+
         return mainViewHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull final MainViewHolder holder, int position) {
-        if (mDataset.size() > 0) {
+        if (mDataset.size() > 0 && position != mDataset.size()) {
+            holder.CardView.setCardBackgroundColor(Color.parseColor(White));
+            holder.CardView.setCardElevation(6);
             holder.DefaultLayout.setVisibility(View.VISIBLE);
+            holder.Anymore.setVisibility(View.GONE);
+
             UserInfo userInfo = mDataset.get(position);
             Log.d("유저 이름!", userInfo.getName());
             Log.d("유저 PK!", String.valueOf(userInfo.getUserKey()));
@@ -141,26 +162,17 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
             }
 
             setCatRecyclerView(holder.recyclerView, holder.Adapter, position);
-
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Log.d("상세 프로필", "userAdapter에서 클릭처리");
-                    int adapterUserKey = userInfo.getUserKey();
-                    Intent intent = new Intent(mContext, MyProfileActivity.class);
-
-                    intent.putExtra("PK", adapterUserKey);
-                    intent.putExtra("dayOfWeek", dayOfWeek);
-//                intent.putExtra("post",finalProfilefile);--?
-                    mContext.startActivity(intent);
-                }
-            });
+        } else {
+            holder.CardView.setCardBackgroundColor(Color.parseColor(Transparent));
+            holder.CardView.setCardElevation(0);
+            holder.DefaultLayout.setVisibility(View.GONE);
+            holder.Anymore.setVisibility(View.VISIBLE);
         }
     }
 
     @Override
     public int getItemCount() {
-        return mDataset.size();
+        return mDataset.size() + 1;
     }
 
     @Override

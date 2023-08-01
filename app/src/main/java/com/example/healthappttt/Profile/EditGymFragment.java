@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.healthappttt.Data.PreferenceHelper;
+import com.example.healthappttt.R;
 import com.example.healthappttt.databinding.FragmentEditGymBinding;
 
 /**
@@ -100,16 +101,24 @@ public class EditGymFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        if(MyGym.equals("") || MyGym == null) {
+        if (MyGym != null) {
+            if (!(MyGym.equals(""))) {
+                binding.Gym.setText(MyGym);
+                binding.locDetail.setText(GymAdress); //헬스장 주소
+                Log.d("EditFragment","!!!equals");
+            } else {
+                binding.Gym.setText("선택된 헬스장이 없어요");
+                binding.Gym.setTextColor(Color.parseColor("#D1D8E2"));
+                binding.locDetail.setVisibility(View.INVISIBLE);
+                binding.mapIcon.setColorFilter(Color.parseColor("#D1D8E2"));
+                Log.d("EditFragment","equals");
+            }
+        } else {
             binding.Gym.setText("선택된 헬스장이 없어요");
             binding.Gym.setTextColor(Color.parseColor("#D1D8E2"));
             binding.locDetail.setVisibility(View.INVISIBLE);
             binding.mapIcon.setColorFilter(Color.parseColor("#D1D8E2"));
             Log.d("EditFragment","equals");
-        } else {
-            binding.Gym.setText(MyGym);
-            binding.locDetail.setText(GymAdress); //헬스장 주소
-            Log.d("EditFragment","!!!equals");
         }
 
         Log.d("테스트2", MyGym + "   ddd");

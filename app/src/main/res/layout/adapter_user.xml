@@ -11,7 +11,7 @@
     android:outlineSpotShadowColor="@color/Background_3"
     app:strokeColor="@color/Signature"
     app:strokeWidth="0dp"
-    app:rippleColor="@color/white"
+    app:rippleColor="@color/transparent"
     app:cardCornerRadius="16dp"
     app:cardElevation="6dp"
     android:id="@+id/cardView"
