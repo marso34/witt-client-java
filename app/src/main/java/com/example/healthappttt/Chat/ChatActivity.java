@@ -75,6 +75,7 @@ public class ChatActivity extends AppCompatActivity{
     private boolean sendUpdatingMSG  = false;
     private TextView toolbarName;
     private View tbr;
+    int flag = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -435,12 +436,15 @@ public class ChatActivity extends AppCompatActivity{
     }
 
 
-
+    private void endActivity(){
+        finish();
+    }
     // clickmenu() 메서드 추가
     public void clickmenu() {
         menu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 // 바텀 시트 다이얼로그 생성
                 BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(ChatActivity.this);
                 View dialogView = getLayoutInflater().inflate(R.layout.chat_menu_popup, null);
@@ -451,7 +455,7 @@ public class ChatActivity extends AppCompatActivity{
                 }
 
                 bottomSheetDialog.setContentView(dialogView);
-
+                bottomSheetDialog.show();
                 // 신고하기 버튼 클릭 시
                 View reportBtn = dialogView.findViewById(R.id.report_btn);
                 reportBtn.setOnClickListener(new View.OnClickListener() {
@@ -463,7 +467,7 @@ public class ChatActivity extends AppCompatActivity{
                         intent.putExtra("mypk", String.valueOf(userKey));
                         startActivity(intent);
                         bottomSheetDialog.dismiss();
-                        finish();
+                        endActivity();
                     }
                 });
 
@@ -471,64 +475,70 @@ public class ChatActivity extends AppCompatActivity{
                 BlackBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
                         Log.d(TAG, "onClick:black ");
-                        apiService = RetrofitClient.getClient().create(ServiceApi.class);
-                        Call<String> call = apiService.insertBL(new pkData(preferenceHelper.getPK(),Integer.parseInt(otherUserKey)));
-                        call.enqueue(new Callback<String>() {
-                            @Override
-                            public void onResponse(Call<String> call, Response<String> response) {
-                                if (response.isSuccessful()) {
-                                    Log.d(TAG, "onResponse: "+response.body());
+                            apiService = RetrofitClient.getClient().create(ServiceApi.class);
+                            Call<String> call = apiService.insertBL(new pkData(preferenceHelper.getPK(), Integer.parseInt(otherUserKey)));
+                            call.enqueue(new Callback<String>() {
+                                @Override
+                                public void onResponse(Call<String> call, Response<String> response) {
+                                    if (response.isSuccessful()) {
+                                        Log.d(TAG, "onResponse: " + response.body());
 
-                                    Log.d(TAG, "onResponse: 실행");
-                                    try {
-                                        sqLiteUtil.setInitView(getBaseContext(), "CHAT_ROOM_TB");
-                                        sqLiteUtil.deleteChatRoom(preferenceHelper.getPK(), Integer.parseInt(chatRoomId));
-                                    } finally {
-                                        finish();
+                                        Log.d(TAG, "onResponse: 실행");
+                                        try {
+                                            sqLiteUtil.setInitView(getBaseContext(), "CHAT_ROOM_TB");
+                                            sqLiteUtil.deleteChatRoom(preferenceHelper.getPK(), Integer.parseInt(chatRoomId));
+                                        } finally {
+
+                                        }
+
+
+                                    } else {
+                                        Log.d(TAG, "onResponse: 프레그 널");
                                     }
-
-
-                                } else {
-                                    Log.d(TAG, "onResponse: 프레그 널");
                                 }
-                            }
-                            @Override
-                            public void onFailure(Call<String> call, Throwable t) {
-                                Log.e(TAG, "getMessagesFromServer: API 요청 실패: " + t.getMessage());
-                            }
-                        });
+
+                                @Override
+                                public void onFailure(Call<String> call, Throwable t) {
+                                    Log.e(TAG, "getMessagesFromServer: API 요청 실패: " + t.getMessage());
+                                }
+                            });
+
+                            setupSQLiteUtil();
+                            apiService = RetrofitClient.getClient().create(ServiceApi.class);
+                            Call<String> call2 = apiService.blackChatRoom(new pkData(preferenceHelper.getPK(), Integer.parseInt(chatRoomId)));
+                            call2.enqueue(new Callback<String>() {
+                                @Override
+                                public void onResponse(Call<String> call2, Response<String> response) {
+                                    if (response.isSuccessful()) {
+                                        Log.d(TAG, "onResponse: " + response.body());
+
+                                        Log.d(TAG, "onResponse: 실행");
+                                        try {
+                                            sqLiteUtil.setInitView(getBaseContext(), "CHAT_ROOM_TB");
+                                            sqLiteUtil.deleteChatRoom(preferenceHelper.getPK(), Integer.parseInt(chatRoomId));
+                                        } finally {
+                                            bottomSheetDialog.dismiss();
+                                            endActivity();
+                                        }
 
 
-
-                        setupSQLiteUtil();
-                        apiService = RetrofitClient.getClient().create(ServiceApi.class);
-                        Call<String> call2 = apiService.blackChatRoom(new pkData(preferenceHelper.getPK(),Integer.parseInt(chatRoomId)));
-                        call2.enqueue(new Callback<String>() {
-                            @Override
-                            public void onResponse(Call<String> call2, Response<String> response) {
-                                if (response.isSuccessful()) {
-                                    Log.d(TAG, "onResponse: "+response.body());
-
-                                    Log.d(TAG, "onResponse: 실행");
-                                    try {
-                                        sqLiteUtil.setInitView(getBaseContext(), "CHAT_ROOM_TB");
-                                        sqLiteUtil.deleteChatRoom(preferenceHelper.getPK(), Integer.parseInt(chatRoomId));
-                                    } finally {
-                                        finish();
+                                    } else {
+                                        Log.d(TAG, "onResponse: 프레그 널");
                                     }
-
-
-                                } else {
-                                    Log.d(TAG, "onResponse: 프레그 널");
                                 }
-                            }
-                            @Override
-                            public void onFailure(Call<String> call2, Throwable t) {
-                                Log.e(TAG, "getMessagesFromServer: API 요청 실패: " + t.getMessage());
-                            }
-                        });
+
+                                @Override
+                                public void onFailure(Call<String> call2, Throwable t) {
+                                    Log.e(TAG, "getMessagesFromServer: API 요청 실패: " + t.getMessage());
+                                }
+                            });
+
+
+
                     }
+
                 });
 
 
@@ -563,7 +573,8 @@ public class ChatActivity extends AppCompatActivity{
                                         sqLiteUtil.setInitView(getBaseContext(), "CHAT_ROOM_TB");
                                         sqLiteUtil.deleteChatRoom(preferenceHelper.getPK(), Integer.parseInt(chatRoomId));
                                     } finally {
-                                        finish();
+                                        bottomSheetDialog.dismiss();
+                                        endActivity();
                                     }
 
                                 } else {
@@ -580,7 +591,7 @@ public class ChatActivity extends AppCompatActivity{
 
 
                 // 바텀 시트 다이얼로그 노출
-                bottomSheetDialog.show();
+
 
             }
         });
