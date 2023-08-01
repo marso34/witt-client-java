@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.gwnu.witt.R;
+import com.gwnu.witt.databinding.ActivityRoutineBinding;
 
 import java.util.Calendar;
 import java.util.Date;

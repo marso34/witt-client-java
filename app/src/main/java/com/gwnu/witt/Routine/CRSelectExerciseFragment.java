@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import com.gwnu.witt.Data.Exercise.ExerciseData;
 import com.gwnu.witt.Data.Exercise.RoutineData;
 import com.gwnu.witt.R;
+import com.gwnu.witt.databinding.FragmentCrSelectExerciseBinding;
 
 import java.util.ArrayList;
 

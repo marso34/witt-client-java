@@ -104,8 +104,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         mGoogleSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                signIn();
-                    GoSplash("138");
+                signIn();
+//                GoSplash("138");
             }
 
         });

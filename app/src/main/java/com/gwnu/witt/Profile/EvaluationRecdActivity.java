@@ -14,6 +14,7 @@ import com.gwnu.witt.Data.SQLiteUtil;
 import com.gwnu.witt.Data.User.ReviewListData;
 import com.gwnu.witt.Data.User.UserKey;
 import com.gwnu.witt.R;
+import com.gwnu.witt.databinding.ActivityEvaluationRecdBinding;
 import com.gwnu.witt.interface_.ServiceApi;
 
 import java.util.ArrayList;

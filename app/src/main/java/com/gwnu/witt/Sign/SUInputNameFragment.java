@@ -17,9 +17,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.gwnu.witt.R;
+import com.gwnu.witt.databinding.FragmentSuInputNameBinding;
 
 public class SUInputNameFragment extends Fragment {
-    private  FragmentSuInputNameBinding binding;
+    private FragmentSuInputNameBinding binding;
 
 //    private static final String Backgrount_1 = "#F2F5F9";
     private static final String Backgrount_2 = "#D1D8E2";

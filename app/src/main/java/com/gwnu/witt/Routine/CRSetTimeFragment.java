@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.gwnu.witt.R;
+import com.gwnu.witt.databinding.FragmentCrSetTimeBinding;
 
 /**
  * A simple {@link Fragment} subclass.

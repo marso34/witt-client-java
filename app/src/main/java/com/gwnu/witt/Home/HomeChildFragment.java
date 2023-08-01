@@ -24,6 +24,7 @@ import com.gwnu.witt.Data.UserInfo;
 import com.gwnu.witt.MainActivity;
 import com.gwnu.witt.Routine.RoutineChildFragment;
 import com.gwnu.witt.User.UserAdapter;
+import com.gwnu.witt.databinding.FragmentHomeChildBinding;
 import com.gwnu.witt.interface_.ServiceApi;
 
 import java.util.ArrayList;

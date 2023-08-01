@@ -20,6 +20,7 @@ import com.gwnu.witt.Data.Exercise.RecordData;
 import com.gwnu.witt.Data.Exercise.RoutineData;
 import com.gwnu.witt.R;
 import com.gwnu.witt.User.AreaAdapter;
+import com.gwnu.witt.databinding.FragmentExerciseResultBinding;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

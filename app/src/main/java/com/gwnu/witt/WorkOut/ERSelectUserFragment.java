@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.gwnu.witt.Data.Chat.UserChat;
 import com.gwnu.witt.R;
 import com.google.android.material.card.MaterialCardView;
+import com.gwnu.witt.databinding.FragmentErSelectUserBinding;
 
 import java.util.ArrayList;
 

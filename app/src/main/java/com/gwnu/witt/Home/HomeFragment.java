@@ -19,6 +19,7 @@ import com.gwnu.witt.R;
 import com.gwnu.witt.User.AreaAdapter;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+import com.gwnu.witt.databinding.FragmentHomeBinding;
 
 import java.util.ArrayList;
 import java.util.Calendar;

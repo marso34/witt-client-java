@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.gwnu.witt.R;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.gwnu.witt.databinding.FragmentSuInputBodyBinding;
 
 /**
  * A simple {@link Fragment} subclass.

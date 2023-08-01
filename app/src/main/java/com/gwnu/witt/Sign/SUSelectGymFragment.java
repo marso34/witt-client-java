@@ -49,6 +49,7 @@ import com.google.android.libraries.places.api.net.FetchPlaceRequest;
 import com.google.android.libraries.places.api.net.FetchPlaceResponse;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.material.card.MaterialCardView;
+import com.gwnu.witt.databinding.FragmentSuSelectGymBinding;
 
 import org.json.JSONArray;
 import org.json.JSONException;

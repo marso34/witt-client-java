@@ -13,6 +13,7 @@ import com.gwnu.witt.Data.RetrofitClient;
 import com.gwnu.witt.Data.User.ReportHistory;
 import com.gwnu.witt.Data.User.UserKey;
 import com.gwnu.witt.R;
+import com.gwnu.witt.databinding.ActivityReportHistoryBinding;
 import com.gwnu.witt.interface_.ServiceApi;
 
 import java.util.ArrayList;

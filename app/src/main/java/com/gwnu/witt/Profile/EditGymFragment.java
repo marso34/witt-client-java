@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.gwnu.witt.Data.PreferenceHelper;
+import com.gwnu.witt.databinding.FragmentEditGymBinding;
 
 /**
  * A simple {@link Fragment} subclass.

@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.gwnu.witt.Data.Exercise.ExerciseData;
 import com.gwnu.witt.Data.Exercise.RoutineData;
 import com.gwnu.witt.R;
+import com.gwnu.witt.databinding.FragmentCrInputDetailBinding;
 
 import java.util.ArrayList;
 

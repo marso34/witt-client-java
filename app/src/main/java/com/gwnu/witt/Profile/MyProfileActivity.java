@@ -37,6 +37,7 @@ import com.gwnu.witt.MainActivity;
 import com.gwnu.witt.R;
 import com.gwnu.witt.Routine.RoutineActivity;
 import com.gwnu.witt.Routine.RoutineAdapter;
+import com.gwnu.witt.databinding.ActivityMyprofileBinding;
 import com.gwnu.witt.interface_.ServiceApi;
 
 import org.json.JSONException;

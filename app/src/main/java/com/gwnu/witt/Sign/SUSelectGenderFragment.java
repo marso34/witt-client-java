@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.gwnu.witt.R;
+import com.gwnu.witt.databinding.FragmentSuSelectGenderBinding;
 
 /**
  * A simple {@link Fragment} subclass.

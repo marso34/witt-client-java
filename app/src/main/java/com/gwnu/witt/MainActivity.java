@@ -47,6 +47,7 @@ import com.gwnu.witt.Record.RecordFragment;
 import com.gwnu.witt.Routine.RoutineFragment;
 import com.gwnu.witt.Sign.LoginActivity;
 import com.gwnu.witt.WorkOut.ExerciseRecordActivity;
+import com.gwnu.witt.databinding.ActivityMainBinding;
 import com.gwnu.witt.interface_.AlarmRecever;
 import com.gwnu.witt.interface_.DataReceiverService;
 import com.gwnu.witt.interface_.ServiceApi;
