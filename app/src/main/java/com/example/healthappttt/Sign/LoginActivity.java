@@ -105,7 +105,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             @Override
             public void onClick(View view) {
                 signIn();
-                GoSplash("117");
             }
         });
         int runningServices = ServiceTracker.countRunningServices(this, DataReceiverService.class);
