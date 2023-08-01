@@ -68,6 +68,12 @@ public interface ServiceApi {
     @POST("/profile/EditWeightVol")// 수정된 3대운동 정보 업데이트
     Call<String> EditWeightVol(@Body Map<String, Object> WeightVol);
 
+    @POST("/profile/getGym")// 헬스장 정보 동기화
+    Call<Map<String, Object>> getGym(@Body UserKey userKey);
+
+    @POST("/profile/EditGYM")// 헬스장 정보 업데이트
+    Call<String> EditGYM(@Body Map<String, Object> LocPKInfo);
+
     @POST("/profile/getOtherProfile")// 상세 프로필 가져오기
     Call<Map<String,Object>> getOtherProfile(@Body UserKey userKey);
 
