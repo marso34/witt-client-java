@@ -67,6 +67,7 @@ public class ChattingFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
+            SocketSingleton.getInstance(getContext());
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
             SocketSingleton.getInstance(getContext());
@@ -76,7 +77,9 @@ public class ChattingFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // 레이아웃을 inflate합니다.
+        chatflag = false;
         rootView = inflater.inflate(R.layout.fragment_chatting, container, false);
         userList = new ArrayList<>();
         sqLiteUtil = SQLiteUtil.getInstance();
@@ -94,7 +97,7 @@ public class ChattingFragment extends Fragment {
         userListAdapter = new UserListAdapter(getContext(),userList);
         userlistRecyclerView.setAdapter(userListAdapter);
         // 어댑터의 아이템 클릭 리스너를 설정합니다.
-        getUsersFromServer();
+        getUsersFromServer(getContext());
 
         View mh = rootView.findViewById(R.id.moveHome);
         mh.setOnClickListener(new View.OnClickListener() {
@@ -109,7 +112,7 @@ public class ChattingFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        getUsersFromServer();
+        getUsersFromServer(getContext() );
         // Fragment가 화면에 보여질 때 동작할 코드 작성
         // 예: 데이터를 업데이트하거나 화면 갱신
         // 예: 필요한 작업 수행 등
@@ -119,8 +122,7 @@ public class ChattingFragment extends Fragment {
             @Override
             public void run() {
                 if(c != null){
-                    sqLiteUtil.setInitView(c, "CHAT_MSG_TB");
-                    MSG m = sqLiteUtil.selectLastMsg(chatRoomId, userKey, 2);
+                    MSG m = sqLiteUtil.selectLastMsg(c,chatRoomId, userKey, 2);
                     Handler handler = new Handler(Looper.getMainLooper());
                     handler.post(new Runnable() {
                         @Override
@@ -149,28 +151,25 @@ public class ChattingFragment extends Fragment {
         }).start();
     }
     // 서버에서 유저 목록을 가져오는 메소드입니다.
-    public void getUsersFromServer() {// 이건 챗프레그먼트 켜질때문 부르도록 다른곳에있는 이거 전부 getLastMSG로 바꾸기
-        if(chatflag == false) {
-            chatflag= true;
-            ServiceApi apiService = RetrofitClient.getClient().create(ServiceApi.class);
-            Log.d(TAG, "getUsersFromServer: " + String.valueOf(prefhelper.getPK()));
-            Call<List<UserChat>> call = apiService.getUsers(new pkData(prefhelper.getPK())); // 유저키 얻어와서 넣기
-            call.enqueue(new Callback<List<UserChat>>() {
-                @Override
-                public void onResponse(Call<List<UserChat>> call, Response<List<UserChat>> response) {
-                    if (response.isSuccessful()) {
-                        try {
+    public void getUsersFromServer(Context C) {// 이건 챗프레그먼트 켜질때문 부르도록 다른곳에있는 이거 전부 getLastMSG로 바꾸기
+        if(chatflag == false && C != null) {
+            try {
+                ServiceApi apiService = RetrofitClient.getClient().create(ServiceApi.class);
+                Log.d(TAG, "getUsersFromServer: " + String.valueOf(prefhelper.getPK()));
+                Call<List<UserChat>> call = apiService.getUsers(new pkData(prefhelper.getPK())); // 유저키 얻어와서 넣기
+                call.enqueue(new Callback<List<UserChat>>() {
+                    @Override
+                    public void onResponse(Call<List<UserChat>> call, Response<List<UserChat>> response) {
+                        if (response.isSuccessful()) {
                             List<UserChat> users = response.body();
                             for (UserChat u : users) Log.d(TAG, "onResponse: uuu" + u.getUserNM());
-                            if (getContext() != null) {
-                                sqLiteUtil.setInitView(getContext(), "CHAT_ROOM_TB");
-                                sqLiteUtil.insert(prefhelper.getPK(), users);
+                            if (C != null) {
+                                sqLiteUtil.deleteChatRooms(C);
+                                sqLiteUtil.insert(C, prefhelper.getPK(), users);
                             }
-                            userList.clear();
                             userList.addAll(users);
-                            userListAdapter.notifyDataSetChanged();
-                            if(rootView !=null) {
-                                if (!userList.isEmpty()) {
+                            if (rootView != null) {
+                                if (!users.isEmpty()) {
                                     rootView.findViewById(R.id.emptylayout).setVisibility(View.GONE);
                                     rootView.findViewById(R.id.userListLayout).setVisibility(View.VISIBLE);
                                 } else {
@@ -178,19 +177,27 @@ public class ChattingFragment extends Fragment {
                                     rootView.findViewById(R.id.userListLayout).setVisibility(View.GONE);
                                 }
                             }
-                        } finally {
-                            chatflag = false;
+
+                        } else {
+                            Toast.makeText(getContext(), "Failed to retrieve user list", Toast.LENGTH_SHORT).show();
                         }
-                    } else {
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<UserChat>> call, Throwable t) {
                         Toast.makeText(getContext(), "Failed to retrieve user list", Toast.LENGTH_SHORT).show();
                     }
+                });
+            }finally {
+                try {
+                    List<UserChat> users = sqLiteUtil.selectChatRoom(C,String.valueOf(prefhelper.getPK()));
+                    userList.clear();
+                    userList.addAll(users);
+                    userListAdapter.notifyDataSetChanged();
+                } finally {
+                    chatflag = false;
                 }
-
-                @Override
-                public void onFailure(Call<List<UserChat>> call, Throwable t) {
-                    Toast.makeText(getContext(), "Failed to retrieve user list", Toast.LENGTH_SHORT).show();
-                }
-            });
+            }
         }
 
 

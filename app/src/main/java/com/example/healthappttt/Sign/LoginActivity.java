@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -106,7 +105,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             @Override
             public void onClick(View view) {
                 signIn();
-//                GoSplash("1");
+                GoSplash("117");
             }
         });
         int runningServices = ServiceTracker.countRunningServices(this, DataReceiverService.class);
