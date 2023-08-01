@@ -62,18 +62,20 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserLi
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+            if(viewHolder.getAbsoluteAdapterPosition() != -1) {
                 int position = viewHolder.getAbsoluteAdapterPosition();
-                Log.d(TAG, "onClick: "+ valueOf(position));
-                    UserChat user = userList.get(position);
+                Log.d(TAG, "onClick: " + valueOf(position));
+                UserChat user = userList.get(position);
                 Intent intent = new Intent(context, ChatActivity.class);
                 view.findViewById(R.id.circleIMG).setVisibility(View.INVISIBLE);
                 LinearLayout layout = view.findViewById(R.id.out);
                 layout.setBackgroundResource(R.drawable.round_button_white);
-                intent.putExtra("otherUserName",user.getUserNM());
+                intent.putExtra("otherUserName", user.getUserNM());
                 intent.putExtra("ChatRoomId", valueOf(user.getChatRoomId()));
                 intent.putExtra("otherUserKey", valueOf(user.getOtherUserKey()));
-                Log.d(TAG, "onClick: "+user.getUserNM());
+                Log.d(TAG, "onClick: " + user.getUserNM());
                 context.startActivity(intent);
+            }
             }
         });
 

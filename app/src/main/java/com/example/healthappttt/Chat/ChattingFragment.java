@@ -167,7 +167,6 @@ public class ChattingFragment extends Fragment {
                                 sqLiteUtil.deleteChatRooms(C);
                                 sqLiteUtil.insert(C, prefhelper.getPK(), users);
                             }
-                            userList.addAll(users);
                             if (rootView != null) {
                                 if (!users.isEmpty()) {
                                     rootView.findViewById(R.id.emptylayout).setVisibility(View.GONE);
