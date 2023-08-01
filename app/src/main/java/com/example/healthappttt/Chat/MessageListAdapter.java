@@ -3,6 +3,7 @@ package com.example.healthappttt.Chat;
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -99,7 +100,11 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
         MSG message = messageList.get(position);
         if(extractName(message.getMessage())== null)
             holder.messageTextView.setText(message.getMessage());
-        else  holder.messageTextView.setText(extractName(message.getMessage()));
+        else {
+            holder.messageTextView.setText(extractName(message.getMessage()));
+            if(message.getMyFlag() ==2) holder.messageTextView.setTextColor(Color.parseColor("#03C78C"));
+
+        }
         if(position + 1 < messageList.size()) {
             String nextTS = extractDateTime(messageList.get(position+1).timestampString());
             if(!extractDateTime(message.timestampString()).equals(nextTS))

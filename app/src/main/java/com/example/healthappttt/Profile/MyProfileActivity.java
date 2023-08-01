@@ -33,6 +33,7 @@ import com.example.healthappttt.Data.SQLiteUtil;
 import com.example.healthappttt.Data.User.ImageCacheManager;
 import com.example.healthappttt.Data.User.UserKey;
 import com.example.healthappttt.Data.WittSendData;
+import com.example.healthappttt.MainActivity;
 import com.example.healthappttt.R;
 import com.example.healthappttt.Routine.RoutineActivity;
 import com.example.healthappttt.Routine.RoutineAdapter;
@@ -428,6 +429,7 @@ public class MyProfileActivity extends AppCompatActivity {
                 getWittUserData(wittSendData,timestamp);
 
 
+
             }
         });
 
@@ -490,8 +492,7 @@ public class MyProfileActivity extends AppCompatActivity {
                             chatkey = sqLiteUtil.getLastMyMsgPK(String.valueOf(response.body()), String.valueOf(myPK));
                             chatkey = chatkey + 1;
                         } finally {
-                            sqLiteUtil.setInitView(getApplicationContext(), "CHAT_MSG_TB");
-                            sqLiteUtil.insert(chatkey, myPK, 1, "!%$$#@@$%^!!~" + UserTB.getUser_NM() + "~!!^%$@@#$$%!", response.body(), 0, ts);
+                            sqLiteUtil.insert(getApplicationContext(),chatkey, myPK, 1, "!%$$#@@$%^!!~" + UserTB.getUser_NM() + "~!!^%$@@#$$%!", response.body(), 0, ts);
                             Log.d("TAG", "chatPk보내기" + chatkey + ts);
                             Log.d("TAG", "chatPk보내기" + otherUserKey);
                             //채팅방 로컬 저장 코드 넣기
@@ -499,6 +500,14 @@ public class MyProfileActivity extends AppCompatActivity {
                                 sendMessageToServer("!%$$#@@$%^!!~" + UserTB.getUser_NM() + "~!!^%$@@#$$%!", response.body(), chatkey);
 
                             }
+                            Intent tapIntent;
+//api level 21.. deprecated..
+                            tapIntent = new Intent(getApplicationContext(), MainActivity.class);
+                            tapIntent.putExtra("chatRoomId__", response.body().toString());
+                            tapIntent.putExtra("userKey__", OuserDefault.get("USER_PK").toString());
+                            tapIntent.putExtra("oUserName__", OuserDefault.get("USER_NM").toString());
+                            tapIntent.putExtra("userKey",String.valueOf(UserTB.getPK()));
+                            startActivity(tapIntent);
                         }
                     }
                     finally {

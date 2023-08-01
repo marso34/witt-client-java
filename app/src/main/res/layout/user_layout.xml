@@ -89,7 +89,7 @@
                             android:layout_height="wrap_content"
                             android:text="아...헬스장이 좀 머네요"
                             android:textColor="#677489"
-
+                            android:maxLines="1"
                             style="@style/CaptionB"></TextView>
 
 

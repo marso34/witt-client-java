@@ -107,45 +107,48 @@ public class alarmActivity extends AppCompatActivity {
     }
 
     private void getAlarmListFromServer() {
-        sqLiteUtil.setInitView(this, "NOTIFY_TB");
-        int lastKey = sqLiteUtil.SelectLastAlarm(String.valueOf(preferenceHelper.getPK()));
-        Log.d(TAG, "getAlarmListFromServer: "+lastKey);
-        apiService = RetrofitClient.getClient().create(ServiceApi.class);
-        Call<ArrayList<AlarmInfo>> call = apiService.getAlarmList(new pkData(preferenceHelper.getPK(), lastKey));
-        // 서버에서 알람 리스트 데이터를 받아오는 요청을 보냅니다.
-        // userKey는 사용자의 식별자로 대체해야 합니다.
-        call.enqueue(new Callback<ArrayList<AlarmInfo>>() {
-            @Override
-            public void onResponse(Call<ArrayList<AlarmInfo>> call, Response<ArrayList<AlarmInfo>> response) {
-                if (response.isSuccessful()) {
-                    ArrayList<AlarmInfo> alarmListResponse = response.body(); // 수정: response.body()를 따로 변수에 저장
-                    if (alarmListResponse != null) { // 수정: null 체크 추가
-                        ArrayList<AlarmInfo> alist = alarmListResponse;
-                        for (AlarmInfo al : alist) {
-                            sqLiteUtil.setInitView(getBaseContext(), "NOTIFY_TB");
-                            sqLiteUtil.insert(al);
+        try {
+            sqLiteUtil.setInitView(this, "NOTIFY_TB");
+            int lastKey = sqLiteUtil.SelectLastAlarm(String.valueOf(preferenceHelper.getPK()));
+            Log.d(TAG, "getAlarmListFromServer: " + lastKey);
+            apiService = RetrofitClient.getClient().create(ServiceApi.class);
+            Call<ArrayList<AlarmInfo>> call = apiService.getAlarmList(new pkData(preferenceHelper.getPK(), lastKey));
+            // 서버에서 알람 리스트 데이터를 받아오는 요청을 보냅니다.
+            // userKey는 사용자의 식별자로 대체해야 합니다.
+            call.enqueue(new Callback<ArrayList<AlarmInfo>>() {
+                @Override
+                public void onResponse(Call<ArrayList<AlarmInfo>> call, Response<ArrayList<AlarmInfo>> response) {
+                    if (response.isSuccessful()) {
+                        ArrayList<AlarmInfo> alarmListResponse = response.body(); // 수정: response.body()를 따로 변수에 저장
+                        if (alarmListResponse != null) { // 수정: null 체크 추가
+                            ArrayList<AlarmInfo> alist = alarmListResponse;
+                            for (AlarmInfo al : alist) {
+                                sqLiteUtil.setInitView(getBaseContext(), "NOTIFY_TB");
+                                sqLiteUtil.insert(al);
+                            }
+                        } else {
+                            Log.e(TAG, "onResponse: Alarm list is null"); // 수정: Alarm list가 null일 때 로그
                         }
-
-                        sqLiteUtil.setInitView(getBaseContext(), "NOTIFY_TB");
-                        ArrayList<AlarmInfo> al = sqLiteUtil.selectAlarms(String.valueOf(preferenceHelper.getPK()));
-
-                        alarmList.addAll(al) ;
-                        adapter.notifyDataSetChanged(); // 확인: adapter에 변경된 alarmList를 반영하는 코드가 포함되어 있는지 확인
-                        updating = false;
                     } else {
-                        Log.e(TAG, "onResponse: Alarm list is null"); // 수정: Alarm list가 null일 때 로그
+                        Log.e(TAG, "onResponse: Failed to get alarm list"); // 수정: 서버 응답 실패 로그
                     }
-                } else {
-                    Log.e(TAG, "onResponse: Failed to get alarm list"); // 수정: 서버 응답 실패 로그
                 }
-            }
 
-            @Override
-            public void onFailure(Call<ArrayList<AlarmInfo>> call, Throwable t) {
-                Log.e(TAG, "onFailure: Error during API call", t); // 수정: 서버 요청 실패 로그
-            }
+                @Override
+                public void onFailure(Call<ArrayList<AlarmInfo>> call, Throwable t) {
+                    Log.e(TAG, "onFailure: Error during API call", t); // 수정: 서버 요청 실패 로그
+                }
 
-        });
+            });
+        }
+        finally {
+            sqLiteUtil.setInitView(getBaseContext(), "NOTIFY_TB");
+            ArrayList<AlarmInfo> al = sqLiteUtil.selectAlarms(String.valueOf(preferenceHelper.getPK()));
+            alarmList.clear();
+            alarmList.addAll(al) ;
+            adapter.notifyDataSetChanged(); // 확인: adapter에 변경된 alarmList를 반영하는 코드가 포함되어 있는지 확인
+            updating = false;
+        }
         // You may implement getAlarmData() method to retrieve data from your local database
         // Remember to handle the SQLite operations asynchronously.
     }

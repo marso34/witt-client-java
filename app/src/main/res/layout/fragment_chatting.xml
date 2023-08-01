@@ -33,14 +33,15 @@
             android:id="@+id/userListLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:clipToPadding="false"
                 android:paddingTop="6dp"
                 android:paddingBottom="100dp"
-                android:clipToPadding="false"
-                tools:listitem="@layout/user_layout"/>
+                tools:listitem="@layout/user_layout" />
         </LinearLayout>
         <LinearLayout
             android:id="@+id/emptylayout"

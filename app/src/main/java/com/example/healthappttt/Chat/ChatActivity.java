@@ -89,7 +89,7 @@ public class ChatActivity extends AppCompatActivity{
         getMessagesFromServer();
         clickmenu();
         messageRecyclerView.addOnScrollListener(recyclerViewScrollListener);
-
+        SocketSingleton.getInstance(this);
 // 리사이클러뷰의 LayoutManager를 가져옵니다.
 
     }
@@ -266,7 +266,7 @@ public class ChatActivity extends AppCompatActivity{
                     }finally {
                         if(getApplicationContext() !=null) {
                             sqLiteUtil.setInitView(getApplicationContext(), "CHAT_MSG_TB");
-                            sqLiteUtil.insert(chatkey, Integer.parseInt(userKey), 1, messageText, Integer.parseInt(chatRoomId), 0, ts);
+                            sqLiteUtil.insert(getApplicationContext(),chatkey, Integer.parseInt(userKey), 1, messageText, Integer.parseInt(chatRoomId), 0, ts);
                             Log.d(TAG, "onClick: 보내기" + chatkey);
                             sendMessageToServer(messageText, chatkey, ts);
                         }
@@ -291,7 +291,7 @@ public class ChatActivity extends AppCompatActivity{
                 int dayOfWeekNumber = calendar.get(Calendar.DAY_OF_WEEK);
                 String adapterUserKey = otherUserKey;
                 Intent intent = new Intent(getApplicationContext(), MyProfileActivity.class);
-                intent.putExtra("PK", adapterUserKey);
+                intent.putExtra("PK", Integer.valueOf(adapterUserKey));
                 intent.putExtra("dayOfWeek", dayOfWeekNumber - 1);
 //                intent.putExtra("post",finalProfilefile);--?
                 startActivity(intent);
@@ -316,8 +316,7 @@ public class ChatActivity extends AppCompatActivity{
     private void getMessagesFromServer() {
         apiService = RetrofitClient.getClient().create(ServiceApi.class);
         if(getApplicationContext() != null) {
-            sqLiteUtil.setInitView(getApplicationContext(), "CHAT_MSG_TB");
-            MSG m = sqLiteUtil.selectLastMsg(chatRoomId, userKey, 1);
+            MSG m = sqLiteUtil.selectLastMsg(this,chatRoomId, userKey, 1);
             Log.d(TAG, "getMessagesFromServer: " + m.getKey());
             Call<List<MSG>> call = apiService.getMSGFromServer(new getMSGKey(Integer.parseInt(userKey), Integer.parseInt(chatRoomId), m.getKey(), m.timestampString()));
             call.enqueue(new Callback<List<MSG>>() {
@@ -333,12 +332,12 @@ public class ChatActivity extends AppCompatActivity{
                                     if (name1 != null) {
                                         if (getApplicationContext() != null) {
                                             sqLiteUtil.setInitView(getApplicationContext(), "CHAT_MSG_TB");
-                                            sqLiteUtil.insert(msg.getKey(), Integer.parseInt(userKey), msg.getMyFlag(), name1, Integer.parseInt(chatRoomId), 1, msg.timestampString());
+                                            sqLiteUtil.insert(getApplicationContext(),msg.getKey(), Integer.parseInt(userKey), msg.getMyFlag(), name1, Integer.parseInt(chatRoomId), 1, msg.timestampString());
                                         }
                                     } else {
                                         if (getApplicationContext() != null) {
                                             sqLiteUtil.setInitView(getApplicationContext(), "CHAT_MSG_TB");
-                                            sqLiteUtil.insert(msg.getKey(), Integer.parseInt(userKey), msg.getMyFlag(), msg.getMessage(), Integer.parseInt(chatRoomId), 1, msg.timestampString());
+                                            sqLiteUtil.insert(getApplicationContext(),msg.getKey(), Integer.parseInt(userKey), msg.getMyFlag(), msg.getMessage(), Integer.parseInt(chatRoomId), 1, msg.timestampString());
                                         }
                                     }
                                     Log.d(TAG, "onResponse: msg" + msg.getMessage());
@@ -375,8 +374,7 @@ public class ChatActivity extends AppCompatActivity{
             public void run() {
                 try {
                     if(getApplicationContext() != null) {
-                        sqLiteUtil.setInitView(getApplicationContext(), "CHAT_MSG_TB");
-                        List<MSG> TM = sqLiteUtil.SelectAllMSG(userKey, Integer.parseInt(chatRoomId));
+                        List<MSG> TM = sqLiteUtil.selectAllMSG(userKey, Integer.parseInt(chatRoomId),getApplicationContext());
                         messageList.clear();
                         if (TM != null) {
                             messageList.clear();
