@@ -52,6 +52,8 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
             DBHelper dbHelper = new DBHelper(context, "Witt", null, 1);
             try {
                 db = dbHelper.getWritableDatabase();
+                dbHelper.onCreate(db);
+
             } catch (SQLiteException e) {
                 e.printStackTrace();
                 Log.e(table, "데이터베이스를 열 수 없음");
