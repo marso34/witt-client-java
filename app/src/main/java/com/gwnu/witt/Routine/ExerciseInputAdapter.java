@@ -15,7 +15,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.gwnu.witt.Data.Exercise.ExerciseData;
-import com.example.healthappttt.R;
+import com.gwnu.witt.R;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.ArrayList;

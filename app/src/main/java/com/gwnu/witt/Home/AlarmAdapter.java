@@ -16,7 +16,7 @@ import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.gwnu.witt.Data.AlarmInfo;
-import com.example.healthappttt.R;
+import com.gwnu.witt.R;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

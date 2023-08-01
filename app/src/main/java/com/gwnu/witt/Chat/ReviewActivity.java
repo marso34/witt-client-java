@@ -11,11 +11,11 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.healthappttt.databinding.ActivityReviewBinding;
+import com.gwnu.witt.databinding.ActivityReviewBinding;
 import com.gwnu.witt.Data.PreferenceHelper;
 import com.gwnu.witt.Data.RetrofitClient;
 import com.gwnu.witt.Data.User.ReviewData;
-import com.example.healthappttt.R;
+import com.gwnu.witt.R;
 import com.gwnu.witt.interface_.ServiceApi;
 
 import retrofit2.Call;

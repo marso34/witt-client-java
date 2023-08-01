@@ -18,7 +18,7 @@ import com.gwnu.witt.Data.User.ReportHistory;
 import com.gwnu.witt.Data.User.ReviewListData;
 import com.gwnu.witt.Data.User.UserKey;
 import com.gwnu.witt.Data.User.WittListData;
-import com.example.healthappttt.R;
+import com.gwnu.witt.R;
 import com.gwnu.witt.User.BlockUserAdapter;
 import com.gwnu.witt.interface_.ServiceApi;
 

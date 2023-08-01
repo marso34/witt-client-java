@@ -42,7 +42,7 @@ import com.gwnu.witt.Home.AlarmManagerCustom;
 import com.gwnu.witt.Home.HomeFragment;
 import com.gwnu.witt.Home.alarmActivity;
 import com.gwnu.witt.Profile.MyProfileActivity;
-import com.example.healthappttt.R;
+import com.gwnu.witt.R;
 import com.gwnu.witt.Record.RecordFragment;
 import com.gwnu.witt.Routine.RoutineFragment;
 import com.gwnu.witt.Sign.LoginActivity;

@@ -24,7 +24,7 @@ import com.gwnu.witt.Data.User.UserKey;
 import com.gwnu.witt.Data.User.UserProfile;
 import com.gwnu.witt.Data.User.WittListData;
 import com.gwnu.witt.Data.pkData;
-import com.example.healthappttt.R;
+import com.gwnu.witt.R;
 import com.gwnu.witt.interface_.ServiceApi;
 
 import java.util.ArrayList;

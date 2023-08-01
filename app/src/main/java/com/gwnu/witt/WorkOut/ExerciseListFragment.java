@@ -1,4 +1,4 @@
-//package com.example.healthappttt.WorkOut;
+//package com.gwnu.witt.WorkOut;
 //
 //import android.annotation.SuppressLint;
 //import android.app.Dialog;
@@ -17,9 +17,9 @@
 //import android.widget.ListView;
 //import android.widget.ToggleButton;
 //
-//import com.example.healthappttt.Data.Exercise.ExerciseData;
-//import com.example.healthappttt.R;
-//import com.example.healthappttt.Routine.ExerciseListAdapter;
+//import com.gwnu.witt.Data.Exercise.ExerciseData;
+//import com.gwnu.witt.R;
+//import com.gwnu.witt.Routine.ExerciseListAdapter;
 //import com.google.android.material.bottomsheet.BottomSheetBehavior;
 //import com.google.android.material.bottomsheet.BottomSheetDialog;
 //import com.google.android.material.bottomsheet.BottomSheetDialogFragment;

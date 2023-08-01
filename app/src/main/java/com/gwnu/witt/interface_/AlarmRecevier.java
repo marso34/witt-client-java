@@ -1,10 +1,10 @@
-//package com.example.healthappttt.interface_;
+//package com.gwnu.witt.interface_;
 //
 //import android.content.BroadcastReceiver;
 //import android.content.Context;
 //import android.content.Intent;
 //
-//import com.example.healthappttt.Home.AlarmManagerCustom;
+//import com.gwnu.witt.Home.AlarmManagerCustom;
 //
 //public class AlarmRecevier extends BroadcastReceiver {
 //

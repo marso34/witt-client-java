@@ -16,7 +16,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.healthappttt.R;
+import com.gwnu.witt.R;
 import com.gwnu.witt.Data.Chat.MSG;
 import com.gwnu.witt.Data.Chat.SocketSingleton;
 import com.gwnu.witt.Data.Chat.UserChat;

@@ -1,4 +1,4 @@
-package com.gwnu.witt.User;//package com.example.healthappttt.adapter;
+package com.gwnu.witt.User;//package com.gwnu.witt.adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.gwnu.witt.Data.UserInfo;
 import com.gwnu.witt.Profile.MyProfileActivity;
-import com.example.healthappttt.R;
+import com.gwnu.witt.R;
 import com.google.android.material.card.MaterialCardView;
 
 

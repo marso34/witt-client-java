@@ -19,7 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.healthappttt.R;
+import com.gwnu.witt.R;
 import com.gwnu.witt.Chat.ChatActivity;
 import com.gwnu.witt.Data.Chat.MSG;
 import com.gwnu.witt.Data.Chat.SocketSingleton;

@@ -11,7 +11,7 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.healthappttt.R;
+import com.gwnu.witt.R;
 import com.gwnu.witt.Sign.LoginActivity;
 import com.gwnu.witt.interface_.DataReceiverService;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;

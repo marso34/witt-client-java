@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.gwnu.witt.Data.Exercise.ExerciseData;
-import com.example.healthappttt.R;
+import com.gwnu.witt.R;
 
 import java.util.ArrayList;
 

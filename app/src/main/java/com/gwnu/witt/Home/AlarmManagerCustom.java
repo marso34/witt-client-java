@@ -11,7 +11,7 @@ import android.widget.RemoteViews;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
-import com.example.healthappttt.R;
+import com.gwnu.witt.R;
 import com.gwnu.witt.Sign.LoginActivity;
 
 public class AlarmManagerCustom {

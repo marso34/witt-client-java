@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.example.healthappttt.R;
+import com.gwnu.witt.R;
 import com.gwnu.witt.Data.AlarmInfo;
 import com.gwnu.witt.Data.PreferenceHelper;
 import com.gwnu.witt.Data.RetrofitClient;

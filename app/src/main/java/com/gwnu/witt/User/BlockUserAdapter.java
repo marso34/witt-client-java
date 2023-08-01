@@ -28,7 +28,7 @@ import com.gwnu.witt.Data.User.WittListData;
 import com.gwnu.witt.Profile.BlackActivity;
 import com.gwnu.witt.Profile.ReviewsRecdAtivity;
 import com.gwnu.witt.Profile.WittHistoryActivity;
-import com.example.healthappttt.R;
+import com.gwnu.witt.R;
 import com.gwnu.witt.interface_.ServiceApi;
 
 import java.text.ParseException;

@@ -12,7 +12,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.gwnu.witt.Data.PreferenceHelper;
 import com.gwnu.witt.Data.RetrofitClient;
 import com.gwnu.witt.Data.User.LocInfo;
-import com.example.healthappttt.R;
+import com.gwnu.witt.R;
 import com.gwnu.witt.Sign.SUSelectGymFragment;
 import com.gwnu.witt.interface_.ServiceApi;
 

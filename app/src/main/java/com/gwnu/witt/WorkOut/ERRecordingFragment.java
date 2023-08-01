@@ -22,8 +22,8 @@ import android.widget.CompoundButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.example.healthappttt.R;
-import com.example.healthappttt.databinding.FragmentErRecordingBinding;
+import com.gwnu.witt.R;
+import com.gwnu.witt.databinding.FragmentErRecordingBinding;
 import com.gwnu.witt.Data.Exercise.ExerciseData;
 
 import java.text.SimpleDateFormat;

@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.example.healthappttt.R;
+import com.gwnu.witt.R;
 
 public class WittHistoryActivity extends AppCompatActivity {
 

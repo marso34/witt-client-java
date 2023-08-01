@@ -6,7 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.healthappttt.R;
+import com.gwnu.witt.R;
 import com.gwnu.witt.Data.Exercise.ExerciseData;
 import com.gwnu.witt.Data.Exercise.RoutineData;
 import com.gwnu.witt.Routine.ExerciseInputAdapter;

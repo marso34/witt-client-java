@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.gwnu.witt.Data.Chat.UserChat;
 import com.gwnu.witt.Data.User.WittListData;
-import com.example.healthappttt.R;
+import com.gwnu.witt.R;
 import com.google.android.material.card.MaterialCardView;
 
 import java.util.ArrayList;

@@ -34,7 +34,7 @@ import com.gwnu.witt.Data.User.ImageCacheManager;
 import com.gwnu.witt.Data.User.UserKey;
 import com.gwnu.witt.Data.WittSendData;
 import com.gwnu.witt.MainActivity;
-import com.example.healthappttt.R;
+import com.gwnu.witt.R;
 import com.gwnu.witt.Routine.RoutineActivity;
 import com.gwnu.witt.Routine.RoutineAdapter;
 import com.gwnu.witt.interface_.ServiceApi;

@@ -16,7 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.healthappttt.R;
+import com.gwnu.witt.R;
 
 public class SUInputNameFragment extends Fragment {
     private  FragmentSuInputNameBinding binding;

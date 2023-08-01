@@ -25,7 +25,7 @@ import com.gwnu.witt.Data.User.UploadResponse;
 import com.gwnu.witt.Data.User.UserClass;
 import com.gwnu.witt.Data.User.UserData;
 import com.gwnu.witt.MainActivity;
-import com.example.healthappttt.R;
+import com.gwnu.witt.R;
 import com.gwnu.witt.interface_.ServiceApi;
 
 import java.io.File;

@@ -17,7 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
 import com.gwnu.witt.MainActivity;
-import com.example.healthappttt.R;
+import com.gwnu.witt.R;
 
 public class RestartService extends Service {
     @Override

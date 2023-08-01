@@ -7,7 +7,7 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.healthappttt.R;
+import com.gwnu.witt.R;
 import com.suke.widget.SwitchButton;
 
 public class SetAlarmActivity extends AppCompatActivity {

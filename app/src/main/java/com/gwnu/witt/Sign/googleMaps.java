@@ -1,4 +1,4 @@
-//package com.example.healthappttt.Sign;
+//package com.gwnu.witt.Sign;
 //import androidx.annotation.NonNull;
 //import androidx.appcompat.app.AlertDialog;
 //import androidx.appcompat.app.AppCompatActivity;
@@ -20,7 +20,7 @@
 //import android.view.WindowManager;
 //import android.widget.Toast;
 //
-//import com.example.healthappttt.R;
+//import com.gwnu.witt.R;
 //import com.google.android.gms.location.FusedLocationProviderClient;
 //import com.google.android.gms.location.LocationCallback;
 //import com.google.android.gms.location.LocationRequest;

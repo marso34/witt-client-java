@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.gwnu.witt.Data.Exercise.RoutineData;
 import com.gwnu.witt.Data.SQLiteUtil;
-import com.example.healthappttt.R;
+import com.gwnu.witt.R;
 import com.gwnu.witt.User.AreaAdapter;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;

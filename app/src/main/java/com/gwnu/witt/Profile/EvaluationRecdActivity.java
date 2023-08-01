@@ -13,7 +13,7 @@ import com.gwnu.witt.Data.RetrofitClient;
 import com.gwnu.witt.Data.SQLiteUtil;
 import com.gwnu.witt.Data.User.ReviewListData;
 import com.gwnu.witt.Data.User.UserKey;
-import com.example.healthappttt.R;
+import com.gwnu.witt.R;
 import com.gwnu.witt.interface_.ServiceApi;
 
 import java.util.ArrayList;

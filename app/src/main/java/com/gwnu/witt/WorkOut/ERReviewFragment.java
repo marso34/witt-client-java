@@ -11,7 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.healthappttt.databinding.FragmentErReviewBinding;
+import com.gwnu.witt.databinding.FragmentErReviewBinding;
 import com.gwnu.witt.Chat.ReviewActivity;
 
 /**

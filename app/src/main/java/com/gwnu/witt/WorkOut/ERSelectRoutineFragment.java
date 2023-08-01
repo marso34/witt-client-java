@@ -12,8 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.healthappttt.R;
-import com.example.healthappttt.databinding.FragmentErSelectRoutineBinding;
+import com.gwnu.witt.R;
+import com.gwnu.witt.databinding.FragmentErSelectRoutineBinding;
 import com.gwnu.witt.Data.Exercise.RoutineData;
 import com.gwnu.witt.Routine.RoutineAdapter;
 

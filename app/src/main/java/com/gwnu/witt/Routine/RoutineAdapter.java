@@ -21,7 +21,7 @@ import com.gwnu.witt.Data.Exercise.RoutineData;
 import com.gwnu.witt.Data.RetrofitClient;
 import com.gwnu.witt.Data.SQLiteUtil;
 import com.gwnu.witt.Data.pkData;
-import com.example.healthappttt.R;
+import com.gwnu.witt.R;
 import com.gwnu.witt.User.AreaAdapter;
 import com.gwnu.witt.interface_.ServiceApi;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
