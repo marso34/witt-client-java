@@ -168,7 +168,7 @@ public class CreateRoutineActivity extends AppCompatActivity implements CRSetTim
 
         routine.setTime(time);
 
-            replaceFragmentRight(CRSelectExerciseFragment.newInstance(routine));
+            replaceFragment(CRSelectExerciseFragment.newInstance(routine));
         } else {
             Terminate();
         }
@@ -179,9 +179,9 @@ public class CreateRoutineActivity extends AppCompatActivity implements CRSetTim
         if (selectExercises != null) {
             this.routine.setExercises(selectExercises);
 
-            replaceFragmentRight(CRInputDetailFragment.newInstance(routine));
+            replaceFragment(CRInputDetailFragment.newInstance(routine));
         } else {
-            replaceFragmentLeft(CRSetTimeFragment.newInstance(time, dayOfWeek));
+            replaceFragment(CRSetTimeFragment.newInstance(time, dayOfWeek));
         }
     } // AddExerciseFragment에서 호출하는 메서드
 
@@ -190,13 +190,13 @@ public class CreateRoutineActivity extends AppCompatActivity implements CRSetTim
         this.routine.setExercises(exercises);
 
         if (isFinish)   SaveToDB(); // 받은 운동 정보 토대로 DB에 루틴, 운동 생성
-        else            replaceFragmentLeft(CRSelectExerciseFragment.newInstance(routine));
+        else            replaceFragment(CRSelectExerciseFragment.newInstance(routine));
     } // ExerciseDetailFragment에서 호출하는 메서드
 
-    @Override
-    public void onBackPressed() {
-        Terminate();
-    } // 뒤로가기 버튼 눌렀을 때 루틴 입력을 취소할지, CreateRoutineActivity를 종료할 지 확인
+//    @Override
+//    public void onBackPressed() {
+//        Terminate();
+//    } // 뒤로가기 버튼 눌렀을 때 루틴 입력을 취소할지, CreateRoutineActivity를 종료할 지 확인
 
     private void Terminate() {
         AlertDialog.Builder alert_ex = new AlertDialog.Builder(this);

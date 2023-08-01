@@ -132,7 +132,7 @@ public class ExerciseRecordActivity extends AppCompatActivity implements ERSelec
 
                     SaveToDev();
 
-                    replaceFragmentRight(ExerciseResultFragment.newInstance(routines.get(0), record, ""));
+                    replaceFragment(ExerciseResultFragment.newInstance(routines.get(0), record, ""));
 
                 } else {
                     Toast.makeText(ExerciseRecordActivity.this, "서버 연결에 실패", Toast.LENGTH_SHORT).show();
@@ -167,21 +167,21 @@ public class ExerciseRecordActivity extends AppCompatActivity implements ERSelec
     public void onSelectRoutine(boolean isBack) {
         if (isBack)    finish();
         else if (users.size() > 0)
-            replaceFragmentRight(ERSelectUserFragment.newInstance(users));
+            replaceFragment(ERSelectUserFragment.newInstance(users));
         else
-            replaceFragmentRight(ERRecordingFragment.newInstance(routines.get(0).getExercises()));
+            replaceFragment(ERRecordingFragment.newInstance(routines.get(0).getExercises()));
     }
 
     @Override
     public void onSelectUser(int oUserID, String name) { // 나중에 유저 전달로 변경
         if (oUserID < 0) // 뒤로가기 버튼
-            replaceFragmentLeft(ERSelectRoutineFragment.newInstance(dayOfWeek, routines.get(0)));
+            replaceFragment(ERSelectRoutineFragment.newInstance(dayOfWeek, routines.get(0)));
         else if (oUserID == 0) { // 유저 선택 안 함
-            replaceFragmentRight(ERRecordingFragment.newInstance(routines.get(0).getExercises())); // ERRecordingFragment로 이동
+            replaceFragment(ERRecordingFragment.newInstance(routines.get(0).getExercises())); // ERRecordingFragment로 이동
         } else { // 유저 선택
             this.oUserID = oUserID;
             this.name = name;
-            replaceFragmentRight(ERRecordingFragment.newInstance(routines.get(0).getExercises())); // ERRecordingFragment로 이동
+            replaceFragment(ERRecordingFragment.newInstance(routines.get(0).getExercises())); // ERRecordingFragment로 이동
         }
     }
 
