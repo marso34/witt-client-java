@@ -185,9 +185,7 @@ public class HomeChildFragment extends Fragment {
             public void onResponse(Call<List<UserInfo>> call, Response<List<UserInfo>> response) {
                 if (response.isSuccessful()) {
                     Log.d("Response", "Successful");
-
                     Log.d("pk", response.body() + "");
-
 
                     UserList.clear();
                     for (UserInfo value : response.body()) {
