@@ -234,7 +234,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 
 
-Project Link: [https://github.com/marso34/witt-client-java](https://github.com/marso34/witt-client-java) 
+Project Link: [https://github.com/marso34/witt-client-java](https://github.com/marso34/witt-client-java) <br />
 Notion Link: [https://projects-lj.notion.site/projects-lj/With-Training-2aca57d461f94f918dab38773869c3a6](https://projects-lj.notion.site/projects-lj/With-Training-2aca57d461f94f918dab38773869c3a6)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
