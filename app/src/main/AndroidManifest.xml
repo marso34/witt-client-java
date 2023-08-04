@@ -179,7 +179,7 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyA6RE55LrazpWCOa0lRu0xOzNInsKHDnMU" />
+            android:value="@string/google_places_api_key" />
 
         <activity
             android:name="com.gwnu.witt.Profile.MyProfileActivity"
