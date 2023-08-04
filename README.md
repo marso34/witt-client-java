@@ -233,7 +233,9 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 - Mail: <a href="mailto:kwoo6643@gmail.com">kwoo6643@gmail.com</a>
 
 
+
 Project Link: [https://github.com/marso34/witt-client-java](https://github.com/marso34/witt-client-java)
+Notion Link: [https://projects-lj.notion.site/projects-lj/With-Training-2aca57d461f94f918dab38773869c3a6]([https://github.com/marso34/witt-client-java](http://projects-lj.notion.site/With-Training-2aca57d461f94f918dab38773869c3a6))
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
