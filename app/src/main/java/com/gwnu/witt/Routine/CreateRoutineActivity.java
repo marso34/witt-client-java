@@ -160,6 +160,27 @@ public class CreateRoutineActivity extends AppCompatActivity implements CRSetTim
         fragmentTransaction.commit();
     }
 
+    private void Terminate() {
+        AlertDialog.Builder alert_ex = new AlertDialog.Builder(this);
+        alert_ex.setMessage("루틴 생성을 취소할까요?");
+        alert_ex.setPositiveButton("예", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish(); // "예" 클릭시 종료
+            }
+        });
+        alert_ex.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // 아니오 누를 시 아무것도 안 함
+            }
+        });
+        alert_ex.setTitle("루틴 생성 취소");
+
+        AlertDialog alert = alert_ex.create();
+        alert.show();
+    }
+
     @Override
     public void onRoutineSetTime(int time) {
         if (-1 < time && time < 4) {
@@ -196,25 +217,4 @@ public class CreateRoutineActivity extends AppCompatActivity implements CRSetTim
 //    public void onBackPressed() {
 //        Terminate();
 //    } // 뒤로가기 버튼 눌렀을 때 루틴 입력을 취소할지, CreateRoutineActivity를 종료할 지 확인
-
-    private void Terminate() {
-        AlertDialog.Builder alert_ex = new AlertDialog.Builder(this);
-        alert_ex.setMessage("루틴 생성을 취소할까요?");
-        alert_ex.setPositiveButton("예", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                finish(); // "예" 클릭시 종료
-            }
-        });
-        alert_ex.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // 아니오 누를 시 아무것도 안 함
-            }
-        });
-        alert_ex.setTitle("루틴 생성 취소");
-
-        AlertDialog alert = alert_ex.create();
-        alert.show();
-    }
 }

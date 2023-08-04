@@ -94,7 +94,7 @@ public class EditRoutineActivity extends AppCompatActivity {
 
         setTime(routine.getTime());
 
-        binding.backBtn.setOnClickListener(v -> {});
+        binding.backBtn.setOnClickListener(v -> cancelEditRoutine());
 
         binding.dayOfWeek.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -314,8 +314,7 @@ public class EditRoutineActivity extends AppCompatActivity {
         finish();
     }
 
-    @Override
-    public void onBackPressed() {
+    private void cancelEditRoutine() {
         AlertDialog.Builder alert_ex = new AlertDialog.Builder(this);
         alert_ex.setMessage("루틴 수정을 취소할까요?");
         alert_ex.setPositiveButton("예", new DialogInterface.OnClickListener() {
@@ -334,5 +333,11 @@ public class EditRoutineActivity extends AppCompatActivity {
 
         AlertDialog alert = alert_ex.create();
         alert.show();
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        cancelEditRoutine();
     } // 뒤로가기 버튼 눌렀을 때 루틴 입력을 취소할지, Activity를 종료할 지 확인
 }
