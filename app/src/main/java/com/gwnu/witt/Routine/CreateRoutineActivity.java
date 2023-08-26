@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.gwnu.witt.Data.Exercise.RoutineAiData;
 import com.gwnu.witt.Data.RetrofitClient;
 import com.gwnu.witt.Data.PreferenceHelper;
 import com.gwnu.witt.Data.Exercise.RoutineData;
@@ -55,10 +56,7 @@ public class CreateRoutineActivity extends AppCompatActivity implements CRSetTim
         replaceFragment(CRSetTimeFragment.newInstance(time, dayOfWeek));
     }
 
-
     private void SaveToDB() {
-        ArrayList<ExerciseData> list = new ArrayList<>();
-
         int CAT = 0;
         for (ExerciseData e : routine.getExercises())
             CAT |= e.getCat();
@@ -66,9 +64,11 @@ public class CreateRoutineActivity extends AppCompatActivity implements CRSetTim
         routine.setUserID(prefhelper.getPK()); // 나중에 userID prefhelper.getPK()로 수정
         routine.setCat(CAT);
 
+        RoutineAiData rData = new RoutineAiData(routine, prefhelper.getheight(), prefhelper.getweight(), prefhelper.getbenchValue(), prefhelper.getdeadValue(), prefhelper.getsquatValue());
+
         int finalCAT = CAT;
 
-        service.createRoutine(routine).enqueue(new Callback<List<Integer>>() {
+        service.createRoutine(rData).enqueue(new Callback<List<Integer>>() {
             @Override
             public void onResponse(Call<List<Integer>> call, Response<List<Integer>> response) {
                 if (response.isSuccessful()) {
