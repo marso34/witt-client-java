@@ -350,6 +350,7 @@ public class SQLiteUtil { // 싱글톤 패턴으로 구현
 
     /**
      * 이 메소드는 RT_TB 데이터를 삽입하는 메서드입니다.
+     * @param routine ddd
      */
     public void insert(RoutineData routine) {
         ContentValues values = new ContentValues();
