@@ -71,11 +71,14 @@ public class AddExerciseActivity extends AppCompatActivity implements CRSelectEx
 
     @Override
     public void onRoutineAddEx(ArrayList<ExerciseData> selectExercises) {
-        this.routine.setExercises(selectExercises);
+        if (selectExercises != null) {
+            this.routine.setExercises(selectExercises);
 
-        Intent intent = new Intent();
-        intent.putExtra("routine", routine);
-        setResult(RESULT_OK, intent);
-        finish();
+            Intent intent = new Intent();
+            intent.putExtra("routine", routine);
+            setResult(RESULT_OK, intent);
+            finish();
+        } else
+            finish();
     }
 }

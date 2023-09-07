@@ -17,7 +17,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 + "PK INT primary key,"
                 + "Time TYNYINT,"
                 + "CAT SMALLINT,"
-                + "Day_Of_Week TYNYINT);";
+                + "Day_Of_Week TYNYINT,"
+                + "Cluster INT);";
 
         db.execSQL(routineSql);
 

@@ -7,6 +7,7 @@ import com.gwnu.witt.Data.Chat.UserChat;
 import com.gwnu.witt.Data.Chat.getMSGKey;
 import com.gwnu.witt.Data.Exercise.GetRoutine;
 import com.gwnu.witt.Data.Exercise.RecordData;
+import com.gwnu.witt.Data.Exercise.RoutineAiData;
 import com.gwnu.witt.Data.Exercise.RoutineData;
 import com.gwnu.witt.Data.User.BlackListData;
 import com.gwnu.witt.Data.User.GetUserInfo;
@@ -95,7 +96,7 @@ public interface ServiceApi {
 
 //    ----------------------------------------------------------------------------------------------
     @POST("/routine/CreateRoutine")
-    Call<List<Integer>> createRoutine(@Body RoutineData data);
+    Call<List<Integer>> createRoutine(@Body RoutineAiData data);
 
     @POST("/routine/DeleteRoutine")
     Call<Integer> deleteRoutine(@Body pkData data);

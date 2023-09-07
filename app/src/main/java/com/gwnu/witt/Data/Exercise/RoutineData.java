@@ -94,5 +94,4 @@ public class RoutineData implements Serializable {
     public void setCat(int cat)                                  { this.cat = cat; }
     public void setTime(int time)                                { this.time = time; }
     public void setExercises(ArrayList<ExerciseData> exercises)  { this.exercises = exercises; }
-
 }
