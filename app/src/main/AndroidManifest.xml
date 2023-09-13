@@ -16,7 +16,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
-        android:name="com.gwnu.witt.MyApplication"
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -28,24 +28,33 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".TestActivity"
+            android:name=".ddddddddddddddddActivity"
             android:exported="false" />
         <activity
-            android:name=".AiCameraActivity"
+            android:name=".ttttttActivity"
             android:exported="false" />
         <activity
-            android:name="com.gwnu.witt.SplashActivity"
+            android:name=".KotlinTestActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Kotlin.TestActivity"
+            android:exported="true" />
+        <activity
+            android:name=".Kotlin.AiCameraActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SplashActivity"
             android:exported="false"
             android:theme="@style/SplashTheme" />
         <activity
-            android:name="com.gwnu.witt.Profile.EvaluationRecdActivity"
+            android:name=".Profile.EvaluationRecdActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name="com.gwnu.witt.Profile.EditGymActivity"
+            android:name=".Profile.EditGymActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustNothing">
             <meta-data
@@ -53,73 +62,73 @@
                 android:value="" />
         </activity>
         <activity
-            android:name="com.gwnu.witt.Profile.EditWeightVolumes"
+            android:name=".Profile.EditWeightVolumes"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name="com.gwnu.witt.Profile.EditBodyInfo"
+            android:name=".Profile.EditBodyInfo"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name="com.gwnu.witt.Profile.SetAlarmActivity"
+            android:name=".Profile.SetAlarmActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name="com.gwnu.witt.Profile.DropUserActivity"
+            android:name=".Profile.DropUserActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name="com.gwnu.witt.Profile.SettingActivity"
+            android:name=".Profile.SettingActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name="com.gwnu.witt.Chat.ReviewActivity"
+            android:name=".Chat.ReviewActivity"
             android:exported="true" />
         <activity
-            android:name="com.gwnu.witt.Chat.ReportActivity"
+            android:name=".Chat.ReportActivity"
             android:exported="true">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name="com.gwnu.witt.Profile.ReportHistoryActivity"
+            android:name=".Profile.ReportHistoryActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name="com.gwnu.witt.Routine.AddExerciseActivity"
+            android:name=".Routine.AddExerciseActivity"
             android:exported="false" />
 
         <service
-            android:name="com.gwnu.witt.interface_.RestartService"
+            android:name=".interface_.RestartService"
             android:enabled="true"
             android:exported="true" />
 
         <receiver
-            android:name="com.gwnu.witt.interface_.AlarmRecever"
+            android:name=".interface_.AlarmRecever"
             android:enabled="true"
             android:exported="true" />
 
         <activity
-            android:name="com.gwnu.witt.Routine.RoutineActivity"
+            android:name=".Routine.RoutineActivity"
             android:exported="false" /> <!-- <activity -->
         <!-- android:name=".WHChildFragment" -->
         <!-- android:exported="false"> -->
@@ -128,7 +137,7 @@
         <!-- android:value="" /> -->
         <!-- </activity> -->
         <activity
-            android:name="com.gwnu.witt.Profile.WittHistoryActivity"
+            android:name=".Profile.WittHistoryActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -136,19 +145,19 @@
         </activity>
 
         <service
-            android:name="com.gwnu.witt.interface_.DataReceiverService"
+            android:name=".interface_.DataReceiverService"
             android:enabled="true"
             android:exported="false" />
 
         <activity
-            android:name="com.gwnu.witt.Profile.ReviewsRecdAtivity"
+            android:name=".Profile.ReviewsRecdAtivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name="com.gwnu.witt.Profile.BlackActivity"
+            android:name=".Profile.BlackActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -160,20 +169,20 @@
             android:value="@string/default_web_client_id" />
 
         <activity
-            android:name="com.gwnu.witt.Routine.EditRoutineActivity"
+            android:name=".Routine.EditRoutineActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.gwnu.witt.Routine.CreateRoutineActivity"
+            android:name=".Routine.CreateRoutineActivity"
             android:exported="true"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name="com.gwnu.witt.Home.alarmActivity"
+            android:name=".Home.alarmActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.gwnu.witt.Chat.ChatActivity"
+            android:name=".Chat.ChatActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
 
@@ -182,15 +191,15 @@
             android:value="@string/google_places_api_key" />
 
         <activity
-            android:name="com.gwnu.witt.Profile.MyProfileActivity"
+            android:name=".Profile.MyProfileActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.gwnu.witt.WorkOut.SetExerciseActivity"
+            android:name=".WorkOut.SetExerciseActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.gwnu.witt.MainActivity"
+            android:name=".MainActivity"
             android:exported="false"
             android:screenOrientation="portrait">
             <meta-data
@@ -198,7 +207,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name="com.gwnu.witt.Sign.SignUpActivity"
+            android:name=".Sign.SignUpActivity"
             android:exported="true"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustNothing">
@@ -207,12 +216,12 @@
                 android:value="" />
         </activity>
         <activity
-            android:name="com.gwnu.witt.WorkOut.ExerciseRecordActivity"
+            android:name=".WorkOut.ExerciseRecordActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name="com.gwnu.witt.WorkOut.ExerciseResultActivity"
+            android:name=".WorkOut.ExerciseResultActivity"
             android:exported="false"
             android:screenOrientation="portrait" /> <!-- <activity -->
         <!-- android:name=".Activity.MainActivity" -->
@@ -222,7 +231,7 @@
         <!-- android:name=".Activity.MainActivity2" -->
         <!-- android:exported="true" /> -->
         <activity
-            android:name="com.gwnu.witt.Sign.LoginActivity"
+            android:name=".Sign.LoginActivity"
             android:exported="true"
             android:screenOrientation="portrait"
             android:taskAffinity=""
@@ -235,7 +244,7 @@
         </activity>
 
         <receiver
-            android:name="com.gwnu.witt.interface_.BootReceiver"
+            android:name=".interface_.BootReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
