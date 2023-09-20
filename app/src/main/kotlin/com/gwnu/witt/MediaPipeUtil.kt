@@ -1,4 +1,4 @@
 package com.gwnu.witt
 
-class test {
+class MediaPipeUtil {
 }

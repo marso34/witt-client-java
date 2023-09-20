@@ -27,6 +27,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.gwnu.witt.Camera.CameraActivity;
 import com.gwnu.witt.Chat.ChatActivity;
 import com.gwnu.witt.Chat.ChattingFragment;
 import com.gwnu.witt.Data.Chat.SocketSingleton;
@@ -205,8 +206,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
         binding.fab.setOnClickListener(view -> {
-            Intent intent = new Intent(getApplicationContext(), ExerciseRecordActivity.class);
-            intent.putExtra("dayOfWeek", dayOfWeek);
+            Intent intent = new Intent(getApplicationContext(), CameraActivity.class);
+//            intent.putExtra("dayOfWeek", dayOfWeek);
             startActivity(intent);
         });
 
