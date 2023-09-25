@@ -45,7 +45,7 @@ public class DataReceiverService extends Service {
         // SocketSingleton 인스턴스 생성 및 연결
         socketSingleton = SocketSingleton.getInstance(getBaseContext());
         socketSingleton.initialize();
-//        handler = new Handler();
+        handler = new Handler();
         sqLiteUtil = SQLiteUtil.getInstance();
         notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
         alarmManager_ = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
@@ -58,7 +58,7 @@ public class DataReceiverService extends Service {
         // 서비스 로직 수행
         isServiceRunning = true;
         Log.d(TAG, "onStartCommand: 나 시작함");
-//        handler.post(reconnectRunnable);
+        handler.post(reconnectRunnable);
 
 //
         return START_STICKY;
@@ -115,18 +115,18 @@ public class DataReceiverService extends Service {
         }
     }
 
-//    private Runnable reconnectRunnable = new Runnable() {
-//        @Override
-//        public void run() {
-//            alarmManagerCustom = AlarmManagerCustom.getInstance(getBaseContext());
-//            if(socketSingleton !=null && !socketSingleton.getSocket().connected()) {
-//                socketSingleton.connect();
-//                Log.d(TAG, "run: 부활시킴");
-//               }
-//            // 일정 시간 간격으로 소켓 연결 상태 확인 및 재연결 작업 수행
-//            handler.postDelayed(this, 10000); // 5초마다 반복 실행
-//        }
-//    };
+    private Runnable reconnectRunnable = new Runnable() {
+        @Override
+        public void run() {
+            alarmManagerCustom = AlarmManagerCustom.getInstance(getBaseContext());
+            if(socketSingleton !=null && !socketSingleton.getSocket().connected()) {
+                socketSingleton.connect();
+                Log.d(TAG, "run: 부활시킴");
+               }
+            // 일정 시간 간격으로 소켓 연결 상태 확인 및 재연결 작업 수행
+            handler.postDelayed(this, 10000); // 5초마다 반복 실행
+        }
+    };
 
     private void setAlarmTimer() {
         Calendar calendar = Calendar.getInstance();
