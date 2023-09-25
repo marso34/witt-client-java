@@ -59,4 +59,14 @@
         <item name="android:textSize">16sp</item>
     </style>
 
+
+    // 미디어파이프
+    <style name="BottomSheetSpinnerItemStyle" parent="Widget.AppCompat.Light.DropDownItem.Spinner">
+        <item name="android:textSize">@dimen/bottom_sheet_text_size</item>
+    </style>
+
+    <style name="AppThemeProgressStyle">
+        <item name="colorAccent">@color/mp_color_primary_variant</item>
+    </style>
+    // 미디어파이프
 </resources>

@@ -31,6 +31,7 @@ import com.gwnu.witt.interface_.ServiceApi;
 import java.io.File;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -129,8 +130,11 @@ public class SignUpActivity extends AppCompatActivity implements SUSelectGymFrag
             }
         });
         executor.shutdown();
-
-
+        try {
+            executor.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
 
         //            Log.d(TAG, "sub2f"+email);
 //                sendTokenToServer(email,name);

@@ -109,31 +109,31 @@ public class HomeChildFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        binding.swipelayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                final Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        if(binding != null) {
-                            RecyclerView.LayoutManager layoutManager = binding.recyclerView.getLayoutManager();
-                            int visibleItemCount = layoutManager.getChildCount();
-                            int totalItemCount = layoutManager.getItemCount();
-                            int firstVisibleItemPosition = ((LinearLayoutManager) layoutManager).findFirstVisibleItemPosition();
-                            int lastVisibleItemPosition = ((LinearLayoutManager) layoutManager).findLastVisibleItemPosition();
-                            if (totalItemCount - 3 <= lastVisibleItemPosition && !updating) {
-                                postsUpdate(true);
-                            }
-                            if (0 < firstVisibleItemPosition) {
-                                topScrolled = false;
-                            }
-                            binding.swipelayout.setRefreshing(false);
-                        }
-                    }
-                }, 500);
-            }
-        });
+//        binding.swipelayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//                final Handler handler = new Handler();
+//                handler.postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        if(binding != null) {
+//                            RecyclerView.LayoutManager layoutManager = binding.recyclerView.getLayoutManager();
+//                            int visibleItemCount = layoutManager.getChildCount();
+//                            int totalItemCount = layoutManager.getItemCount();
+//                            int firstVisibleItemPosition = ((LinearLayoutManager) layoutManager).findFirstVisibleItemPosition();
+//                            int lastVisibleItemPosition = ((LinearLayoutManager) layoutManager).findLastVisibleItemPosition();
+//                            if (totalItemCount - 3 <= lastVisibleItemPosition && !updating) {
+//                                postsUpdate(true);
+//                            }
+//                            if (0 < firstVisibleItemPosition) {
+//                                topScrolled = false;
+//                            }
+//                            binding.swipelayout.setRefreshing(false);
+//                        }
+//                    }
+//                }, 500);
+//            }
+//        });
 
         binding.moveRoutine.setOnClickListener(v -> {
             ((MainActivity)requireActivity()).goToRoutine(dayOfWeek);
