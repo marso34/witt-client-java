@@ -3,8 +3,6 @@ plugins {
     id 'com.google.gms.google-services'
     //-코틀린 혼용 사용-----
     id 'kotlin-android'
-    id 'kotlin-parcelize'
-    id 'kotlin-kapt'
     //--------------------
 }
 
@@ -54,6 +52,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-auth:20.5.0'
     implementation 'com.google.android.material:material:1.9.0-alpha01'
     implementation 'com.google.android.gms:play-services-location:21.0.1'
+
     implementation platform('com.google.firebase:firebase-bom:31.4.0')
     implementation 'com.google.firebase:firebase-appindexing:20.0.0'
     implementation 'com.google.firebase:firebase-auth'
@@ -62,13 +61,16 @@ dependencies {
     implementation 'com.google.firebase:firebase-storage'
     implementation 'com.firebaseui:firebase-ui-auth:7.2.0'
     implementation 'com.firebaseui:firebase-ui-storage:7.2.0'
+
     implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation 'com.google.android.material:material:1.7.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.fragment:fragment:1.6.1'
     implementation 'androidx.fragment:fragment-ktx:1.6.1'
     implementation 'androidx.navigation:navigation-fragment:2.5.3'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.5.3'
     implementation 'androidx.navigation:navigation-ui:2.5.3'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.5.3'
     implementation 'com.squareup.retrofit2:converter-scalars:2.9.0'
     implementation "com.google.android.material:material:1.8.0-rc01"
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
@@ -95,9 +97,6 @@ dependencies {
 
     implementation 'io.socket:socket.io-client:2.1.0'
     implementation 'com.github.zcweng:switch-button:0.0.3@aar'
-
-    implementation 'com.google.mediapipe:solution-core:latest.release'
-    implementation 'com.google.mediapipe:hands:latest.release'
 
     // 카메라
     implementation "androidx.camera:camera-core:1.2.3"
