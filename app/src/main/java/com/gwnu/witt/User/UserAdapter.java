@@ -15,11 +15,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.material.card.MaterialCardView;
+import com.gwnu.witt.Data.AdViewHolder;
 import com.gwnu.witt.Data.UserInfo;
 import com.gwnu.witt.Profile.MyProfileActivity;
 import com.gwnu.witt.R;
-import com.google.android.material.card.MaterialCardView;
-
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -27,7 +28,8 @@ import java.util.Date;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder> {
     private Context mContext;
-
+    private static final int ITEM_VIEW_TYPE_AD = 0;
+    private static final int ITEM_VIEW_TYPE_CONTENT = 1;
     private static final String Signature = "#05C78C";
     private static final String Background_2 = "#D1D8E2";
     private static final String Body = "#4A5567";
@@ -37,7 +39,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
     private static final String Yellow = "#F2BB57";
     private static final String Blue = "#579EF2";
     private static final String Purple = "#8C5AD8";
-
+    private AdViewHolder holder;
+    private boolean tureUser = true;
     private ArrayList<UserInfo> mDataset;
     private int dayOfWeek;
 
@@ -81,7 +84,13 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
     @NonNull
     @Override
     public MainViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_user, parent, false);
+
+        View view;
+        if (viewType == ITEM_VIEW_TYPE_AD) {
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_ads, parent, false);
+        } else {
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_user, parent, false);
+        }
         final MainViewHolder mainViewHolder = new MainViewHolder(view);
 
         mainViewHolder.CardView.setOnClickListener(new View.OnClickListener() {
@@ -106,6 +115,12 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull final MainViewHolder holder, int position) {
+        if(getItemViewType(position) == ITEM_VIEW_TYPE_AD) {// 광고 로딩
+            AdViewHolder adViewHolder = new AdViewHolder(holder.itemView);
+            AdRequest adRequest = new AdRequest.Builder().build();
+            adViewHolder.mAdView.loadAd(adRequest);
+        }
+        else{
         if (mDataset.size() > 0 && position != mDataset.size()) {
             holder.CardView.setCardBackgroundColor(Color.parseColor(White));
             holder.CardView.setCardElevation(6);
@@ -173,6 +188,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
             holder.Anymore.setVisibility(View.VISIBLE);
         }
     }
+    }
 
     @Override
     public int getItemCount() {
@@ -181,7 +197,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
 
     @Override
     public int getItemViewType(int position){
-        return position;
+        return position % 3 == 0 ? 0 : 1;
     }
 
     private void setCatRecyclerView(RecyclerView recyclerView, AreaAdapter adapter, int positon) {
@@ -230,6 +246,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
         // 거리를 정수형으로 변환하여 반환
         return (int) distance;
     }
+
     public void getCurrentWeek() {
         Date currentDate = new Date();
 
