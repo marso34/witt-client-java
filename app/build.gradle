@@ -3,6 +3,7 @@ plugins {
     id 'com.google.gms.google-services'
     //-코틀린 혼용 사용-----
     id 'kotlin-android'
+    id 'kotlin-android-extensions'
     //--------------------
 }
 
@@ -23,10 +24,6 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
-    }
-
-    sourceSets {
-        main.java.srcDirs += 'src/main/kotlin'
     }
 
     compileOptions {
@@ -106,4 +103,10 @@ dependencies {
 
     // WindowManager
     implementation 'androidx.window:window:1.1.0'
+
+    // Pose detection with default models
+    implementation 'com.google.mlkit:pose-detection:18.0.0-beta3'
+    // Pose detection with accurate models
+    implementation 'com.google.mlkit:pose-detection-accurate:18.0.0-beta3'
+//    implementation 'com.google.mlkit:camera:16.0.0-beta3' // 필요하면
 }
