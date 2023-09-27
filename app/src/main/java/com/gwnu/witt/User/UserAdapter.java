@@ -1,5 +1,7 @@
 package com.gwnu.witt.User;//package com.gwnu.witt.adapter;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -28,8 +30,6 @@ import java.util.Date;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder> {
     private Context mContext;
-    private static final int ITEM_VIEW_TYPE_AD = 0;
-    private static final int ITEM_VIEW_TYPE_CONTENT = 1;
     private static final String Signature = "#05C78C";
     private static final String Background_2 = "#D1D8E2";
     private static final String Body = "#4A5567";
@@ -43,11 +43,12 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
     private boolean tureUser = true;
     private ArrayList<UserInfo> mDataset;
     private int dayOfWeek;
-
+    private boolean adsFlag;
     public UserAdapter(Context mContext, ArrayList<UserInfo> myDataset, int dayOfWeek) {
         this.mContext = mContext;
         this.mDataset = myDataset;
         this.dayOfWeek = dayOfWeek; // 프로필 호출할 때 필요한 데이터, 삭제하면 안 됨
+        this.adsFlag = adsFlag;
     }
 
     static class MainViewHolder extends RecyclerView.ViewHolder {
@@ -84,9 +85,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
     @NonNull
     @Override
     public MainViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
         View view;
-        if (viewType == ITEM_VIEW_TYPE_AD) {
+        Log.d(TAG, "뷰타입 "+viewType);
+        if (viewType == UserInfo.ITEM_VIEW_TYPE_AD ) {
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_ads, parent, false);
         } else {
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_user, parent, false);
@@ -98,7 +99,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
             public void onClick(View view) {
                 int position = mainViewHolder.getAbsoluteAdapterPosition();
 
-                if (position != mDataset.size()) {
+                if (position != mDataset.size() && viewType == UserInfo.ITEM_VIEW_TYPE_CONTENT) {
                     Log.d("상세 프로필", "userAdapter에서 클릭처리");
                     int adapterUserKey = mDataset.get(position).getUserKey();
                     Intent intent = new Intent(mContext, MyProfileActivity.class);
@@ -115,7 +116,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull final MainViewHolder holder, int position) {
-        if(getItemViewType(position) == ITEM_VIEW_TYPE_AD) {// 광고 로딩
+        if(mDataset.size() > 0  && mDataset.get(position).adsFlag == UserInfo.ITEM_VIEW_TYPE_AD) {
             AdViewHolder adViewHolder = new AdViewHolder(holder.itemView);
             AdRequest adRequest = new AdRequest.Builder().build();
             adViewHolder.mAdView.loadAd(adRequest);
@@ -185,20 +186,32 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
             holder.CardView.setCardBackgroundColor(Color.parseColor(Transparent));
             holder.CardView.setCardElevation(0);
             holder.DefaultLayout.setVisibility(View.GONE);
-            holder.Anymore.setVisibility(View.VISIBLE);
+            if(holder.Anymore !=null)
+                holder.Anymore.setVisibility(View.VISIBLE);
         }
     }
     }
 
     @Override
     public int getItemCount() {
-        return mDataset.size() + 1;
+        return mDataset.size();
     }
 
     @Override
-    public int getItemViewType(int position){
-        return position % 3 == 0 ? 0 : 1;
+    public int getItemViewType(int position) {
+        if (position < mDataset.size()) {
+            UserInfo U = mDataset.get(position);
+            if (U.adsFlag == 1) {
+                return UserInfo.ITEM_VIEW_TYPE_AD;
+            } else {
+                return UserInfo.ITEM_VIEW_TYPE_CONTENT;
+            }
+        } else {
+            // 적절한 기본값 또는 오류 처리를 여기에 추가합니다.
+            return UserInfo.ITEM_VIEW_TYPE_CONTENT; // 예시로 기본값을 반환하도록 설정했습니다.
+        }
     }
+
 
     private void setCatRecyclerView(RecyclerView recyclerView, AreaAdapter adapter, int positon) {
         ArrayList<String> eCat = new ArrayList<>();

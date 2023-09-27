@@ -4,6 +4,8 @@ package com.gwnu.witt.Data;
 import com.google.gson.annotations.SerializedName;
 
 public class UserInfo {
+    public static final int ITEM_VIEW_TYPE_AD = 1;
+    public static final int ITEM_VIEW_TYPE_CONTENT = 0;
     @SerializedName("UserKey")
     private int userKey;
     @SerializedName("Name")
@@ -22,7 +24,7 @@ public class UserInfo {
     private int time;
     @SerializedName("DayOfWeek")
     private int dayOfWeek;
-
+    public  int adsFlag;
 
 
     private Integer distance = 0;

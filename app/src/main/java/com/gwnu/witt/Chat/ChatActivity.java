@@ -208,7 +208,6 @@ public class ChatActivity extends AppCompatActivity{
 
 
     private void retrieveIntentData() {
-
         preferenceHelper = new PreferenceHelper("UserTB", this);
         userKey = String.valueOf(preferenceHelper.getPK());
         otherUserName = getIntent().getStringExtra("otherUserName");

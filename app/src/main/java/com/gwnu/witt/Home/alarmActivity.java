@@ -12,12 +12,17 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.gwnu.witt.R;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.gwnu.witt.Data.AlarmInfo;
 import com.gwnu.witt.Data.PreferenceHelper;
 import com.gwnu.witt.Data.RetrofitClient;
 import com.gwnu.witt.Data.SQLiteUtil;
 import com.gwnu.witt.Data.pkData;
+import com.gwnu.witt.R;
 import com.gwnu.witt.interface_.ServiceApi;
 
 import java.util.ArrayList;
@@ -37,6 +42,7 @@ public class alarmActivity extends AppCompatActivity {
     private PreferenceHelper preferenceHelper;
     private ServiceApi apiService;
 
+    private AdView mAdview; //애드뷰 변수 선언x
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,6 +95,16 @@ public class alarmActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            }
+        });
+
+        mAdview = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdview.loadAd(adRequest);
     }
 
     private void setRecyclerView() {

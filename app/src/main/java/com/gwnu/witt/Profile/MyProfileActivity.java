@@ -21,9 +21,19 @@ import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.FullScreenContentCallback;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.gwnu.witt.Data.Chat.SocketSingleton;
 import com.gwnu.witt.Data.Exercise.GetRoutine;
 import com.gwnu.witt.Data.Exercise.RoutineData;
@@ -67,7 +77,9 @@ public class MyProfileActivity extends AppCompatActivity {
     private ServiceApi apiService;
     private RoutineAdapter adapter;
     private WittSendData wittSendData;
-
+    private boolean flag = false;
+    private InterstitialAd mInterstitialAd;
+    private AdView mAdview; //애드뷰 변수 선언x
     Button  cancel_Mprofile,cancel_Oprofile;
     ImageView ProfileImg;
     TextView Pname,Pgender,Plocatoin;
@@ -78,7 +90,7 @@ public class MyProfileActivity extends AppCompatActivity {
     String MyName, OtherName;
     String MyGym;
     int dayOfWeek;
-
+    private AdRequest adRequest;
     private Bitmap downloadedBitmap;
     private String imageUri;
 
@@ -106,10 +118,10 @@ public class MyProfileActivity extends AppCompatActivity {
         ProfileImg = findViewById(R.id.ProfileImg);
         Plocatoin = findViewById(R.id.MyLocation);
 //-------------------------------------------------------------------------------------
-        UserTB = new PreferenceHelper("UserTB",this);
+        UserTB = new PreferenceHelper("UserTB", this);
 
         Intent intent = getIntent();//넘겨받은 pk를 담은 번들
-        PK = intent.getIntExtra("PK",0);
+        PK = intent.getIntExtra("PK", 0);
 
 //        String uri = UserTB.getUser_IMG(); //이미지 가져오는 부분
 //        if(uri != null)
@@ -119,7 +131,8 @@ public class MyProfileActivity extends AppCompatActivity {
 //        }
 
         String fileName = "your_file_name.jpg"; // 저장된 이미지 파일 이름을 입력하세요.
-        downloadedBitmap = ImageCacheManager.getInstance().getDownloadedBitmap();;
+        downloadedBitmap = ImageCacheManager.getInstance().getDownloadedBitmap();
+        ;
         if (downloadedBitmap != null) {
             // 저장된 이미지가 있을 경우 해당 이미지를 사용
             Log.d(TAG, "이미지는 캐시된 이미지를 사용 중입니다.");
@@ -144,17 +157,16 @@ public class MyProfileActivity extends AppCompatActivity {
         }
 
 
-
         Date currentDate = new Date();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(currentDate);
 
-        dayOfWeek = intent.getIntExtra("dayOfWeek",calendar.get(Calendar.DAY_OF_WEEK) - 1);
+        dayOfWeek = intent.getIntExtra("dayOfWeek", calendar.get(Calendar.DAY_OF_WEEK) - 1);
 
         myPK = UserTB.getPK();// 로컬 내 PK
         /** 마이 프로필 */
-        if(PK == myPK ){ // 내 pk이면 마이 프로필
-            Log.d("프로필에서 로컬pk와 넘겨받은pk",PK + " " + myPK);
+        if (PK == myPK) { // 내 pk이면 마이 프로필
+            Log.d("프로필에서 로컬pk와 넘겨받은pk", PK + " " + myPK);
 
             userDefault = new HashMap<>();// 회원가입시 입력했던 데이터들 로컬에서 받기
             userDefault = UserTB.getUserData();
@@ -167,9 +179,9 @@ public class MyProfileActivity extends AppCompatActivity {
             // 화면 전환
             ViewChangeBlock();
             CommonViewChangeBlock();
-        /** 상세 프로필*/
-        }else { // 내 pk가 아니면 상대 프로필
-            Log.d("메인에서 넘겨받은 상대 pk: ",PK+"");
+            /** 상세 프로필*/
+        } else { // 내 pk가 아니면 상대 프로필
+            Log.d("메인에서 넘겨받은 상대 pk: ", PK + "");
             UserKey userKey = new UserKey(PK);
             //상세 프로필일때 화면 구성
             setOtherProfileView();
@@ -183,7 +195,96 @@ public class MyProfileActivity extends AppCompatActivity {
             CommonViewChangeBlock();
 
         }
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            }
+        });
+        Random random = new Random();
+        int randomNumber = random.nextInt(100); // 0부터 99까지의 난수 생성
+        AdRequest adRequest = new AdRequest.Builder().build();
+        if(randomNumber < 40) {
+            InterstitialAd.load(this, this.getResources().getString(R.string.myFrontAds_id), adRequest,
+                    new InterstitialAdLoadCallback() {
+                        @Override
+                        public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                            // 광고가 로드되면 광고를 표시
+                            mInterstitialAd = interstitialAd;
+                            showInterstitialAd();
+                            Log.i(TAG, "onAdLoaded");
+                        }
 
+                        @Override
+                        public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                            // Handle the error
+                            Log.d(TAG, "Error: " + loadAdError.getMessage());
+                            mInterstitialAd = null;
+                        }
+                    });
+        }
+        mAdview = findViewById(R.id.adView);
+        mAdview.loadAd(adRequest);
+    }
+    private void showInterstitialAd() {
+        if (mInterstitialAd != null) {
+            mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+                @Override
+                public void onAdDismissedFullScreenContent() {
+                    // 광고가 닫혔을 때
+                    Log.d(TAG, "Ad dismissed fullscreen content.");
+
+                    mInterstitialAd = null;
+                }
+
+                @Override
+                public void onAdFailedToShowFullScreenContent(com.google.android.gms.ads.AdError adError) {
+                    // 광고 표시 실패
+                    Log.e(TAG, "Ad failed to show fullscreen content.");
+                    mInterstitialAd = null;
+                }
+
+                // 다른 콜백 메서드도 구현 가능
+            });
+
+            mInterstitialAd.show(this);
+        } else {
+            Log.d(TAG, "The interstitial ad wasn't ready yet.");
+        }
+    }
+    private void showInterstitialAd2() {
+        if (mInterstitialAd != null) {
+            mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+                @Override
+                public void onAdDismissedFullScreenContent() {
+                    // 광고가 닫혔을 때
+                    Log.d(TAG, "Ad dismissed fullscreen content.");
+                    mInterstitialAd = null;
+                    // 여기서 원하는 동작을 추가
+                    performCustomAction();
+
+
+                }
+
+                @Override
+                public void onAdFailedToShowFullScreenContent(com.google.android.gms.ads.AdError adError) {
+                    // 광고 표시 실패
+                    Log.e(TAG, "Ad failed to show fullscreen content.");
+                    mInterstitialAd = null;
+                }
+
+                // 다른 콜백 메서드도 구현 가능
+            });
+
+            mInterstitialAd.show(this);
+        } else {
+            Log.d(TAG, "The interstitial ad wasn't ready yet.");
+        }
+    }
+
+    private void performCustomAction(){
+        String timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
+                wittSendData = new WittSendData(UserTB.getPK(),PK,UserTB.getUser_NM(),OuserDefault.get("USER_NM").toString(),timestamp);
+                getWittUserData(wittSendData,timestamp);
     }
 
     public void setOtherProfileView() {
@@ -205,6 +306,14 @@ public class MyProfileActivity extends AppCompatActivity {
         }
     }
 
+    public void showAds() {
+        if (mInterstitialAd != null) {
+            mInterstitialAd.show(this);
+            Log.d(TAG, "sucees");
+        } else {
+            Log.d(TAG, "The interstitial ad wasn't ready yet.");
+        }
+    }
     private void setRecyclerView(ArrayList<RoutineData> routines) {
         adapter = new RoutineAdapter(this, routines, -1);  // attribute = code가 내 코드면 0, 아니면 -1
         binding.recyclerView.setHasFixedSize(true);
@@ -418,20 +527,30 @@ public class MyProfileActivity extends AppCompatActivity {
         binding.WittBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // 내 pk, 상대방 pk, 내 이름, 상대방 이름 순서로 보내야함
-//                Integer.valueOf(PK); 상대방 pk
-//                OuserDefault.get("USER_NM").toString();상대방 이름
-//                UserTB.getPK(); 내 pk
-//                UserTB.getUser_NM();내 이름
-                String timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
+                if (flag == false) {
+                    flag = true;
+                    AdRequest adRequest = new AdRequest.Builder().build();
 
-                wittSendData = new WittSendData(UserTB.getPK(),PK,UserTB.getUser_NM(),OuserDefault.get("USER_NM").toString(),timestamp);
-                getWittUserData(wittSendData,timestamp);
+                    InterstitialAd.load(getApplication(), getApplication().getResources().getString(R.string.myFrontAds_id), adRequest,
+                            new InterstitialAdLoadCallback() {
+                                @Override
+                                public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                                    mInterstitialAd = interstitialAd;
+                                    showInterstitialAd2();
+                                    Log.i(TAG, "onAdLoaded");
+                                }
 
-
-
+                                @Override
+                                public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                                    // Handle the error
+                                    Log.d(TAG, "Error: " + loadAdError.getMessage());
+                                    mInterstitialAd = null;
+                                }
+                            });
+                }
             }
         });
+
 
     }
     //공통 목록

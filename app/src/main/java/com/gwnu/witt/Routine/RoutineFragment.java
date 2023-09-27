@@ -11,10 +11,15 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.gwnu.witt.Data.PreferenceHelper;
-import com.gwnu.witt.R;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+import com.gwnu.witt.Data.PreferenceHelper;
+import com.gwnu.witt.R;
 
 public class RoutineFragment extends Fragment {
     Context context;
@@ -25,6 +30,7 @@ public class RoutineFragment extends Fragment {
 
     private PreferenceHelper prefhelper;
 
+    private AdView mAdview; //애드뷰 변수 선언x
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -101,7 +107,15 @@ public class RoutineFragment extends Fragment {
 //            }
 //        });
 //        애니메이션 삭제 코드, 애니메이션 삭제하면 너무 딱딱하게 느껴짐. 없으면 탭 클릭 시 애니메이션 과함
+        MobileAds.initialize(getContext(), new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            }
+        });
 
+        mAdview = view.findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdview.loadAd(adRequest);
         return view;
     }
 

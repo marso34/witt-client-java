@@ -27,6 +27,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.gwnu.witt.Chat.ChatActivity;
 import com.gwnu.witt.Chat.ChattingFragment;
 import com.gwnu.witt.Data.Chat.SocketSingleton;
@@ -42,7 +45,6 @@ import com.gwnu.witt.Home.AlarmManagerCustom;
 import com.gwnu.witt.Home.HomeFragment;
 import com.gwnu.witt.Home.alarmActivity;
 import com.gwnu.witt.Profile.MyProfileActivity;
-import com.gwnu.witt.R;
 import com.gwnu.witt.Record.RecordFragment;
 import com.gwnu.witt.Routine.RoutineFragment;
 import com.gwnu.witt.Sign.LoginActivity;
@@ -52,9 +54,6 @@ import com.gwnu.witt.interface_.AlarmRecever;
 import com.gwnu.witt.interface_.DataReceiverService;
 import com.gwnu.witt.interface_.ServiceApi;
 import com.gwnu.witt.interface_.ServiceTracker;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -234,6 +233,7 @@ public class MainActivity extends AppCompatActivity {
             goChat();
             startActivity(intent);
         }
+
     }
 
     @Override
