@@ -27,7 +27,7 @@
 
     <fragment
         android:id="@+id/permissions_fragment"
-        android:name="com.gwnu.witt.Camera.PermissionsFragment"
+        android:name="com.gwnu.witt.PoseCorrection.PermissionsFragment"
         android:label="PermissionsFragment">
 
         <action
@@ -40,7 +40,7 @@
 
     <fragment
         android:id="@+id/camera_fragment"
-        android:name="com.gwnu.witt.Camera.CameraFragment"
+        android:name="com.gwnu.witt.PoseCorrection.CameraFragment"
         android:label="CameraFragment">
 
         <action
@@ -52,6 +52,6 @@
 
     <fragment
         android:id="@+id/gallery_fragment"
-        android:name="com.gwnu.witt.Camera.GalleryFragment"
+        android:name="com.gwnu.witt.PoseCorrection.GalleryFragment"
         android:label="GalleryFragment" />
 </navigation>

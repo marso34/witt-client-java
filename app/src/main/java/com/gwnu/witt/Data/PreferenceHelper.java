@@ -2,6 +2,7 @@ package com.gwnu.witt.Data;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.gwnu.witt.Data.User.BodyInfo;
@@ -226,5 +227,16 @@ public class PreferenceHelper
         editor.apply();
     }
 
+// 카메라 테스트-----------------------------------
+    public static boolean isCameraLiveViewportEnabled(Context context) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String prefKey = "clv";
+        return sharedPreferences.getBoolean(prefKey, false);
+    }
 
+    public static boolean shouldHideDetectionInfo(Context context) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String prefKey = "ih";
+        return sharedPreferences.getBoolean(prefKey, false);
+    }
 }

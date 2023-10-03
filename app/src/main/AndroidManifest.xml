@@ -4,17 +4,24 @@
     package="com.gwnu.witt"
     tools:targetApi="m">
 
+    <uses-sdk
+        tools:overrideLibrary="
+          androidx.camera.camera2, androidx.camera.core,
+          androidx.camera.view, androidx.camera.lifecycle" />
+
+    <uses-feature android:name="android.hardware.camera"/>
+
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:name=".MyApplication"
@@ -27,11 +34,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HealthAppTTT"
         android:usesCleartextTraffic="true"
-        tools:targetApi="31">
+        tools:targetApi="33">
 
         <activity
-            android:name=".Camera.CameraActivity"
-            android:exported="false" />
+            android:name=".PoseCorrection.CameraActivity"
+            android:exported="true"
+            android:theme="@style/FullScreenTheme"/>
         <activity
             android:name=".SplashActivity"
             android:exported="false"
