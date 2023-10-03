@@ -75,6 +75,12 @@ public class CreateRoutineActivity extends AppCompatActivity implements CRSetTim
 //                    Toast.makeText(CreateRoutineActivity.this, "루틴 생성 성공!!!", Toast.LENGTH_SHORT).show();
                     Log.d("성공", "루틴 생성 성공");
 
+                    if (response.body() == null) {
+                        Toast.makeText(CreateRoutineActivity.this, "루틴 생성에 실패하였습니다. 인터넷 상태를 확인해주세요", Toast.LENGTH_SHORT).show();
+                        Terminate(false); // 루틴 생성 액티비티 종료
+                        return;
+                    }
+
                     List<Integer> list = response.body();
                     int PID = 0, i = 0, Cat = 0;
 
