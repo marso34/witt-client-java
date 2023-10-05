@@ -25,7 +25,7 @@ import io.socket.emitter.Emitter;
 public class SocketSingleton {
     private static volatile SocketSingleton instance;
     private Socket mSocket;
-    private String serverUrl = "http://15.165.49.106:1337/";
+    private String serverUrl = "http://43.202.136.98:1337/";
     private boolean isConnected = false;
     private Context context;
     private SQLiteUtil sqLiteUtil;
