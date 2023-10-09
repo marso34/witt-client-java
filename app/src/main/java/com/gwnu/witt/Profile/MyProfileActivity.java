@@ -477,22 +477,21 @@ public class MyProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (flag == false) {
-                    flag = true;
                     AdRequest adRequest = new AdRequest.Builder().build();
-
                     InterstitialAd.load(getApplication(), getApplication().getResources().getString(R.string.myFrontAds_id), adRequest,
                             new InterstitialAdLoadCallback() {
                                 @Override
                                 public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
                                     mInterstitialAd = interstitialAd;
                                     showInterstitialAd2();
+                                    flag = true;
                                     Log.i(TAG, "onAdLoaded");
                                 }
-
                                 @Override
                                 public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
                                     // Handle the error
                                     Log.d(TAG, "Error: " + loadAdError.getMessage());
+                                    flag = false;
                                     mInterstitialAd = null;
                                 }
                             });
