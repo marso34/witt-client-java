@@ -203,11 +203,54 @@ public class MyProfileActivity extends AppCompatActivity {
         Random random = new Random();
         int randomNumber = random.nextInt(100); // 0부터 99까지의 난수 생성
         AdRequest adRequest = new AdRequest.Builder().build();
+        if(randomNumber < -1) {
+            InterstitialAd.load(this, this.getResources().getString(R.string.myFrontAds_id), adRequest,
+                    new InterstitialAdLoadCallback() {
+                        @Override
+                        public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                            // 광고가 로드되면 광고를 표시
+                            mInterstitialAd = interstitialAd;
+                            showInterstitialAd();
+                            Log.i(TAG, "onAdLoaded");
+                        }
 
+                        @Override
+                        public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                            // Handle the error
+                            Log.d(TAG, "Error: " + loadAdError.getMessage());
+                            mInterstitialAd = null;
+                        }
+                    });
+        }
         mAdview = findViewById(R.id.adView);
         mAdview.loadAd(adRequest);
     }
+    private void showInterstitialAd() {
+        if (mInterstitialAd != null) {
+            mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+                @Override
+                public void onAdDismissedFullScreenContent() {
+                    // 광고가 닫혔을 때
+                    Log.d(TAG, "Ad dismissed fullscreen content.");
 
+                    mInterstitialAd = null;
+                }
+
+                @Override
+                public void onAdFailedToShowFullScreenContent(com.google.android.gms.ads.AdError adError) {
+                    // 광고 표시 실패
+                    Log.e(TAG, "Ad failed to show fullscreen content.");
+                    mInterstitialAd = null;
+                }
+
+                // 다른 콜백 메서드도 구현 가능
+            });
+
+            mInterstitialAd.show(this);
+        } else {
+            Log.d(TAG, "The interstitial ad wasn't ready yet.");
+        }
+    }
     private void showInterstitialAd2() {
         if (mInterstitialAd != null) {
             mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
@@ -263,6 +306,14 @@ public class MyProfileActivity extends AppCompatActivity {
         }
     }
 
+    public void showAds() {
+        if (mInterstitialAd != null) {
+            mInterstitialAd.show(this);
+            Log.d(TAG, "sucees");
+        } else {
+            Log.d(TAG, "The interstitial ad wasn't ready yet.");
+        }
+    }
     private void setRecyclerView(ArrayList<RoutineData> routines) {
         adapter = new RoutineAdapter(this, routines, -1);  // attribute = code가 내 코드면 0, 아니면 -1
         binding.recyclerView.setHasFixedSize(true);
