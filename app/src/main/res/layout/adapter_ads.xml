@@ -28,6 +28,6 @@
             ads:adSize="LARGE_BANNER"
             ads:adUnitId="@string/myBannerAds_id">
         </com.google.android.gms.ads.AdView>
-        </LinearLayout>
+    </LinearLayout>
 
 </com.google.android.material.card.MaterialCardView>

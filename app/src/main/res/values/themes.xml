@@ -18,6 +18,7 @@
         <item name="android:navigationBarColor">@color/white</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="27">true</item>
         <!-- Customize your theme here. -->
+        <item name="bottomSheetDialogTheme">@style/BottomSheetRoundedDialog</item>
         <item name="windowNoTitle">true</item>
 
     </style>
@@ -32,9 +33,9 @@
     </style>
 
     <style name="BottomSheetRoundedDialog" parent="Theme.Design.BottomSheetDialog">
-        <item name="android:background">@drawable/rounded_top</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:colorBackground">@android:color/transparent</item>
     </style>
-
 
     <style name="SplashTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="windowNoTitle">true</item>

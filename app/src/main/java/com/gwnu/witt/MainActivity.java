@@ -30,6 +30,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.gwnu.witt.Chat.ChatActivity;
 import com.gwnu.witt.Chat.ChattingFragment;
 import com.gwnu.witt.Data.Chat.SocketSingleton;
@@ -164,8 +165,12 @@ public class MainActivity extends AppCompatActivity {
             else {
                 Log.d("wwwwww","qeqeqeqeqe");
             }
+        }
 
-                    }
+        // 광고------------------
+        final BottomSheetDialogFragment bottomSheetFragment = new AdMobFragment();
+        bottomSheetFragment.show(getSupportFragmentManager(), bottomSheetFragment.getTag());
+        // ----------------------
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());

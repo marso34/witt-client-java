@@ -116,73 +116,73 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull final MainViewHolder holder, int position) {
-        if(mDataset.size() > 0  && mDataset.get(position).adsFlag == UserInfo.ITEM_VIEW_TYPE_AD) {
+        if(mDataset.size() > 0 && position != mDataset.size() && mDataset.get(position).adsFlag == UserInfo.ITEM_VIEW_TYPE_AD) {
             AdViewHolder adViewHolder = new AdViewHolder(holder.itemView);
             AdRequest adRequest = new AdRequest.Builder().build();
             adViewHolder.mAdView.loadAd(adRequest);
         }
-        else{
-        if (mDataset.size() > 0 && position != mDataset.size()) {
-            holder.CardView.setCardBackgroundColor(Color.parseColor(White));
-            holder.CardView.setCardElevation(6);
-            holder.DefaultLayout.setVisibility(View.VISIBLE);
-            holder.Anymore.setVisibility(View.GONE);
+        else if (mDataset.size() > 0 && position != mDataset.size()) {
+                holder.CardView.setCardBackgroundColor(Color.parseColor(White));
+                holder.CardView.setCardElevation(6);
+                holder.DefaultLayout.setVisibility(View.VISIBLE);
+                holder.Anymore.setVisibility(View.GONE);
 
-            UserInfo userInfo = mDataset.get(position);
-            Log.d("유저 이름!", userInfo.getName());
-            Log.d("유저 PK!", String.valueOf(userInfo.getUserKey()));
-            //  Log.d(TAG, "onBindViewHolder: "+ userInfo.getUserName().toString());
-            //calculateDistances(//여기에);형원이 한테 받아서 하기.
+                UserInfo userInfo = mDataset.get(position);
+                Log.d("유저 이름!", userInfo.getName());
+                Log.d("유저 PK!", String.valueOf(userInfo.getUserKey()));
+                //  Log.d(TAG, "onBindViewHolder: "+ userInfo.getUserName().toString());
+                //calculateDistances(//여기에);형원이 한테 받아서 하기.
 
-            String str = userInfo.getGymName();
+                String str = userInfo.getGymName();
 
-            holder.Name.setText(userInfo.getName());
+                holder.Name.setText(userInfo.getName());
 
-            if (str == null) {
-                holder.GymName.setText("선택된 헬스장이 없어요");
-                holder.GymName.setTextColor(Color.parseColor(Background_2));
-                holder.GymAdress.setVisibility(View.GONE);
-                holder.MapIcon.setColorFilter(Color.parseColor(Background_2));
-            } else {
-                if (str.equals("")) {
+                if (str == null) {
                     holder.GymName.setText("선택된 헬스장이 없어요");
                     holder.GymName.setTextColor(Color.parseColor(Background_2));
                     holder.GymAdress.setVisibility(View.GONE);
                     holder.MapIcon.setColorFilter(Color.parseColor(Background_2));
                 } else {
-                    holder.GymName.setText(str);
-                    holder.GymName.setTextColor(Color.parseColor(Body));
-                    holder.GymAdress.setText(userInfo.getGymAdress());
-                    holder.GymAdress.setVisibility(View.VISIBLE);
-                    holder.MapIcon.setColorFilter(Color.parseColor(Signature));
+                    if (str.equals("")) {
+                        holder.GymName.setText("선택된 헬스장이 없어요");
+                        holder.GymName.setTextColor(Color.parseColor(Background_2));
+                        holder.GymAdress.setVisibility(View.GONE);
+                        holder.MapIcon.setColorFilter(Color.parseColor(Background_2));
+                    } else {
+                        holder.GymName.setText(str);
+                        holder.GymName.setTextColor(Color.parseColor(Body));
+                        holder.GymAdress.setText(userInfo.getGymAdress());
+                        holder.GymAdress.setVisibility(View.VISIBLE);
+                        holder.MapIcon.setColorFilter(Color.parseColor(Signature));
+                    }
                 }
-            }
 
-            switch (userInfo.getTime()) {
-                case 0:
-                    holder.TimeIcon.setImageResource(R.drawable.baseline_brightness_5_24);
-                    holder.TimeTxt.setText("아침");
-                    holder.TimeTxt.setTextColor(Color.parseColor(Orange));
-                    break;
-                case 1:
-                    holder.TimeIcon.setImageResource(R.drawable.baseline_wb_sunny_24);
-                    holder.TimeTxt.setText("점심");
-                    holder.TimeTxt.setTextColor(Color.parseColor(Yellow));
-                    break;
-                case 2:
-                    holder.TimeIcon.setImageResource(R.drawable.baseline_brightness_3_24);
-                    holder.TimeTxt.setText("저녁");
-                    holder.TimeTxt.setTextColor(Color.parseColor(Blue));
-                    break;
-                case 3:
-                    holder.TimeIcon.setImageResource(R.drawable.baseline_flare_24);
-                    holder.TimeTxt.setText("새벽");
-                    holder.TimeTxt.setTextColor(Color.parseColor(Purple));
-                    break;
-            }
+                switch (userInfo.getTime()) {
+                    case 0:
+                        holder.TimeIcon.setImageResource(R.drawable.baseline_brightness_5_24);
+                        holder.TimeTxt.setText("아침");
+                        holder.TimeTxt.setTextColor(Color.parseColor(Orange));
+                        break;
+                    case 1:
+                        holder.TimeIcon.setImageResource(R.drawable.baseline_wb_sunny_24);
+                        holder.TimeTxt.setText("점심");
+                        holder.TimeTxt.setTextColor(Color.parseColor(Yellow));
+                        break;
+                    case 2:
+                        holder.TimeIcon.setImageResource(R.drawable.baseline_brightness_3_24);
+                        holder.TimeTxt.setText("저녁");
+                        holder.TimeTxt.setTextColor(Color.parseColor(Blue));
+                        break;
+                    case 3:
+                        holder.TimeIcon.setImageResource(R.drawable.baseline_flare_24);
+                        holder.TimeTxt.setText("새벽");
+                        holder.TimeTxt.setTextColor(Color.parseColor(Purple));
+                        break;
+                }
 
-            setCatRecyclerView(holder.recyclerView, holder.Adapter, position);
-        } else {
+                setCatRecyclerView(holder.recyclerView, holder.Adapter, position);
+        }
+        else {
             holder.CardView.setCardBackgroundColor(Color.parseColor(Transparent));
             holder.CardView.setCardElevation(0);
             holder.DefaultLayout.setVisibility(View.GONE);
@@ -190,11 +190,10 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
                 holder.Anymore.setVisibility(View.VISIBLE);
         }
     }
-    }
 
     @Override
     public int getItemCount() {
-        return mDataset.size();
+        return mDataset.size() + 1;
     }
 
     @Override
