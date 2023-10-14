@@ -51,7 +51,6 @@ public class ChattingFragment extends Fragment {
     private SocketSingleton socketSingleton;
     private View rootView;
 
-    private AdView mAdview; //애드뷰 변수 선언x
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -113,15 +112,7 @@ public class ChattingFragment extends Fragment {
                 ((MainActivity)requireActivity()).goToHome();
             }
         });
-        MobileAds.initialize(getContext(), new OnInitializationCompleteListener() {
-            @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) {
-            }
-        });
 
-        mAdview = rootView.findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdview.loadAd(adRequest);
         return rootView;
     }
 

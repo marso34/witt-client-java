@@ -31,6 +31,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.gwnu.witt.Ads.AdMobFragment;
 import com.gwnu.witt.Chat.ChatActivity;
 import com.gwnu.witt.Chat.ChattingFragment;
 import com.gwnu.witt.Data.Chat.SocketSingleton;
@@ -56,6 +57,7 @@ import com.gwnu.witt.interface_.DataReceiverService;
 import com.gwnu.witt.interface_.ServiceApi;
 import com.gwnu.witt.interface_.ServiceTracker;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -110,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
         userKey = new UserKey(uk);
 //        else Log.d(TAG, "onCreate: 유저키 없음");
         Log.d("메인 userKey:", String.valueOf(userKey.getPk()));
-        
+
         createNotificationChannelAndSendNotification();
 
         apiService = RetrofitClient.getClient().create(ServiceApi.class); // create메서드로 api서비스 인터페이스의 구현제 생성
@@ -166,11 +168,6 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("wwwwww","qeqeqeqeqe");
             }
         }
-
-        // 광고------------------
-        final BottomSheetDialogFragment bottomSheetFragment = new AdMobFragment();
-        bottomSheetFragment.show(getSupportFragmentManager(), bottomSheetFragment.getTag());
-        // ----------------------
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -228,7 +225,7 @@ public class MainActivity extends AppCompatActivity {
         getReviewList(userKey);
         getWittHistory(userKey);
 //         uploadImageToServer(url, userKey.toString());
-        
+
         if(chatRoomId!=null && oUserKey != null && oUserName != null){
             Log.d(TAG, "onCreate: chatat"+chatRoomId +" "+oUserKey+" "+oUserName );
             Intent intent = new Intent(this, ChatActivity.class);
@@ -255,6 +252,20 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         isMainActivityVisible = true;
+
+        // 광고------------------
+        String temp = prefhelper.getAdsStatus(); // 오늘은 그만 보기 누른 날짜
+        Date date = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String currentDate = dateFormat.format(date); // 오늘 날짜
+
+        final BottomSheetDialogFragment bottomSheetFragment = new AdMobFragment();
+
+        Log.d("날짜 비교", "오늘: " + currentDate + " 누른 날짜: " + temp);
+
+        if (!temp.equals(currentDate))
+            bottomSheetFragment.show(getSupportFragmentManager(), bottomSheetFragment.getTag());
+        // ----------------------
     }
 
     @Override
@@ -381,7 +392,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-//API 요청 후 응답을 SQLite로 받은후기 데이터 로컬 저장
+    //API 요청 후 응답을 SQLite로 받은후기 데이터 로컬 저장
     private void getReviewList(UserKey userKey){
         Call<List<ReviewListData>> call = apiService.getReviewList(userKey);
         call.enqueue(new Callback<List<ReviewListData>>() {

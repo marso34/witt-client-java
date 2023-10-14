@@ -7,16 +7,30 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:theme="@style/AppBottomSheetDialogTheme"
-    tools:context=".AdMobFragment">
+    tools:context=".Ads.AdMobFragment">
 
     <!-- view for AdMob Interstitial Ad -->
+
     <TextView
-        android:id="@+id/closeView"
+        android:id="@+id/close1dayView"
+        style="@style/Body"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingHorizontal="16dp"
-        android:paddingVertical="4dp"
+        android:paddingVertical="6dp"
+        android:text="오늘은 그만 보기"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/closeView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="6dp"
         android:text="닫기"
+        android:textColor="@color/white"
         style="@style/Body"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -24,18 +38,18 @@
     <LinearLayout
         android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="wrap_content"
         android:background="@drawable/rounded_top"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/closeView">
+        app:layout_constraintTop_toBottomOf="@+id/close1dayView">
 
-
-        <com.google.android.gms.ads.nativead.MediaView
-            android:id="@+id/adsView"
+        <FrameLayout
+            android:id="@+id/flAdplaceholder"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="333dp" />
 
     </LinearLayout>
 

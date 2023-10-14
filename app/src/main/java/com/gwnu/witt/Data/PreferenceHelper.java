@@ -227,4 +227,11 @@ public class PreferenceHelper
     }
 
 
+    public void setAdsStatus(String date) {
+        SharedPreferences.Editor editor = app_prefs.edit();
+        editor.putString("adsCloseDate", date);
+        editor.apply();
+    }
+
+    public String getAdsStatus() { return  app_prefs.getString( "adsCloseDate", "0"); }
 }

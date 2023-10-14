@@ -51,22 +51,5 @@
             android:layout_height="match_parent"/>
 
     </LinearLayout>
-    <LinearLayout
-        android:id="@+id/defaultLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:layout_marginBottom="64dp"
-        android:orientation="vertical">
 
-        <com.google.android.gms.ads.AdView
-            android:paddingVertical="1dp"
-            android:layout_marginVertical="5dp"
-            xmlns:ads="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/adView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            ads:adSize="BANNER"
-            ads:adUnitId="@string/myBannerAds_id">
-        </com.google.android.gms.ads.AdView>
-    </LinearLayout></FrameLayout>
+</FrameLayout>
