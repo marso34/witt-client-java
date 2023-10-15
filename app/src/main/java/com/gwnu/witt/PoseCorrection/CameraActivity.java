@@ -9,9 +9,11 @@ import androidx.camera.core.CameraSelector;
 import androidx.camera.core.ImageAnalysis;
 import androidx.camera.core.Preview;
 import androidx.camera.lifecycle.ProcessCameraProvider;
+import androidx.camera.view.PreviewView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.Manifest;
 import android.content.Context;
@@ -26,6 +28,8 @@ import android.widget.Toast;
 
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.mlkit.common.MlKitException;
+import com.google.mlkit.vision.pose.PoseDetection;
+import com.google.mlkit.vision.pose.PoseDetector;
 import com.google.mlkit.vision.pose.PoseDetectorOptionsBase;
 import com.google.mlkit.vision.pose.accurate.AccuratePoseDetectorOptions;
 import com.google.mlkit.vision.pose.defaults.PoseDetectorOptions;
@@ -43,15 +47,19 @@ public class CameraActivity extends AppCompatActivity implements CompoundButton.
 
     ActivityCameraBinding binding;
 
+    private PreviewView previewView;
+    private GraphicOverlay graphicOverlay;
+
     @Nullable private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
+    @Nullable private ProcessCameraProvider cameraProvider;
     @Nullable private Camera camera;
+    @Nullable private Preview previewUseCase;
     @Nullable private ImageAnalysis analysisUseCase;
     @Nullable private VisionImageProcessor imageProcessor;
-
-    private GraphicOverlay graphicOverlay;
-    private CameraSelector cameraSelector;
-    private int lensFacing = CameraSelector.LENS_FACING_BACK;
     private boolean needUpdateGraphicOverlayImageSourceInfo;
+
+    private int lensFacing = CameraSelector.LENS_FACING_BACK;
+    private CameraSelector cameraSelector;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,15 +72,31 @@ public class CameraActivity extends AppCompatActivity implements CompoundButton.
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS); // 화면 가득차게, 스테이터스, 네비게이션 포함
 
+        supportRequestWindowReature();
+
         cameraSelector = new CameraSelector.Builder().requireLensFacing(lensFacing).build();
-        cameraProviderFuture = ProcessCameraProvider.getInstance(this);
+
+//        cameraProviderFuture = ProcessCameraProvider.getInstance(this);
 
         binding = ActivityCameraBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        previewView = binding.previewView;
+        graphicOverlay = binding.graphicOverlay;
+
+
         binding.facingSwitch.setOnCheckedChangeListener(this);
 
-        supportRequestWindowReature();
+        new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication()))
+                .get(CameraViewModel.class)
+                .getProcessCameraProvider()
+                .observe(
+                        this,
+                        provider -> {
+                            cameraProvider = provider;
+                            bindAllCameraUseCases();
+                        }
+                );
     }
 
     @Override
@@ -82,46 +106,39 @@ public class CameraActivity extends AppCompatActivity implements CompoundButton.
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) { // 카메라 전환
-        if (cameraProviderFuture == null)
+        if (cameraProvider == null)
             return;
 
         int newLensFacing =
                 lensFacing == CameraSelector.LENS_FACING_FRONT
                         ? CameraSelector.LENS_FACING_BACK
-                        : CameraSelector.LENS_FACING_FRONT;
+                        : CameraSelector.LENS_FACING_FRONT; // 카메라 렌즈 선택
 
-        CameraSelector newCameraSelector =
-                new CameraSelector.Builder().requireLensFacing(newLensFacing).build();
+        CameraSelector newCameraSelector = new CameraSelector.Builder().requireLensFacing(newLensFacing).build();
 
         try {
-            ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
-
             if (cameraProvider.hasCamera(newCameraSelector)) {
+                Log.d(TAG, "Set facing to " + newLensFacing);
                 lensFacing = newLensFacing;
                 cameraSelector = newCameraSelector;
-                cameraProvider.unbindAll();
-                bindPreview();
-//                bindPoseDetector();
+                bindAllCameraUseCases();
+                return;
             }
-        } catch (ExecutionException | InterruptedException | CameraInfoUnavailableException e) {
+        } catch (CameraInfoUnavailableException e) {
             e.printStackTrace();
         }
+
+        Toast.makeText(
+                        getApplicationContext(),
+                        "This device does not have lens with facing: " + newLensFacing,
+                        Toast.LENGTH_SHORT)
+                .show();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
-        try {
-            ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
-            cameraProvider.unbindAll();
-
-            bindPreview();
-//            bindPoseDetector();
-
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
+        bindAllCameraUseCases();
     }
 
     @Override
@@ -142,52 +159,55 @@ public class CameraActivity extends AppCompatActivity implements CompoundButton.
         }
     }
 
-    private void setUpCamera() {
-        if (cameraProviderFuture == null)
-            return;
 
-        cameraProviderFuture.addListener(() -> {
-            try {
-                ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
-                cameraProvider.unbindAll();
-
-                bindPreview();
-//                bindPoseDetector();
-
-            } catch (ExecutionException | InterruptedException e) {
-                e.printStackTrace();
-            }
-        }, ContextCompat.getMainExecutor(this));
+    private void bindAllCameraUseCases() {
+        if (cameraProvider != null) {
+            // As required by CameraX API, unbinds all use cases before trying to re-bind any of them.
+            cameraProvider.unbindAll();
+            bindPreviewUseCase();
+            bindAnalysisUseCase();
+        }
     }
 
-    private void bindPreview() throws ExecutionException, InterruptedException {
-        if (cameraProviderFuture == null)
+    private void bindPreviewUseCase() {
+        if (cameraProvider == null) {
             return;
+        }
+        if (previewUseCase != null) {
+            cameraProvider.unbind(previewUseCase);
+        }
 
-        ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
+        Preview.Builder builder = new Preview.Builder();
+        Size targetResolution = null; //PreferenceUtils.getCameraXTargetResolution(this, lensFacing);
 
-        Preview preview = new Preview.Builder().build();
-        preview.setSurfaceProvider(binding.previewView.getSurfaceProvider());
-
-        camera = cameraProvider.bindToLifecycle((LifecycleOwner)this, cameraSelector, preview);
+        if (targetResolution != null) {
+            builder.setTargetResolution(targetResolution);
+        }
+        previewUseCase = builder.build();
+        previewUseCase.setSurfaceProvider(previewView.getSurfaceProvider());
+        camera = cameraProvider.bindToLifecycle(/* lifecycleOwner= */ this, cameraSelector, previewUseCase);
     }
 
-    private void bindPoseDetector() throws ExecutionException, InterruptedException {
-        if (cameraProviderFuture == null)
+    private void bindAnalysisUseCase() {
+        if (cameraProvider == null) {
             return;
-
-        ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
-
-        if (analysisUseCase != null)
+        }
+        if (analysisUseCase != null) {
             cameraProvider.unbind(analysisUseCase);
+        }
+        if (imageProcessor != null) {
+            imageProcessor.stop();
+        }
 
-        // 아래 값들은 나중에 SharedPreferences(PreferenceHelper)로 저장
-
-        PoseDetectorOptionsBase poseDetectorOptions = getPoseDetectorOptionsForLivePreview();
-        boolean shouldShowInFrameLikelihood = true; // or false
-        boolean visualizeZ = true; // or false
-        boolean rescaleZ = true; // or false
-        boolean runClassification = true; // or false
+        PoseDetectorOptionsBase poseDetectorOptions =
+                new AccuratePoseDetectorOptions.Builder()
+                        .setDetectorMode(AccuratePoseDetectorOptions.STREAM_MODE)
+                        .setPreferredHardwareConfigs(AccuratePoseDetectorOptions.CPU_GPU)
+                        .build();
+        boolean shouldShowInFrameLikelihood = true;
+        boolean visualizeZ = true;
+        boolean rescaleZ = true;
+        boolean runClassification = true;
         imageProcessor =
                 new PoseDetectorProcessor(
                         this,
@@ -196,14 +216,14 @@ public class CameraActivity extends AppCompatActivity implements CompoundButton.
                         visualizeZ,
                         rescaleZ,
                         runClassification,
-                        /* isStreamMode = */ true);
+                        true);
+
 
         ImageAnalysis.Builder builder = new ImageAnalysis.Builder();
-        Size targetResolution = null; //PreferenceUtils.getCameraXTargetResolution(this, lensFacing);
-
-        if (targetResolution != null) {
+        Size targetResolution = null;
+        if (targetResolution != null)
             builder.setTargetResolution(targetResolution);
-        }
+
         analysisUseCase = builder.build();
 
         needUpdateGraphicOverlayImageSourceInfo = true;
@@ -234,33 +254,11 @@ public class CameraActivity extends AppCompatActivity implements CompoundButton.
                 });
 
         cameraProvider.bindToLifecycle(/* lifecycleOwner= */ this, cameraSelector, analysisUseCase);
-
-    }
-
-    private static PoseDetectorOptionsBase getPoseDetectorOptionsForLivePreview() {
-        int performanceMode = POSE_DETECTOR_PERFORMANCE_MODE_FAST;
-        boolean preferGPU = true;
-
-        if (performanceMode == POSE_DETECTOR_PERFORMANCE_MODE_FAST) {
-            PoseDetectorOptions.Builder builder =
-                    new PoseDetectorOptions.Builder().setDetectorMode(PoseDetectorOptions.STREAM_MODE);
-            if (preferGPU) {
-                builder.setPreferredHardwareConfigs(PoseDetectorOptions.CPU_GPU);
-            }
-            return builder.build();
-        } else {
-            AccuratePoseDetectorOptions.Builder builder =
-                    new AccuratePoseDetectorOptions.Builder().setDetectorMode(AccuratePoseDetectorOptions.STREAM_MODE);
-            if (preferGPU) {
-                builder.setPreferredHardwareConfigs(AccuratePoseDetectorOptions.CPU_GPU);
-            }
-            return builder.build();
-        }
     }
 
     private void supportRequestWindowReature() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-            setUpCamera();
+//            setUpCamera();
             // 카메라 권한이 이미 허용되었습니다.
             // 카메라를 사용하는 코드를 실행할 수 있습니다.
         } else {
@@ -281,7 +279,7 @@ public class CameraActivity extends AppCompatActivity implements CompoundButton.
 
         if (requestCode == CAMERA_PERMISSION_REQUEST) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                setUpCamera();
+//                setUpCamera();
                 // 카메라 권한이 허용되었습니다.
                 // 카메라를 사용하는 코드를 실행할 수 있습니다.
             } else {

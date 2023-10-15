@@ -34,6 +34,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HealthAppTTT"
         android:usesCleartextTraffic="true"
+        android:requestLegacyExternalStorage="true"
         tools:targetApi="33">
 
         <activity

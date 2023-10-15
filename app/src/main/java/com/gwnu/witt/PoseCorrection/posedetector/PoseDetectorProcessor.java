@@ -6,7 +6,6 @@ import androidx.annotation.NonNull;
 import com.google.android.gms.tasks.Task;
 import com.google.android.odml.image.MlImage;
 import com.google.mlkit.vision.common.InputImage;
-//import com.google.mlkit.vision.demo.java.posedetector.classification.PoseClassifierProcessor;
 import com.google.mlkit.vision.pose.Pose;
 import com.google.mlkit.vision.pose.PoseDetection;
 import com.google.mlkit.vision.pose.PoseDetector;
@@ -20,8 +19,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 /** A processor to run pose detector. */
-public class PoseDetectorProcessor
-        extends VisionProcessorBase<PoseDetectorProcessor.PoseWithClassification> {
+public class PoseDetectorProcessor extends VisionProcessorBase<PoseDetectorProcessor.PoseWithClassification> {
     private static final String TAG = "PoseDetectorProcessor";
 
     private final PoseDetector detector;
@@ -36,6 +34,7 @@ public class PoseDetectorProcessor
 
     private PoseClassifierProcessor poseClassifierProcessor;
     /** Internal class to hold Pose and classification results. */
+
     protected static class PoseWithClassification {
         private final Pose pose;
         private final List<String> classificationResult;
