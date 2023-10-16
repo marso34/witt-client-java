@@ -59,7 +59,7 @@ public class AdMobFragment extends BottomSheetDialogFragment {
 
         binding = FragmentAdMobBinding.inflate(inflater, container, false);
 
-        prefhelper = new PreferenceHelper("UserTB",getContext());
+        prefhelper = new PreferenceHelper("UserTB", getContext());
 
         return binding.getRoot();
     }
@@ -74,8 +74,7 @@ public class AdMobFragment extends BottomSheetDialogFragment {
                 refreshAd();
             }
         });
-
-
+        
 //        binding.close1dayView.setPaintFlags(binding.close1dayView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG); // 밑줄
         binding.close1dayView.setOnClickListener(v -> {
             Date date = new Date();
@@ -194,13 +193,7 @@ public class AdMobFragment extends BottomSheetDialogFragment {
         // have a video asset.
     }
 
-    /**
-     * Creates a request for a new native ad based on the boolean parameters and calls the
-     * corresponding "populate" method when one is successfully returned.
-     *
-     */
     private void refreshAd() {
-
         AdLoader adLoader = new AdLoader.Builder(getContext(), getResources().getString(R.string.myNativeAds_id))
                 .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
                     @Override
@@ -222,8 +215,8 @@ public class AdMobFragment extends BottomSheetDialogFragment {
                         FrameLayout frameLayout = binding.flAdplaceholder;
                         NativeAdView adView =
                                 (NativeAdView) getLayoutInflater().inflate(R.layout.ads_view, frameLayout, false);
-                        frameLayout.removeAllViews();
                         populateNativeAdView(nativeAd, adView);
+                        frameLayout.removeAllViews();
                         frameLayout.addView(adView);
                     }
                 })

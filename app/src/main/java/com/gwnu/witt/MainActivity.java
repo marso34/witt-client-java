@@ -69,6 +69,10 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity {
     private static final int NOTIFICATION_PERMISSION_REQUEST_CODE = 1001;
     ActivityMainBinding binding;
+
+    private BottomSheetDialogFragment bottomSheetFragment;
+
+
     private long backPressedTime = 0;
     private Toast toast;
     private ServiceApi apiService;
@@ -105,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
         oUserName = getIntent().getStringExtra("oUserName__");
         Log.d(TAG, "onCreate: "+chatRoomId+oUserKey+oUserName+"sssss");
 
-
+        bottomSheetFragment = new AdMobFragment();
 
         int uk = getIntent().getIntExtra("userKey",0);
         Log.d("메인에서 받는 pk:",uk+"" );
@@ -259,11 +263,10 @@ public class MainActivity extends AppCompatActivity {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String currentDate = dateFormat.format(date); // 오늘 날짜
 
-        final BottomSheetDialogFragment bottomSheetFragment = new AdMobFragment();
 
         Log.d("날짜 비교", "오늘: " + currentDate + " 누른 날짜: " + temp);
 
-        if (!temp.equals(currentDate))
+        if (!temp.equals(currentDate) && !bottomSheetFragment.isAdded())
             bottomSheetFragment.show(getSupportFragmentManager(), bottomSheetFragment.getTag());
         // ----------------------
     }
