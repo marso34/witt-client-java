@@ -6,17 +6,21 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.android.gms.ads.AdLoader;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.initialization.InitializationStatus;
-import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import com.google.android.gms.ads.nativead.MediaView;
+import com.google.android.gms.ads.nativead.NativeAd;
+import com.google.android.gms.ads.nativead.NativeAdOptions;
+import com.google.android.gms.ads.nativead.NativeAdView;
 import com.gwnu.witt.Data.AlarmInfo;
 import com.gwnu.witt.Data.PreferenceHelper;
 import com.gwnu.witt.Data.RetrofitClient;
@@ -95,16 +99,9 @@ public class alarmActivity extends AppCompatActivity {
                 finish();
             }
         });
+        showNativeAd();
 
-        MobileAds.initialize(this, new OnInitializationCompleteListener() {
-            @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) {
-            }
-        });
 
-        mAdview = findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdview.loadAd(adRequest);
     }
 
     private void setRecyclerView() {
@@ -167,6 +164,61 @@ public class alarmActivity extends AppCompatActivity {
         }
         // You may implement getAlarmData() method to retrieve data from your local database
         // Remember to handle the SQLite operations asynchronously.
+    }
+    private void loadNativeAd(View adView) {
+        String adUnitId = getString(R.string.myNativeAds_id);
+
+        AdLoader adLoader = new AdLoader.Builder(this, adUnitId)
+                .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
+                    @Override
+                    public void onNativeAdLoaded(NativeAd nativeAd) {
+                        // 네이티브 광고를 로드한 후, 뷰에 바인딩하고 표시
+                        bindNativeAdView(nativeAd, adView);
+                    }
+                })
+                .withAdListener(new com.google.android.gms.ads.AdListener() {
+                    public void onAdFailedToLoad(int errorCode) {
+                        // 광고 로드 실패 처리
+                        Log.d(TAG, "Ad failed to load: " + errorCode);
+                    }
+                })
+                .withNativeAdOptions(new NativeAdOptions.Builder().build())
+                .build();
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adLoader.loadAd(adRequest);
+    }
+
+    private void bindNativeAdView(NativeAd nativeAd, View adView) {
+        // 네이티브 광고 레이아웃 내의 뷰들을 참조
+        TextView adTitle = adView.findViewById(R.id.adTitle);
+        MediaView adMedia = adView.findViewById(R.id.adMedia);
+        TextView adBody = adView.findViewById(R.id.adBody);
+        LinearLayout adChoicesContainer = adView.findViewById(R.id.adChoicesContainer);
+
+        // 네이티브 광고 뷰를 생성
+        NativeAdView adNativeView = (NativeAdView) adView;
+        adNativeView.setHeadlineView(adTitle);
+        adNativeView.setMediaView(adMedia);
+        adNativeView.setBodyView(adBody);
+        // AdChoicesView 추가 (레이아웃에서 추가한 것을 그대로 사용)
+        // LinearLayout adChoicesContainer = adView.findViewById(R.id.adChoicesContainer);
+
+        // 광고 정보를 뷰에 바인딩
+        adTitle.setText(nativeAd.getHeadline());
+        adBody.setText(nativeAd.getBody());
+
+        // 광고 미디어 (이미지 또는 비디오) 처리
+        adMedia.setMediaContent(nativeAd.getMediaContent());
+
+        // 네이티브 광고 뷰에 광고를 설정
+        adNativeView.setNativeAd(nativeAd);
+    }
+
+    // 광고 표시를 위한 메서드 호출
+    private void showNativeAd() {
+        View adView = findViewById(R.id.native_ad_view);
+        loadNativeAd(adView);
     }
 
 }

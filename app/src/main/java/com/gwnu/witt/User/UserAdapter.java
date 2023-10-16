@@ -17,7 +17,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.ads.AdLoader;
 import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.nativead.MediaView;
+import com.google.android.gms.ads.nativead.NativeAd;
+import com.google.android.gms.ads.nativead.NativeAdOptions;
+import com.google.android.gms.ads.nativead.NativeAdView;
 import com.google.android.material.card.MaterialCardView;
 import com.gwnu.witt.Data.AdViewHolder;
 import com.gwnu.witt.Data.UserInfo;
@@ -59,7 +64,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
         public TextView TimeTxt, Anymore;
 
         public RecyclerView recyclerView;
-
+        public NativeAdView adView;
         public AreaAdapter Adapter;
 
         MainViewHolder(@NonNull View itemView) {
@@ -77,7 +82,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
             this.TimeTxt = itemView.findViewById(R.id.timeTxt);
 
             this.recyclerView = itemView.findViewById(R.id.recyclerView);
-
+            this.adView = itemView.findViewById(R.id.native_ad_view);
             this.Anymore = itemView.findViewById(R.id.anymore);
         }
     }
@@ -88,7 +93,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
         View view;
         Log.d(TAG, "뷰타입 "+viewType);
         if (viewType == UserInfo.ITEM_VIEW_TYPE_AD ) {
-            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_ads, parent, false);
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.native_ad_layout, parent, false);
+
         } else {
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_user, parent, false);
         }
@@ -117,9 +123,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
     @Override
     public void onBindViewHolder(@NonNull final MainViewHolder holder, int position) {
         if(mDataset.size() > 0  && mDataset.get(position).adsFlag == UserInfo.ITEM_VIEW_TYPE_AD) {
-            AdViewHolder adViewHolder = new AdViewHolder(holder.itemView);
-            AdRequest adRequest = new AdRequest.Builder().build();
-            adViewHolder.mAdView.loadAd(adRequest);
+            // 네이티브 광고를 로드하고 바인딩
+            loadNativeAd(holder.adView);
         }
         else{
         if (mDataset.size() > 0 && position != mDataset.size()) {
@@ -212,6 +217,62 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
         }
     }
 
+
+    // loadNativeAd 메서드
+    private void loadNativeAd(final View adView) {
+        String adUnitId = mContext.getString(R.string.myNativeAds_id);
+
+        AdLoader adLoader = new AdLoader.Builder(mContext, adUnitId)
+                .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
+                    @Override
+                    public void onNativeAdLoaded(NativeAd nativeAd) {
+                        // 네이티브 광고를 로드한 후, 뷰에 바인딩하고 표시
+                        bindNativeAdView(nativeAd, adView);
+                    }
+                })
+                .withAdListener(new com.google.android.gms.ads.AdListener() {
+                    public void onAdFailedToLoad(int errorCode) {
+                        // 광고 로드 실패 처리
+                        Log.d(TAG, "Ad failed to load: " + errorCode);
+                    }
+                })
+                .withNativeAdOptions(new NativeAdOptions.Builder().build())
+                .build();
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adLoader.loadAd(adRequest);
+    }
+
+    // bindNativeAdView 메서드
+    private void bindNativeAdView(NativeAd nativeAd, View adView) {
+        // 네이티브 광고 레이아웃 내의 뷰들을 참조
+        TextView adTitle = adView.findViewById(R.id.adTitle);
+        MediaView adMedia = adView.findViewById(R.id.adMedia);
+        TextView adBody = adView.findViewById(R.id.adBody);
+        LinearLayout adChoicesContainer = adView.findViewById(R.id.adChoicesContainer);
+
+        // 네이티브 광고 뷰를 생성
+        NativeAdView adNativeView = (NativeAdView) adView;
+        adNativeView.setHeadlineView(adTitle);
+        adNativeView.setMediaView(adMedia);
+        adNativeView.setBodyView(adBody);
+
+        // 광고 호출 대상 액션 버튼 (버튼은 XML에만 있고 코드에서는 사용하지 않음)
+        // Button adCallToAction = adView.findViewById(R.id.adCallToAction);
+
+        // AdChoicesView 추가 (레이아웃에서 추가한 것을 그대로 사용)
+        // LinearLayout adChoicesContainer = adView.findViewById(R.id.adChoicesContainer);
+
+        // 광고 정보를 뷰에 바인딩
+        adTitle.setText(nativeAd.getHeadline());
+        adBody.setText(nativeAd.getBody());
+
+        // 광고 미디어 (이미지 또는 비디오) 처리
+        adMedia.setMediaContent(nativeAd.getMediaContent());
+
+        // 네이티브 광고 뷰에 광고를 설정
+        adNativeView.setNativeAd(nativeAd);
+    }
 
     private void setCatRecyclerView(RecyclerView recyclerView, AreaAdapter adapter, int positon) {
         ArrayList<String> eCat = new ArrayList<>();
