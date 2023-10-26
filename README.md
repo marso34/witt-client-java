@@ -218,7 +218,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 - GitHub: [@sunghyun123](https://github.com/sunghyun123)
 - SNS: [@SNS_name]()
-- Mail: <a href="mailto:exmaple@gmail.com">exmaple@gmail.com</a>
+- Mail: <a href="mailto:jhgfds5951@gmail.com">jhgfds5951@gmail.com</a>
 
 **Kim Seonbo**
 
