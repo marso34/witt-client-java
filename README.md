@@ -27,7 +27,6 @@
       <img alt="OpenSSF Scorecard" src="https://api.securityscorecards.dev/projects/github.com/marso34/witt-java-client/badge" />
     </a> -->
     <br />
-    <br />
   </p>
 
   <p align="center">
@@ -44,7 +43,7 @@
   </p>
 </div>
 
-
+<br />
 
 <!-- TABLE OF CONTENTS -->
 <details>
