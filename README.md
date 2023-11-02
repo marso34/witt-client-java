@@ -31,6 +31,7 @@
 
   <p align="center">
     Health matching app 헬스인들을 위한 운동 파트너 매칭 앱
+    https://play.google.com/store/apps/details?id=com.gwnu.witt&hl=ko-KR
     <br />
     <a href="https://github.com/marso34/witt-client-java"><strong>Explore the docs »</strong></a>
     <br />
