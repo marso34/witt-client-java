@@ -261,8 +261,6 @@ public class MyProfileActivity extends AppCompatActivity {
                     mInterstitialAd = null;
                     // 여기서 원하는 동작을 추가
                     performCustomAction();
-
-
                 }
 
                 @Override
@@ -270,6 +268,7 @@ public class MyProfileActivity extends AppCompatActivity {
                     // 광고 표시 실패
                     Log.e(TAG, "Ad failed to show fullscreen content.");
                     mInterstitialAd = null;
+                    performCustomAction();
                 }
 
                 // 다른 콜백 메서드도 구현 가능
@@ -277,8 +276,10 @@ public class MyProfileActivity extends AppCompatActivity {
 
             mInterstitialAd.show(this);
         } else {
+            performCustomAction();
             Log.d(TAG, "The interstitial ad wasn't ready yet.");
         }
+
     }
 
     private void performCustomAction(){
