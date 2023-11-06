@@ -122,7 +122,7 @@
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/drawable/state.xml" value="0.191" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/drawable/tab_dayofweek_style.xml" value="0.191" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_add_exercise.xml" value="0.21822916666666667" />
-        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_alarm.xml" value="0.4915572232645403" />
+        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_alarm.xml" value="0.12268518518518519" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_block.xml" value="0.21822916666666667" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_calender.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_calender_sub.xml" value="0.24947916666666667" />
@@ -143,7 +143,7 @@
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_index.xml" value="0.6" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_join.xml" value="0.10687022900763359" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_login.xml" value="0.6" />
-        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_main.xml" value="0.20350877192982456" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_my_profile_edit.xml" value="0.21822916666666667" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_myprofile.xml" value="0.23072916666666668" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_profile.xml" value="0.264" />
@@ -166,13 +166,11 @@
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_sub4.xml" value="0.21033210332103322" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_test.xml" value="0.1" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/activity_witt_history.xml" value="0.23385416666666667" />
-        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/adapter_ads.xml" value="0.2509505703422053" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/adapter_alaram.xml" value="0.2484375" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/adapter_alram.xml" value="0.264" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/adapter_area.xml" value="0.4" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/adapter_blockuser.xml" value="0.23385416666666667" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/adapter_create_exercize.xml" value="0.6" />
-        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/adapter_end.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/adapter_exercise.xml" value="0.20478837109876016" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/adapter_exercise_input.xml" value="0.21822916666666667" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/adapter_exercise_list.xml" value="0.49230769230769234" />
@@ -192,12 +190,10 @@
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/fragment_alram.xml" value="0.24583333333333332" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/fragment_alram_list.xml" value="0.24583333333333332" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/fragment_bottom.xml" value="0.24947916666666667" />
-        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/fragment_chatting.xml" value="0.264" />
+        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/fragment_chatting.xml" value="0.4" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/fragment_cr_input_detail.xml" value="0.21822916666666667" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/fragment_cr_set_time.xml" value="0.21822916666666667" />
-        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/fragment_edit_gym.xml" value="0.23385416666666667" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/fragment_er_recording.xml" value="0.14583333333333334" />
-        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/fragment_er_review.xml" value="0.23385416666666667" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/fragment_er_select_routine.xml" value="0.14583333333333334" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/fragment_er_select_user.xml" value="0.14583333333333334" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/fragment_exercise_detail.xml" value="0.14739583333333334" />
@@ -218,14 +214,10 @@
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/fragment_su_input_name.xml" value="0.2111111111111111" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/fragment_su_input_perf.xml" value="0.23385416666666667" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/fragment_su_select_gender.xml" value="0.4" />
-        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/fragment_su_select_gym.xml" value="0.23385416666666667" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/fragment_sub.xml" value="0.21395348837209302" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/fragment_sub1.xml" value="0.4" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/fragment_sub2.xml" value="0.38530066815144765" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/fragment_wh.xml" value="0.23385416666666667" />
-        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/input_exercise_detail.xml" value="0.23385416666666667" />
-        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/input_exercise_detail_cardio.xml" value="0.23385416666666667" />
-        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/input_exercise_detail_nb.xml" value="0.23385416666666667" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/input_exercise_perf.xml" value="0.23385416666666667" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/input_height_weight.xml" value="0.23385416666666667" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/item_location.xml" value="0.4" />
@@ -235,7 +227,6 @@
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/item_message_sent.xml" value="0.536" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/menu_bttun.xml" value="0.2328125" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/my_popup_layout.xml" value="0.24947916666666667" />
-        <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/popup_image_layout.xml" value="0.23385416666666667" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/receive.xml" value="0.23385416666666667" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/routine_edit_popup.xml" value="0.23072916666666668" />
         <entry key="..\:/Users/KimDoHyum/AndroidTest/app/src/main/res/layout/select_healthroom.xml" value="0.23125" />
@@ -288,7 +279,7 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="corretto-11" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="jbr-17" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
