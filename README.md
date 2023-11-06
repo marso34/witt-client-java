@@ -6,10 +6,32 @@
     <img src="app\src\main\res\mipmap-xxxhdpi\app_logo.png" alt="Logo" width="80" height="80">
   </a>
 
-  <h3 align="center">Witt - With Training</h3>
+  ## Witt - With Training
+  <p align="center">
+<!--     <a href="https://github.com/marso34/witt-java-client/actions">
+      <img alt="Tests Passing" src="https://github.com/marso34/witt-java-client/workflows/Test/badge.svg" />
+    </a> -->
+    <a href="https://github.com/marso34/witt-java-client/graphs/contributors">
+      <img alt="GitHub Contributors" src="https://img.shields.io/github/contributors/marso34/witt-java-client" />
+    </a>
+<!--     <a href="https://codecov.io/gh/marso34/witt-java-client">
+      <img alt="Tests Coverage" src="https://codecov.io/gh/marso34/witt-java-client/branch/master/graph/badge.svg" />
+    </a> -->
+    <a href="https://github.com/marso34/witt-java-client/issues">
+      <img alt="Issues" src="https://img.shields.io/github/issues/marso34/witt-java-client?color=0088ff" />
+    </a>
+    <a href="https://github.com/marso34/witt-java-client/pulls">
+      <img alt="GitHub pull requests" src="https://img.shields.io/github/issues-pr/marso34/witt-java-client?color=0088ff" />
+    </a>
+<!--     <a href="https://securityscorecards.dev/viewer/?uri=github.com/marso34/witt-java-client">
+      <img alt="OpenSSF Scorecard" src="https://api.securityscorecards.dev/projects/github.com/marso34/witt-java-client/badge" />
+    </a> -->
+    <br />
+  </p>
 
   <p align="center">
-    Health matching app 헬스인들을 위한 운동 파트너 매칭 앱
+    Health matching app 헬스인들을 위한 운동 파트너 매칭 앱 <br />
+    https://play.google.com/store/apps/details?id=com.gwnu.witt&hl=ko-KR
     <br />
     <a href="https://github.com/marso34/witt-client-java"><strong>Explore the docs »</strong></a>
     <br />
@@ -22,7 +44,7 @@
   </p>
 </div>
 
-
+<br />
 
 <!-- TABLE OF CONTENTS -->
 <details>
@@ -204,7 +226,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 **Kim Dohyun**
 
-- GitHub: [@ooANAoo](htps://github.com/ooANAoo)
+- GitHub: [@ooANAoo](https://github.com/ooANAoo)
 - SNS: [@SNS_name]()
 - Mail: <a href="mailto:gim670079@gmail.com">gim670079@gmail.com</a>
 
@@ -218,7 +240,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 - GitHub: [@sunghyun123](https://github.com/sunghyun123)
 - SNS: [@SNS_name]()
-- Mail: <a href="mailto:exmaple@gmail.com">exmaple@gmail.com</a>
+- Mail: <a href="mailto:jhgfds5951@gmail.com">jhgfds5951@gmail.com</a>
 
 **Kim Seonbo**
 
