@@ -158,10 +158,6 @@
                 android:value="" />
         </activity>
 
-        <meta-data
-            android:name="com.google.android.gms.auth.api.client.id"
-            android:value="@string/default_web_client_id" />
-
         <activity
             android:name="com.gwnu.witt.Routine.EditRoutineActivity"
             android:exported="false"

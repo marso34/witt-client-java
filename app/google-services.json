@@ -1,34 +1,41 @@
 {
   "project_info": {
-    "project_number": "882480073865",
-    "firebase_url": "https://witt-7dcb4-default-rtdb.firebaseio.com",
-    "project_id": "witt-7dcb4",
-    "storage_bucket": "witt-7dcb4.appspot.com"
+    "project_number": "890474394508",
+    "project_id": "wittlogin-404810",
+    "storage_bucket": "wittlogin-404810.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:882480073865:android:bfcf6c628f04a9ece7ca58",
+        "mobilesdk_app_id": "1:890474394508:android:54b8bca053e86854e55ca9",
         "android_client_info": {
           "package_name": "com.gwnu.witt"
         }
       },
       "oauth_client": [
         {
-          "client_id": "882480073865-fs71ck034cls5ee9lrco8n90o973eh2q.apps.googleusercontent.com",
+          "client_id": "890474394508-t7frgpldkojunh5aioikavdabnsg6ma1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gwnu.witt",
+            "certificate_hash": "8ff594894321f4448bb788d0a4b7adc564605099"
+          }
+        },
+        {
+          "client_id": "890474394508-c1bmt4kms6oaa4491facc2pdp3k1nhf9.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBjeqNa7DrQ1m1-H9pwxgMN0SrM2kNuLXw"
+          "current_key": "AIzaSyA2xs019ZMrjQ3Ijpw0Gsa3GugfCIk9uf4"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "882480073865-fs71ck034cls5ee9lrco8n90o973eh2q.apps.googleusercontent.com",
+              "client_id": "890474394508-c1bmt4kms6oaa4491facc2pdp3k1nhf9.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

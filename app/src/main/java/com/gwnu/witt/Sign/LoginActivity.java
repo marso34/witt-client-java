@@ -118,6 +118,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityResult.launch(signInIntent);
+        Log.d(TAG, "signIn: ~~~~");
         // startActivityForResult 대체 방법
 //        startActivityForResult(signInIntent, RC_SIGN_IN); // 이제 사용 X
     }
