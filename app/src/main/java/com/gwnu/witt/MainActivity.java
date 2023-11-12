@@ -15,6 +15,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -65,6 +66,7 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
     private static final int NOTIFICATION_PERMISSION_REQUEST_CODE = 1001;
+    private static final int REQ_PERMISSION_PUSH = 1; // 혹은 다른 고유한 정수 값
     ActivityMainBinding binding;
     private long backPressedTime = 0;
     private Toast toast;
@@ -290,44 +292,50 @@ public class MainActivity extends AppCompatActivity {
     private static final String CHANNEL_ID = "my_channel_id"; // 채널 ID
 
     // 알림 채널 생성과 푸시 알림 전송을 위한 메서드
+//    private void createNotificationChannelAndSendNotification() {
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+//            if (notificationManager != null && !notificationManager.areNotificationsEnabled()) {
+//                // 채널 생성
+//                NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "My Channel", NotificationManager.IMPORTANCE_HIGH);
+//                notificationManager.createNotificationChannel(channel);
+//            } else {
+//                // 이미 알림 허용 권한이 있는 경우
+//
+//            }
+//        }
+//    }
+
+
+//     권한 요청 결과를 처리하는 메서드 (onActivityResult를 사용하도록 액티비티에서 오버라이드 해야 합니다.)
     private void createNotificationChannelAndSendNotification() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && PackageManager.PERMISSION_DENIED == ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)) {
+            // 푸시 권한 없음
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, REQ_PERMISSION_PUSH);
+        }
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             if (notificationManager != null && !notificationManager.areNotificationsEnabled()) {
                 // 채널 생성
                 NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "My Channel", NotificationManager.IMPORTANCE_HIGH);
                 notificationManager.createNotificationChannel(channel);
-            } else {
-                // 이미 알림 허용 권한이 있는 경우
 
+                // 알림 허용 권한 요청
+                Intent intent = new Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
+                        .putExtra(Settings.EXTRA_APP_PACKAGE, getPackageName())
+                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivityForResult(intent, NOTIFICATION_PERMISSION_REQUEST_CODE);
+            } else {
+                // 이미 알림 허용 권한이 있는 경우에는 알림을 보내지 않음
+                // 또는 허용 여부를 확인하는 로직을 추가하여 필요한 경우에만 알림을 보낼 수도 있음
+                // 예시: sendNotification() 함수를 호출하기 전에 조건을 추가하여 필요한 경우에만 알림을 보냄
             }
+        } else {
+            // Android Oreo 이전 버전은 채널 생성이 필요 없음
+            sendNotification();
         }
     }
-
-
-    // 권한 요청 결과를 처리하는 메서드 (onActivityResult를 사용하도록 액티비티에서 오버라이드 해야 합니다.)private void createNotificationChannelAndSendNotification() {
-    //    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-    //        NotificationManager notificationManager = getSystemService(NotificationManager.class);
-    //        if (notificationManager != null && !notificationManager.areNotificationsEnabled()) {
-    //            // 채널 생성
-    //            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "My Channel", NotificationManager.IMPORTANCE_HIGH);
-    //            notificationManager.createNotificationChannel(channel);
-    //
-    //            // 알림 허용 권한 요청
-    //            Intent intent = new Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
-    //                    .putExtra(Settings.EXTRA_APP_PACKAGE, getPackageName())
-    //                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-    //            startActivityForResult(intent, NOTIFICATION_PERMISSION_REQUEST_CODE);
-    //        } else {
-    //            // 이미 알림 허용 권한이 있는 경우에는 알림을 보내지 않음
-    //            // 또는 허용 여부를 확인하는 로직을 추가하여 필요한 경우에만 알림을 보낼 수도 있음
-    //            // 예시: sendNotification() 함수를 호출하기 전에 조건을 추가하여 필요한 경우에만 알림을 보냄
-    //        }
-    //    } else {
-    //        // Android Oreo 이전 버전은 채널 생성이 필요 없음
-    //        sendNotification();
-    //    }
-
     private void sendNotification() {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.witt_logo)
@@ -338,6 +346,7 @@ public class MainActivity extends AppCompatActivity {
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
         notificationManager.notify(1, builder.build());
     }
+
 
     //API 요청 후 응답을 SQLite로 차단테이블 데이터 로컬 저장
     private void getBlackList(UserKey userKey) {

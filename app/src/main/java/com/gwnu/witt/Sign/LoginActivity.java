@@ -105,7 +105,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             @Override
             public void onClick(View view) {
                 signIn();
-//                GoSplash("138");
+//                GoSplash("33");
             }
 
         });
