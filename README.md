@@ -82,12 +82,14 @@
 
 프로젝트에 대한 간단한 설명과 만든 이유
 
-Here's why:
-* ㅇㅇㅇㅇㅇ
-* ㅇㅇㅇㅇㅇ
-* ㅇㅇㅇㅇㅇ
+기술 스택
+NODE.JS
+MYSQL
+JAVA
+Android Studio
+REST API
+RETROFIT
 
-ㅇㅇㅇㅇㅇ
 
 <!-- Use the `BLANK_README.md` to get started. -->
 
