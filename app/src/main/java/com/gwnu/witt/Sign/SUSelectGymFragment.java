@@ -6,14 +6,19 @@ import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +28,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -30,8 +36,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.gwnu.witt.Data.User.LocData;
-import com.gwnu.witt.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -49,6 +53,8 @@ import com.google.android.libraries.places.api.net.FetchPlaceRequest;
 import com.google.android.libraries.places.api.net.FetchPlaceResponse;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.material.card.MaterialCardView;
+import com.gwnu.witt.Data.User.LocData;
+import com.gwnu.witt.R;
 import com.gwnu.witt.databinding.FragmentSuSelectGymBinding;
 
 import org.json.JSONArray;
@@ -59,6 +65,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
@@ -145,7 +152,7 @@ public class SUSelectGymFragment extends Fragment implements OnMapReadyCallback,
         binding = FragmentSuSelectGymBinding.inflate(inflater);
 
         searchResults = new ArrayList<>();
-
+        checkLocationServiceAndNavigateToSettings();
         if ( Build.VERSION.SDK_INT >= 23 &&
                 ContextCompat.checkSelfPermission( getContext(), Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
             ActivityCompat.requestPermissions( getActivity(), new String[] {
@@ -169,9 +176,10 @@ public class SUSelectGymFragment extends Fragment implements OnMapReadyCallback,
                 if (locationResult == null) {
                     return;
                 }
-                for (Location location : locationResult.getLocations()) {
+                for (Location location1 : locationResult.getLocations()) {
                     // Update current location
-                    updateCurrentLocation(location);
+                    updateCurrentLocation(location1);
+                    location = locationResult.getLocations().get(0);
                 }
             }
         };
@@ -180,7 +188,32 @@ public class SUSelectGymFragment extends Fragment implements OnMapReadyCallback,
 
         return binding.getRoot();
     }
+    public void checkLocationServiceAndNavigateToSettings() {
+        // GPS가 비활성화 되어 있는지 확인
+        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            // 위치 서비스가 꺼져 있으므로 사용자에게 알립니다.
+            new AlertDialog.Builder(getContext())
+                    .setMessage("앱에서 위치 정보를 사용하려면, 위치 서비스를 켜야 합니다.")
+                    .setPositiveButton("설정으로 이동", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // 사용자가 '설정으로 이동'을 누르면 위치 설정 화면으로 이동합니다.
+                            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                            startActivity(intent);
+                        }
+                    })
+                    .setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // 사용자가 '취소'를 누르면 아무것도 하지 않습니다.
+                        }
+                    })
+                    .show();
+        } else {
+            // GPS가 활성화되어 있으면 위치 업데이트 요청 등의 다음 단계를 진행합니다.
+            // ...
+        }
 
+    }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -195,7 +228,7 @@ public class SUSelectGymFragment extends Fragment implements OnMapReadyCallback,
                 isSelected = true;
             }
         }
-        
+
         if (isEdit) {
             binding.example.setText("헬스장을 변경해요");
             binding.skip.setVisibility(View.GONE);
@@ -205,7 +238,7 @@ public class SUSelectGymFragment extends Fragment implements OnMapReadyCallback,
 
         binding.backBtn.setOnClickListener(v -> mListner.onCancel());
 
-        binding.skip.setOnClickListener( v -> mListner.onSaveLocation(lat, lon, 0, 0, "", ""));
+
 
         binding.search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -227,6 +260,39 @@ public class SUSelectGymFragment extends Fragment implements OnMapReadyCallback,
                 mListner.onSaveLocation(lat, lon, gymLat, gymLon, gymName, gymAdress);
 //                ((SignUpActivity) requireActivity()).goToInputPerf(lat, lon, gymName, gymLat, gymLon);
             }
+        });
+        binding.skip.setOnClickListener( v -> {
+            String city = "";
+            String state = "" ;
+            if (location != null) {
+                Log.d(TAG, "로널 ");
+                double latitude = location.getLatitude();
+                double longitude = location.getLongitude();
+
+                Geocoder geocoder = new Geocoder(getContext(), Locale.KOREA);
+                List<Address> addresses = null;
+                try {
+                    addresses = geocoder.getFromLocation(latitude, longitude, 1);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                if (addresses != null && !addresses.isEmpty()) {
+
+                    city = addresses.get(0).getLocality();
+                    state = addresses.get(0).getAdminArea();
+                    // 이제 'city'와 'state' 변수에 도시와 주/도 이름이 저장되어 있습니다.
+                    Log.d(TAG, "onViewCreated: "+city+state);
+                    mListner.onSaveLocation(lat, lon, 0, 0, state +" "+city , "");
+                }
+                else {
+
+                    Log.d(TAG, "어널 ");
+                    mListner.onSaveLocation(lat, lon, 0, 0, "", "");
+                }
+            }
+            else
+                mListner.onSaveLocation(lat, lon, 0, 0,"" , "");
         });
     }
 
@@ -306,7 +372,7 @@ public class SUSelectGymFragment extends Fragment implements OnMapReadyCallback,
 
                     HttpUrl.Builder urlBuilder = HttpUrl.parse("https://maps.googleapis.com/maps/api/place/autocomplete/json").newBuilder();
                     urlBuilder.addQueryParameter("input", query);
-                    urlBuilder.addQueryParameter("types", "gym");
+                    urlBuilder.addQueryParameter("types", "");
                     urlBuilder.addQueryParameter("location", String.valueOf(lat) + ", " + String.valueOf(lon)); // 현재 위치
                     urlBuilder.addQueryParameter("radius", "10000");
                     urlBuilder.addQueryParameter("strictbounds", "true");
