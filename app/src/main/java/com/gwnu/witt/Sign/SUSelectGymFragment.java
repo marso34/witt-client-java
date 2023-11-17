@@ -25,7 +25,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -74,7 +79,6 @@ import okhttp3.Response;
 
 public class SUSelectGymFragment extends Fragment implements OnMapReadyCallback, LocationListener {
     FragmentSuSelectGymBinding binding;
-
     private static final String Body = "#4A5567";
     private static final String Signature = "#05C78C";
     private static final String White = "#ffffff";
@@ -136,6 +140,15 @@ public class SUSelectGymFragment extends Fragment implements OnMapReadyCallback,
         fragment.setArguments(args);
         return fragment;
     }
+    private final ActivityResultLauncher<Intent> locationSettingsResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    // 사용자가 설정 화면에서 돌아왔을 때 실행할 동작
+                    promptEnableGPS();
+                }
+            });
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -152,7 +165,7 @@ public class SUSelectGymFragment extends Fragment implements OnMapReadyCallback,
         binding = FragmentSuSelectGymBinding.inflate(inflater);
 
         searchResults = new ArrayList<>();
-        checkLocationServiceAndNavigateToSettings();
+        promptEnableGPS();
         if ( Build.VERSION.SDK_INT >= 23 &&
                 ContextCompat.checkSelfPermission( getContext(), Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
             ActivityCompat.requestPermissions( getActivity(), new String[] {
@@ -188,32 +201,37 @@ public class SUSelectGymFragment extends Fragment implements OnMapReadyCallback,
 
         return binding.getRoot();
     }
-    public void checkLocationServiceAndNavigateToSettings() {
-        // GPS가 비활성화 되어 있는지 확인
-        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+    private void promptEnableGPS() {
+        LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+
         if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            // 위치 서비스가 꺼져 있으므로 사용자에게 알립니다.
-            new AlertDialog.Builder(getContext())
-                    .setMessage("앱에서 위치 정보를 사용하려면, 위치 서비스를 켜야 합니다.")
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setMessage("앱에서 위치 정보를 사용하려면, 위치 서비스를 켜야 합니다.")
                     .setPositiveButton("설정으로 이동", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            // 사용자가 '설정으로 이동'을 누르면 위치 설정 화면으로 이동합니다.
-                            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                            startActivity(intent);
+                            locationSettingsResultLauncher.launch(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
                         }
                     })
                     .setNegativeButton("취소", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            // 사용자가 '취소'를 누르면 아무것도 하지 않습니다.
+                            // 사용자가 '취소'를 누르면 다시 확인
+                            promptEnableGPS();
                         }
                     })
-                    .show();
-        } else {
-            // GPS가 활성화되어 있으면 위치 업데이트 요청 등의 다음 단계를 진행합니다.
-            // ...
+                    .setOnCancelListener(new DialogInterface.OnCancelListener() {
+                        @Override
+                        public void onCancel(DialogInterface dialog) {
+                            // 다이얼로그가 취소되면 다시 확인
+                            promptEnableGPS();
+                        }
+                    });
+            builder.show();
+
         }
 
+
     }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -264,6 +282,7 @@ public class SUSelectGymFragment extends Fragment implements OnMapReadyCallback,
         binding.skip.setOnClickListener( v -> {
             String city = "";
             String state = "" ;
+
             if (location != null) {
                 Log.d(TAG, "로널 ");
                 double latitude = location.getLatitude();
@@ -291,8 +310,10 @@ public class SUSelectGymFragment extends Fragment implements OnMapReadyCallback,
                     mListner.onSaveLocation(lat, lon, 0, 0, "", "");
                 }
             }
-            else
-                mListner.onSaveLocation(lat, lon, 0, 0,"" , "");
+            else{
+                Toast.makeText(getContext(), "GPS 위치 권한을 켜주세요", Toast.LENGTH_SHORT).show();
+            }
+
         });
     }
 
