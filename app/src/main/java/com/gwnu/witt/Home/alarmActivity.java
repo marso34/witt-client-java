@@ -107,8 +107,8 @@ public class alarmActivity extends AppCompatActivity {
         });
 
         mAdview = findViewById(R.id.adView);
-        mAdview.setAdUnitId(myBannerAds_id);
-        mAdview.setAdSize(AdSize.BANNER);
+//        mAdview.setAdUnitId(myBannerAds_id);
+//        mAdview.setAdSize(AdSize.BANNER);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdview.loadAd(adRequest);
     }

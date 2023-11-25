@@ -122,8 +122,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
     public void onBindViewHolder(@NonNull final MainViewHolder holder, int position) {
         if(mDataset.size() > 0  && mDataset.get(position).adsFlag == UserInfo.ITEM_VIEW_TYPE_AD) {
             AdViewHolder adViewHolder = new AdViewHolder(holder.itemView);
-            adViewHolder.mAdView.setAdSize(AdSize.LARGE_BANNER);
-            adViewHolder.mAdView.setAdUnitId(myBannerAds_id);
+//            adViewHolder.mAdView.setAdSize(AdSize.LARGE_BANNER);
+//            adViewHolder.mAdView.setAdUnitId(myBannerAds_id);
             AdRequest adRequest = new AdRequest.Builder().build();
             adViewHolder.mAdView.loadAd(adRequest);
         }

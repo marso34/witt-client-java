@@ -30,9 +30,12 @@ android {
             buildConfigField "String", "myBannerAds_id", properties["myBannerAds_id"]
             buildConfigField "String", "myFrontAds_id", properties["myFrontAds_id"]
             buildConfigField "String", "myNativeAds_id", properties["myNativeAds_id"]
+            resValue "string","myBannerAds_id", properties["myBannerAds_id"]
+            resValue "string","myFrontAds_id", properties["myFrontAds_id"]
+            resValue "string","myNativeAds_id", properties["myNativeAds_id"]
 
-//            resValue  "String", "myAdsId", properties["myAdsId"]
-            resValue "string", "myAdsId", project.hasProperty("myAdsId") ? project.myAdsId : ""
+            resValue "string", "myAdsId", properties["myAdsId"]
+//            buildConfigField "String", "myAdsId", properties["myAdsId"]
             buildConfigField "String", "google_places_api_key", properties["google_places_api_key"]
             buildConfigField "String", "google_sign_in_client_id", properties["google_sign_in_client_id"]
             buildConfigField "String", "BASE_URL", properties["BASE_URL"]
@@ -42,9 +45,12 @@ android {
             buildConfigField "String", "myBannerAds_id", properties["test_myBannerAds_id"]
             buildConfigField "String", "myFrontAds_id", properties["test_myFrontAds_id"]
             buildConfigField "String", "myNativeAds_id", properties["test_myNativeAds_id"]
+            resValue "string","myBannerAds_id", properties["test_myBannerAds_id"]
+            resValue "string","myFrontAds_id", properties["test_myFrontAds_id"]
+            resValue "string","myNativeAds_id", properties["test_myNativeAds_id"]
 
-//            resValue  "String", "myAdsId", properties["myAdsId"]
-            resValue "string", "myAdsId", project.hasProperty("myAdsId") ? project.myAdsId : ""
+            resValue "string", "myAdsId", properties["myAdsId"]
+//            buildConfigField "String", "myAdsId", properties["myAdsId"]
             buildConfigField "String", "google_places_api_key", properties["google_places_api_key"]
             buildConfigField "String", "google_sign_in_client_id", properties["google_sign_in_client_id"]
             buildConfigField "String", "BASE_URL", properties["BASE_URL"]
