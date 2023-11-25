@@ -1,5 +1,7 @@
 package com.gwnu.witt.Profile;
 
+import static com.gwnu.witt.BuildConfig.google_sign_in_client_id;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -48,7 +50,7 @@ public class SettingActivity extends AppCompatActivity {
 
     public void onClickLogout(View view) { // 로그아웃
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.google_sign_in_client_id))
+                .requestIdToken(google_sign_in_client_id)
                 .requestEmail()
                 .build();
         serviceIntent = new Intent(this, DataReceiverService.class);

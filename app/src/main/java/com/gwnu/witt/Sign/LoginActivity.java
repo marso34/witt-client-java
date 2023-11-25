@@ -2,6 +2,8 @@ package com.gwnu.witt.Sign;
 
 import static android.content.ContentValues.TAG;
 
+import static com.gwnu.witt.BuildConfig.google_sign_in_client_id;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -90,7 +92,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
         // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.google_sign_in_client_id))
+                .requestIdToken(google_sign_in_client_id)
                 .requestEmail()
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);

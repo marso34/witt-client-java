@@ -3,6 +3,8 @@ package com.gwnu.witt.Sign;
 
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
+import static com.gwnu.witt.BuildConfig.google_places_api_key;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -177,7 +179,7 @@ public class SUSelectGymFragment extends Fragment implements OnMapReadyCallback,
         // Initialize fused location client
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext());
         // Initialize Places API
-        Places.initialize(requireContext(), getString(R.string.google_places_api_key));
+        Places.initialize(requireContext(), google_places_api_key);
         placesClient = Places.createClient(requireContext());
         locationRequest = LocationRequest.create();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
@@ -398,7 +400,7 @@ public class SUSelectGymFragment extends Fragment implements OnMapReadyCallback,
                     urlBuilder.addQueryParameter("radius", "10000");
                     urlBuilder.addQueryParameter("strictbounds", "true");
                     urlBuilder.addQueryParameter("components", "country:KR"); // 주소에 대한 국가 필터링
-                    urlBuilder.addQueryParameter("key", getString(R.string.google_places_api_key)); // 실제 Places API 키로 대체
+                    urlBuilder.addQueryParameter("key", google_places_api_key); // 실제 Places API 키로 대체
                     urlBuilder.addQueryParameter("language", "ko"); // 한국어로 결과 요청
 
                     String url = urlBuilder.build().toString();

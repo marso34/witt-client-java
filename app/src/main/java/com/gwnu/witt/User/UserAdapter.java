@@ -2,6 +2,9 @@ package com.gwnu.witt.User;//package com.gwnu.witt.adapter;
 
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
+import static com.google.android.gms.ads.AdSize.LARGE_BANNER;
+import static com.gwnu.witt.BuildConfig.myBannerAds_id;
+
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -18,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
 import com.google.android.material.card.MaterialCardView;
 import com.gwnu.witt.Data.AdViewHolder;
 import com.gwnu.witt.Data.UserInfo;
@@ -118,6 +122,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MainViewHolder
     public void onBindViewHolder(@NonNull final MainViewHolder holder, int position) {
         if(mDataset.size() > 0  && mDataset.get(position).adsFlag == UserInfo.ITEM_VIEW_TYPE_AD) {
             AdViewHolder adViewHolder = new AdViewHolder(holder.itemView);
+//            adViewHolder.mAdView.setAdSize(AdSize.LARGE_BANNER);
+//            adViewHolder.mAdView.setAdUnitId(myBannerAds_id);
             AdRequest adRequest = new AdRequest.Builder().build();
             adViewHolder.mAdView.loadAd(adRequest);
         }

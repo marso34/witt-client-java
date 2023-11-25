@@ -2,6 +2,9 @@ package com.gwnu.witt.Chat;
 
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
+import static com.google.android.gms.ads.AdSize.BANNER;
+import static com.gwnu.witt.BuildConfig.myBannerAds_id;
+
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -17,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
@@ -120,6 +125,8 @@ public class ChattingFragment extends Fragment {
         });
 
         mAdview = rootView.findViewById(R.id.adView);
+//        mAdview.setAdUnitId(myBannerAds_id);
+//        mAdview.setAdSize(AdSize.BANNER);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdview.loadAd(adRequest);
         return rootView;

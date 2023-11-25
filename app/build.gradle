@@ -4,6 +4,9 @@ plugins {
 
 }
 
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
 android {
     compileSdk 33
 
@@ -14,13 +17,45 @@ android {
         versionCode 9
         versionName "0.1.5"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+
+
     }
 
     buildTypes {
         release {
-            minifyEnabled false
+            //릴리즈할때는 코드 보안 설정 true
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "myBannerAds_id", properties["myBannerAds_id"]
+            buildConfigField "String", "myFrontAds_id", properties["myFrontAds_id"]
+            buildConfigField "String", "myNativeAds_id", properties["myNativeAds_id"]
+            resValue "string","myBannerAds_id", properties["myBannerAds_id"]
+            resValue "string","myFrontAds_id", properties["myFrontAds_id"]
+            resValue "string","myNativeAds_id", properties["myNativeAds_id"]
+
+            resValue "string", "myAdsId", properties["myAdsId"]
+//            buildConfigField "String", "myAdsId", properties["myAdsId"]
+            buildConfigField "String", "google_places_api_key", properties["google_places_api_key"]
+            buildConfigField "String", "google_sign_in_client_id", properties["google_sign_in_client_id"]
+            buildConfigField "String", "BASE_URL", properties["BASE_URL"]
         }
+        debug {
+            minifyEnabled false
+            buildConfigField "String", "myBannerAds_id", properties["test_myBannerAds_id"]
+            buildConfigField "String", "myFrontAds_id", properties["test_myFrontAds_id"]
+            buildConfigField "String", "myNativeAds_id", properties["test_myNativeAds_id"]
+            resValue "string","myBannerAds_id", properties["test_myBannerAds_id"]
+            resValue "string","myFrontAds_id", properties["test_myFrontAds_id"]
+            resValue "string","myNativeAds_id", properties["test_myNativeAds_id"]
+
+            resValue "string", "myAdsId", properties["myAdsId"]
+//            buildConfigField "String", "myAdsId", properties["myAdsId"]
+            buildConfigField "String", "google_places_api_key", properties["google_places_api_key"]
+            buildConfigField "String", "google_sign_in_client_id", properties["google_sign_in_client_id"]
+            buildConfigField "String", "BASE_URL", properties["BASE_URL"]
+        }
+
     }
 
     compileOptions {

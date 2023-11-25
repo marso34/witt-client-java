@@ -2,6 +2,10 @@ package com.gwnu.witt.Profile;
 
 import static android.content.ContentValues.TAG;
 
+import static com.google.android.gms.ads.AdSize.BANNER;
+import static com.gwnu.witt.BuildConfig.myBannerAds_id;
+import static com.gwnu.witt.BuildConfig.myFrontAds_id;
+
 import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
@@ -26,6 +30,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.FullScreenContentCallback;
 import com.google.android.gms.ads.LoadAdError;
@@ -204,7 +209,7 @@ public class MyProfileActivity extends AppCompatActivity {
         int randomNumber = random.nextInt(100); // 0부터 99까지의 난수 생성
         AdRequest adRequest = new AdRequest.Builder().build();
         if(randomNumber < -1) {
-            InterstitialAd.load(this, this.getResources().getString(R.string.myFrontAds_id), adRequest,
+            InterstitialAd.load(this,myFrontAds_id, adRequest,
                     new InterstitialAdLoadCallback() {
                         @Override
                         public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
@@ -223,6 +228,8 @@ public class MyProfileActivity extends AppCompatActivity {
                     });
         }
         mAdview = findViewById(R.id.adView);
+//        mAdview.setAdUnitId(myBannerAds_id);
+//        mAdview.setAdSize(AdSize.BANNER);
         mAdview.loadAd(adRequest);
     }
     private void showInterstitialAd() {
@@ -530,7 +537,7 @@ public class MyProfileActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (flag == false) {
                     AdRequest adRequest = new AdRequest.Builder().build();
-                    InterstitialAd.load(getApplication(), getApplication().getResources().getString(R.string.myFrontAds_id), adRequest,
+                    InterstitialAd.load(getApplication(), myFrontAds_id, adRequest,
                             new InterstitialAdLoadCallback() {
                                 @Override
                                 public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
