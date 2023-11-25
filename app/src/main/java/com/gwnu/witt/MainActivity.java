@@ -2,6 +2,8 @@ package com.gwnu.witt;
 
 import static android.content.ContentValues.TAG;
 
+import static com.gwnu.witt.BuildConfig.google_sign_in_client_id;
+
 import android.Manifest;
 import android.app.AlarmManager;
 import android.app.NotificationChannel;
@@ -137,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
         dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK) - 1; // 현재 요일 정보
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.google_sign_in_client_id))
+                .requestIdToken(google_sign_in_client_id)
                 .requestEmail()
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);

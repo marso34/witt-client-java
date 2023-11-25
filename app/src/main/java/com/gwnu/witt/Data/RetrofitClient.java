@@ -1,10 +1,13 @@
 package com.gwnu.witt.Data;
 
+import static com.gwnu.witt.BuildConfig.BASE_URL;
+
+import com.gwnu.witt.BuildConfig;
+
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClient {
-    private final static String BASE_URL = "http://43.202.136.98:3001/";
     private static Retrofit retrofit = null;
 
     private RetrofitClient() {}
@@ -12,7 +15,7 @@ public class RetrofitClient {
     public static Retrofit getClient() {
         if (retrofit == null) {
             retrofit = new Retrofit.Builder()
-                    .baseUrl(BASE_URL)
+                    .baseUrl(BASE_URL)    // BuildConfigField 값 호출
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }

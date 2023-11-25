@@ -403,9 +403,7 @@
                         xmlns:ads="http://schemas.android.com/apk/res-auto"
                         android:id="@+id/adView"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        ads:adSize="BANNER"
-                        ads:adUnitId="@string/myBannerAds_id">
+                        android:layout_height="match_parent">
                     </com.google.android.gms.ads.AdView>
                 </LinearLayout>
             </LinearLayout>
