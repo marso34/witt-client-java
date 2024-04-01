@@ -590,8 +590,6 @@ public class ChatActivity extends AppCompatActivity{
 
 
                 // 바텀 시트 다이얼로그 노출
-
-
             }
         });
     }

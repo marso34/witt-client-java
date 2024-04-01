@@ -69,7 +69,7 @@
             app:itemBackground="@color/transparent"
             app:itemHorizontalTranslationEnabled="false"
             app:itemIconTint="@drawable/menu_selector_color"
-            app:itemTextColor="@drawable/menu_selector_color"
+            app:itemTextColor="@dable/menu_selector_color"
             app:itemPaddingBottom="12dp"
             app:elevation="20dp"
             app:menu="@menu/bottom_nav_menu" />
