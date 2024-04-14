@@ -3,7 +3,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/marso34/witt-client-java">
-    <img src="app\src\main\res\mipmap-xxxhdpi\app_logo.png" alt="Logo" width="80" height="80">
+    <img src="info\witt_logo.png" alt="Logo" width="80" height="80">
   </a>
 
   ## Witt - With Training
