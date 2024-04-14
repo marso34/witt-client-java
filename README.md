@@ -89,6 +89,7 @@ JAVA
 Android Studio
 REST API
 RETROFIT
+Socket.Io
 
 
 <!-- Use the `BLANK_README.md` to get started. -->
