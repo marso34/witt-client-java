@@ -38,10 +38,10 @@
 
 <!-- TABLE OF CONTENTS -->
 <details>
-  <summary>Table of Contents</summary>
+  <summary>목차</summary>
   <ol>
     <li>
-      <a href="#about-the-project">About The Project</a>
+      <a href="#프로젝트-개요">프로젝트 개요</a>
       <ul>
         <li><a href="#built-with">Built With</a></li>
       </ul>
@@ -63,11 +63,10 @@
 </details>
 
 
-
 <!-- ABOUT THE PROJECT -->
-## About The Project
+## 프로젝트 개요
 
-<img src="info\story.png" alt="Logo">
+<img src="info\main.png">
 
 "위트 - With Training"은 운동 파트너 매칭 앱으로서, 혼자 운동하기 어려운 사람, 운동을 처음 시작하는 헬스 초보, 안전한 운동을 위해 운동 보조를 찾는 헬스인을 대상으로 합니다. 운동 루틴과 운동 기록을 바탕으로 비슷한 수준의 운동 파트너를 매칭해줌으로써, 운동 동기 부여와 안전한 운동을 돕는 기능을 제공합니다.
 
@@ -91,7 +90,6 @@ Socket.Io -->
 * [![Laravel][Laravel.com]][Laravel-url]
 * [![Bootstrap][Bootstrap.com]][Bootstrap-url]
 * [![JQuery][JQuery.com]][JQuery-url]
-
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
