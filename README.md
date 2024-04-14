@@ -70,8 +70,8 @@
 * Android SDK 33 (min SDK 22)
 * Java 17
 * Gradle 7.2.2
-* AWS EC2
-* AWS RDS
+* AWS EC2, RDS
+* 협업 툴 : Discord, Notion, Figma
 
 ### 개발 기술
 
