@@ -90,6 +90,7 @@
 
 <!-- CONTACT -->
 ## 프로젝트 구조
+<img src="info\Architecture.png">
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
