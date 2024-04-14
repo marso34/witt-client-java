@@ -94,6 +94,11 @@
 ## 프로젝트 구조
 <img src="info\Architecture.png">
 
+<details>
+  <summary>Back-End 구조</summary>
+  <img src="info\Back-End.png">
+</details>
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
