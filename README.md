@@ -87,15 +87,19 @@
 * ![Firebase UI 스토리지](https://img.shields.io/badge/Firebase_UI_Storage-7.2.0-orange)
 <!--  * ![SQLite](https://img.shields.io/badge/SQLite-07405E?style=for-the-badge&logo=sqlite&logoColor=white) -->
 
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- CONTACT -->
 ## 프로젝트 구조
 <img src="info\Architecture.png">
 
-프로젝트 구조 설명
-..
-..
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+## 상세 기능
+
+여기 설명 및 이미지 추가...
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
