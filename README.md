@@ -43,25 +43,16 @@
     <li>
       <a href="#프로젝트-개요">프로젝트 개요</a>
       <ul>
-        <li><a href="#built-with">Built With</a></li>
+        <li><a href="#개발-환경">개발 환경</a></li>
+        <li><a href="#개발-기술">개발 기술</a></li>
       </ul>
     </li>
-    <li>
-      <a href="#getting-started">Getting Started</a>
-      <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
-      </ul>
-    </li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
+    <li><a href="#프로젝트-구조">프로젝트 구조</a></li>
+    <li><a href="#팀원">팀원</a></li>
   </ol>
 </details>
 
+<br />
 
 <!-- ABOUT THE PROJECT -->
 ## 프로젝트 개요
@@ -70,37 +61,45 @@
 
 "위트 - With Training"은 운동 파트너 매칭 앱으로서, 혼자 운동하기 어려운 사람, 운동을 처음 시작하는 헬스 초보, 안전한 운동을 위해 운동 보조를 찾는 헬스인을 대상으로 합니다. 운동 루틴과 운동 기록을 바탕으로 비슷한 수준의 운동 파트너를 매칭해줌으로써, 운동 동기 부여와 안전한 운동을 돕는 기능을 제공합니다.
 
-<!-- 
-기술 스택
-NODE.JS
-MYSQL
-JAVA
-Android Studio
-REST API
-RETROFIT
-Socket.Io -->
+<br />
 
-### Built With
 
-* [![Next][Next.js]][Next-url]
-* [![React][React.js]][React-url]
-* [![Vue][Vue.js]][Vue-url]
-* [![Angular][Angular.io]][Angular-url]
-* [![Svelte][Svelte.dev]][Svelte-url]
-* [![Laravel][Laravel.com]][Laravel-url]
-* [![Bootstrap][Bootstrap.com]][Bootstrap-url]
-* [![JQuery][JQuery.com]][JQuery-url]
+### 개발 환경
+
+* Android Studio
+* Android SDK 33 (min SDK 22)
+* Java 17
+* Gradle 7.2.2
+* AWS EC2
+* AWS RDS
+
+### 개발 기술
+
+* ![Retrofit](https://img.shields.io/badge/Retrofit-2.9.0-brightgreen)
+* ![OkHttp](https://img.shields.io/badge/OkHttp-3.14.9-blue)
+* ![OkHttp URL 연결](https://img.shields.io/badge/OkHttp_URL_Connection-3.4.2-blue)
+* ![Socket.IO 클라이언트](https://img.shields.io/badge/Socket.IO_Client-2.1.0-brightgreen)
+* ![Google Play Services 지도](https://img.shields.io/badge/Google_Play_Services-Maps-1)
+* ![Google Play Services 위치](https://img.shields.io/badge/Google_Play_Services-Location-1)
+* ![Firebase 인증](https://img.shields.io/badge/Firebase-Auth-orange)
+* ![Firebase UI 인증](https://img.shields.io/badge/Firebase_UI_Auth-7.2.0-orange)
+* ![Firebase UI 스토리지](https://img.shields.io/badge/Firebase_UI_Storage-7.2.0-orange)
+<!--  * ![SQLite](https://img.shields.io/badge/SQLite-07405E?style=for-the-badge&logo=sqlite&logoColor=white) -->
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- CONTACT -->
+## 프로젝트 구조
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- CONTACT -->
-## Contact
+## 팀원
 
 **Lee June**
 
 - GitHub: [@marso34](https://github.com/marso34)
-- SNS: Null
 - Mail: <a href="mailto:mars102aq@gmail.com">mars102aq@gmail.com</a>
 - Portfolio: [Notion](https://leejune.notion.site/Portfolio-70b846886e2e41368280f5a7e49f9e0d)
 
@@ -124,6 +123,5 @@ Socket.Io -->
 
 **Kim Gunwoo**
 
-- GitHub: 
 - SNS: [@SNS_name]()
 - Mail: <a href="mailto:kwoo6643@gmail.com">kwoo6643@gmail.com</a>
