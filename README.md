@@ -49,6 +49,7 @@
     </li>
     <li><a href="#프로젝트-구조">프로젝트 구조</a></li>
     <li><a href="#팀원">팀원</a></li>
+    <li><a href="#License">License</a></li>
   </ol>
 </details>
 
@@ -92,6 +93,10 @@
 ## 프로젝트 구조
 <img src="info\Architecture.png">
 
+프로젝트 구조 설명
+..
+..
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -126,3 +131,11 @@
 
 - SNS: [@SNS_name]()
 - Mail: <a href="mailto:kwoo6643@gmail.com">kwoo6643@gmail.com</a>
+
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- LICENSE -->
+## License
+
+This project is licensed under the terms of the MIT license.
