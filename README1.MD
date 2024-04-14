@@ -18,8 +18,8 @@
 ![Socket.IO 클라이언트](https://img.shields.io/badge/Socket.IO_Client-2.1.0-brightgreen)
 
 ### 지도 및 위치
-![Google Play Services 지도](https://img.shields.io/badge/Google_Play_Services-Maps-18.1.0-blue)
-![Google Play Services 위치](https://img.shields.io/badge/Google_Play_Services-Location-21.0.1-blue)
+![Google Play Services 지도](https://img.shields.io/badge/Google_Play_Services-Maps-1)
+![Google Play Services 위치](https://img.shields.io/badge/Google_Play_Services-Location-1)
 
 ### 인증 및 데이터베이스
 ![Firebase 인증](https://img.shields.io/badge/Firebase-Auth-orange)
@@ -30,13 +30,13 @@
 ![Firebase UI 스토리지](https://img.shields.io/badge/Firebase_UI_Storage-7.2.0-orange)
 
 ### 광고
-![Google Play Services 광고](https://img.shields.io/badge/Google_Play_Services-Ads-22.4.0-green)
+![Google Play Services 광고](https://img.shields.io/badge/Google_Play_Services-Ads-1)
 
 ## UI 및 디자인
-![AndroidX AppCompat](https://img.shields.io/badge/AndroidX-AppCompat-1.5.1-blue)
-![AndroidX ConstraintLayout](https://img.shields.io/badge/AndroidX-ConstraintLayout-2.1.4-blue)
-![AndroidX Navigation](https://img.shields.io/badge/AndroidX-Navigation-2.5.3-blue)
-![Material Components](https://img.shields.io/badge/Material_Components-1.9.0_alpha-blue)
+![AndroidX AppCompat](https://img.shields.io/badge/AndroidX-AppCompat-1)
+![AndroidX ConstraintLayout](https://img.shields.io/badge/AndroidX-ConstraintLayout-1)
+![AndroidX Navigation](https://img.shields.io/badge/AndroidX-Navigation-1)
+![Material Components](https://img.shields.io/badge/Material_Components-1)
 
 ## 리액티브 프로그래밍
 ![RxJava](https://img.shields.io/badge/RxJava-3.0.7-brightgreen)
