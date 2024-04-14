@@ -128,7 +128,7 @@
 **Jo Sunghyun**
 
 - GitHub: [@sunghyun123](https://github.com/sunghyun123)
-- SNS: [@SNS_name]()
+- SNS: smkaia11
 - Mail: <a href="mailto:jhgfds5951@gmail.com">jhgfds5951@gmail.com</a>
 
 **Kim Gunwoo**
