@@ -28,7 +28,7 @@
     <br />
     <a href="https://play.google.com/store/apps/details?id=com.gwnu.witt&hl=ko-KR"><strong>Google Play »</strong></a>
     ·
-    <a href="https://github.com/marso34/witt-client-java"><strong>Explore the docs (Notion) »</strong></a>
+    <a href="https://projects-lj.notion.site/With-Training-2aca57d461f94f918dab38773869c3a6?pvs=4"><strong>Explore the docs (Notion) »</strong></a>
     <br />
     <br />
   </p>
