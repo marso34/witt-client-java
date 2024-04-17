@@ -3,7 +3,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/marso34/witt-client-java">
-    <img src="info\witt_logo.png" alt="Logo" width="80" height="80">
+    <img src="info/witt_logo.png" alt="Logo" width="80" height="80">
   </a>
 
   ## Witt - With Training
@@ -58,7 +58,7 @@
 <!-- ABOUT THE PROJECT -->
 ## 프로젝트 개요
 
-<img src="info\main.png">
+<img src="info/main.png">
 
 "위트 - With Training"은 운동 파트너 매칭 앱으로서, 혼자 운동하기 어려운 사람, 운동을 처음 시작하는 헬스 초보, 안전한 운동을 위해 운동 보조를 찾는 헬스인을 대상으로 합니다. 운동 루틴과 운동 기록을 바탕으로 비슷한 수준의 운동 파트너를 매칭해줌으로써, 운동 동기 부여와 안전한 운동을 돕는 기능을 제공합니다.
 
@@ -92,11 +92,11 @@
 
 <!-- CONTACT -->
 ## 프로젝트 구조
-<img src="info\Architecture.png">
+<img src="info/Architecture.png">
 
 <details>
   <summary>Back-End 구조</summary>
-  <img src="info\Back-End.png">
+  <img src="info/Back-End.png">
 </details>
 
 
@@ -149,7 +149,7 @@
 ## 3. 마이 프로필, 상대 프로필
 |                마이프로필                  |                상대 프로필               |
 |-----------------------------------------|----------------------------------------|
-| <img src="info/내정보/내정보.png" >           | <img src="info\상세 프로필/상세프로필 - 유저.png" >|
+| <img src="info/내정보/내정보.png" >           | <img src="info/상세 프로필/상세프로필 - 유저.png" >|
 
 ### 마이 프로필
   - **자신의 정보 확인**: 신체정보, 헬스장, 3대 측정 결과 등
@@ -187,7 +187,7 @@
 
 |     채팅 목록 및 삭제      |             채팅        |
 |-------------------------|-------------------------|
-| <img src="info\채팅\채팅 - 삭제.png" > | <img src="info\채팅\채팅 - 유저테이블 – 3.png" > |
+| <img src="info/채팅/채팅 - 삭제.png" > | <img src="info/채팅/채팅 - 유저테이블 – 3.png" > |
 
 ### 채팅 기능
 - **실시간 채팅**: 사용자는 1:1로 상대방과 실시간으로 채팅 가능
