@@ -26,7 +26,7 @@
   <p align="center">
     Health matching app 헬스인들을 위한 운동 파트너 매칭 앱 <br />
     <br />
-    <a href="https://play.google.com/store/apps/details?id=com.gwnu.witt&hl=ko-KR"><strong>Google Play »</strong></a>
+    <a href="https://play.google.com/store/apps/details?id=com.gwnu.witt&hl=ko-KR"><del>Google Play (서비스 종료) » </del></a>
     ·
     <a href="https://projects-lj.notion.site/With-Training-2aca57d461f94f918dab38773869c3a6?pvs=4"><strong>Explore the docs (Notion) »</strong></a>
     <br />
